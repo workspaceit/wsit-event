@@ -1,0 +1,293 @@
+{% extends "layout/main.html" %}
+{% block content %}
+    {% load staticfiles %}
+    <link href="{% static 'assets/stylesheets/nestable.css' %}" rel="stylesheet" type="text/css">
+    <script src="{% static 'assets/javascripts/template.js' %}"></script>
+    <div id="content-wrapper">
+        <div class="panel colourable">
+            <div class="panel-heading">
+            <span class="panel-title"><i class="fa fa-lg fa-file-o"></i></i>
+                &nbsp;&nbsp;&nbsp;<strong>Templates</strong></span>
+            </div>
+            <!-- / .panel-heading -->
+            {% csrf_token %}
+            <div class="panel-body tab-content">
+                <div class="tab-pane fade in active">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            {% if request.session.admin_permission.content_permission.template_permission and request.session.admin_permission.content_permission.template_permission.access_level == 'write' or request.session.event_auth_user.type == 'super_admin' %}
+                                <a type="button" class="btn btn-primary btn-lg" id="btn-add-template"
+                                   data-original-title=""
+                                   title=""
+                                   href="javascript:void(0);"><i
+                                        class="fa fa-plus-circle"></i>&nbsp;&nbsp;Add New Template
+                                </a>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <br>
+
+                    <div id="templates">
+                        <div class="table-light">
+                            <div class="table-header">
+                                <div class="table-caption">
+                                    Email Templates
+                                </div>
+                            </div>
+                            <table class="table table-bordered sortable data-table-templates"
+                                   id="template_email_templates">
+                                <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Name</th>
+                                    <th>Edit</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for template in email_templates %}
+                                    <tr>
+                                        <td>{{ template.id }}</td>
+                                        <td>{{ template.name }}</td>
+                                        <td>
+                                            {% if request.session.admin_permission.content_permission.template_permission and request.session.admin_permission.content_permission.template_permission.access_level == 'write' or request.session.event_auth_user.type == 'super_admin' %}
+                                                <button data-id="{{ template.id }}" class="btn btn-xs btn-edit-template"
+                                                        data-toggle="tooltip"
+                                                        data-placement="top" title=""
+                                                        data-original-title="Template Settings"><i
+                                                        class="dropdown-icon fa fa-cog"></i></button>
+                                                <a href="{% url 'templates' %}{{ template.id }}" target="_blank"
+                                                   class="btn btn-xs"
+                                                   data-toggle="tooltip"
+                                                   data-placement="top" title=""
+                                                   data-original-title="Edit Template"><i
+                                                        class="dropdown-icon fa fa-pencil"></i></a>
+                                                <button class="btn btn-xs btn-danger btn-delete-template"
+                                                        data-id="{{ template.id }}" data-toggle="tooltip"
+                                                        data-placement="top"
+                                                        title="" data-original-title="Delete"><i
+                                                        class="dropdown-icon fa fa-times-circle"></i></button>
+                                            {% else %}
+                                                <button data-id="{{ template.id }}" class="btn btn-xs btn-view-template"
+                                                        data-toggle="tooltip"
+                                                        data-placement="top" title=""
+                                                        data-original-title="Template Settings"><i
+                                                        class="dropdown-icon fa fa-search-plus"></i></button>
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="table-light">
+                            <div class="table-header">
+                                <div class="table-caption">
+                                    Web Page Templates
+                                </div>
+                            </div>
+                            <table class="table table-bordered sortable data-table-templates" id="template_web_pages">
+                                <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Name</th>
+                                    <th>Edit</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for template in web_pages_templates %}
+                                    <tr>
+                                        <td>{{ template.id }}</td>
+                                        <td>{{ template.name }}</td>
+                                        <td>
+                                            {% if request.session.admin_permission.content_permission.template_permission and request.session.admin_permission.content_permission.template_permission.access_level == 'write' or request.session.event_auth_user.type == 'super_admin' %}
+                                                <button data-id="{{ template.id }}" class="btn btn-xs btn-edit-template"
+                                                        data-toggle="tooltip"
+                                                        data-placement="top" title=""
+                                                        data-original-title="Template Settings"><i
+                                                        class="dropdown-icon fa fa-cog"></i></button>
+                                                <a href="{% url 'templates' %}{{ template.id }}" target="_blank"
+                                                   class="btn btn-xs"
+                                                   data-toggle="tooltip"
+                                                   data-placement="top" title=""
+                                                   data-original-title="Edit Template"><i
+                                                        class="dropdown-icon fa fa-pencil"></i></a>
+                                                <button class="btn btn-xs btn-danger btn-delete-template"
+                                                        data-id="{{ template.id }}" data-toggle="tooltip"
+                                                        data-placement="top"
+                                                        title="" data-original-title="Delete"><i
+                                                        class="dropdown-icon fa fa-times-circle"></i></button>
+                                            {% else %}
+                                                <button data-id="{{ template.id }}" class="btn btn-xs btn-view-template"
+                                                        data-toggle="tooltip"
+                                                        data-placement="top" title=""
+                                                        data-original-title="Template Settings"><i
+                                                        class="dropdown-icon fa fa-search-plus"></i></button>
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="table-light">
+                            <div class="table-header">
+                                <div class="table-caption">
+                                    Invoices
+                                </div>
+                            </div>
+                            <table class="table table-bordered sortable data-table-templates" id="template_invoices">
+                                <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Name</th>
+                                    <th>Edit</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for template in invoice_templates %}
+                                    <tr>
+                                        <td>{{ template.id }}</td>
+                                        <td>{{ template.name }}</td>
+                                        <td>
+                                            {% if request.session.admin_permission.content_permission.template_permission and request.session.admin_permission.content_permission.template_permission.access_level == 'write' or request.session.event_auth_user.type == 'super_admin' %}
+                                                <button data-id="{{ template.id }}" class="btn btn-xs btn-edit-template"
+                                                        data-toggle="tooltip"
+                                                        data-placement="top" title=""
+                                                        data-original-title="Template Settings"><i
+                                                        class="dropdown-icon fa fa-cog"></i></button>
+                                                <a href="{% url 'templates' %}{{ template.id }}" target="_blank"
+                                                   class="btn btn-xs"
+                                                   data-toggle="tooltip"
+                                                   data-placement="top" title=""
+                                                   data-original-title="Edit Template"><i
+                                                        class="dropdown-icon fa fa-pencil"></i></a>
+                                                <button class="btn btn-xs btn-danger btn-delete-template"
+                                                        data-id="{{ template.id }}" data-toggle="tooltip"
+                                                        data-placement="top"
+                                                        title="" data-original-title="Delete"><i
+                                                        class="dropdown-icon fa fa-times-circle"></i></button>{% else %}
+                                                <button data-id="{{ template.id }}" class="btn btn-xs btn-view-template"
+                                                        data-toggle="tooltip"
+                                                        data-placement="top" title=""
+                                                        data-original-title="Template Settings"><i
+                                                        class="dropdown-icon fa fa-search-plus"></i></button>
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="table-light">
+                            <div class="table-header">
+                                <div class="table-caption">
+                                    PDF Template
+                                </div>
+                            </div>
+                            <table class="table table-bordered sortable data-table-templates" id="template_pdf">
+                                <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Name</th>
+                                    <th>Edit</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for template in pdf_templates %}
+                                    <tr>
+                                        <td>{{ template.id }}</td>
+                                        <td>{{ template.name }}</td>
+                                        <td>
+                                            {% if request.session.admin_permission.content_permission.template_permission and request.session.admin_permission.content_permission.template_permission.access_level == 'write' or request.session.event_auth_user.type == 'super_admin' %}
+                                                <button data-id="{{ template.id }}" class="btn btn-xs btn-edit-template"
+                                                        data-toggle="tooltip"
+                                                        data-placement="top" title=""
+                                                        data-original-title="Template Settings"><i
+                                                        class="dropdown-icon fa fa-cog"></i></button>
+                                                <a href="{% url 'templates' %}{{ template.id }}" target="_blank"
+                                                   class="btn btn-xs"
+                                                   data-toggle="tooltip"
+                                                   data-placement="top" title=""
+                                                   data-original-title="Edit Template"><i
+                                                        class="dropdown-icon fa fa-pencil"></i></a>
+                                                <button class="btn btn-xs btn-danger btn-delete-template"
+                                                        data-id="{{ template.id }}" data-toggle="tooltip"
+                                                        data-placement="top"
+                                                        title="" data-original-title="Delete"><i
+                                                        class="dropdown-icon fa fa-times-circle"></i></button>{% else %}
+                                                <button data-id="{{ template.id }}" class="btn btn-xs btn-view-template"
+                                                        data-toggle="tooltip"
+                                                        data-placement="top" title=""
+                                                        data-original-title="Template Settings"><i
+                                                        class="dropdown-icon fa fa-search-plus"></i></button>
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="templates-edit-template" class="modal fade" role="dialog" style="display: none;">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
+                        <h4 class="modal-title">Add Template</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group no-margin-hr">
+                                    <input type="hidden" id="edit-template-id">
+                                    <label class="control-label">Template Name</label>
+                                    <input type="text" name="template_name" id="template_name" class="form-control"
+                                           placeholder="Template Name">
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group no-margin-hr">
+                                    <label class="control-label">Template Category</label>
+                                    <select id="template_category" class="form-control filter-question-selector">
+                                        <option value="email_templates" data-category="">Email Templates</option>
+                                        <option value="web_pages" data-category="">Web pages</option>
+                                        <option value="invoices" data-category="">Invoices</option>
+                                        <option value="pdf" data-category="">PDF</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- row -->
+                        <div class="row">
+                            <div class="col-sm-12 text-right">
+                                <div class="btn-group">
+                                    <button type="button" class="btn btn-lg" data-original-title="" title=""
+                                            data-dismiss="modal" aria-hidden="true"><i class="fa fa-ban"></i>&nbsp;&nbsp;Cancel
+                                    </button>
+                                    {% if request.session.admin_permission.content_permission.template_permission and request.session.admin_permission.content_permission.template_permission.access_level == 'write' or request.session.event_auth_user.type == 'super_admin' %}
+                                        <button type="button" class="btn btn-success btn-lg btn-save"
+                                                id="btn-save-template"><i
+                                                class="fa fa-check-circle"></i>&nbsp;&nbsp;Save
+                                        </button>
+                                        <button type="button" class="btn btn-success btn-lg btn-save"
+                                                id="btn-update-template"
+                                                style="display: none;"><i
+                                                class="fa fa-check-circle"></i>&nbsp;&nbsp;Update
+                                        </button>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- / .modal-content -->
+            </div>
+            <!-- / .modal-dialog -->
+        </div>
+    </div>
+
+
+{% endblock %}

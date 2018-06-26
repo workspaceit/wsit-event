@@ -1,0 +1,717 @@
+{% extends "gt/layout/layout.html" %}
+{% load staticfiles %}
+
+{% block content %}
+    <link rel="stylesheet" href="{% static 'gt/css/kendo/kendo.common.min.css' %}"/>
+    <link rel="stylesheet" href="{% static 'gt/css/kendo/kendo.default.min.css' %}"/>
+
+    <script src="{% static 'gt/js/kendo/kendo.all.min.js' %}"></script>
+    <script src="{% static 'gt/js/kendo/kendo.timezones.min.js' %}"></script>
+    <script src="{% static 'gt/js/kendo/kendo.culture.sv-SE.min.js' %}"></script>
+    <script src="{% static 'gt/js/kendo/kendo.messages.sv-SE.min.js' %}"></script>
+    <div class="wrapper headline color8" style="padding: 0; z-index: 2;">
+        <div id="bg1"></div>
+        <div class="wrapper" style="z-index: 2; overflow-x: visible;">
+
+            <h1 class="color1">Mina kurser</h1>
+        </div>
+    </div>
+
+    <div class="wrapper">
+        <div class="container padding mainContent">
+            <!--<div class="col span_12 white">
+                <h3 class="color1">Vänligen läs igenom instruktionerna innan du påbörjar din registrering</h3>
+                <p>Donec tristique tempus dolor, vitae faucibus enim vestibulum eu.</p>
+                <p>Donec feugiat elementum arcu nec faucibus. Interdum et malesuada fames ac ante ipsum primis in faucibus. Sed imperdiet lacus non rutrum faucibus. Mauris tincidunt risus ac purus placerat eleifend.</p>
+            </div>-->
+            <p>&nbsp;</p>
+
+            <div class="row gutters">
+                <div class="col span_12">
+                    <p>Här anmäler du dig till de kurser som du vill gå under Kunskapsveckan.
+                        Du hittar lite kort info om varje kurs här, men om du vill läsa mer finns det som vanligt på
+                        Insidan.</p>
+
+                    <P>De kurser som du anmäler dig till här kommer automatiskt att synkroniseras med
+                        Utbildningsportalen. Du behöver alltså inte gå in och anmäla dig där igen. Denna synkronisering
+                        sker vecka 19-20 och när den är klar kommer du få en bekräftelse från Utbildningsportalen på din
+                        anmälan.</p>
+
+                    <p>Kom ihåg att boka logi och middagar för de dagar som din kurs går, se flik ”Min medverkan”.</p>
+                </div>
+            </div>
+
+            <div class="row gutters">
+                <div class="col span_12">
+                    {#                    <div id="session-groups">#}
+                    {#                        <div id="session-group" class="selectionGroupToggle">#}
+                    {#                            <ul>#}
+                    {#                                {% for session_group in session_groups %}#}
+                    {#                                    <li>#}
+                    {#                                        <input id="session-group-id-{{ session_group.id }}-toggle" checked#}
+                    {#                                               type="checkbox" value="{{ session_group.id }}">#}
+                    {#                                        <label for="session-group-id-{{ session_group.id }}-toggle">{{ session_group.name }}</label>#}
+                    {#                                    </li>#}
+                    {#                                {% endfor %}#}
+                    {#                            </ul>#}
+                    {##}
+                    {##}
+                    {#                        </div>#}
+                    {#                    </div>#}
+                    <ul class="select">
+                        <li class="all-session selected">Alla kurser</li>
+                        <li class="my-session">Mina kurser</li>
+                    </ul>
+                </div>
+            </div>
+            <div id="example" class="k-content">
+                <div id="loading"></div>
+                <div id="scheduler"></div>
+            </div>
+            <script id="event-template" type="text/x-kendo-template">
+                #if (isAllDay==true) {
+                allday="all-day"
+                }else{
+                allday=""
+                }#
+
+                #isFull=""
+                if(full){
+                isFull="full"
+                }else{
+                isFull=""
+                }#
+
+                <div class="#:status# session-group-id-#:groupId# session session-view fancybox" data-id=#: id #
+                     style="background-color: #:color#">
+
+
+                    <div class='eventContentTitle '>
+                        <h3 class='fancybox' data-id=#: id #>
+                            #: title #
+                            #if(full){#
+                            <span class='sessionFull'>[Full]</span>
+                            #}#
+                        </h3>
+                    </div>
+                    <div class='eventContentWrapper'>
+                        #if (status == "in-queue") { #
+                        <div class='eventContent'><i class='fa fa-clock-o cue'></i> <span
+                                class='attendingValue'>I kö</span>
+                        </div>
+                        #}else if (status == "attending") {#
+                        <div class='eventContent'><i class='fa fa-check-circle-o'></i> <span
+                                class='attendingValue'>Deltar</span></div>
+                        #}#
+                        <div class='eventContent'>
+                            <i class='fa fa-clock-o'></i>
+                            <span class='timeValue'> #: kendo.toString(start, "yyyy-MM-dd") # - #: kendo.toString(end, "yyyy-MM-dd") #</span>
+                        </div>
+                        <div class='eventContent'>
+                            <i class='fa fa-map-marker'></i>
+                            {#                                <span class='locationValue'><a href="/locations/#: location_id #">#= location#}
+                            {#                                    #</a></span>#}
+                            <span class='locationValue'>#= location
+                                    #</span>
+                        </div>
+                        # if(speakers.length>0){ #
+                        <div class='eventContent'>
+                            <i class='fa fa-user'></i>
+                            <span class='speakerValue'>
+                                 # for (var i = 0; i < speakers.length; i++) { #
+                                        # var tag= speakers[i].firstname+' '+speakers[i].lastname; #
+
+                                        # if(speakers.length==1){#
+{#                                            <a href="/attendee-bio/#: speakers[i].id #">#= tag #</a>#}
+                                            #= tag #
+                                        # }else if(speakers.length>1){ #
+                                            # if(i!=speakers.length-1){ #
+{#                                                <a href="/attendee-bio/#: speakers[i].id  #">#= tag #,</a>#}
+                                                #= tag #,
+                                            #}else{#
+{#                                                 <a href="/attendee-bio/#: speakers[i].id  #">#= tag #</a>#}
+                                                 #= tag #
+                                            #}#
+                                        #}#
+
+
+                                # } #
+
+                            </span>
+                        </div>
+                        # } #
+                        # if(taglist.length>0){#
+                        <div class='eventContent'>
+                            <i class='fa fa-tag'></i>
+                            <span class='tagsValue'>
+                                 # for (var i = 0; i < taglist.length; i++) { #
+                                        # var tag= taglist[i]; #
+
+                                        # if(taglist.length==1){#
+                                           #= tag #
+                                        # }else if(taglist.length>1){ #
+                                            # if(i!=taglist.length-1){ #
+                                                #= tag #,
+                                            #}else{#
+                                                #= tag #
+                                            #}#
+                                        #}#
+
+
+                                # } #
+
+                            </span>
+                        </div>
+                        #}#
+                    </div>
+                </div>
+            </script>
+
+
+        </div>
+        <!-- mainContent -->
+    </div><!--wrapper-->
+    <script>
+        var timeZone;
+        $(function () {
+            $.ajax({
+                url: window.location.origin + '/kingfomarket/get-timezone/',
+                type: "get",
+                dataType: "json",
+                success: function (data) {
+                    //moment.tz.setDefault(data.timezone);
+                    timeZone = data.timezone;
+                }
+            });
+
+        });
+        var CustomAgenda = kendo.ui.AgendaView.extend({
+            group: function () {
+
+                return null;
+            }
+        });
+
+        var initialLoad = true;
+        function loading_start() {
+            if (initialLoad) {
+                {#                kendo.ui.progress($("#loading"), true);#}
+
+            }
+
+        }
+        function loading_end() {
+            if (initialLoad) {
+                {#                kendo.ui.progress($("#loading"), false);#}
+            }
+            initialLoad = false;
+        }
+        var resource;
+
+        $(function () {
+            kendo.culture("sv-SE");
+            $("#scheduler").kendoScheduler({
+                autoBind: false,
+                date: new Date("2016/09/05"),
+                editable: false,
+                startTime: new Date("2015/11/20 08:00 AM"),
+                eventTemplate: $("#event-template").html(),
+                allDayEventTemplate: $("#event-template").html(),
+                height: 1000,
+                {#                dataBound: function (e) { var events = $(e.sender.element).find(".k-event").width(300); },#}
+                views: [
+                    {#                    {type: "day", selected: true},#}
+                    {#                                        {type: CustomAgenda, title: "Custom Agenda"},#}
+                    {
+                        type: "agenda",
+                        group: {
+                            {#                            resources: ["Groups"]#}
+                            resources: null
+                        },
+                        selected: true
+                    }
+
+                ],
+
+                group: {
+                    resources: ["Groups"]
+                },
+                resources: [
+                    {
+                        field: "groupId",
+                        name: "Groups",
+                        dataSource: [
+                            {text: "Meeting Room 101", value: 1, color: "#6eb3fa"}
+                        ],
+                        title: "Session Groups"
+                    }
+                ],
+                {#                navigate: function (e) {#}
+                {#                    var scheduler = $("#scheduler").data("kendoScheduler");#}
+                {##}
+                {#                    if (e.view == "agenda") {#}
+                {#                        resource = scheduler.resources[0];#}
+                {#                        scheduler.resources = null;#}
+                {#                        scheduler.view(scheduler.view().name);#}
+                {#                    }else if(e.view == "day"){#}
+                {#                        scheduler.resources.Add(resource);#}
+                {#                    }#}
+                {#                },#}
+                timezone: timeZone,
+                "messages": {
+                    "Date": "Datum",
+                    "Event": "Kurser",
+                },
+                dataSource: {
+                    batch: true,
+                    transport: {
+                        read: {
+                            url: window.location.origin + '/kingfomarket/get-session-event2/?tab=all-session&group=mina_kurser',
+                            dataType: "json"
+
+                        }
+
+                    },
+                    requestStart: loading_start,
+                    requestEnd: loading_end,
+                    schema: {
+                        model: {
+                            id: "id",
+                            fields: {
+                                id: {from: "id", type: "number"},
+                                title: {from: "Title", defaultValue: "No title", validation: {required: true}},
+                                start: {type: "date", from: "Start"},
+                                end: {type: "date", from: "End"},
+                                description: {from: "Description"},
+                                location: {from: "location"},
+                                location_id: {from: "location_id"},
+                                groupId: {from: "groupId", nullable: true},
+                                speakers: {from: "speakers"},
+                                taglist: {from: "taglist"},
+                                status: {from: "status"},
+                                color: {from: "color"},
+                                isAllDay: {type: "boolean", from: "IsAllDay"},
+                                full: {
+                                    type: "boolean", from: "full"
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+
+
+            loadResource();
+
+            $("#session-group :checkbox").change(function (e) {
+                var checked = $.map($("#session-group :checked"), function (checkbox) {
+                    return parseInt($(checkbox).val());
+                });
+                var filter = {
+                    logic: "or",
+                    filters: $.map(checked, function (value) {
+                        return {
+                            operator: "eq",
+                            field: "value",
+                            value: value
+                        };
+                    })
+                };
+                var scheduler = $("#scheduler").data("kendoScheduler");
+                scheduler.resources[0].dataSource.filter(filter);
+                scheduler.view(scheduler.view().name);
+
+            });
+
+            $('body').on('click', '.session-view', function (e) {
+                var session_id = $(this).attr('data-id');
+                console.log(session_id);
+                $('body #session-loader').show();
+                $.ajax({
+                    url: window.location.origin + '/gt/sessions/' + session_id + '/',
+                    type: "GET",
+                    success: function (result) {
+                        if (result.error) {
+                        } else {
+                            $.fancybox(result, {
+                                maxWidth: 1000,
+                                maxHeight: 800,
+                                fitToView: false,
+                                width: '100%',
+                                height: '100%',
+                                autoSize: false,
+                                closeClick: false,
+                                openEffect: 'fade',
+                                closeEffect: 'fade',
+                                openSpeed: 'slow',
+                                autoHeight: true
+                            });
+
+                        }
+                        $('body #session-loader').hide();
+
+                    }
+                });
+
+            });
+
+            $('body').on('change', '#btn-attend-session', function (e) {
+                e.preventDefault();
+                $('#loader').show();
+                {#                $(this).prop("disabled", true);#}
+                var sessionId = $(this).data('session');
+                var currentStatus = $(this).attr('data-status').trim();
+                console.log(currentStatus);
+                var type = 'cancel';
+                if (currentStatus == 'Not Attending' || currentStatus == 'Not Answered') {
+                    type = 'attend';
+                    {#                    $('#btn-attend-session').attr("class", "button rounded color3");#}
+                    // .attr( "class", "newClass" )
+                } else if (currentStatus == 'In Queue') {
+                    type = 'not-attending-queue'
+                }
+                var csrfToken = $('input[name=csrfmiddlewaretoken]').val();
+                var data = {
+                    session_id: sessionId,
+                    type: type,
+                    csrfmiddlewaretoken: csrfToken
+                };
+
+                $.ajax({
+                    url: window.location.origin + '/kingfomarket/attend-or-cancel-session/',
+                    type: "POST",
+                    data: data,
+                    success: function (response) {
+                        $('#btn-attend-session').removeClass('queue');
+                        $('#btn-attend-session').prop('checked', false);
+                        $('#loader').hide();
+                        {#                        $('#btn-attend-session').prop('disabled', false);#}
+
+
+                        var scheduler = $("#scheduler").data("kendoScheduler");
+                        scheduler.dataSource.read();
+                        scheduler.view(scheduler.view().name);
+
+                        console.log(response);
+                        if (response.status == 'Clash') {
+{#                            $.growl.warning({message: 'Du har en tidskonflikt med en tidigare vald kurs / seminarium'});#}
+                            $.growl.warning({message: response.msg});
+                        }
+                        else {
+                            if (response.status == 'Capacity Full') {
+                                st = 'Du deltar inte';
+                            }
+                            else if (response.status == 'Attending') {
+                                st = 'Du deltar';
+                            } else if (response.status == 'In Queue') {
+                                st = 'Du står i kö';
+                            }
+                            else if (response.status == 'Not Attending') {
+                                st = 'Du deltar inte';
+                            }
+
+                            {#                            $('#btn-attend-session').html(st);#}
+                            $('#btn-attend-session').attr('data-status', response.status);
+
+                        }
+                        if (response.status == 'Attending') {
+                            $('.click-to-attend').find('em').html('Klicka på knappen för att ej delta');
+                            {#                            $('#btn-attend-session').attr("class", "button rounded color2");#}
+                            $('#btn-attend-session').prop('checked', true);
+{#                            $.growl.notice({message: 'Du har anmält dig för att delta på denna kurs / seminarium'});#}
+                            $.growl.notice({message: response.msg});
+                        }
+                        else if (response.status == 'In Queue') {
+                            $('.click-to-attend').find('em').html('Klicka för att avbryta Queue');
+{#                            $.growl.notice({message: 'Du står nu i kö för kursen / seminariet'});#}
+                             $.growl.notice({message: response.msg});
+                            {#                            $('#btn-attend-session').attr("class", "button rounded color4");#}
+                            $('#btn-attend-session').addClass("queue");
+                            $('#btn-attend-session').prop('checked', true)
+                        }
+                        else if (response.status == 'Not Attending') {
+                            if (response.session_full) {
+                                $('.click-to-attend').find('em').html('Klicka på knappen för att ställa dig i kö');
+                            } else {
+                                $('.click-to-attend').find('em').html('Klicka på knappen för att ej delta');
+                            }
+                            {#                            $('#btn-attend-session').attr("class", "button rounded color3");#}
+                            $('#btn-attend-session').prop('checked', false);
+{#                            $.growl.notice({message: 'Du är ej längre anmäld att delta på denna kurs / seminarium'});#}
+                            $.growl.notice({message: response.msg});
+                        }
+                        else if (response.status == 'Capacity Full') {
+                            if (response.session_full) {
+                                $('.click-to-attend').find('em').html('Klicka på knappen för att ställa dig i kö');
+                            } else {
+                                $('.click-to-attend').find('em').html('Klicka på knappen för att ej delta');
+                            }
+                            {#                            $('#btn-attend-session').attr("class", "button rounded color3");#}
+                            $('#btn-attend-session').prop('checked', false);
+{#                            $.growl.warning({message: 'Kursen / seminariet har inga tillgängliga platser'});#}
+                            $.growl.warning({message: response.msg});
+                        }
+                    }
+                });
+            });
+
+
+            {#            $("#scheduler").height($(window).height() - ($("#scheduler").position().top - $(window).scrollTop()));#}
+
+        });
+
+        function loadResource() {
+
+            var scheduler = $("#scheduler").data("kendoScheduler");
+            var resource = scheduler.resources[0];
+            var csrf_token = $('input[name=csrfmiddlewaretoken]').val();
+            $.ajax({
+                url: window.location.origin + '/kingfomarket/get-session-group2/',
+                data: {
+                    csrfmiddlewaretoken: csrf_token,
+                    group: "mina_kurser",
+                },
+                success: function (result) {
+                    resource.dataSource.data(result);
+                    scheduler.view(scheduler.view().name);
+                }
+            });
+
+        }
+        function get_new() {
+
+            var scheduler = $("#scheduler").data("kendoScheduler");
+            var tab = "all-session";
+            if ($('.my-session').hasClass('selected')) {
+                tab = "my-session"
+
+            } else {
+                tab = "all-session"
+            }
+
+            if (tab == "my-session") {
+
+                var dataSource = new kendo.data.SchedulerDataSource({
+                    batch: true,
+                    transport: {
+                        read: {
+                            url: window.location.origin + '/kingfomarket/get-session-event2/?tab=my-session&group=mina_kurser',
+                            dataType: "json"
+
+                        }
+
+                    },
+                    requestStart: loading_start,
+                    requestEnd: loading_end,
+                    schema: {
+                        model: {
+                            id: "id",
+                            fields: {
+                                id: {from: "id", type: "number"},
+                                title: {from: "Title", defaultValue: "No title", validation: {required: true}},
+                                start: {type: "date", from: "Start"},
+                                end: {type: "date", from: "End"},
+                                description: {from: "Description"},
+                                location: {from: "location"},
+                                location_id: {from: "location_id"},
+                                groupId: {from: "groupId", nullable: true},
+                                speakers: {from: "speakers"},
+                                taglist: {from: "taglist"},
+                                status: {from: "status"},
+                                color: {from: "color"},
+                                isAllDay: {type: "boolean", from: "IsAllDay"},
+                                full: {
+                                    type: "boolean", from: "full"
+                                }
+                            }
+                        }
+                    }
+
+                });
+                scheduler.setDataSource(dataSource);
+                dataSource.read();
+
+            } else {
+                var dataSource = new kendo.data.SchedulerDataSource({
+                    batch: true,
+                    transport: {
+                        read: {
+                            url: window.location.origin + '/kingfomarket/get-session-event2/?tab=all-session&group=mina_kurser',
+                            dataType: "json"
+
+                        }
+
+                    },
+                    requestStart: loading_start,
+                    requestEnd: loading_end,
+                    schema: {
+                        model: {
+                            id: "id",
+                            fields: {
+                                id: {from: "id", type: "number"},
+                                title: {from: "Title", defaultValue: "No title", validation: {required: true}},
+                                start: {type: "date", from: "Start"},
+                                end: {type: "date", from: "End"},
+                                description: {from: "Description"},
+                                location: {from: "location"},
+                                location_id: {from: "location_id"},
+                                groupId: {from: "groupId", nullable: true},
+                                speakers: {from: "speakers"},
+                                taglist: {from: "taglist"},
+                                status: {from: "status"},
+                                color: {from: "color"},
+                                isAllDay: {type: "boolean", from: "IsAllDay"},
+                                full: {
+                                    type: "boolean", from: "full"
+                                }
+                            }
+                        }
+                    }
+
+                });
+                scheduler.setDataSource(dataSource);
+                dataSource.read();
+            }
+
+        }
+
+        $('body').on('click', '.my-session', function (e) {
+            if ($('.my-session').hasClass('selected')) {
+
+            }
+            else {
+                $('.all-session').removeClass('selected');
+                $('.my-session').addClass('selected');
+                get_new();
+            }
+        });
+        $('body').on('click', '.all-session', function (e) {
+            if ($('.all-session').hasClass('selected')) {
+
+            }
+            else {
+                $('.my-session').removeClass('selected');
+                $('.all-session').addClass('selected');
+                get_new();
+            }
+        });
+
+        {#        $(window).resize(function () {#}
+        {#            $("#scheduler").height($(window).height() - ($("#scheduler").position().top - $(window).scrollTop()));#}
+        {#        });#}
+
+    </script>
+    <style>
+
+        .session {
+            cursor: pointer;
+        }
+
+        .k-scheduler-layout {
+            table-layout: fixed;
+        }
+
+        .k-scheduler-layout > tbody > tr > td:first-child {
+            width: 100px;
+        }
+
+        .k-scheduler-content .k-scheduler-table,
+        .k-scheduler-header .k-scheduler-table {
+            width: 3500px {#        width: auto;#}
+        }
+
+        {#        .k-slot-cell {#}
+        {#            width: 400px !important;#}
+        {#        }#}
+        {##}
+        .k-scheduler-dayview .k-scheduler-table td {
+            height: 150px !important;
+        }
+
+        .eventContentTitle {
+            border-bottom: 1px solid #DADAC4;
+            font-size: 0.75em;
+        }
+
+        .eventContentTitle h3 {
+            color: #94897A;
+            padding: 0.25em !important;
+        }
+
+        .eventContentWrapper i {
+            padding: 0.5em;
+            color: #4F2D7F;
+        }
+
+        .eventContent {
+            display: inline-block;
+        }
+
+        .fc-time-area .fc-event-container {
+            padding-bottom: 3px !important;
+        }
+
+        .k-event {
+            border: inherit;
+        }
+
+        .not-attending {
+            border: 1px solid rgba(0, 0, 0, 0);
+            border: none;
+            height: inherit;
+        }
+
+        .attending {
+            border: 1px solid #7AB800;
+            background: #E6FFB3;
+            height: inherit;
+        }
+
+        .in-queue {
+            border: 1px solid #fecb00;
+            background: #FFF6D1;
+            height: inherit;
+        }
+
+        .clash {
+            background: #F0F0F0;
+            border: 1px solid #979797;
+            height: inherit;
+        }
+
+        {#        hide footer#}
+
+        .k-scheduler-footer {
+            /* make them invisible */
+            display: none;
+
+            /* prevent height and paddings from influencing the size calculations */
+            height: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+
+        .k-nav-today {
+            display: none !important;
+        }
+
+        .k-scheduler-mark {
+            display: none !important;
+        }
+
+        .k-scheduler-timecolumn {
+            display: none !important;
+        }
+
+        {#        .k-scheduler-groupcolumn{#}
+        {#            display: none !important;#}
+        {#        }#}
+
+        .fancybox-overlay-fixed {
+
+            z-index: 900 !important;
+        }
+    </style>
+
+
+{% endblock %}

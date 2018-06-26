@@ -1,0 +1,20 @@
+<div class="form-plugin element form-plugin-economy box"
+     {% if data_user_id %}id="page-{{ page_id }}-box-{{ box_id }}-u-{{ data_user_id }}" data-uid="{{ data_user_id }}"
+     {% else %}id="page-{{ page_id }}-box-{{ box_id }}"{% endif %} data-id="{{ element_id }}"
+     data-name="economy">
+    <div class="form-plugin-intro">
+        {{ message|safe }}
+    </div>
+    {% if no_orders %}
+        <div class="placeholder empty">{{ language.langkey.economy_order_empty }}</div>
+    {% elif order_table %}
+        {% if group_order_combined and order_table_type == 'group-order' %}
+            {% include 'public/element/order_table_combined_group_order.html' %}
+        {% else %}
+            {% include 'public/element/order_table.html' %}
+        {% endif %}
+    {% elif balance_table %}
+        {% include 'public/element/balance_table.html' %}
+    {% endif %}
+    <div class="error-validating">{{ language.langkey.economy_notify_validation_fail }}</div>
+</div>

@@ -1,0 +1,23 @@
+<table class="tableDottedLines color4">
+    {% for data in dataList %}
+        <thead>
+        <tr>
+            <th>{{ data.alphabet }}
+            </th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for attende in data.attendees %}
+            <tr>
+                <td><a href="{% url 'attendee-bio' event_url=request.session.event_url %}{{ attende.id }}">{{ attende.firstname }} {{ attende.lastname }}</a>,
+                    {% if attende.office %}
+                        {{ attende.office }}
+                    {% else %}
+                        {{ "n/a" }}
+                    {% endif %}
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    {% endfor %}
+</table>

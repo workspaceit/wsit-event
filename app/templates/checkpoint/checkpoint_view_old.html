@@ -1,0 +1,94 @@
+{% extends "layout/main.html" %}
+{% block content %}
+    {% load staticfiles %}
+    <div id="content-wrapper">
+        {% csrf_token %}
+        <div class="panel colourable">
+            <div class="panel-heading">
+            <span class="panel-title"><i class="fa fa-lg fa-exchange"></i></i>
+                &nbsp;&nbsp;&nbsp;<strong>Checkpoint View</strong></span>
+                                <span style="float:right"><img style="display:none" height="25px"
+                                                               src="{% static 'public/images/712.GIF' %}" id="loader"
+                                                               alt=""/>
+                                    <input type="text" name="search_key_checkpoint"
+                                           id="search_key_checkpoint"/></span>
+            </div>
+            <!-- / .panel-heading -->
+            <div class="panel-body tab-content">
+                <div class="tab-pane fade in active">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <h3>{{ checkpoint.name }}</h3><br>
+                            {{ checkpoint.checked }} Checked<br>
+                            {{ checkpoint.percentage }}% <br>
+                            {{ checkpoint.max }} Max <br>
+                            {{ checkpoint.remaining }} Remainng
+                        </div>
+                        <div class="col-sm-6">
+                            Last Check
+                            <h3>
+                                {{ last_scan.attendee.firstname }}<br>
+                                {{ last_scan.attendee.lastname }}<br>
+                            </h3>
+                        </div>
+                    </div>
+                    <br>
+
+                    <div id="checkpoint">
+                        <div class="table-light">
+                                <div class="table-header" id="filter_export_group_{{ group.id }}">
+                                    <div class="table-caption">
+                                        Checkpoint
+                                    </div>
+                                </div>
+                                <table class="table table-bordered data-table-checkpoint">
+                                    <thead>
+                                    <tr>
+                                        <th>Status</th>
+                                        <th>First Name</th>
+                                        <th>Last Name</th>
+                                        {% for q in questions %}
+                                            <th>{{ q.title|slice:"20" }}</th>
+                                        {% endfor %}
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% for attendee in attendees %}
+                                        <tr>
+                                            <td>
+                                                {% if attendee.scan_status == 1 %}
+                                                    <i class="fa fa-star"></i>
+                                                {% else %}
+                                                    <i class="fa fa-star-o"></i>
+                                                {% endif %}
+                                                {{ attendee.scan_time }}
+                                            </td>
+                                            <td>{{ attendee.firstname }}</td>
+                                            <td>{{ attendee.lastname }}</td>
+                                            {% for ans in attendee.answers %}
+
+                                                <td> {{ ans.answer }}</td>
+
+                                            {% endfor %}
+                                        </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+    <script>
+
+
+    </script>
+
+
+
+{% endblock %}

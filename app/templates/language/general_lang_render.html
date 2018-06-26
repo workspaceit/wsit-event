@@ -1,0 +1,220 @@
+{% for general_lang in general_langs %}
+    {% for menu in general_lang.menus %}
+        <div role="tabpanel" class="tab-pane active" id="menu-{{ menu.id }}" data-id="{{ menu.id }}" data-type="menus">
+            <div class="row">
+                <div class="col-sm-12 menus-lang">
+                    <div class="form-group">
+                        <label>Title</label>
+                        <input class="form-control lang-input" type="text"
+                               data-area="default"
+                               data-name="title"
+                               value="{{ menu.title|safe }}">
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+    {% for question in general_lang.questions %}
+        <div role="tabpanel" class="tab-pane" id="question-{{ question.id }}" data-id="{{ question.id }}"
+             data-type="questions">
+            <div class="row">
+                <div class="col-sm-12 questions-lang">
+                    <div class="form-group">
+                        <label>Title</label>
+                        <input class="form-control lang-input" type="text"
+                               data-area="default"
+                               data-name="title"
+                               value="{{ question.title|safe }}">
+                    </div>
+                    <div class="form-group">
+                        <label>Description</label>
+                        <textarea class="form-control lang-input" type="text"
+                                  data-area="default"
+                                  data-name="description">{{ question.description|safe }}</textarea>
+                    </div>
+                    {% if question.options %}
+                        <label>Options</label>
+                        {% for option in question.options %}
+                            <div class="form-group">
+                                <input class="form-control lang-option-input" type="text"
+                                       data-area="default"
+                                       data-name="option"
+                                       data-id="{{ option.option_id }}"
+                                       value="{{ option.option|safe }}">
+                            </div>
+                        {% endfor %}
+
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+    {% for session in general_lang.sessions %}
+        <div role="tabpanel" class="tab-pane" id="session-{{ session.id }}" data-id="{{ session.id }}"
+             data-type="sessions">
+            <div class="row">
+                <div class="col-sm-12 sessions-lang">
+                    <div class="form-group">
+                        <label>Name</label>
+                        <input class="form-control lang-input" type="text"
+                               data-area="default"
+                               data-name="name"
+                               value="{{ session.name|safe }}">
+                    </div>
+                    <div class="form-group">
+                        <label>Description</label>
+                        <textarea class="form-control lang-input" type="text"
+                                  data-area="default"
+                                  data-name="description">{{ session.description|safe }}</textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+    {% for travel in general_lang.travels %}
+        <div role="tabpanel" class="tab-pane" id="travel-{{ travel.id }}" data-id="{{ travel.id }}" data-type="travels">
+            <div class="row">
+                <div class="col-sm-12 travels-lang">
+                    <div class="form-group">
+                        <label>Name</label>
+                        <input class="form-control lang-input" type="text"
+                               data-area="default"
+                               data-name="name"
+                               value="{{ travel.name|safe }}">
+                    </div>
+                    <div class="form-group">
+                        <label>Description</label>
+                        <textarea class="form-control lang-input" type="text"
+                                  data-area="default"
+                                  data-name="description">{{ travel.description|safe }}</textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+    {% for location in general_lang.locations %}
+        <div role="tabpanel" class="tab-pane" id="location-{{ location.id }}" data-id="{{ location.id }}"
+             data-type="locations">
+            <div class="row">
+                <div class="col-sm-12 locations-lang">
+                    <div class="form-group">
+                        <label>Name</label>
+                        <input class="form-control lang-input" type="text"
+                               data-area="default"
+                               data-name="name"
+                               value="{{ location.name|safe }}">
+                    </div>
+                    <div class="form-group">
+                        <label>Description</label>
+                        <textarea class="form-control lang-input" type="text"
+                                  data-area="default"
+                                  data-name="description">{{ location.description|safe }}</textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Address</label>
+                        <textarea class="form-control lang-input" type="text"
+                                  data-area="default"
+                                  data-name="address">{{ location.address|safe }}</textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Contact Name</label>
+                        <input class="form-control lang-input" type="text"
+                               data-area="default"
+                               data-name="contact_name"
+                               value="{{ location.contact_name|safe }}">
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+    {% for hotel in general_lang.hotels %}
+        <div role="tabpanel" class="tab-pane" id="hotel-{{ hotel.id }}" data-id="{{ hotel.id }}" data-type="hotels">
+            <div class="row">
+                <div class="col-sm-12 hotels-lang">
+                    <div class="form-group">
+                        <label>Name</label>
+                        <input class="form-control lang-input" type="text"
+                               data-area="default"
+                               data-name="name"
+                               value="{{ hotel.name|safe }}">
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+    {% for room in general_lang.rooms %}
+        <div role="tabpanel" class="tab-pane" id="room-{{ room.id }}" data-id="{{ room.id }}" data-type="rooms">
+            <div class="row">
+                <div class="col-sm-12 rooms-lang">
+                    <div class="form-group">
+                        <label>Room Description</label>
+                        <input class="form-control lang-input" type="text"
+                               data-area="default"
+                               data-name="description"
+                               value="{{ room.description|safe }}">
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+    {% for group in general_lang.groups %}
+        <div role="tabpanel" class="tab-pane" id="group-{{ group.id }}" data-id="{{ group.id }}" data-type="groups">
+            <div class="row">
+                <div class="col-sm-12 groups-lang">
+                    <div class="form-group">
+                        <label>Name</label>
+                        <input class="form-control lang-input" type="text"
+                               data-area="default"
+                               data-name="name"
+                               value="{{ group.name|safe }}">
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+    {% for email in general_lang.emails %}
+        <div role="tabpanel" class="tab-pane" id="email-{{ email.id }}" data-id="{{ email.id }}" data-type="emails">
+            <div class="row">
+                <div class="col-sm-12 emails-lang">
+                    <div class="form-group">
+                        <label>Subject</label>
+                        <input class="form-control lang-input" type="text"
+                               data-area="default"
+                               data-name="subject"
+                               value="{{ email.subject|safe }}">
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+    {% for submit_button in general_lang.submit_buttons %}
+        <div role="tabpanel" class="tab-pane" id="submit-button-{{ submit_button.id }}" data-id="{{ submit_button.id }}" data-type="submit_buttons">
+            <div class="row">
+                <div class="col-sm-12 submit-buttons-lang">
+                    <div class="form-group">
+                        <label>Button</label>
+                        <input class="form-control lang-input" type="text"
+                               data-area="default"
+                               data-name="answer"
+                               value="{{ submit_button.answer|safe }}">
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+    {% for pdf_button in general_lang.pdf_buttons %}
+        <div role="tabpanel" class="tab-pane" id="pdf-button-{{ pdf_button.id }}" data-id="{{ pdf_button.id }}" data-type="pdf_buttons">
+            <div class="row">
+                <div class="col-sm-12 pdf-buttons-lang">
+                    <div class="form-group">
+                        <label>Button</label>
+                        <input class="form-control lang-input" type="text"
+                               data-area="default"
+                               data-name="answer"
+                               value="{{ pdf_button.answer|safe }}">
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+{% endfor %}

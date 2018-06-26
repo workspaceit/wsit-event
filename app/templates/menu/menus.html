@@ -1,0 +1,236 @@
+{% extends "layout/main.html" %}
+{% block content %}
+    {% load staticfiles %}
+    <link href="{% static 'assets/stylesheets/nestable.css' %}" rel="stylesheet" type="text/css">
+    <div id="content-wrapper">
+        <div class="panel colourable">
+            <div class="panel-heading">
+            <span class="panel-title"><i class="fa fa-lg fa-bars"></i></i>
+                &nbsp;&nbsp;&nbsp;<strong>Menus</strong></span>
+                {#                <span  style="float:right"><img style="display:none" height="25px"#}
+                {#                                               src="{% static 'public/images/712.GIF' %}" id="loader" alt=""/>#}
+                {#                    <input type="text" name="search_key_admin" id="search_key_admin"/></span>#}
+            </div>
+            <!-- / .panel-heading -->
+            {% csrf_token %}
+            <div class="panel-body tab-content">
+                <div class="tab-pane fade in active">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            {% if request.session.admin_permission.content_permission.menu_permission and request.session.admin_permission.content_permission.menu_permission.access_level == 'write' or request.session.event_auth_user.type == 'super_admin' %}
+                                <button type="button" id="btn-add-menuitem" class="btn btn-primary btn-lg"
+                                        data-toggle="modal"
+                                        data-target=""><i class="fa fa-plus-circle"></i>&nbsp;&nbsp;Add Menu Item
+                                </button>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <br>
+                    {% if request.session.admin_permission.content_permission.menu_permission and request.session.admin_permission.content_permission.menu_permission.access_level == 'write' or request.session.event_auth_user.type == 'super_admin' %}
+                        <div class="dd" id="nestable3">
+                            <ol class="dd-list">
+                                {% for menu in all_menu %}
+                                    <li class="dd-item dd3-item" data-id="{{ menu.id }}">
+                                        <div class="dd-handle dd3-handle"></div>
+                                        <div class="dd3-content">{{ menu.title }}
+                                            <div style="float:right;">
+                                                <button class="btn btn-xs btn-edit-menu" data-id="{{ menu.id }}"
+                                                        data-toggle="tooltip" data-placement="top" title=""
+                                                        data-original-title="Edit"><i
+                                                        class="dropdown-icon fa fa-cog"></i>
+                                                </button>
+
+
+                                                <button class="btn btn-xs btn-danger btn btn-delete-menu"
+                                                        data-id="{{ menu.id }}" data-toggle="tooltip"
+                                                        data-placement="top"
+                                                        title="" data-original-title="Delete"><i
+                                                        class="dropdown-icon fa fa-times-circle"></i></button>
+                                            </div>
+                                        </div>
+
+                                        {% if menu.items %}
+                                            <ol class="dd-list">
+                                                {% for items in menu.items %}
+                                                    <li class="dd-item dd3-item" data-id="{{ items.id }}">
+                                                        <div class="dd-handle dd3-handle"></div>
+                                                        <div class="dd3-content">{{ items.title }}
+                                                            <div style="float:right;">
+                                                                <button class="btn btn-xs btn-edit-menu"
+                                                                        data-id="{{ items.id }}"
+                                                                        data-toggle="tooltip" data-placement="top"
+                                                                        title=""
+                                                                        data-original-title="Edit"><i
+                                                                        class="dropdown-icon fa fa-cog"></i>
+                                                                </button>
+
+
+                                                                <button class="btn btn-xs btn-danger btn btn-delete-menu"
+                                                                        data-id="{{ items.id }}" data-toggle="tooltip"
+                                                                        data-placement="top"
+                                                                        title="" data-original-title="Delete"><i
+                                                                        class="dropdown-icon fa fa-times-circle"></i>
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                        {% if items.items %}
+
+                                                            <ol class="dd-list">
+                                                                {% for items in items.items %}
+                                                                    <li class="dd-item dd3-item"
+                                                                        data-id="{{ items.id }}">
+                                                                        <div class="dd-handle dd3-handle"></div>
+                                                                        <div class="dd3-content">{{ items.title }}
+                                                                            <div style="float:right;">
+                                                                                <button class="btn btn-xs btn-edit-menu"
+                                                                                        data-id="{{ items.id }}"
+                                                                                        data-toggle="tooltip"
+                                                                                        data-placement="top" title=""
+                                                                                        data-original-title="Edit"><i
+                                                                                        class="dropdown-icon fa fa-cog"></i>
+                                                                                </button>
+
+
+                                                                                <button class="btn btn-xs btn-danger btn btn-delete-menu"
+                                                                                        data-id="{{ items.id }}"
+                                                                                        data-toggle="tooltip"
+                                                                                        data-placement="top"
+                                                                                        title=""
+                                                                                        data-original-title="Delete"><i
+                                                                                        class="dropdown-icon fa fa-times-circle"></i>
+                                                                                </button>
+                                                                            </div>
+                                                                        </div>
+                                                                    </li>
+                                                                {% endfor %}
+                                                            </ol>
+                                                        {% endif %}
+                                                    </li>
+                                                {% endfor %}
+                                            </ol>
+                                        {% endif %}
+                                    </li>
+
+                                {% endfor %}
+                            </ol>
+                        </div>
+                    {% else %}
+                        <div class="dd" id="">
+                            <ol class="dd-list">
+                                {% for menu in all_menu %}
+                                    <li class="dd-item dd3-item" data-id="{{ menu.id }}">
+                                        <div class=""></div>
+                                        <div class="dd3-content">{{ menu.title }}
+                                            <div style="float:right;">
+                                                <button class="btn btn-xs btn-view-menu" data-id="{{ menu.id }}"
+                                                        data-toggle="tooltip" data-placement="top" title=""
+                                                        data-original-title="View"><i
+                                                        class="dropdown-icon fa fa-search-plus"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+
+                                        {% if menu.items %}
+                                            <ol class="dd-list">
+                                                {% for items in menu.items %}
+                                                    <li class="dd-item dd3-item" data-id="{{ items.id }}">
+                                                        <div class=""></div>
+                                                        <div class="dd3-content">{{ items.title }}
+                                                            <div style="float:right;">
+                                                                <button class="btn btn-xs btn-view-menu"
+                                                                        data-id="{{ items.id }}"
+                                                                        data-toggle="tooltip" data-placement="top"
+                                                                        title=""
+                                                                        data-original-title="View"><i
+                                                                        class="dropdown-icon fa fa-search-plus"></i>
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                        {% if items.items %}
+
+                                                            <ol class="dd-list">
+                                                                {% for items in items.items %}
+                                                                    <li class="dd-item dd3-item"
+                                                                        data-id="{{ items.id }}">
+                                                                        <div class=""></div>
+                                                                        <div class="dd3-content">{{ items.title }}
+                                                                            <div style="float:right;">
+                                                                                <button class="btn btn-xs btn-view-menu"
+                                                                                        data-id="{{ items.id }}"
+                                                                                        data-toggle="tooltip"
+                                                                                        data-placement="top" title=""
+                                                                                        data-original-title="View"><i
+                                                                                        class="dropdown-icon fa fa-search-plus"></i>
+                                                                                </button>
+                                                                            </div>
+                                                                        </div>
+                                                                    </li>
+                                                                {% endfor %}
+                                                            </ol>
+                                                        {% endif %}
+                                                    </li>
+                                                {% endfor %}
+                                            </ol>
+                                        {% endif %}
+                                    </li>
+
+                                {% endfor %}
+                            </ol>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <input id="event-end-date" type="hidden" value="{{ event_end_date|date:'m/d/Y' }}">
+
+        {% include 'menu/add_menu.html' %}
+
+    </div>
+    <script src="{% static 'assets/javascripts/jquery.nestable.js' %}"></script>
+    <script>
+
+        $(document).ready(function () {
+
+
+            var updateOutput = function (e) {
+                var list = e.length ? e : $(e.target);
+                data = {
+                    menu_list: JSON.stringify(list.nestable('serialize')),
+                    csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val()
+                }
+                clog(JSON.stringify(list.nestable('serialize')));
+                $.ajax({
+                    url: base_url + '/admin/menus/menu_order/',
+                    type: 'POST',
+                    data: data,
+                    success: function (response) {
+                        if (response.success) {
+                            $.growl.notice({message: response.success});
+                        }
+                        else {
+                            var errors = response.error;
+                            $.growl.warning({message: errors});
+                        }
+                    },
+                    error: function (e) {
+                        clog(e);
+                    }
+                });
+            };
+
+            // activate Nestable for list 1
+            $('#nestable3').nestable({
+                        group: 1
+                    })
+                    .on('change', updateOutput);
+
+            // activate Nestable for list 2
+
+
+            // output initial serialised data
+            {#    updateOutput($('#nestable').data('output', $('#nestable-output')));#}
+
+        });
+    </script>
+{% endblock %}

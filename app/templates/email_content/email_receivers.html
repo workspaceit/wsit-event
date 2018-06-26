@@ -1,0 +1,371 @@
+{% extends "layout/main.html" %}
+{% block content %}
+    {% load staticfiles %}
+    <style type="text/css">
+        .stylish-input-group .input-group-addon {
+            background: white none repeat scroll 0 0 !important;
+        }
+
+        .stylish-input-group .form-control {
+            border-color: #ccc;
+            border-left: 0 none #ccc;
+            box-shadow: 0 0 0;
+            border-bottom-right-radius: 15px;
+            border-top-right-radius: 15px;
+        }
+
+        .stylish-input-group button {
+            background: transparent none repeat scroll 0 0;
+            border: 0 none;
+
+        }
+
+        .stylish-input-group span {
+
+            border-bottom-left-radius: 15px;
+            border-top-left-radius: 15px;
+        }
+
+    </style>
+
+    <div id="content-wrapper">
+        <div class="panel colourable">
+            <div class="panel-heading">
+                <span class="panel-title">
+                    <i class="fa fa-lg fa-envelope-o"></i>&nbsp;&nbsp;
+                    {% if request.session.admin_permission.content_permission.message_permission and request.session.admin_permission.content_permission.message_permission.access_level == 'write' or request.session.event_auth_user.type == 'super_admin' %}
+                        <strong>Edit receivers – {{ email.name }}</strong></span>
+                    {% else %}
+                        <strong>View receivers – {{ email.name }}</strong></span>
+                    {% endif %}
+            </div>
+            <div class="panel-body">
+                <div class="modal-body">
+                    <div class="row">
+                        {% if request.session.admin_permission.content_permission.message_permission and request.session.admin_permission.content_permission.message_permission.access_level == 'write' or request.session.event_auth_user.type == 'super_admin' %}
+                            <div class="btn-group">
+                                <button class="btn btn-primary btn-lg dropdown-toggle"
+                                        type="button"
+                                        data-toggle="dropdown"
+                                        aria-haspopup="true"
+                                        aria-expanded="false">
+                                    <i class="fa fa-plus-circle" aria-hidden="true"></i>
+                                    Add receivers
+                                    <span class="caret"></span>
+                                </button>
+                                <ul class="dropdown-menu">
+                                    <li><a href="#" data-toggle="modal" data-target="#email-from-filter"
+                                           id="open-email-filter-form">
+                                        From Filter</a></li>
+                                    <li><a href="#" data-toggle="modal" data-target="#email-from-excel-import"> From
+                                        Excel
+                                        Import</a>
+                                    </li>
+                                    <li><a href="#" data-toggle="modal" data-target="#email-from-clipboard"> From
+                                        Clipboard</a>
+                                    </li>
+                                </ul>
+                            </div>
+
+
+                            <div class="btn-group">
+                                <button class="btn btn-primary btn-lg dropdown-toggle"
+                                        type="button"
+                                        data-toggle="dropdown"
+                                        aria-haspopup="true"
+                                        aria-expanded="false">
+                                    <i class="fa fa-check-square" aria-hidden="true"></i>
+                                    Select
+                                    <span class="caret"></span>
+                                </button>
+                                <ul class="dropdown-menu">
+                                    <li><a href="javascript:void(0)" class="select-status" data-status="sent"> Select
+                                        Sent</a></li>
+                                    <li><a href="javascript:void(0)" class="select-status" data-status="not_sent">
+                                        Select
+                                        Not sent</a></li>
+                                    <li><a href="javascript:void(0)" class="select-status" data-status="invert"> Invert
+                                        selection</a></li>
+                                </ul>
+                            </div>
+
+
+                            <div class="btn-group">
+                                <button class="btn btn-primary btn-lg dropdown-toggle"
+                                        type="button"
+                                        data-toggle="dropdown"
+                                        aria-haspopup="true"
+                                        aria-expanded="false">
+                                    <i class="fa fa-refresh" aria-hidden="true"></i>
+                                    Change selected
+                                    <span class="caret"></span>
+                                </button>
+                                <ul class="dropdown-menu">
+                                    <li><a href="javascript:void(0)" class="change-email-receiver-selected"
+                                           data-status="sent"> Set status to Sent</a></li>
+                                    <li><a href="javascript:void(0)" class="change-email-receiver-selected"
+                                           data-status="not_sent"> Set status to Not Sent</a></li>
+                                    <li><a href="javascript:void(0)" class="change-email-receiver-selected"
+                                           data-status="delete"> Delete selected</a></li>
+                                </ul>
+
+                            </div>
+
+                            <div class="btn-group">
+                                <button class="btn btn-primary btn-lg dropdown-toggle send-dropdown"
+                                        type="button"
+                                        data-toggle="dropdown"
+                                        aria-haspopup="true"
+                                        aria-expanded="false">
+                                    <i class="fa fa-play-circle" aria-hidden="true"></i>
+                                    Send
+                                    <span class="caret"></span>
+                                </button>
+                                <ul class="dropdown-menu">
+                                    <li><a href="javascript:void(0)" class="send-email" data-status="not_sent"> Send to
+                                        Not
+                                        sent</a></li>
+                                    <li><a href="javascript:void(0)" class="send-email" data-status="selected"> Send to
+                                        Seleted</a></li>
+                                </ul>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-lg-4">
+                        <div class="input-group stylish-input-group">
+                            <span class="input-group-addon">
+                                <button type="submit">
+                                    <span class="glyphicon glyphicon-search"></span>
+                                </button>
+                            </span>
+                            <input class="form-control search-email-receiver" placeholder="Search..." type="text">
+
+                        </div>
+                    </div>
+                </div>
+                <div class="row" style="padding-top: 10px;padding-left: 10px;">
+                    <div class="col-sm-12">
+                        <strong>Selected: </strong> <span id="selected-receiver">0</span><br/>
+                        <strong>Unselected: </strong> <span id="unselected-receiver">0</span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="modal-body">
+                        <table cellpadding="0" cellspacing="0" border="0"
+                               class="table table-striped table-bordered links receivers-table">
+                            <thead>
+                            <tr>
+                                <th class="not-sortable"><input type="checkbox" class="select-all-receiver"></th>
+                                <th class="not-sortable">#</th>
+                                <th class="sortable both">First name</th>
+                                <th class="sortable both">Last name</th>
+                                <th class="sortable both">Email address</th>
+                                <th class="sortable both">Status</th>
+                                <th class="sortable both">Last received</th>
+                                <th class="not-sortable">Action</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% include 'email_content/receivers_list.html' %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    </div> <!-- / #content-wrapper -->
+
+
+    <div class="modal fade" id="email-from-filter" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">Import From Filter</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <p>Select the filter to import</p>
+
+                            <div class="form-group no-margin-hr">
+                                <label class="control-label">Filter</label>
+                                <select class="form-control email-filter-selector" id="filter">
+                                    <option value="{{ quick_filter_id }}" class="quick-filter"> Quick Filter</option>
+                                    {% for group in filterGroup %}
+                                        <optgroup label="{{ group.name|safe }}">
+                                            {% for filter in group.filters %}
+                                                <option value="{{ filter.id }}">{{ filter.name }}</option>
+                                            {% endfor %}
+                                        </optgroup>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                        <button type="button" class="btn btn-primary save-preset-btn add-email-filer-receiver">Add
+                            Receivers
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="email-from-excel-import" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">Import From Excel Import</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <p>Select an Excel-file to import</p>
+
+                            <div class="form-group no-margin-hr">
+                                <label class="control-label">File</label>
+                                <input type="file" placeholder="Preset Name" id="upload_excel_file">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                        <button type="button" id="btn-import-mail-excel" class="btn btn-primary save-preset-btn">Add
+                            Receivers
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="email-from-clipboard" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title"> Import From Clipboard</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <p>Paste your email addresses in the text field below</p>
+
+                            <p>Line break separated</p>
+
+                            <div class="form-group no-margin-hr">
+                                <textarea class="form-control clipboard-data"
+                                          placeholder="Paste your email addresses here..."></textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                        <button type="button" class="btn btn-primary add-email-receivers-clipboard">Add Receivers
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <img src="{% static 'public/images/712.GIF' %}" class="loader" alt=""/>
+
+
+    <script type="application/javascript">
+        $(function () {
+
+            $('#filter').select2().on('select2-selecting', function (e) {
+                if (e.object.css == 'quick-filter') {
+                    $.ajax({
+                        url: base_url + '/admin/filters/quick_filter_exists/',
+                        success: function (response) {
+                            if (response.status) {
+                                var modal_class = 'filters-add-filter';
+                                $('#quick-save-div').show();
+                                $('#filter-grp-div').hide();
+                                $('#preset-name-div').hide();
+                                showQuickFilterData(response.filter.id, modal_class);
+                            } else {
+                                $('#quick-save-div').show();
+                                $('#filter-grp-div').hide();
+                                $('#preset-name-div').hide();
+
+                                $('#btn-update-quick-filter').show();
+                                $('#btn-update-filter').hide();
+                                $('.any-or-all').val(1);
+                                $('#filters-add-filter').find('.modal-title').html('Quick Filter');
+                                $('#preset_filter_group').select2('val', '');
+
+                                $('.filter-panel-title').html("New Filter");
+                                $('#filters-add-filter').modal('show');
+                                $('#preset_name').attr('data-id', '');
+                                var rowCount = 0;
+                                $('.filter-list').html($('#filter-li-html').html());
+                                activeDatePicker();
+
+
+                            }
+                        }
+                    });
+                }
+
+            });
+        });
+        {#        $('body').on('click', '.add-receivers-clipboard', function (e) {#}
+        {#            import_clipboard = $(".import-clipboard").html()#}
+        {#            if (booking_id != '' && booking_id != undefined) {#}
+        {#                var csrf_token = $('input[name=csrfmiddlewaretoken]').val();#}
+        {#                $.ajax({#}
+        {#                    url: base_url + '/admin/hotels/check-match/',#}
+        {#                    type: "POST",#}
+        {#                    data: {#}
+        {#                        import_clipboard: booking_id,#}
+        {#                        csrfmiddlewaretoken: csrf_token#}
+        {#                    },#}
+        {#                    success: function (result) {#}
+        {##}
+        {#                        if (result.error) {#}
+        {#                            $.growl.error({message: result.error});#}
+        {#                            // } else if (checkConflicts) {#}
+        {#                            //     $.growl.error({message: "Input start date conficts Inner"});#}
+        {#                            //     $html.val("");#}
+        {#                            //     checkConflicts = false;#}
+        {#                        } else {#}
+        {#                            console.log(result);#}
+        {#                            var status = 3;#}
+        {#                            if (result.status == 1 || result.status == 2) {#}
+        {#                                bootbox.confirm(result.date_message, function (confirm) {#}
+        {#                                    if (confirm) {#}
+        {#                                        status = 1;#}
+        {#                                        $html.closest('tr').attr('data-status', '1');#}
+        {#                                    } else {#}
+        {#                                        status = 0;#}
+        {#                                        $html.val(prev_date);#}
+        {#                                    }#}
+        {#                                });#}
+        {#                            }#}
+        {#                        }#}
+        {#                        pre_val = new_val;#}
+        {#                    }#}
+        {#                });#}
+        {#            }#}
+        {##}
+        {##}
+        {#        });#}
+    </script>
+
+{% endblock %}

@@ -1,0 +1,224 @@
+{% extends "layout/main.html" %}
+{% block content %}
+    {% load i18n %}
+    {% load staticfiles %}
+    {% block extra_head %}
+
+
+    {% endblock %}
+
+    <div id="content-wrapper">
+        <!-- Edit Attendee Modal -->
+        {% include "attendee/edit.html" %}
+        {% include "attendee/add.html" %}
+        <!-- / .modal -->
+        <!-- / Large modal -->
+
+        <div class="panel colourable">
+            <div class="panel-heading">
+        <span class="panel-title"><i class="fa fa-user fa-lg"></i>&nbsp;&nbsp;&nbsp;<strong>Attendee
+            Search</strong></span>
+                <ul class="nav nav-tabs nav-tabs" id="myTab">
+                    <li class="active">
+                        <a href="#attendee-search" data-toggle="tab"><span class="fa fa-search fa-lg"></span>&nbsp;&nbsp;Search</a>
+                    </li>
+                    <li class="">
+                        <a href="#attendee-rules" data-toggle="tab"><span
+                                class="fa fa-filter fa-lg"></span>&nbsp;&nbsp;Filters</a>
+                    </li>
+                    <li class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                            <span class="fa fa-cog fa-lg">&nbsp;&nbsp;<i class="fa fa-caret-down"></i></span>
+                        </a>
+                        <ul class="dropdown-menu pull-right">
+                            <li><a href="#" class="open-preset">Open Preset...</a></li>
+                            <li><a href="#" data-toggle="modal" data-target="#save-as-modal" class="set-preset">Save
+                                Preset</a></li>
+                            <li><a href="#" data-toggle="modal" data-target="#save-as-modal" class="set-preset-as">Save
+                                Preset As...</a></li>
+                            <li class="divider"></li>
+                            <li class="dropdown-header">Recently Used Presets</li>
+                            {% for rule in last_used_rules %}
+                                <li><a href="javascript:void(0);" class="open_rules"
+                                       data-id="{{ rule.rule.id }}">{{ rule.rule.name }}</a></li>
+                            {% endfor %}
+                        </ul>
+                        <!-- / .dropdown-menu -->
+                    </li>
+                    <!--<li class="">
+                        <a href="#filter-visible-columns" data-toggle="tab"><span class="fa fa-eye fa-lg"></span> Visible Columns</a>
+                    </li>-->
+                </ul>
+                <!-- / .nav -->
+            </div>
+            <!-- / .panel-heading -->
+            <div class="panel-body tab-content">
+                <div class="tab-pane fade in active" id="attendee-search">
+                    <div class="dt_left">
+                        <div class="form-group">
+                            <button class="btn showAddAttendee" data-toggle="modal" data-target=""><span
+                                    class="fa fa-plus"></span>&nbsp;&nbsp;Add
+                                Attendee
+                            </button>
+                            <button class="btn edit-multiple-attendees" data-toggle="modal"
+                                    data-target="#search-edit-attendees"><span
+                                    class="fa fa-edit"></span>&nbsp;&nbsp;Edit Multiple Attendees
+                            </button>
+                        </div>
+
+                        <label>Visible Columns:</label>
+
+                        <div class="form-group show-columns">
+                            <select name="columns" class="selectpicker datatable-column-control" multiple
+                                    data-live-search="true"
+                                    data-live-search-placeholder="Search"
+                                    data-actions-box="false">
+                                <optgroup label="Default">
+                                    <option selected value="1">Registration Date</option>
+                                    <option value="999">Last Update Date</option>
+                                    <option value="999">User ID (internal)</option>
+                                    <option value="999">User ID (external)</option>
+                                    <option value="999">Password</option>
+                                    <option value="999">Attendee Groups</option>
+                                    <option value="999">Attendee Tags</option>
+                                    <option value="999">Sessions</option>
+                                    <option value="999">Hotels</option>
+                                </optgroup>
+                                <optgroup label="Contact Details">
+                                    <option value="2" selected>First Name</option>
+                                    <option value="3" selected>Last Name</option>
+                                    <option value="5" selected>Email Address</option>
+                                </optgroup>
+                                <optgroup label="Information">
+                                    <option value="999">Have you ever visited this event before?</option>
+                                    <option value="999">On a scale from 1 - 5, how would you rate your colleagues?
+                                    </option>
+                                    <option value="999">Please select some adjectives that describes you the most
+                                    </option>
+                                    <option value="999">Ask us a question</option>
+                                </optgroup>
+                                <optgroup label="Food">
+                                    <option value="999">Do you have any special dietary needs?</option>
+                                    <option value="999">Any thing else we need to know about?</option>
+                                </optgroup>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="dt_top">
+                        <div class="dt_right">
+                            <div class="form-group">
+                                <label>Activate Filters </label>
+                                <input type="checkbox" id="filter-rules-switcher" checked>
+                            </div>
+                        </div>
+                        <div class="clear"></div>
+                    </div>
+                    <table cellpadding="0" cellspacing="0" border="0"
+                           class="datatable table table-striped table-bordered links"
+                           id="filter-search-table">
+                        <thead>
+                        <tr>
+                            <th><input type="checkbox" class="flowcheckall" name="flowcheckall"></th>
+                            <th>Registered Date</th>
+                            <th>First Name</th>
+                            <th>Last Name</th>
+                            <th>Email Address</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                            {% if attendees %}
+                                <ul>
+                                    {% for user in attendees %}
+                                        <tr class="userInfo" data-id="{{ user.id }}">
+                                            <td><input type="checkbox"></td>
+                                            <td>{{ user.created|date:"m/d/Y" }}</td>
+                                            <td>{{ user.firstname }}</td>
+                                            <td>{{ user.lastname }}</td>
+{#                                            <td>{{ user.company }}</td>#}
+                                            <td>{{ user.email }}</td>
+{#                                            <td>{{ user.phone }}</td>#}
+                                        </tr>
+                                    {% endfor %}
+                                </ul>
+                            {% else %}
+                                <p>No Users are available.</p>
+                            {% endif %}
+
+                        </tbody>
+                    </table>
+                </div>
+                {% include 'attendee/filters.html' %}
+                <div class="tab-pane fade" id="filter-visible-columns">
+                    Visible Columns
+                </div>
+            </div>
+
+        </div>
+    </div> <!-- / #content-wrapper -->
+    <input type='hidden' id="attendee_session_list" name='' value='[]'/>
+
+    <div class="modal fade" id="save-as-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">Save Preset Name</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group no-margin-hr">
+                                <label class="control-label">Filter Group</label>
+                                <select class="form-control" id="preset_filter_group" name="group">
+                                    {% for group in filter_group %}
+                                        <option value="{{ group.id }}">{{ group.name|safe }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group no-margin-hr">
+                                <label class="control-label">Preset Name</label>
+                                <input type="text" id="preset_name" class="form-control" placeholder="Preset Name">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary save-preset-btn">Save changes</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="users-preset" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+
+    </div>
+    <img src="{% static 'public/images/712.GIF' %}" class="loader" alt=""/>
+    <script>
+      $(document).ready(
+                function()
+                {
+
+                    $('#filter-search-table').dataTable({
+                        "sDom": '<"dt_top" <"dt_left"f><"dt_right"l><"clear">>rt<"dt_bottom" <"dt_left"i><"dt_right"p><"clear">>',
+                    });
+{#                    $('.navigation li:nth-child(2)').addClass("active");#}
+{#                    console.log($('.navigation li:nth-child(2)'))#}
+
+                }
+        );
+    </script>
+    <script>
+
+        $(function () {
+
+            if (window.location.search.indexOf('page') > -1) {
+                $('#myTab a[href="#attendee-rules"]').tab('show');
+
+            }
+        });
+
+    </script>
+{% endblock %}

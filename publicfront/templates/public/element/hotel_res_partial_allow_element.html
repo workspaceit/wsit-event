@@ -1,0 +1,107 @@
+{% load thousand_filter %}
+<div class="form-plugin-list multiple-class-for-existing-booking">
+    <div class="form-plugin-item">
+
+        <div class="row inner-gutter h-r-p-check-in-check-out" {% if not force_hotel_room_selection or hotel_info.0.occupancy %} style="display: none;" {% endif %} >
+            <div class="col span-6">
+                <div class="form-question form-plugin-hotel-reservation-check-in required element">
+                    <label for="hotel-check-in{{ partial_counter }}" class="form-question-label">
+                        <span class="form-question-label-title">{{ language.langkey.hotelreservation_txt_checkin }}</span>
+                    </label>
+                    <input class="hotel-reservation-calendar hotel-check-in{{ partial_counter }}" name="hotel-check-in{{ partial_counter }}" value="{{ default_check_in_date }}" id="hotel-check-in{{ partial_counter }}">
+                    <div class="error-validating"></div>
+                </div>
+            </div>
+            <div class="col span-6">
+                <div class="form-question form-plugin-hotel-reservation-check-out required element">
+                    <label for="hotel-check-out{{ partial_counter }}" class="form-question-label">
+                        <span class="form-question-label-title">{{ language.langkey.hotelreservation_txt_checkout }}</span>
+                    </label>
+                    <input class="hotel-reservation-calendar hotel-check-out{{ partial_counter }}" name="hotel-check-out{{ partial_counter }}" value="{{ default_check_out_date }}" id="hotel-check-out{{ partial_counter }}">
+                    <div class="error-validating"></div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="row inner-gutter">
+            <div class="col span-12 err-val-class form-question element">
+            <input class="plugin-box-id" value="{{ box_id }}" type="hidden">
+                <input class="uid-text-calss" value="{{ uid_text }}" type="hidden">
+                <div class="scroll-x">
+                    <table class="form-plugin-table lines">
+                        <thead>
+                        <tr>
+                            <th>&nbsp;</th>
+                            {% if optional_field_name %} <th>{{ language.langkey.hotelreservation_txt_name }}</th> {% endif %}
+                            {% if optional_field_description %} <th>{{ language.langkey.hotelreservation_txt_description }}</th> {% endif %}
+                            {% if optional_field_location %} <th>{{ language.langkey.hotelreservation_txt_location }}</th> {% endif %}
+                            {% if optional_field_cost_excl_vat %} <th>{{ language.langkey.hotelreservation_txt_cost_excl_vat }}</th> {% endif %}
+                            {% if optional_field_cost_incl_vat %} <th>{{ language.langkey.hotelreservation_txt_cost_incl_vat }}</th> {% endif %}
+                            {% if optional_field_vat_percent %} <th>{{ language.langkey.hotelreservation_txt_vat_percentage }}</th> {% endif %}
+                            {% if optional_field_vat_amount %} <th>{{ language.langkey.hotelreservation_txt_vat_amount }}</th> {% endif %}
+                            <th style="display: none;">&nbsp;</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <input type="hidden" class="date-class-for-parial-value" value="{{ partial_counter }}">
+                        {% for room in hotel_info %}
+                            <tr {% if room.occupancy %}
+                                class="sold-out"
+                            {% endif %}>
+                                <td><input id="hotel{{ box_id }}{{ room.id }}{{ partial_counter }}{{ uid_text }}"
+                                           type="radio"
+                                           value="{{ room.id }}"
+                                           class="class-for-date-show"
+                                           name="data-hotel-b{{ box_id }}-p{{ partial_counter }}{{ uid_text }}"
+                                           data-hotel-id="b{{ box_id }}-r{{ room.id }}-p{{ partial_counter }}{{ uid_text }}"
+                                        {% if force_hotel_room_selection %} checked {% endif %}
+                                        {% if room.occupancy %} disabled {% endif %}
+                                ></td>
+                                {% if optional_field_name %}
+                                    <td><label for="hotel{{ box_id }}{{ room.id }}{{ partial_counter }}{{ uid_text }}"
+                                               class="form-plugin-label">{{ room.hotel }}</label></td>
+                                {% endif %}
+                                {% if optional_field_description %} <td>{{ room.description|safe }}</td> {% endif %}
+                                {% if optional_field_location %} <td>{{ room.location }}</td> {% endif %}
+                                {% if optional_field_cost_excl_vat %} <td>{{ room.cost_excl_vat|floatformat:'-2'|format_thousands }} {{ currency_text }}</td> {% endif %}
+                                {% if optional_field_cost_incl_vat %} <td>{{ room.cost_incl_vat|floatformat:'-2'|format_thousands }} {{ currency_text }}</td> {% endif %}
+                                {% if optional_field_vat_percent %} <td>{{ room.vat_percentage|floatformat }}%</td> {% endif %}
+                                {% if optional_field_vat_amount %} <td>{{ room.vat_amount|floatformat:'-2'|format_thousands }} {{ currency_text }}</td> {% endif %}
+                                <td style="display: none;">
+                                    <input type="hidden" class="room-beds" value="{{ room.beds }}">
+                                    <input type="hidden" class="hrp-available-dates" value="{{ room.available_dates }}">
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        {% if not force_hotel_room_selection %}
+                            <tr>
+                                <td><input class="class-for-date-show" type="radio" value="no-hotel" name="data-hotel-b{{ box_id }}-p{{ partial_counter }}{{ uid_text }}" id="hotel{{ box_id }}{{ partial_counter }}{{ partial_counter }}{{ uid_text }}"></td>
+                                <td colspan="7"><label for="hotel{{ box_id }}{{ partial_counter }}{{ partial_counter }}{{ uid_text }}" class="form-plugin-label">{{ language.langkey.hotelreservation_txt_no_hotel_text }}</label></td>
+                                <td style="display: none;">
+                                    <input type="hidden" class="room-beds" value="0">
+                                </td>
+                            </tr>
+                        {% endif %}
+                        </tbody>
+                    </table>
+                </div>
+                <div class="error-validating"></div>
+            </div>
+        </div>
+
+        <div class="row room-buddy-hide-show" style="display: none;">
+            <div class="col span-6">
+                <div class="form-question form-plugin-hotel-reservation-room-buddy required element">
+                    <label for="" class="form-question-label">
+                        <span class="form-question-label-title">{{ language.langkey.hotelreservation_txt_room_buddy }}</span>
+                    </label>
+                    <select class="hotel-room-buddy hotel-r-buddy{{ partial_counter }}" data-temp="{{ box_id }}{{ partial_counter }}" style="width: 300px;"></select>
+                    <div class="error-validating"></div>
+                </div>
+            </div>
+            <div class="col span-6"></div>
+        </div>
+
+    </div>
+</div>

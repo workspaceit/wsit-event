@@ -1,0 +1,194 @@
+<div class="tab-pane fade" id="attendee-rules">
+    <form class="form-inline">
+        {% csrf_token %}
+        <div class="form-group filter-nested-rule-form-group">
+            Match
+            <select class="form-control any-or-all">
+                <option value="1">Any</option>
+                <option value="2">All</option>
+            </select>
+            of the following filters:
+        </div>
+        <button class="btn float-right btn-add-nested-rule" data-toggle="tooltip" data-placement="bottom" title=""
+                data-original-title="Rules can be nested inside other rules to convey a more complex logical structure">
+            <span class="icon fa fa-plus"></span> &nbsp;Nested Filter
+        </button>
+        <hr class="panel-wide">
+
+        <ul class="list-group filter-rule-list filter-list" id="filter-list">
+            {#            {% include 'attendee/filter_extra.html' %}#}
+        </ul>
+        <button id="btn-filter-attendee" class="btn btn-lg btn-labeled btn-success float-right"><span
+                class="btn-label icon fa fa-check-circle"></span>Update Results
+        </button>
+    </form>
+</div>
+
+
+<div id="filter-nested-html" style="display: none;">
+    <li class="list-group-item filter-nested-rule filter-rule">
+        <div class="form-group filter-nested-rule-form-group">
+            <div class="btn-group btn-group-xs">
+                <button type="button" class="btn btn-add-rule"><span class="icon fa fa-plus"></span></button>
+                <button type="button" class="btn btn-delete-nested-rule"><span class="icon fa fa-minus"></span></button>
+            </div>
+            <select class="form-control any-or-all">
+                <option value="1">Any</option>
+                <option value="2">All</option>
+            </select>
+            of the following are true
+        </div>
+        <button class="btn float-right btn-add-nested-rule" data-toggle="tooltip" data-placement="bottom" title=""
+                data-original-title="Rules can be nested inside other rules to convey a more complex logical structure">
+            <span class="icon fa fa-plus"></span> &nbsp;Nested Filter
+        </button>
+        <ul class="list-group filter-rule-list filter-list">
+        </ul>
+    </li>
+</div>
+
+
+<div id="filter-li-html" style="display: none;">
+    <li class="list-group-item filter-rule f-row">
+        <div class="form-group">
+            <div class="btn-group btn-group-xs">
+                <button type="button" class="btn btn-add-rule"><span class="icon fa fa-plus"></span></button>
+                <button type="button" class="btn btn-delete-rule"><span class="icon fa fa-minus"></span></button>
+            </div>
+
+            <!-- rules (first column) -->
+            <select class="form-control rule">
+                <option data-target="second-1" value="1">Registration Date</option>
+                <option data-target="second-2" value="2">Registration status</option>
+                <option data-target="second-3" value="3">Attendee Group</option>
+                <option data-target="second-4" value="4">Attendee Tag</option>
+                <option data-target="second-5" value="5">Payment Status</option>
+                <option data-target="second-6" value="6">Session</option>
+                <option data-target="second-7" value="7">Question</option>
+            </select>
+            <!-- end rules (first column) -->
+
+            <!-- second column -->
+            <select class="form-control second second-1">
+                <option value="1">is</option>
+                <option value="2">is not</option>
+                <option value="3">is after</option>
+                <option value="4">is before</option>
+                <option value="5">is within the last</option>
+                <option value="6">is not within the last</option>
+                <option value="7">is between</option>
+            </select>
+
+
+            <select class="form-control second second-2" style="display: none;">
+                <option value="1">is</option>
+                <option value="2">is not</option>
+            </select>
+
+
+            <select class="form-control second second-3" style="display: none;">
+                <option value="1">is</option>
+                <option value="2">is not</option>
+            </select>
+
+
+            <select class="form-control second second-4" style="display: none;">
+                <option value="1">has</option>
+                <option value="2">has not</option>
+            </select>
+
+
+            <select class="form-control second second-5" style="display: none;">
+                <option value="1">is</option>
+                <option value="2">is not</option>
+            </select>
+
+
+            <select class="form-control second second-6" style="display: none;">
+                <option value="1">Attending</option>
+                <option value="2">Not Attending</option>
+                <option value="3">In Queue for</option>
+                <option value="4">Answer Pending</option>
+            </select>
+
+
+            <!-- end second column -->
+
+            <!-- third column -->
+            <div class="form-group third t-1">
+                <div class="input-group date filter-datepicker">
+                    <input type="text" class="form-control"><span class="input-group-addon"><i
+                        class="fa fa-calendar"></i></span>
+                </div>
+            </div>
+
+
+            <div class="form-group  third t-2" style="display: none;">
+                <input type="number" min="1" value="1" class="form-control filter-numberpicker">
+                <select class="form-control">
+                    <option value="1">days</option>
+                    <option value="2">weeks</option>
+                    <option value="3">months</option>
+                </select>
+            </div>
+
+
+            <div class="form-group test third t-3" style="display: none;">
+                <div class="input-daterange input-group filter-datepicker-range">
+                    <input type="text" class="input-sm form-control" name="start" placeholder="Start date">
+                    <span class="input-group-addon">and</span>
+                    <input type="text" class="input-sm form-control" name="end" placeholder="End date">
+                </div>
+            </div>
+
+
+            <select class="form-control third third-2" style="display: none">
+                <option value="1" selected>Registered</option>
+                <option value="2">Pending</option>
+                <option value="3">Canceled</option>
+            </select>
+
+
+            <select class="form-control third third-3" style="display: none">
+                {% for group in attendee_groups %}
+                    <option value="{{ group.id }}">{{ group.name|safe }}</option>
+                {% endfor %}
+            </select>
+
+
+            <select class="form-control third third-4" style="display: none">
+                {% for tag in tags %}
+                    <option value="{{ tag.id }}">{{ tag.name }}</option>
+                {% endfor %}
+            </select>
+
+
+            <select class="form-control third third-5" style="display: none">
+                <option value="1">not invoiced or paid</option>
+                <option value="2">invoiced - payment pending</option>
+                <option value="3">payment received</option>
+                <option value="4">canceled</option>
+            </select>
+
+
+            <select class="form-control filter-session-selector third third-6" style="display: none">
+                {% for group in session_groups %}
+                    <optgroup label="{{ group.name|safe }}">
+                        {% for session in group.sessions %}
+                            <option value="{{ session.id }}">{{ session.name }}</option>
+                        {% endfor %}
+                    </optgroup>
+                {% endfor %}
+            </select>
+            <!-- end third column -->
+        </div>
+    </li>
+</div>
+
+
+<script>
+    var rowCount = 0;
+    $(function () {
+        $('.filter-list').html($('#filter-li-html').html());
+    });
+</script>

@@ -1,0 +1,357 @@
+{% extends "layout/main.html" %}
+{% block content %}
+    {% load staticfiles %}
+    <div id="content-wrapper">
+
+        <div class="panel colourable">
+            <div class="panel-heading">
+            <span class="panel-title"><i class="fa fa-lg fa-language"></i></i>
+                &nbsp;&nbsp;&nbsp;<strong>Language Default</strong></span>
+
+            </div>
+            <!-- / .panel-heading -->
+            <div class="panel-body tab-content">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <button type="button" class="btn btn-primary btn-lg addDlanguage" data-toggle="modal"
+                                data-target="#questions-edit">
+                            <i class="fa fa-plus-circle"></i>&nbsp;&nbsp;Add
+                        </button>
+                    </div>
+                </div>
+                <br>
+
+                <div class="tab-pane fade in active" id="hotels">
+                    <div id="languageDefault">
+                        <div class="table-light">
+                            {% for element in elements %}
+                                <div class="table-header" id="element_{{ element.id }}">
+                                    <div class="table-caption ">
+                                        {{ element.name }}
+                                        <button class="btn btn-xs btn-info copyelementslugtoclipboard pull-right"
+                                                        data-element="{{ element.slug }}"
+                                                        data-toggle="tooltip"
+                                                        data-placement="top" title="" data-original-title="Copy Element Slug to clipboard"><i
+                                                        class="dropdown-icon fa fa-clipboard"></i></button>
+                                    </div>
+                                </div>
+                                <table class="table table-bordered sortable showLanguageDefault"
+                                       id="element_data_{{ element.id }}">
+                                    <thead>
+                                    <tr>
+                                        {#                            <th><input type="checkbox" class="flowcheckall" name="flowcheckall"></th>#}
+                                        <th>ID</th>
+                                        <th>Name</th>
+                                        <th>Type</th>
+                                        <th>Lang Key</th>
+                                        <th>Edit</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% for lang in element.lang %}
+                                        <tr>
+                                            <td data-id="{{ lang.id }}">{{ lang.id }}</td>
+                                            <td title="{{ lang.default_value }}">{{ lang.name }}</td>
+                                            <td>{{ lang.type }}</td>
+                                            <td>{{ lang.lang_key }}</td>
+                                            <td>
+                                                <button class="btn btn-xs btn-info copykeytoclipboard"
+                                                        data-key='{{ lang.lang_key }}'
+                                                        data-toggle="tooltip"
+                                                        data-placement="top" title="" data-original-title="Copy key to clipboard"><i
+                                                        class="dropdown-icon fa fa-clipboard"></i></button>
+                                                <button class="btn btn-xs languageDefaultInfo" data-id='{{ lang.id }}'
+                                                        data-toggle="tooltip"
+                                                        data-placement="top" title="" data-original-title="Edit"><i
+                                                        class="dropdown-icon fa fa-cog"></i></button>
+                                                <button class="btn btn-xs btn-danger deleteLanguageDefault"
+                                                        data-id='{{ lang.id }}'
+                                                        data-toggle="tooltip" data-placement="top" title=""
+                                                        data-original-title="Delete"><i
+                                                        class="dropdown-icon fa fa-times-circle"></i></button>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+
+                                    </tbody>
+                                </table>
+                            {% endfor %}
+
+                        </div>
+                    </div>
+
+
+                </div>
+
+
+            </div>
+
+        </div>
+
+    </div>
+    {#    Add Default Language#}
+    <div id="questions-edit" class="modal fade" tabindex="-1" role="dialog" style="display: none;">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                    <h4 class="modal-title">Edit Language</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="panel colourable">
+                        <div class="panel-heading">
+    								<span class="panel-title"><i
+                                            class="fa fa-language fa-lg"></i>&nbsp;&nbsp;&nbsp;<strong>Default</strong></span>
+                            <ul class="nav nav-tabs nav-tabs">
+                                <li class="active">
+                                    <a href="#basic-settings-text" data-toggle="tab"><span
+                                            class="fa fa-cog fa-user"></span>&nbsp;&nbsp;Default Settings</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="panel-body tab-content">
+                            <div class="tab-pane fade in active" id="basic-settings-text">
+                                <div class="note note-info">
+                                    <strong>Language Type:</strong> /
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <div class="form-group no-margin-hr">
+                                            <label class="control-label">Name</label>
+                                            <input type="text" name="name" class="form-control"
+                                                   id="name" placeholder="Name">
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="form-group no-margin-hr">
+                                            <label class="control-label">Default Value</label>
+
+                                            <input type="text" class="form-control" id="default_value"
+                                                   name="default_value"
+                                                   placeholder="Default Value">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <div class="form-group no-margin-hr">
+                                            <label class="control-label">Language Key</label>
+                                            <input type="text" class="form-control" id="lang_key" name="lang_key"
+                                                   placeholder="Language Key">
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="form-group no-margin-hr">
+                                            <div class="col-sm-4 no-margin-hr no-padding-hr">
+                                                <div class="form-group">
+                                                    <label class="control-label">Element</label>
+                                                    <select class="form-control" id="element" name="element">
+                                                        {% for element in elements %}
+                                                            <option value="{{ element.id }}">{{ element.name }}</option>
+                                                        {% endfor %}
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-1 no-margin-hr no-padding-hr ">
+                                            </div>
+                                            <div class="col-sm-4 no-margin-hr no-padding-hr">
+                                                <div class="form-group">
+                                                    <label class="control-label">Element Type</label>
+
+                                                    <select class="form-control" id="type" name="type">
+                                                        <option value="text">Text</option>
+                                                        <option value="button">Button</option>
+                                                        <option value="notification">Notification</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12 text-right">
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-lg" data-original-title="" title=""
+                                        data-dismiss="modal" aria-hidden="true"><i
+                                        class="fa fa-ban"></i>&nbsp;&nbsp;Cancel
+                                </button>
+                                <button type="button" class="btn btn-success btn-lg saveLanguageDefault" data-id="0"><i
+                                        class="fa fa-check-circle"></i>&nbsp;&nbsp;Save
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <script>
+        $(document).ready(function () {
+            $("#element").select2()
+            $("#type").select2()
+        });
+        $(".flowcheckall").click(function () {
+            var table = $('.showLanguageDefault').DataTable();
+            $(':checkbox', table.rows().nodes()).prop('checked', this.checked);
+            //$('#filter-search-table tbody input[type="checkbox"]').prop('checked', this.checked);
+        });
+    </script>
+    <script>
+        $(".copyelementslugtoclipboard").click(function () {var $temp = $("<input>");
+          $("body").append($temp);
+          $temp.val($(this).attr("data-element")).select();
+          document.execCommand("copy");
+          $temp.remove();
+            $.growl.notice({message: "Copied Element Slug in clipboard"});
+        });
+        $(".copykeytoclipboard").click(function () {var $temp = $("<input>");
+          $("body").append($temp);
+          $temp.val($(this).attr("data-key")).select();
+          document.execCommand("copy");
+          $temp.remove();
+            $.growl.notice({message: "Copied Lang Key in clipboard"});
+        });
+    </script>
+    <script>
+
+
+        $('body').on('click', '.addDlanguage', function (event) {
+            $('.saveLanguageDefault').attr("data-id", 0);
+            $('#element').select2("val", '')
+            $('#type').select2("val", '')
+            $("#lang_key").prop("disabled", false);
+        });
+
+        function requiredFieldValidator(requiredFields) {
+            var message = '';
+            var valid = true;
+            for (var i = 0; i < requiredFields.length; i++) {
+                var Id = requiredFields[i].fieldId;
+                if ($.trim($('#' + Id).val()) == '') {
+                    message += "*" + requiredFields[i].message + " can't be blank" + "<br>";
+                    valid = false;
+                }
+            }
+
+            if (!valid) {
+                $.growl.warning({message: message});
+            }
+            return valid;
+        }
+
+        $('body').on('click', '.saveLanguageDefault', function (event) {
+            var $this = $(this);
+            {#            bootbox.confirm("Are you sure you want to save this Language?", function (result) {#}
+            {#                if (result) {#}
+            var id = $this.attr('data-id');
+            var requiredFields = [
+                {fieldId: 'name', message: 'Name'},
+                {fieldId: 'default_value', message: 'Default Value'},
+                {fieldId: 'lang_key', message: 'Language Key'},
+                {fieldId: 'element', message: 'Element'},
+                {fieldId: 'type', message: 'Type'},
+            ];
+            if (!requiredFieldValidator(requiredFields)) {
+                return;
+            }
+            clog(id);
+            var csrf_token = $('input[name=csrfmiddlewaretoken]').val();
+            $.ajax({
+                url: base_url + '/admin/language-default/edit/',
+                type: "POST",
+                data: {
+                    id: id,
+                    name: $('#name').val(),
+                    default_value: $('#default_value').val(),
+                    lang_key: $('#lang_key').val(),
+                    element: $('#element').val(),
+                    type: $('#type').val(),
+                    csrfmiddlewaretoken: csrf_token
+                },
+                success: function (result) {
+                    if (result.error) {
+                        $.growl.error({message: result.error});
+                    } else {
+                        $.growl.notice({message: result.success});
+                        {#                        $this.closest('tr').remove();#}
+                        if (result.add) {
+                            html = '<tr><td data-id="' + result.id + '">' + result.id + '</td>'
+                                    + '<td title="' + result.default_value + '">' + result.name + '</td>'
+                                    + '<td>' + result.type + '</td>'
+                                    + ' <td>' + result.lang_key + '</td>'
+                                    + '<td>'
+                                    + '<button class="btn btn-xs languageDefaultInfo" data-id="' + result.id + '" data-toggle="tooltip" data-placement="top" title="" data-original-title="Edit">'
+                                    + '<i class="dropdown-icon fa fa-cog"></i></button>'
+                                    + '<button class="btn btn-xs btn-danger deleteLanguageDefault" data-id="' + result.id + '" data-toggle="tooltip" data-placement="top" title="" data-original-title="Delete">'
+                                    + ' <i class="dropdown-icon fa fa-times-circle"></i></button>'
+                                    + ' </td>'
+                                    + '</tr>'
+                            $("#element_data_" + $('#element').val()).find("tbody").append(html)
+                        }
+                        $('#questions-edit').modal('toggle');
+                    }
+                }
+            });
+            // Example.show("Confirm result: " + result);
+        });
+
+
+        $('body').on('click', '.languageDefaultInfo', function (event) {
+            var id = $(this).attr('data-id');
+            $.ajax({
+                url: base_url + '/admin/language-default/' + id + '/',
+                type: "GET",
+                data: {},
+                success: function (result) {
+                    var def_lang = result.def_lang;
+
+                    $('.saveLanguageDefault').attr("data-id", def_lang.id);
+                    $('#name').val(def_lang.name);
+                    $('#default_value').val(def_lang.default_value);
+                    $('#lang_key').val(def_lang.lang_key);
+                    if (id > 0) {
+                        $("#lang_key").prop("disabled", true);
+                    }
+                    $('#element').select2("val", def_lang.element.id)
+                    $('#type').select2("val", def_lang.type)
+                    $('#questions-edit').modal();
+                }
+            });
+        });
+
+        $('body').on('click', '.deleteLanguageDefault', function (event) {
+            var $this = $(this);
+            bootbox.confirm("Are you sure you want to delete this Question?", function (result) {
+                if (result) {
+                    var id = $this.attr('data-id');
+                    clog(id);
+                    var csrf_token = $('input[name=csrfmiddlewaretoken]').val();
+                    $.ajax({
+                        url: base_url + '/admin/language-default/delete/',
+                        type: "POST",
+                        data: {
+                            id: id,
+                            csrfmiddlewaretoken: csrf_token
+                        },
+                        success: function (result) {
+                            if (result.error) {
+                                $.growl.error({message: result.error});
+                            } else {
+                                $.growl.notice({message: result.success});
+                                $this.closest('tr').remove();
+                            }
+                        }
+                    });
+                }
+                // Example.show("Confirm result: " + result);
+            });
+        });
+    </script>
+
+{% endblock %}

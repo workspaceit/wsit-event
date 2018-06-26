@@ -1,0 +1,193 @@
+{% extends "layout/main.html" %}
+{% block content %}
+    {% load staticfiles %}
+    {% csrf_token %}
+    <link href="{% static 'assets/plugin/fancytree/skin-bootstrap/ui.fancytree.css' %}" rel="stylesheet"
+          type="text/css">
+    <script src="{% static 'assets/plugin/jquery/jquery-ui-1.12.min.js' %}"></script>
+    <script src="{% static 'assets/plugin/fancytree/jquery.fancytree-all.js' %}"></script>
+
+    <div id="content-wrapper">
+        <div class="panel colourable">
+            <div class="panel-heading">
+            <span class="panel-title"><i class="fa fa-lg fa-file-o"></i></i>
+                &nbsp;&nbsp;&nbsp;<strong>Language</strong></span>
+            </div>
+            <!-- / .panel-heading -->
+            {% csrf_token %}
+            <div class="panel-body">
+                <div class="tab-pane fade in active">
+                    {{ header_lang_render }}
+                    <br>
+
+                    <div id="static-pages">
+                        <div class="row">
+                            <div class="col-lg-3">
+                                <div id="tree">
+                                    <ul class="nav nav-tabs" role="tablist">
+                                        <li class="folder" data-id="menus">
+                                            Menu
+                                            <ul>
+                                                {% for menu in menus %}
+                                                    <li data-id="menu-{{ menu.id }}">{{ menu.title|safe }}</li>
+                                                {% endfor %}
+                                            </ul>
+                                        </li>
+                                        <li class="folder" data-id="questions">
+                                            Questions
+                                            <ul>
+                                                {% for question in questions %}
+                                                    <li data-id="question-{{ question.id }}">{{ question.title|safe }}</li>
+                                                {% endfor %}
+                                            </ul>
+                                        </li>
+                                        <li class="folder" data-id="sessions">
+                                            Sessions
+                                            <ul>
+                                                {% for session in sessions %}
+                                                    <li data-id="session-{{ session.id }}">{{ session.name|safe }}</li>
+                                                {% endfor %}
+                                            </ul>
+                                        </li>
+                                        <li class="folder" data-id="travels">
+                                            Travels
+                                            <ul>
+                                                {% for traval in travels %}
+                                                    <li data-id="travel-{{ traval.id }}">{{ traval.name|safe }}</li>
+                                                {% endfor %}
+                                            </ul>
+                                        </li>
+                                        <li class="folder" data-id="locations">
+                                            Locations
+                                            <ul>
+                                                {% for location in locations %}
+                                                    <li data-id="location-{{ location.id }}">{{ location.name|safe }}</li>
+                                                {% endfor %}
+                                            </ul>
+                                        </li>
+                                        <li class="folder" data-id="hotels">
+                                            Hotels
+                                            <ul>
+                                                {% for hotel in hotels %}
+                                                    <li data-id="hotel-{{ hotel.id }}">{{ hotel.name|safe }}</li>
+                                                {% endfor %}
+                                            </ul>
+                                        </li>
+                                        <li class="folder" data-id="hotels">
+                                            Rooms
+                                            <ul>
+                                                {% for room in rooms %}
+                                                    <li data-id="room-{{ room.id }}">{{ room.description|safe }}</li>
+                                                {% endfor %}
+                                            </ul>
+                                        </li>
+                                        <li class="folder" data-id="groups">
+                                            Groups
+                                            <ul>
+                                                {% for group in groups %}
+                                                    <li data-id="group-{{ group.id }}">{{ group.name|safe }}</li>
+                                                {% endfor %}
+                                            </ul>
+                                        </li>
+                                        <li class="folder" data-id="groups">
+                                            Emails
+                                            <ul>
+                                                {% for email in emails %}
+                                                    <li data-id="email-{{ email.id }}">{{ email.name }}</li>
+                                                {% endfor %}
+                                            </ul>
+                                        </li>
+                                        <li class="folder" data-id="submit-buttons">
+                                            Submit Buttons
+                                            <ul>
+                                                {% for submit_button in submit_buttons %}
+                                                    <li data-id="submit-button-{{ submit_button.id }}">{{ submit_button.button_name }}</li>
+                                                {% endfor %}
+                                            </ul>
+                                        </li>
+                                        <li class="folder" data-id="pdf-buttons">
+                                            PDF Buttons
+                                            <ul>
+                                                {% for pdf_button in pdf_buttons %}
+                                                    <li data-id="pdf-button-{{ pdf_button.id }}">{{ pdf_button.button_name }}</li>
+                                                {% endfor %}
+                                            </ul>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="col-lg-9">
+                                <div class="tab-content" id="presetdata">
+
+                                </div>
+                            </div>
+                            <!-- row -->
+                            {% if request.session.admin_permission.content_permission.language_permission and request.session.admin_permission.content_permission.language_permission.access_level == 'write' or request.session.event_auth_user.type == 'super_admin' %}
+                                <div class="row">
+                                    <div class="col-sm-12 text-right">
+                                        <div class="form-group">
+                                            <button type="button"
+                                                    class="btn btn-success btn-lg btn-save-general-language"
+                                                    id="btn-save-page"><i
+                                                    class="fa fa-check-circle"></i>&nbsp;&nbsp;Save
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endif %}
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <script>
+        $(document).ready(function () {
+            {% if presetsEvent %}
+                $.ajax({
+                    url: base_url + '/admin/language/get-general-preset/?id={{ presetsEvent.preset_id }}',
+                    cache: false
+                })
+                        .done(function (html) {
+                            $("#presetdata").append(html);
+                        });
+            {% else %}
+
+            {% endif %}
+            $('#preset').select2({
+                placeholder: "Please select a preset"
+            })
+                    .on("select2-selecting", function (e) {
+                        clog(e)
+                        $.ajax({
+                            url: base_url + '/admin/language/get-general-preset/?id=' + e.val,
+                            cache: false
+                        })
+                                .done(function (html) {
+                                    $("#presetdata").html(html);
+
+                                    var datanode = $("#tree").fancytree("getActiveNode");
+                                    clog(datanode);
+                                    if (datanode != null) {
+                                        var tab = datanode.data.id;
+                                        var activateTab = '#' + tab.toLowerCase();
+
+                                        $('.tab-content').children('div').attr('class', 'tab-pane');
+                                        $(activateTab).addClass('active');
+                                    }
+                                });
+                        $("#delete-preset").show();
+                        $("#rename-preset").show();
+                        $('#rename_preset_name').val($.trim($('#preset option[value="' + e.val + '"]').attr('data-value')));
+                        $('#rename_preset_name').attr('data-id', e.val);
+                        clog("change val=" + e.val);
+
+                    })
+        });
+    </script>
+    <script src="{% static 'assets/javascripts/language.js' %}"></script>
+{% endblock %}

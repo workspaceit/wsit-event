@@ -1,0 +1,77 @@
+{% extends "gt/layout/layout.html" %}
+{% block content %}
+    {% csrf_token %}
+
+    <div class="wrapper headline color8" style="padding: 0; z-index: 2;">
+        <div id="bg1"></div>
+        <div class="wrapper" style="z-index: 2; overflow-x: visible;">
+
+            <h1 class="color1">Logga in</h1>
+        </div>
+    </div>
+
+    <div class="wrapper">
+        <div class="container padding mainContent">
+            <p>&nbsp;</p>
+            <div class="row gutters">
+                <p>Använd länken från din registreringsbekräftelse för att logga in. Om du har förlorat din registreringsbekräftelse, ange den e-postadress du använde vid registrering nedan och klicka på ”Skicka ny bekräftelse”</p>
+            </div>
+
+            <div class="row gutters">
+                <div class="col span_6 formQuestion">
+                    <input type="text" id="gt-sign-in-email"/>
+
+                    <div class="errorValidating">Inte en giltig e -postadress eller e-post inte är registrerad ännu
+                    </div>
+                    <br/><br/>
+
+                    <p><a href="javascript:void(0)" class="button round color2 gt-sign-email-send">Skicka ny
+                        bekräftelse</a></p>
+                </div>
+                <div class="col span_6">
+
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+    {% load staticfiles %}
+    <img src="{% static 'gt/images/712.GIF' %}" class="loader" alt="" id="sign-in-loader"/>
+    <script>
+        $(function () {
+            $('body').on('click', '.gt-sign-email-send', function (e) {
+                var email = $('#gt-sign-in-email').val();
+                var csrf_token = $('input[name=csrfmiddlewaretoken]').val();
+                $this = $(this);
+                if ($.trim(email) != '' && validateEmail(email)) {
+                    $('#sign-in-loader').show();
+                    $this.prop("disabled", true);
+                    $this.closest('.formQuestion').removeClass("notValidated");
+                    data = {
+                        email: email,
+                        csrfmiddlewaretoken: csrf_token
+                    }
+                    $.ajax({
+                        url: base_url + '/login/',
+                        type: "POST",
+                        data: data,
+                        success: function (result) {
+                            $('#sign-in-loader').hide();
+                            $('.gt-sign-email-send').prop('disabled', false);
+                            if (result.error) {
+                                $this.closest('.formQuestion').addClass("notValidated");
+                            } else {
+                                $.growl.notice({message: result.success});
+                            }
+                        }
+                    });
+
+                }
+                else {
+                    $this.closest('.formQuestion').addClass("notValidated");
+                }
+
+            });
+        });
+    </script>
+{% endblock %}

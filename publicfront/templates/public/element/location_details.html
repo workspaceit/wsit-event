@@ -1,0 +1,72 @@
+<div class="form-plugin-item">
+    {% if location_title == 'True' %}
+        <h3 class="form-plugin-title">{{ location.name|safe }}</h3>
+        {#                    {% if location_details == 'True' %}<a href="#}
+        {##}
+        {##}
+        {##}
+        {##}
+        {#                        {% url 'publicLocations' event_url=request.session.event_url %}{{ location.id }}">{{ location.name }}</a>{% else %}#}
+        {#                        #}
+        {#                     {% endif %}</h3>#}
+    {% endif %}
+    {% if description == 'True' %}
+        <div class="form-plugin-description">
+            {{ location.description|safe }}
+        </div>
+    {% endif %}
+    <table class="form-plugin-table form-plugin-location-list-table">
+        {% if location.show_map_highlight %}
+            {% if link_map == 'True' %}
+                {% if location.latitude or location.map_highlight %}
+                    <tr class="location">
+                        <td><span class="location-list-map-icon"></span>
+                        </td>
+                        <td>{% if location.map_highlight %}
+                            <a target="_blank"
+                               href="https://www.google.se/maps/place/{{ location.map_highlight }}">{{ language.langkey.locationlist_txt_map_location }}</a>
+                        {% else %}
+                            <a target="_blank"
+                               href="http://maps.google.se/maps?z=12&t=m&q=loc:{{ location.latitude }}+{{ location.longitude }}">{{ language.langkey.locationlist_txt_map_location }}</a>
+                        {% endif %}
+                        </td>
+                    </tr>
+                {% endif %}
+            {% endif %}
+        {% endif %}
+        {% if address_details == 'True' %}
+            {% if location.address %}
+                <tr class="address">
+                    <td><span class="location-list-address-icon"></span>
+                    </td>
+                    <td>
+                        <label class="form-plugin-label">{{ language.langkey.locationlist_txt_address }}:</label><br/>
+                        {{ location.address|safe }}
+                    </td>
+                </tr>
+            {% endif %}
+        {% endif %}
+        {% if contact_details == 'True' %}
+            {% if location.show_contact_name or  location.show_contact_web or location.show_contact_email or location.show_contact_phone %}
+                {% if location.contact_name or  location.contact_web or location.contact_email or location.contact_phone %}
+                    <tr class="contact">
+                        <td><span class="location-list-speaker-icon"></span>
+                        </td>
+                        <td>
+                            <label class="form-plugin-label">{{ language.langkey.locationlist_txt_contact }}:</label><br/>
+                            {% if location.contact_name and location.show_contact_name %}
+                                <span class="name">{{ location.contact_name }}<br/></span>{% endif %}
+                            {% if location.contact_web and location.show_contact_web %}
+                                <span class="web"><a href="{{ location.contact_web }}"
+                                                     target="_blank">{{ location.contact_web }}</a><br/></span>{% endif %}
+                            {% if location.contact_email and location.show_contact_email %}<span class="mail"><a
+                                    href="mailto:{{ location.contact_email }}">{{ location.contact_email }}</a><br/></span>{% endif %}
+                            {% if location.contact_phone and location.show_contact_phone %}
+                                <span class="phone">{{ location.contact_phone }}</span>{% endif %}
+                        </td>
+                    </tr>
+                {% endif %}
+            {% endif %}
+        {% endif %}
+    </table>
+</div>

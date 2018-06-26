@@ -1,0 +1,49 @@
+{#{% if sessions %}#}
+<div class="form-plugin element form-plugin-evaluations box" {% if data_user_id %}id="page-{{ page_id }}-box-{{ box_id }}-u-{{ data_user_id }}" data-uid="{{ data_user_id }}"{% else %}id="page-{{ page_id }}-box-{{ box_id }}"{% endif %} data-id="{{ element_id }}"
+     data-name="evaluations">
+    <div class="form-plugin-intro">
+        {#    {% if title != '' or title != None %}#}
+        {#        <h3 class="text-color2">{{ title }}</h3>#}
+        {#    {% endif %}#}
+        {{ message|safe }}
+    </div>
+    <div class="form-plugin-list">
+        {% if sessions %}
+            {% for session in sessions %}
+                <div class="form-plugin-item">
+                    <h3 class="form-plugin-title{% if session_link == 'True' %} session session-detail-link{% endif %}" data-box-id="{{ box_id }}" data-page-id="{{ page_id }}" data-id="{{ session.session.id }}">{{ session.session.name|safe }}</h3>
+						<span class="star-evaluation-group" id="rated_session_{{ session.session.id }}"
+                              data-id="{{ session.session.id }}">
+							<input type="radio" id="rating-{{ box_id }}-{{ forloop.counter }}-5"
+                                   name="rating-{{ box_id }}-{{ forloop.counter }}" value="5"/><label
+                                for="rating-{{ box_id }}-{{ forloop.counter }}-5">5</label>
+							<input type="radio" id="rating-{{ box_id }}-{{ forloop.counter }}-4"
+                                   name="rating-{{ box_id }}-{{ forloop.counter }}" value="4"/><label
+                                for="rating-{{ box_id }}-{{ forloop.counter }}-4">4</label>
+							<input type="radio" id="rating-{{ box_id }}-{{ forloop.counter }}-3"
+                                   name="rating-{{ box_id }}-{{ forloop.counter }}" value="3"/><label
+                                for="rating-{{ box_id }}-{{ forloop.counter }}-3">3</label>
+							<input type="radio" id="rating-{{ box_id }}-{{ forloop.counter }}-2"
+                                   name="rating-{{ box_id }}-{{ forloop.counter }}" value="2"/><label
+                                for="rating-{{ box_id }}-{{ forloop.counter }}-2">2</label>
+							<input type="radio" id="rating-{{ box_id }}-{{ forloop.counter }}-1"
+                                   name="rating-{{ box_id }}-{{ forloop.counter }}" value="1"/><label
+                                for="rating-{{ box_id }}-{{ forloop.counter }}-1">1</label>
+							<input type="radio" id="rating-{{ box_id }}-{{ forloop.counter }}-0"
+                                   name="rating-{{ box_id }}-{{ forloop.counter }}" value="0"
+                                   class="star-evaluation-clear"/><label
+                                for="rating-{{ box_id }}-{{ forloop.counter }}-0">0</label>
+						</span>
+                </div>
+            {% endfor %}
+        {% else %}
+            <div class="placeholder empty">{{ language.langkey.evaluation_txt_empty }}</div>
+        {% endif %}
+    </div>
+    {% if sessions %}
+        <button class="form-plugin-button evaluation-send-button">{{ language.langkey.evaluation_btn_send }}</button>
+    {% endif %}
+    <div class="error-validating">{{ language.langkey.evaluation_notify_validation_failed }}</div>
+    {#    </div>#}
+</div>
+{#{% endif %}#}

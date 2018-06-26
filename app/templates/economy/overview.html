@@ -1,0 +1,92 @@
+{% extends "layout/main.html" %}
+{% load thousand_filter %}
+{% block content %}
+    {% load staticfiles %}
+    <div id="content-wrapper">
+        {% csrf_token %}
+        <div class="panel colourable">
+            <div class="panel-heading">
+                <span class="panel-title"><i class="fa fa-lg fa-columns"></i></i>
+                    &nbsp;&nbsp;&nbsp;<strong>Overview</strong></span>
+            </div>
+            <!-- / .panel-heading -->
+            <div class="panel-body tab-content">
+                <div class="tab-pane fade in active">
+                    <div>
+                        <div class="table-light">
+                            <table class="table table-bordered data-table-rebate">
+                                <thead>
+                                <tr>
+                                    <th>Order</th>
+                                    <th>Value</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for data in overview_table%}
+                                    <tr>
+                                        <td>{{ data.name }}</td>
+                                        <td>{{ data.value }}</td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="table-light">
+                            <table class="table table-bordered data-table-rebate">
+                                <thead>
+                                <tr>
+                                    <th>Value</th>
+                                    <th>Sum incl. VAT</th>
+                                    <th>Sum excl. VAT</th>
+                                    <th>%</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for data in overview_data %}
+                                    <tr>
+                                        <td>{{ data.name }}</td>
+                                        <td>
+                                            {% if data.name != 'Orders' %}
+                                                {{ data.sum_incl_vat|floatformat:'-2'|format_thousands }} {{ currency_text }}
+                                            {% else %}
+                                                {{ data.sum_incl_vat|floatformat:'-2'|format_thousands }}
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            {% if data.name != 'Orders' %}
+                                                {{ data.sum_excl_vat|floatformat:'-2'|format_thousands }} {{ currency_text }}
+                                            {% else %}
+                                                {{ data.sum_excl_vat|floatformat:'-2'|format_thousands }}
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            {% if data.percentage != '' %}
+                                                {{ data.percentage |floatformat:'-2'}}%
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <br>
+                     <div class="row">
+                        <div class="col-sm-6">
+                                <a class="btn btn-primary btn-lg" href="{% url 'economy-overview-report' %}">
+                                    <i class="fa fa-download"></i>&nbsp;&nbsp; Download Report
+                                </a>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+
+
+        <!-- MODAL - TEXT -->
+
+    </div>
+
+{% endblock %}

@@ -1,0 +1,36 @@
+{% extends "layout/login.html" %}
+{% block title %}EventDobby - Admin login{% endblock %}
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-sm-6 col-md-4 col-md-offset-4">
+            <h1 class="text-center login-title">EventDobby Admin</h1>
+            <div class="account-wall">
+                <img class="profile-img" src="https://lh5.googleusercontent.com/-b0-k99FZlyE/AAAAAAAAAAI/AAAAAAAAAAA/eu7opA4byxI/photo.jpg?sz=120"
+                    alt="">
+                {% if msg %}
+                    <p class="alert alert-danger">{{ msg }}</p>
+                {% endif %}
+                {% if messages %}
+                    {% for message in messages %}
+                        <div>{{ message }}</div>
+                    {% endfor %}
+                {% endif %}
+                <form class="form-signin" action="{% url 'login' %}" method="post">
+                    {% csrf_token %}
+                    <input type="text" class="form-control" name="email" placeholder="Email" required autofocus>
+                    <input type="password" class="form-control" name="password" placeholder="Password" required>
+                    <button class="btn btn-lg btn-primary btn-block" type="submit">
+                        Sign in</button>
+                    {% comment %}<label class="checkbox pull-left">
+                        <input type="checkbox" value="remember-me">
+                        Remember me
+                    </label>{% endcomment %}
+                    <a href="{% url 'reset-your-password' %}" class="pull-right need-help">Replace password </a><span class="clearfix"></span>
+                </form>
+            </div>
+            {% comment %}<a href="#" class="text-center new-account">Create an account </a>{% endcomment %}
+        </div>
+    </div>
+</div>
+{% endblock %}

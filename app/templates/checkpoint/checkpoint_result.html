@@ -1,0 +1,75 @@
+<div class="table-light">
+    <div class="table-header" id="filter_export_group_{{ group.id }}">
+        <div class="table-caption">
+            Checkpoint
+        </div>
+        <input type="checkbox" id="hide_session"> Hide session checkpoints
+    </div>
+    <table class="table table-bordered data-table-checkpoint">
+        <thead>
+        <tr>
+            <th>Checkpoint name</th>
+            <th>Checked</th>
+            <th>%</th>
+            <th>Remaining</th>
+            <th>Max</th>
+            <th>Action</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for checkpoint in checkpoints %}
+            <tr class="{{ checkpoint.type }}">
+                <td>{{ checkpoint.name }}</td>
+                <td>{{ checkpoint.checked }}</td>
+                <td>{{ checkpoint.percentage }}</td>
+                <td>{{ checkpoint.remaining }}</td>
+                <td>{{ checkpoint.max }}</td>
+                <td>
+                    <a href="{% url 'checkpoint' %}{{ checkpoint.id }}" class="btn btn-xs btn-play-checkpoint"
+                       data-id="{{ checkpoint.id }}"
+                       target="_blank"
+                       data-toggle="tooltip"
+                       data-placement="top" title=""
+                       data-original-title="View"><i
+                            class="dropdown-icon fa fa-play"></i></a>
+                    <button class="btn btn-xs btn-success btn-export-checkpoint"
+                            data-id="{{ checkpoint.id }}" data-toggle="tooltip"
+                            data-placement="top"
+                            title="" data-original-title="Export"><i
+                            class="dropdown-icon fa fa-file-excel-o"></i></button>
+
+
+                    <button class="btn btn-xs btn-edit-checkpoint"
+                            data-id="{{ checkpoint.id }}"
+                            data-toggle="tooltip"
+                            data-placement="top" title=""
+                            data-original-title="Edit"><i
+                            class="dropdown-icon fa fa-cog"></i></button>
+
+
+
+
+
+                    {% if checkpoint.type != "session" %}
+
+
+                        <button class="btn btn-xs btn-duplicate-checkpoint"
+                                data-id="{{ checkpoint.id }}"
+                                data-toggle="tooltip" data-placement="top" title=""
+                                data-original-title="Duplicate"><i
+                                class="dropdown-icon fa fa-files-o"></i>
+                        </button>
+                        <button class="btn btn-xs btn-danger btn-delete-checkpoint"
+                                data-id="{{ checkpoint.id }}" data-toggle="tooltip"
+                                data-placement="top"
+                                title="" data-original-title="Delete"><i
+                                class="dropdown-icon fa fa-times-circle"></i></button>
+
+                    {% endif %}
+
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>

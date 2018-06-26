@@ -1,0 +1,757 @@
+<div class="timeline centered">
+    <!-- Timeline header -->
+    <div class="tl-header now bg-primary">Now</div>
+    {% for activity in activity_history %}
+        {% if activity.admin_id %}
+            {% if activity.activity_type == 'update' %}
+                <div class="tl-entry {% if activity.admin.id == current_admin.id %} left {% endif %} ">
+                    <div class="tl-time">
+                        {{ activity.created|date:date_format}}
+                    </div>
+                    <div class="tl-icon {% if activity.admin.id == current_admin.id %} bg-info {% else %} bg-warning {% endif %}">
+                        <i class="fa fa-pencil"></i></div>
+                    <div class="panel tl-body">
+                        {% if activity.category == 'photo' %}
+                            {% if activity.photo.is_approved == 1 %}
+                                <strong>{{ activity.admin.firstname|title }} {{ activity.admin.lastname|title }}</strong>
+                                approved a photo in "{{ activity.photo.group.name }}"
+                            {% elif activity.photo.is_approved == 2 %}
+                                <strong>{{ activity.admin.firstname|title }} {{ activity.admin.lastname|title }}</strong>
+                                denied a photo in "{{ activity.photo.group.name }}"
+                            {% endif %}
+                        {% elif activity.category == 'registration_group' %}
+                            <strong>{{ activity.attendee.firstname|title }} {{ activity.attendee.lastname|title }}</strong>
+                            Added to {{ activity.registration_group.name }} {{ activity.new_value }} by
+                            <strong>{{ activity.admin.firstname|title }} {{ activity.admin.lastname|title }}</strong>
+                        {% elif activity.category == 'order' %}
+                            <div class="table-info">
+
+
+                                <table class="table table-bordered">
+                                    <thead>
+                                    <tr>
+                                        <th colspan="2">
+                                            <strong>{{ activity.admin.firstname|title }} {{ activity.admin.lastname|title }}</strong>
+                                            {{ activity.activity_message }}
+                                        </th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr>
+                                        <td>From:</td>
+                                        <td>{{ activity.old_value }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>To:</td>
+                                        <td>{{ activity.new_value }}</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        {% elif activity.category == 'credit_order' %}
+                            <div class="table-info">
+
+
+                                <table class="table table-bordered">
+                                    <thead>
+                                    <tr>
+                                        <th colspan="2">
+                                            <strong>{{ activity.admin.firstname|title }} {{ activity.admin.lastname|title }}</strong>
+                                            {{ activity.activity_message }}
+                                        </th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr>
+                                        <td>From:</td>
+                                        <td>{{ activity.old_value }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>To:</td>
+                                        <td>{{ activity.new_value }}</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        {% else %}
+                            <div class="{% if activity.admin.id == current_admin.id %} table-info {% else %} table-warning {% endif %}">
+                                <table class="table table-bordered">
+                                    <thead>
+                                    <tr>
+                                        {% if activity.category == 'session' %}
+                                            <th colspan="2">
+                                                <strong>{{ activity.admin.firstname|title }} {{ activity.admin.lastname|title }}</strong>
+                                                changed
+                                                "{{ activity.session.name }}"
+                                            </th>
+                                        {% elif activity.category == 'question' %}
+                                            <th colspan="2">
+                                                <strong>{{ activity.admin.firstname|title }} {{ activity.admin.lastname|title }}</strong>
+                                                changed
+                                                "{{ activity.question.title }}"
+                                            </th>
+                                        {% elif activity.category == 'travel' %}
+                                            <th colspan="2">
+                                                <strong>{{ activity.admin.firstname|title }} {{ activity.admin.lastname|title }}</strong>
+                                                changed
+                                                "{{ activity.travel.name }}"
+                                            </th>
+                                        {% elif activity.category == 'tag' %}
+                                            <th colspan="2">
+                                                <strong>{{ activity.admin.firstname|title }} {{ activity.admin.lastname|title }}</strong>
+                                                changed Tag
+                                            </th>
+                                        {% elif activity.category == 'order_item' %}
+                                            <th colspan="2">
+                                                <strong>{{ activity.admin.firstname|title }} {{ activity.admin.lastname|title }}</strong>
+                                                 {{ activity.activity_message }}
+                                            </th>
+                                        {% elif activity.category == 'group' %}
+                                            <th colspan="2">
+                                                <strong>{{ activity.admin.firstname|title }} {{ activity.admin.lastname|title }}</strong>
+                                                changed Group
+                                            </th>
+                                        {% endif %}
+
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr>
+                                        <td>From:</td>
+                                        <td>{{ activity.old_value }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>To:</td>
+                                        <td>{{ activity.new_value }}</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        {% endif %}
+                    </div>
+                    <!-- / .tl-body -->
+                </div>
+            {% elif activity.activity_type == 'register' %}
+
+                {% if activity.category == 'rebate' %}
+                    <div class="tl-entry {% if activity.admin.id == current_admin.id %} left {% endif %} ">
+                        <div class="tl-time">
+                            {{ activity.created|date:date_format}}
+                        </div>
+                        <div class="tl-icon {% if activity.admin.id == current_admin.id %} bg-info {% else %} bg-warning {% endif %}">
+                            <i class="fa fa-star"></i></div>
+                        <div class="panel tl-body">
+
+                                <strong>{{ activity.admin.firstname|title }} {{ activity.admin.lastname|title }}</strong>
+                                {{ activity.activity_message }}
+                        </div>
+                        <!-- / .tl-body -->
+                    </div>
+                {% elif activity.category == 'order' %}
+                    <div class="tl-entry {% if activity.admin.id == current_admin.id %} left {% endif %} ">
+                        <div class="tl-time">
+                            {{ activity.created|date:date_format }}
+                        </div>
+                        <div class="tl-icon {% if activity.admin.id == current_admin.id %} bg-info {% else %} bg-warning {% endif %}">
+                            <i class="fa fa-star"></i></div>
+                        <div class="panel tl-body">
+
+
+                                {{ activity.activity_message }}
+                                by <strong>{{ activity.admin.firstname|title }} {{ activity.admin.lastname|title }}</strong>
+                        </div>
+                        <!-- / .tl-body -->
+                    </div>
+                {% elif activity.category == 'order_item' %}
+                    <div class="tl-entry {% if activity.admin.id == current_admin.id %} left {% endif %} ">
+                        <div class="tl-time">
+                            {{ activity.created|date:date_format }}
+                        </div>
+                        <div class="tl-icon {% if activity.admin.id == current_admin.id %} bg-info {% else %} bg-warning {% endif %}">
+                            <i class="fa fa-star"></i></div>
+                        <div class="panel tl-body">
+
+
+                                {{ activity.activity_message }}
+                                by <strong>{{ activity.admin.firstname|title }} {{ activity.admin.lastname|title }}</strong>
+                        </div>
+                        <!-- / .tl-body -->
+                    </div>
+                {% elif activity.category == 'credit_order' %}
+                    <div class="tl-entry {% if activity.admin.id == current_admin.id %} left {% endif %} ">
+                        <div class="tl-time">
+                            {{ activity.created|date:date_format }}
+                        </div>
+                        <div class="tl-icon {% if activity.admin.id == current_admin.id %} bg-info {% else %} bg-warning {% endif %}">
+                            <i class="fa fa-star"></i></div>
+                        <div class="panel tl-body">
+
+
+                                {{ activity.activity_message }}
+                                by <strong>{{ activity.admin.firstname|title }} {{ activity.admin.lastname|title }}</strong>
+                        </div>
+                        <!-- / .tl-body -->
+                    </div>
+                {% elif activity.category == 'credit_usage' %}
+                    <div class="tl-entry {% if activity.admin.id == current_admin.id %} left {% endif %} ">
+                        <div class="tl-time">
+                            {{ activity.created|date:date_format}}
+                        </div>
+                        <div class="tl-icon {% if activity.admin.id == current_admin.id %} bg-info {% else %} bg-warning {% endif %}">
+                            <i class="fa fa-star"></i></div>
+                        <div class="panel tl-body">
+                                {{ activity.activity_message }}
+                                by <strong>{{ activity.admin.firstname|title }} {{ activity.admin.lastname|title }}</strong>
+                        </div>
+                        <!-- / .tl-body -->
+                    </div>
+                {% elif activity.category == 'payment' %}
+                    <div class="tl-entry {% if activity.admin.id == current_admin.id %} left {% endif %} ">
+                        <div class="tl-time">
+                            {{ activity.created|date:date_format }}
+                        </div>
+                        <div class="tl-icon {% if activity.admin.id == current_admin.id %} bg-info {% else %} bg-warning {% endif %}">
+                            <i class="fa fa-star"></i></div>
+                        <div class="panel tl-body">
+                                {{ activity.activity_message }}
+                                by <strong>{{ activity.admin.firstname|title }} {{ activity.admin.lastname|title }}</strong>
+                        </div>
+                        <!-- / .tl-body -->
+                    </div>
+                {% else %}
+
+                    <div class="tl-entry {% if activity.admin.id == current_admin.id %} left {% endif %} ">
+                        <div class="tl-time">
+                            {{ activity.created|date:date_format }}
+                        </div>
+                        <div class="tl-icon {% if activity.admin.id == current_admin.id %} bg-info {% else %} bg-warning {% endif %}">
+                            <i class="fa fa-star"></i></div>
+                        <div class="panel tl-body">
+                            {% if activity.category == 'event' %}
+                                <strong>{{ activity.attendee.firstname|title }} {{ activity.attendee.lastname|title }}</strong>
+                                registers for {{ activity.event.name }}
+                            {% elif activity.category == 'room' %}
+                                <strong>{{ activity.attendee.firstname|title }} {{ activity.attendee.lastname|title }}</strong>
+                                registers for {{ activity.room.description|title }} room in
+                                {{ activity.room.hotel.name }}
+                            {% endif %}
+                        </div>
+                        <!-- / .tl-body -->
+                    </div>
+                {% endif %}
+                <!-- / .tl-entry -->
+            {% elif activity.activity_type == 'delete' %}
+                <div class="tl-entry {% if activity.admin.id == current_admin.id %} left {% endif %} ">
+                    <div class="tl-time">
+                        {{ activity.created|date:date_format }}
+                    </div>
+                    <div class="tl-icon {% if activity.admin.id == current_admin.id %} bg-danger {% else %} bg-danger {% endif %}">
+                        <i class="fa fa-star"></i></div>
+                    <div class="panel tl-body">
+                        {% if activity.category == 'rebate' %}
+                            <strong>{{ activity.admin.firstname|title }} {{ activity.admin.lastname|title }}</strong>
+                            {{ activity.activity_message }}
+                        {% elif activity.category == 'event' %}
+                            <strong>{{ activity.attendee.firstname|title }} {{ activity.attendee.lastname|title }}</strong>
+                            deleted from {{ activity.event.name }}
+                        {% elif activity.category == 'registration_group' %}
+                            <strong>{{ activity.attendee.firstname|title }} {{ activity.attendee.lastname|title }}</strong>
+                            deleted from {{ activity.registration_group.name }} by
+                            <strong>{{ activity.admin.firstname|title }} {{ activity.admin.lastname|title }}</strong>
+                        {% elif activity.category == 'room' %}
+                            <strong>{{ activity.attendee.firstname|title }} {{ activity.attendee.lastname|title }}'s</strong>
+                            booking in {{ activity.room.description|title }} room in {{ activity.room.hotel.name }}
+                            cancelled by
+                            <strong>{{ activity.admin.firstname|title }} {{ activity.admin.lastname|title }}</strong>
+                        {% elif activity.category == 'order_item' %}
+                            {{ activity.activity_message }} by <strong>{{ activity.admin.firstname|title }} {{ activity.admin.lastname|title }}</strong>
+                        {% elif activity.category == 'order' %}
+                            <strong>{{ activity.attendee.firstname|title }} {{ activity.attendee.lastname|title }}</strong>
+                             {{ activity.activity_message }}
+                        {% endif %}
+                    </div>
+                    <!-- / .tl-body -->
+                </div>
+            {% elif activity.activity_type == 'check-in' %}
+                <div class="tl-entry {% if activity.admin.id == current_admin.id %} left {% endif %} ">
+                    <div class="tl-time">
+                        {{ activity.created|date:date_format}}
+                    </div>
+                    <div class="tl-icon {% if activity.admin.id == current_admin.id %} bg-danger {% else %} bg-danger {% endif %}">
+                        <i class="fa fa-star"></i></div>
+                    <div class="panel tl-body">
+                        <strong>{{ activity.admin.firstname|title }} {{ activity.admin.lastname|title }}</strong>
+                        checked him in {{ activity.checkpoint.name }}
+                    </div>
+                    <!-- / .tl-body -->
+                </div>
+            {% else %}
+                <div class="tl-entry {% if activity.admin.id == current_admin.id %} left {% endif %}">
+                    <div class="tl-time">
+                        {{ activity.created|date:date_format }}
+                    </div>
+                    <div class="tl-icon {% if activity.admin.id == current_admin.id %} bg-info {% else %} bg-warning {% endif %}">
+                        <i class="fa fa-envelope"></i></div>
+                    <div class="panel tl-body">
+                        {% if activity.category == 'push_notification' %}
+                            <strong>{{ activity.admin.firstname|title }} {{ activity.admin.lastname|title }}</strong>
+                            sends
+                            "{{ activity.message.subject }}"
+                            by Push Notification.
+                        {% else %}
+                            <strong>{{ activity.admin.firstname|title }} {{ activity.admin.lastname|title }}</strong>
+                            sends
+                            "{{ activity.message.subject }}"
+                            by {{ activity.message.type }}.
+                        {% endif %}
+                    </div>
+                    <!-- / .tl-body -->
+                </div>
+            {% endif %}
+
+        {% else %}
+            {% if activity.activity_type == 'update' %}
+                <div class="tl-entry ">
+                    <div class="tl-time">
+                        {{ activity.created|date:date_format}}
+                    </div>
+                    <div class="tl-icon bg-warning"><i class="fa fa-pencil"></i></div>
+                    <div class="panel tl-body">
+                        {% if activity.category == 'profile' %}
+                            <strong>{{ activity.attendee.firstname|title }} {{ activity.attendee.lastname|title }}</strong>
+                            update his/her profile
+                        {% elif activity.category == 'photo' %}
+                            <strong>{{ activity.attendee.firstname|title }} {{ activity.attendee.lastname|title }}</strong>
+                            upload a photo in "{{ activity.photo.group.name }}"
+                        {% elif activity.category == 'package' %}
+                            <strong>{{ activity.new_value }}</strong>
+                        {% elif activity.category == 'registration_group' %}
+                            <strong>{{ activity.attendee.firstname|title }} {{ activity.attendee.lastname|title }}</strong>
+                            Added to {{ activity.registration_group.name }} {{ activity.new_value }}
+                        {% elif activity.category == 'order' %}
+                            <div class="table-info">
+
+
+                                <table class="table table-bordered">
+                                    <thead>
+                                    <tr>
+                                        <th colspan="2">
+                                            <strong>{{ activity.attendee.firstname|title }} {{ activity.attendee.lastname|title }}</strong>
+                                            {{ activity.activity_message }}
+                                        </th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr>
+                                        <td>From:</td>
+                                        <td>{{ activity.old_value }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>To:</td>
+                                        <td>{{ activity.new_value }}</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        {% elif activity.category == 'credit_order' %}
+                            <div class="table-info">
+
+
+                                <table class="table table-bordered">
+                                    <thead>
+                                    <tr>
+                                        <th colspan="2">
+                                            <strong>{{ activity.attendee.firstname|title }} {{ activity.attendee.lastname|title }}</strong>
+                                            {{ activity.activity_message }}
+                                        </th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr>
+                                        <td>From:</td>
+                                        <td>{{ activity.old_value }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>To:</td>
+                                        <td>{{ activity.new_value }}</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        {% else %}
+                            <div class="table-warning">
+                                <table class="table table-bordered">
+                                    <thead>
+                                    <tr>
+                                        {% if activity.category == 'session' %}
+                                            <th colspan="2">
+                                                <strong>{{ activity.attendee.firstname|title }} {{ activity.attendee.lastname|title }}</strong>
+                                                changed his/her
+                                                "{{ activity.session.name }}"
+                                            </th>
+                                        {% elif activity.category == 'question' %}
+                                            <th colspan="2">
+                                                <strong>{{ activity.attendee.firstname|title }} {{ activity.attendee.lastname|title }}</strong>
+                                                changed his/her
+                                                "{{ activity.question.title }}"
+                                            </th>
+                                        {% elif activity.category == 'travel' %}
+                                            <th colspan="2">
+                                                <strong>{{ activity.attendee.firstname|title }} {{ activity.attendee.lastname|title }}</strong>
+                                                changed his/her
+                                                "{{ activity.travel.name }}"
+                                            </th>
+
+                                        {% elif activity.category == 'order_item' %}
+                                            <th colspan="2">
+                                                <strong>{{ activity.attendee.firstname|title }} {{ activity.attendee.lastname|title }}</strong>
+                                                {{ activity.activity_message }}
+                                            </th>
+                                        {% endif %}
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr>
+                                        <td>From:</td>
+                                        <td>{{ activity.old_value }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>To:</td>
+                                        <td>{{ activity.new_value }}</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        {% endif %}
+                    </div>
+                    <!-- / .tl-body -->
+                </div>
+            {% elif activity.activity_type == 'register' %}
+                {% if activity.category == 'rebate' %}
+                    <div class="tl-entry {% if activity.admin.id == current_admin.id %} left {% endif %} ">
+                        <div class="tl-time">
+                            {{ activity.created|date:date_format}}
+                        </div>
+                        <div class="tl-icon {% if activity.admin.id == current_admin.id %} bg-info {% else %} bg-warning {% endif %}">
+                            <i class="fa fa-star"></i></div>
+                        <div class="panel tl-body">
+
+                                <strong>{{ activity.attendee.firstname|title }} {{ activity.attendee.lastname|title }}</strong>
+                                {{ activity.activity_message }}
+                        </div>
+                        <!-- / .tl-body -->
+                    </div>
+                {% elif activity.category == 'order' %}
+                    <div class="tl-entry {% if activity.admin.id == current_admin.id %} left {% endif %} ">
+                        <div class="tl-time">
+                            {{ activity.created|date:date_format}}
+                        </div>
+                        <div class="tl-icon {% if activity.admin.id == current_admin.id %} bg-info {% else %} bg-warning {% endif %}">
+                            <i class="fa fa-star"></i></div>
+                        <div class="panel tl-body">
+
+
+                                {{ activity.activity_message }}
+                                by <strong>{{ activity.attendee.firstname|title }} {{ activity.attendee.lastname|title }}</strong>
+                        </div>
+                        <!-- / .tl-body -->
+                    </div>
+                {% elif activity.category == 'order_item' %}
+                    <div class="tl-entry {% if activity.admin.id == current_admin.id %} left {% endif %} ">
+                        <div class="tl-time">
+                            {{ activity.created|date:date_format }}
+                        </div>
+                        <div class="tl-icon {% if activity.admin.id == current_admin.id %} bg-info {% else %} bg-warning {% endif %}">
+                            <i class="fa fa-star"></i></div>
+                        <div class="panel tl-body">
+
+
+                                {{ activity.activity_message }}
+                                by <strong>{{ activity.attendee.firstname|title }} {{ activity.attendee.lastname|title }}</strong>
+                        </div>
+                        <!-- / .tl-body -->
+                    </div>
+                {% elif activity.category == 'credit_order' %}
+                    <div class="tl-entry {% if activity.admin.id == current_admin.id %} left {% endif %} ">
+                        <div class="tl-time">
+                            {{ activity.created|date:date_format}}
+                        </div>
+                        <div class="tl-icon {% if activity.admin.id == current_admin.id %} bg-info {% else %} bg-warning {% endif %}">
+                            <i class="fa fa-star"></i></div>
+                        <div class="panel tl-body">
+                                {{ activity.activity_message }}
+                                by <strong>{{ activity.attendee.firstname|title }} {{ activity.attendee.lastname|title }}</strong>
+                        </div>
+                        <!-- / .tl-body -->
+                    </div>
+                {% elif activity.category == 'credit_usage' %}
+                    <div class="tl-entry {% if activity.admin.id == current_admin.id %} left {% endif %} ">
+                        <div class="tl-time">
+                            {{ activity.created|date:date_format}}
+                        </div>
+                        <div class="tl-icon {% if activity.admin.id == current_admin.id %} bg-info {% else %} bg-warning {% endif %}">
+                            <i class="fa fa-star"></i></div>
+                        <div class="panel tl-body">
+                                {{ activity.activity_message }}
+                                by <strong>{{ activity.attendee.firstname|title }} {{ activity.attendee.lastname|title }}</strong>
+                        </div>
+                        <!-- / .tl-body -->
+                    </div>
+                {% elif activity.category == 'payment' %}
+                    <div class="tl-entry {% if activity.admin.id == current_admin.id %} left {% endif %} ">
+                        <div class="tl-time">
+                            {{ activity.created|date:date_format }}
+                        </div>
+                        <div class="tl-icon {% if activity.admin.id == current_admin.id %} bg-info {% else %} bg-warning {% endif %}">
+                            <i class="fa fa-star"></i></div>
+                        <div class="panel tl-body">
+                                {{ activity.activity_message }}
+                                by <strong>{{ activity.attendee.firstname|title }} {{ activity.attendee.lastname|title }}</strong>
+                        </div>
+                        <!-- / .tl-body -->
+                    </div>
+                {% else %}
+                <div class="tl-entry">
+                    <div class="tl-time">
+                        {{ activity.created|date:date_format }}
+                    </div>
+                    <div class="tl-icon bg-warning"><i class="fa fa-star"></i></div>
+                    <div class="panel tl-body">
+                        {% if activity.category == 'event' %}
+                            <strong>{{ activity.attendee.firstname|title }} {{ activity.attendee.lastname|title }}</strong>
+                            registers for {{ activity.event.name }}
+                        {% elif activity.category == 'room' %}
+                            <strong>{{ activity.attendee.firstname|title }} {{ activity.attendee.lastname|title }}</strong>
+                            registers for {{ activity.room.description|title }} room in {{ activity.room.hotel.name }}
+                        {% endif %}
+                    </div>
+                    <!-- / .tl-body -->
+                </div>
+                {% endif %}
+            {% elif activity.activity_type == 'delete' %}
+                <div class="tl-entry {% if activity.admin.id == current_admin.id %} left {% endif %} ">
+                    <div class="tl-time">
+                        {{ activity.created|date:date_format }}
+                    </div>
+                    <div class="tl-icon {% if activity.admin.id == current_admin.id %} bg-danger {% else %} bg-danger {% endif %}">
+                        <i class="fa fa-star"></i></div>
+                    <div class="panel tl-body">
+                        {% if activity.category == 'event' %}
+                            <strong>{{ activity.attendee.firstname|title }} {{ activity.attendee.lastname|title }}</strong>
+                            deleted from {{ activity.event.name }}
+                        {% elif activity.category == 'registration_group' %}
+                            <strong>{{ activity.attendee.firstname|title }} {{ activity.attendee.lastname|title }}</strong>
+                            deleted from {{ activity.registration_group.name }}
+                        {% elif activity.category == 'room' %}
+                            <strong>{{ activity.attendee.firstname|title }} {{ activity.attendee.lastname|title }}</strong>
+                            cancel his booking in {{ activity.room.description|title }} room in
+                            {{ activity.room.hotel.name }}
+                        {% elif activity.category == 'order_item' %}
+                            <strong>{{ activity.attendee.firstname|title }} {{ activity.attendee.lastname|title }}</strong>
+                             {{ activity.activity_message }}
+                        {% elif activity.category == 'order' %}
+                            <strong>{{ activity.attendee.firstname|title }} {{ activity.attendee.lastname|title }}</strong>
+                             {{ activity.activity_message }}
+                        {% endif %}
+                    </div>
+                    <!-- / .tl-body -->
+                </div>
+                <!-- / .tl-entry -->
+            {% elif activity.activity_type == 'offline' %}
+                <div class="tl-entry">
+                    <div class="tl-time">
+                        {{ activity.created|date:date_format}}
+                    </div>
+                    <div class="tl-icon bg-warning"><i class="fa fa-star"></i></div>
+                    <div class="panel tl-body">
+                        <strong>{{ activity.attendee.firstname|title }} {{ activity.attendee.lastname|title }}</strong>
+                        download offline page for {{ activity.event.name }}
+
+                    </div>
+                    <!-- / .tl-body -->
+                </div>
+                <!-- / .tl-entry -->
+            {% else %}
+                <div class="tl-entry">
+                    <div class="tl-time">
+                        {{ activity.created|date:date_format }}
+                    </div>
+                    <div class="tl-icon bg-warning"><i class="fa fa-envelope"></i></div>
+                    <div class="panel tl-body">
+                        <strong>{{ activity.admin.firstname|title }} {{ activity.admin.lastname|title }}</strong> sends
+                        "{{ activity.message.subject }}"
+                        by {{ activity.message.type }}.
+                    </div>
+                    <!-- / .tl-body -->
+                </div>
+            {% endif %}
+
+        {% endif %}
+        <!-- / .tl-entry -->
+    {% endfor %}
+</div>
+
+
+{#<div class="timeline centered">#}
+{#    <!-- Timeline header -->#}
+{#    <div class="tl-header now bg-primary">Now</div>#}
+{#    {% for activity in activity_history %}#}
+{#        {% if activity.activity_type == 'update' %}#}
+{#            <div class="tl-entry left">#}
+{#                <div class="tl-time">#}
+{#                    {{ activity.created }}#}
+{#                </div>#}
+{#                <div class="tl-icon bg-info"><i class="fa fa-pencil"></i></div>#}
+{#                <div class="panel tl-body">#}
+{#                    <div class="table-info">#}
+{#                        <table class="table table-bordered">#}
+{#                            <thead>#}
+{#                            <tr>#}
+{#                                <th colspan="2"><strong>Sarach Joy</strong> changed "Email Address"#}
+{#                                </th>#}
+{#                            </tr>#}
+{#                            </thead>#}
+{#                            <tbody>#}
+{#                            <tr>#}
+{#                                <td>From:</td>#}
+{#                                <td>carter.camacho@company.com</td>#}
+{#                            </tr>#}
+{#                            <tr>#}
+{#                                <td>To:</td>#}
+{#                                <td>eu.neque@iaculisaliquetdiam.net</td>#}
+{#                            </tr>#}
+{#                            </tbody>#}
+{#                        </table>#}
+{#                    </div>#}
+{#                    <div class="table-info">#}
+{#                        <table class="table table-bordered">#}
+{#                            <thead>#}
+{#                            <tr>#}
+{#                                <th colspan="2"><strong>Sarah Joy</strong> changed "Learn More About#}
+{#                                    Delaware"#}
+{#                                </th>#}
+{#                            </tr>#}
+{#                            </thead>#}
+{#                            <tbody>#}
+{#                            <tr>#}
+{#                                <td>From:</td>#}
+{#                                <td>Not Attending</td>#}
+{#                            </tr>#}
+{#                            <tr>#}
+{#                                <td>To:</td>#}
+{#                                <td>Attending</td>#}
+{#                            </tr>#}
+{#                            </tbody>#}
+{#                        </table>#}
+{#                    </div>#}
+{#                </div>#}
+{#            </div>#}
+{#        {% elif activity.activity_type == 'register' %}#}
+{#            <div class="tl-entry left">#}
+{#                <div class="tl-time">#}
+{#                    4/28/15 11:21 am#}
+{#                </div>#}
+{#                <div class="tl-icon bg-warning"><i class="fa fa-star"></i></div>#}
+{#                <div class="panel tl-body">#}
+{#                    <strong>Carter Camacho</strong> registers for event#}
+{#                </div>#}
+{#                <!-- / .tl-body -->#}
+{#            </div>#}
+{#            <!-- / .tl-entry -->#}
+{#        {% else %}#}
+{#            <div class="tl-entry">#}
+{#                <div class="tl-time">#}
+{#                    4/27/15 9:48 am#}
+{#                </div>#}
+{#                <div class="tl-icon bg-info"><i class="fa fa-envelope"></i></div>#}
+{#                <div class="panel tl-body">#}
+{#                    <strong>Sarah Joy</strong> sends campaign "Invitation" by mail.#}
+{#                </div>#}
+{#                <!-- / .tl-body -->#}
+{#            </div>#}
+{#            <!-- / .tl-entry -->#}
+{#        {% endif %}#}
+{#        <!-- / .tl-body -->#}
+{#        </div>#}
+{#        <!-- / .tl-entry -->#}
+{#    {% endfor %}#}
+{##}
+{#    <div class="tl-entry">#}
+{#        <div class="tl-time">#}
+{#            5/5/15 11:21 am#}
+{#        </div>#}
+{#        <div class="tl-icon bg-warning"><i class="fa fa-pencil"></i></div>#}
+{#        <div class="panel tl-body">#}
+{#            <div class="table-warning">#}
+{#                <table class="table table-bordered">#}
+{#                    <thead>#}
+{#                    <tr>#}
+{#                        <th colspan="2"><strong>Carter Camacho</strong> changed "Email#}
+{#                            Address"#}
+{#                        </th>#}
+{#                    </tr>#}
+{#                    </thead>#}
+{#                    <tbody>#}
+{#                    <tr>#}
+{#                        <td>From:</td>#}
+{#                        <td>carter.camacho@company.com</td>#}
+{#                    </tr>#}
+{#                    <tr>#}
+{#                        <td>To:</td>#}
+{#                        <td>eu.neque@iaculisaliquetdiam.net</td>#}
+{#                    </tr>#}
+{#                    </tbody>#}
+{#                </table>#}
+{#            </div>#}
+{#            <div class="table-warning">#}
+{#                <table class="table table-bordered">#}
+{#                    <thead>#}
+{#                    <tr>#}
+{#                        <th colspan="2"><strong>Carter Camacho</strong> changed "Learn More#}
+{#                            About Delaware"#}
+{#                        </th>#}
+{#                    </tr>#}
+{#                    </thead>#}
+{#                    <tbody>#}
+{#                    <tr>#}
+{#                        <td>From:</td>#}
+{#                        <td>Not Attending</td>#}
+{#                    </tr>#}
+{#                    <tr>#}
+{#                        <td>To:</td>#}
+{#                        <td>Attending</td>#}
+{#                    </tr>#}
+{#                    </tbody>#}
+{#                </table>#}
+{#            </div>#}
+{#        </div>#}
+{#        <!-- / .tl-body -->#}
+{#    </div>#}
+{#    <!-- / .tl-entry -->#}
+{##}
+{#    <div class="tl-entry left">#}
+{#        <div class="tl-time">#}
+{#            4/28/15 11:21 am#}
+{#        </div>#}
+{#        <div class="tl-icon bg-warning"><i class="fa fa-star"></i></div>#}
+{#        <div class="panel tl-body">#}
+{#            <strong>Carter Camacho</strong> registers for event#}
+{#        </div>#}
+{#        <!-- / .tl-body -->#}
+{#    </div>#}
+{#    <!-- / .tl-entry -->#}
+{##}
+{#    <div class="tl-entry">#}
+{#        <div class="tl-time">#}
+{#            4/27/15 9:48 am#}
+{#        </div>#}
+{#        <div class="tl-icon bg-info"><i class="fa fa-envelope"></i></div>#}
+{#        <div class="panel tl-body">#}
+{#            <strong>Sarah Joy</strong> sends campaign "Invitation" by mail.#}
+{#        </div>#}
+{#        <!-- / .tl-body -->#}
+{#    </div>#}
+{#<!-- / .tl-entry -->#}
+{##}
+{#</div>#}
+{#<!-- / .timeline -->#}

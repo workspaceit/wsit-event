@@ -1,0 +1,303 @@
+{% load staticfiles %}
+{% load thousand_filter %}
+{% load i18n %}
+<div class="economy-order-table">
+    <h3>{{ language.langkey.economy_txt_order_table }}</h3>
+{% if order_table_type == 'attendee-order' %}
+    {% for order in orders %}
+        {% if not order.is_group_total %}
+            <div class="form-question order-table-form-question">
+                <div class="scroll-x">
+                    <table class="form-plugin-table form-plugin-economy-order-table lines">
+                        <thead>
+                        <tr>
+                            {% if "item_name" in order_table_visible_columns %}
+                            <th>{{ language.langkey.economy_txt_order_table_costs }}</th>
+                            {% endif %}
+                            {% if "cost_excl_vat" in order_table_visible_columns %}
+                            <th>{{ language.langkey.economy_txt_cost_excl_vat }}</th>
+                            {% endif %}
+                            {% if "rebate_amount" in order_table_visible_columns and order.keep_rebate_column %}
+                            <th>{{ language.langkey.economy_txt_rebate_amount }}</th>
+                            {% endif %}
+                            {% if "vat_amount" in order_table_visible_columns %}
+                            <th>{{ language.langkey.economy_txt_vat }}</th>
+                            {% endif %}
+                            {% if "vat_rate" in order_table_visible_columns %}
+                            <th>{{ language.langkey.economy_txt_vat }} %</th>
+                            {% endif %}
+                            {% if "cost_incl_vat" in order_table_visible_columns %}
+                            <th>{{ language.langkey.economy_txt_cost_incl_vat }}</th>
+                            {% endif %}
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for order_item in order.order_items %}
+                                <tr {% if order_item.rebate_amount > 0 and order_item.item_type != 'rebate' %} class="rebated" {% elif order_item.item_type == 'rebate' %} class="rebate" {% endif %}>
+                                    {% if "item_name" in order_table_visible_columns %}
+                                        {% if order_item.item_type == 'rebate' %}
+                                            <td>{{ language.langkey.economy_txt_rebate_with }} {{ order_item.item_name }}</td>
+                                        {% else %}
+                                            <td>{{ order_item.item_name }}</td>
+                                        {% endif %}
+                                    {% endif %}
+                                    {% if "cost_excl_vat" in order_table_visible_columns %}
+                                    <td>{{ order_item.cost|floatformat:"-2"|format_thousands }} {{ language.langkey.economy_txt_currency }}</td>
+                                    {% endif %}
+                                    {% if "rebate_amount" in order_table_visible_columns and order.keep_rebate_column %}
+                                    <td>&nbsp;</td>
+                                    {% endif %}
+                                    {% if order_item.item_type == 'adjustment' %}
+                                        {% if "vat_amount" in order_table_visible_columns %}
+                                        <td>&nbsp;</td>
+                                        {% endif %}
+                                        {% if "vat_rate" in order_table_visible_columns %}
+                                        <td>&nbsp;</td>
+                                        {% endif %}
+                                    {% else %}
+                                        {% if "vat_amount" in order_table_visible_columns %}
+                                            {% if order_item.rebate_amount > 0 %}
+                                                {% if order_item.item_type == 'rebate' %}
+                                                    <td>{{ order_item.vat_amount|floatformat:"-2"|format_thousands }} {{ language.langkey.economy_txt_currency }}</td>
+                                                {% else %}
+                                                    <td></td>
+                                                {% endif %}
+                                            {% else %}
+                                                <td>{{ order_item.vat_amount|floatformat:"-2"|format_thousands }} {{ language.langkey.economy_txt_currency }}</td>
+                                            {% endif %}
+                                        {% endif %}
+                                        {% if "vat_rate" in order_table_visible_columns %}
+                                            {% if order_item.item_type != 'rebate' and order_item.rebate_amount > 0 %}
+                                                <td></td>
+                                            {% else %}
+                                                <td>{{ order_item.vat_rate|floatformat:"-2"|format_thousands }}%</td>
+                                            {% endif %}
+                                        {% endif %}
+                                    {% endif %}
+                                    {% if "cost_incl_vat" in order_table_visible_columns %}
+                                        {% if order_item.rebate_amount > 0 %}
+                                            {% if order_item.item_type == 'rebate' %}
+                                                <td>{{ order_item.total_cost|floatformat:"-2"|format_thousands }} {{ language.langkey.economy_txt_currency }}</td>
+                                            {% else %}
+                                                <td></td>
+                                            {% endif %}
+                                        {% else %}
+                                            <td>{{ order_item.total_cost|floatformat:"-2"|format_thousands }} {{ language.langkey.economy_txt_currency }}</td>
+                                        {% endif %}
+                                    {% endif %}
+                                </tr>
+                        {% endfor %}
+                        {% for credit_usage in order.credit_usages %}
+                            <tr>
+                                {% if "item_name" in order_table_visible_columns %}
+                                <td>{{ credit_usage.name }}</td>
+                                {% endif %}
+                                {% if "cost_excl_vat" in order_table_visible_columns %}
+                                <td>&nbsp;</td>
+                                {% endif %}
+                                {% if "rebate_amount" in order_table_visible_columns and order.keep_rebate_column %}
+                                <td>&nbsp;</td>
+                                {% endif %}
+                                {% if "vat_amount" in order_table_visible_columns %}
+                                <td>&nbsp;</td>
+                                {% endif %}
+                                {% if "vat_rate" in order_table_visible_columns %}
+                                <td>&nbsp;</td>
+                                {% endif %}
+                                {% if "cost_incl_vat" in order_table_visible_columns %}
+                                <td>-{{ credit_usage.cost|floatformat:"-2"|format_thousands }} {{ language.langkey.economy_txt_currency }}</td>
+                                {% endif %}
+                            </tr>
+                        {% endfor %}
+                        <tr class="grand-total summary">
+                            {% if "item_name" in order_table_visible_columns %}
+                                <td>{{ language.langkey.economy_txt_grand_total_invoice }}</td>
+                            {% endif %}
+                            {% if "cost_excl_vat" in order_table_visible_columns %}
+                                <td>&nbsp;</td>
+                            {% endif %}
+                            {% if "rebate_amount" in order_table_visible_columns and order.keep_rebate_column %}
+                                <td>&nbsp;</td>
+                            {% endif %}
+                            {% if "vat_amount" in order_table_visible_columns %}
+                                <td>&nbsp;</td>
+                            {% endif %}
+                            {% if "vat_rate" in order_table_visible_columns %}
+                                <td>&nbsp;</td>
+                            {% endif %}
+                            {% if "cost_incl_vat" in order_table_visible_columns %}
+                                <td class="total_cost_incl_vat">{{ order.total_cost_incl_vat|floatformat:"-2"|format_thousands }} {{ language.langkey.economy_txt_currency }}</td>
+                            {% endif %}
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="scroll-x">
+                    <table class="form-plugin-table form-plugin-economy-vat-table lines">
+                        <thead>
+                        <tr>
+                            <th>{{ language.langkey.economy_txt_vat }}</th>
+                            <th>{{ language.langkey.economy_txt_amount }}</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for vat in order.vats %}
+                            <tr>
+                                <td>{{ vat.vat_rate|floatformat:"-2"|format_thousands }}%</td>
+                                <td>{{ vat.amount|floatformat:"-2"|format_thousands }} {{ language.langkey.economy_txt_currency }}</td>
+                            </tr>
+                        {% endfor %}
+                        <tr class="grand-total summary">
+                            <td>{{ language.langkey.economy_txt_order_table_total_vat }}</td>
+                            <td class="total_vat_amount">{{ order.total_vat_amount|floatformat:"-2"|format_thousands }} {{ language.langkey.economy_txt_currency }}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        {% else %}
+        {% endif %}
+    {% endfor %}
+{% else %}
+    {% for order in orders %}
+        <div class="form-question order-table-form-question">
+        <div class="scroll-x">
+            <input type="hidden" class="data-economy-attendee-id" value="{{ data_user_id }}">
+            <table class="form-plugin-table form-plugin-economy-order-table lines">
+                <thead>
+                <tr>
+                    {% if "item_name" in order_table_visible_columns %} <th>{{ language.langkey.economy_txt_order_table_costs }}</th> {% endif %}
+                    {% if "cost_excl_vat" in order_table_visible_columns %} <th>{{ language.langkey.economy_txt_cost_excl_vat }}</th> {% endif %}
+                    {% if "rebate_amount" in order_table_visible_columns and order.order.keep_rebate_column %} <th>{{ language.langkey.economy_txt_rebate_amount }}</th> {% endif %}
+                    {% if "vat_amount" in order_table_visible_columns %} <th>{{ language.langkey.economy_txt_vat }}</th> {% endif %}
+                    {% if "vat_rate" in order_table_visible_columns %} <th>{{ language.langkey.economy_txt_vat }} %</th> {% endif %}
+                    {% if "cost_incl_vat" in order_table_visible_columns %} <th>{{ language.langkey.economy_txt_cost_incl_vat }}</th> {% endif %}
+                </tr>
+                </thead>
+                <tbody>
+                {% for order_item in order.order_items %}
+                        <tr {% if order_item.rebate_amount > 0 and order_item.item_type != 'rebate' %} class="rebated" {% elif order_item.item_type == 'rebate' %} class="rebate" {% endif %}>
+                            {% if "item_name" in order_table_visible_columns %}
+                                {% if order_item.item_type == 'rebate' %}
+                                    <td>{{ order_item.attendee_name }}: {{ language.langkey.economy_txt_rebate_with }} {{ order_item.item_name }} {{ language.langkey.economy_txt_rebate_rebate }}</td>
+                                {% else %}
+                                    <td>{{ order_item.attendee_name }}: {{ order_item.item_name }} {{ language.langkey.economy_txt_rebate_rebate }}</td>
+                                {% endif %}
+                            {% endif %}
+                            {% if "cost_excl_vat" in order_table_visible_columns %}
+                                <td>{{ order_item.cost|floatformat:"-2"|format_thousands }} {{ language.langkey.economy_txt_currency }}</td>
+                            {% endif %}
+                            {% if "rebate_amount" in order_table_visible_columns and order.order.keep_rebate_column %}
+                                <td>&nbsp;</td>
+                            {% endif %}
+                            {% if order_item.item_type == 'adjustment' %}
+                                {% if "vat_amount" in order_table_visible_columns %}
+                                <td>&nbsp;</td>
+                                {% endif %}
+                                {% if "vat_rate" in order_table_visible_columns %}
+                                <td>&nbsp;</td>
+                                {% endif %}
+                            {% else %}
+                                {% if "vat_amount" in order_table_visible_columns %}
+                                    {% if order_item.rebate_amount > 0 %}
+                                        {% if order_item.item_type == 'rebate' %}
+                                            <td>{{ order_item.vat_amount|floatformat:"-2"|format_thousands }} {{ language.langkey.economy_txt_currency }}</td>
+                                        {% else %}
+                                            <td></td>
+                                        {% endif %}
+                                    {% else %}
+                                        <td>{{ order_item.vat_amount|floatformat:"-2"|format_thousands }} {{ language.langkey.economy_txt_currency }}</td>
+                                    {% endif %}
+                                {% endif %}
+                                {% if "vat_rate" in order_table_visible_columns %}
+                                    {% if order_item.item_type != 'rebate' and order_item.rebate_amount > 0 %}
+                                        <td></td>
+                                    {% else %}
+                                        <td>{{ order_item.vat_rate|floatformat:"-2"|format_thousands }}%</td>
+                                    {% endif %}
+                                {% endif %}
+                            {% endif %}
+                            {% if "cost_incl_vat" in order_table_visible_columns %}
+                                {% if order_item.rebate_amount > 0 %}
+                                    {% if order_item.item_type == 'rebate' %}
+                                        <td>{{ order_item.total_cost|floatformat:"-2"|format_thousands }} {{ language.langkey.economy_txt_currency }}</td>
+                                    {% else %}
+                                        <td></td>
+                                    {% endif %}
+                                {% else %}
+                                    <td>{{ order_item.total_cost|floatformat:"-2"|format_thousands }} {{ language.langkey.economy_txt_currency }}</td>
+                                {% endif %}
+                            {% endif %}
+                        </tr>
+                {% endfor %}
+                {% for credit_usage in order.order.credit_usages %}
+                    <tr>
+                        {% if "item_name" in order_table_visible_columns %}
+                        <td>{{ credit_usage.name }}</td>
+                        {% endif %}
+                        {% if "cost_excl_vat" in order_table_visible_columns %}
+                        <td>&nbsp;</td>
+                        {% endif %}
+                        {% if "rebate_amount" in order_table_visible_columns and order.order.keep_rebate_column %}
+                        <td>&nbsp;</td>
+                        {% endif %}
+                        {% if "vat_amount" in order_table_visible_columns %}
+                        <td>&nbsp;</td>
+                        {% endif %}
+                        {% if "vat_rate" in order_table_visible_columns %}
+                        <td>&nbsp;</td>
+                        {% endif %}
+                        {% if "cost_incl_vat" in order_table_visible_columns %}
+                        <td>-{{ credit_usage.cost|floatformat:"-2"|format_thousands }} {{ language.langkey.economy_txt_currency }}</td>
+                        {% endif %}
+                    </tr>
+                {% endfor %}
+                <tr class="grand-total summary">
+                    {% if "item_name" in order_table_visible_columns %}
+                        <td>{{ language.langkey.economy_txt_grand_total_invoice }}</td>
+                    {% endif %}
+                    {% if "cost_excl_vat" in order_table_visible_columns %}
+                        <td>&nbsp;</td>
+                    {% endif %}
+                    {% if "rebate_amount" in order_table_visible_columns and order.order.keep_rebate_column %}
+                        <td>&nbsp;</td>
+                    {% endif %}
+                    {% if "vat_amount" in order_table_visible_columns %}
+                        <td>&nbsp;</td>
+                    {% endif %}
+                    {% if "vat_rate" in order_table_visible_columns %}
+                        <td>&nbsp;</td>
+                    {% endif %}
+                    {% if "cost_incl_vat" in order_table_visible_columns %}
+                        <td class="total_cost_incl_vat" data-amount="{{ order.order.group_total_cost_incl_vat }}">{{ order.order.group_total_cost_incl_vat|floatformat:"-2"|format_thousands }} {{ language.langkey.economy_txt_currency }}</td>
+                    {% endif %}
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="scroll-x">
+            <table class="form-plugin-table form-plugin-economy-vat-table lines">
+                <thead>
+                <tr>
+                    <th>{{ language.langkey.economy_txt_vat }}</th>
+                    <th>{{ language.langkey.economy_txt_amount }}</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for vat in order.vats %}
+                    <tr>
+                        <td>{{ vat.vat_rate|floatformat:"-2"|format_thousands }}%</td>
+                        <td>{{ vat.amount|floatformat:"-2"|format_thousands }} {{ language.langkey.economy_txt_currency }}</td>
+                    </tr>
+                {% endfor %}
+                <tr class="grand-total summary">
+                    <td>{{ language.langkey.economy_txt_order_table_total_vat }}</td>
+                    <td class="total_vat_amount" data-amount="{{ order.order.group_total_vat_amount }}">{{ order.order.group_total_vat_amount|floatformat:"-2"|format_thousands }} {{ language.langkey.economy_txt_currency }}</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        </div>
+    {% endfor %}
+{% endif %}
+</div>

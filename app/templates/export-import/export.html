@@ -1,0 +1,803 @@
+{% extends "layout/main.html" %}
+{% block content %}
+    {% load staticfiles %}
+    <div id="content-wrapper">
+        {% csrf_token %}
+        <div class="panel colourable">
+            <div class="panel-heading">
+            <span class="panel-title"><i class="fa fa-lg fa-file-excel-o"></i></i>
+                &nbsp;&nbsp;&nbsp;<strong>Export lists</strong></span>
+                                <span style="float:right"><img style="display:none" height="25px"
+                                                               src="{% static 'public/images/712.GIF' %}" id="loader"
+                                                               alt=""/>
+                                    <input type="text" name="search_key_export_filter"
+                                           id="search_key_export_filter"/></span>
+            </div>
+            <!-- / .panel-heading -->
+            <div class="panel-body tab-content">
+                <div class="tab-pane fade in active">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            {% if request.session.admin_permission.content_permission.export_filter_permission and request.session.admin_permission.content_permission.export_filter_permission.access_level == 'write' or request.session.event_auth_user.type == 'super_admin' %}
+                                <button type="button" id="btn-add-preset" class="btn btn-primary btn-lg"
+                                        data-toggle="modal"
+                                        data-target=""><i class="fa fa-plus-circle"></i>&nbsp;&nbsp;Add new list to
+                                    export
+                                </button>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <br>
+
+                    <div id="filters">
+                        <div class="table-light">
+                            {% for group in exportFilterGroup %}
+                                <div class="table-header" id="filter_export_group_{{ group.id }}">
+                                    <div class="table-caption">
+                                        {{ group.name|safe }}
+                                    </div>
+                                </div>
+                                <table class="table table-bordered sortable data-table-filter-export">
+                                    <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Name</th>
+                                        <th>Edit</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% for filter in group.filters %}
+                                        <tr>
+                                            <td>{{ filter.id }}</td>
+                                            <td>{{ filter.name }}</td>
+                                            {% if request.session.admin_permission.content_permission.export_filter_permission and request.session.admin_permission.content_permission.export_filter_permission.access_level == 'write' or request.session.event_auth_user.type == 'super_admin' %}
+                                                <td>
+                                                    <button class="btn btn-xs btn-edit-export-filter"
+                                                            data-id="{{ filter.id }}"
+                                                            data-toggle="tooltip"
+                                                            data-placement="top" title=""
+                                                            data-original-title="Edit"><i
+                                                            class="dropdown-icon fa fa-cog"></i></button>
+                                                    <button class="btn btn-xs btn-duplicate-export-filter"
+                                                            data-id="{{ filter.id }}"
+                                                            data-toggle="tooltip" data-placement="top" title=""
+                                                            data-original-title="Duplicate"><i
+                                                            class="dropdown-icon fa fa-files-o"></i>
+                                                    </button>
+                                                    <button class="btn btn-xs btn-danger btn-delete-export-filter"
+                                                            data-id="{{ filter.id }}" data-toggle="tooltip"
+                                                            data-placement="top"
+                                                            title="" data-original-title="Delete"><i
+                                                            class="dropdown-icon fa fa-times-circle"></i></button>
+                                                    <button class="btn btn-xs btn-success btn-export-filter"
+                                                            data-id="{{ filter.id }}" data-toggle="tooltip"
+                                                            data-placement="top"
+                                                            title="" data-original-title="Export"><i
+                                                            class="dropdown-icon fa fa-file-excel-o"></i></button>
+                                                    {#                                                    <button class="btn btn-xs btn-export-hotel"#}
+                                                    {#                                                            data-id="{{ filter.id }}" data-toggle="tooltip"#}
+                                                    {#                                                            data-placement="top"#}
+                                                    {#                                                            title="" data-original-title="Export as Hotel"><i#}
+                                                    {#                                                            class="dropdown-icon fa fa-home"></i></button>#}
+                                                </td>
+                                            {% else %}
+                                                <td style="text-align: center;">
+                                                    <button class="btn btn-xs btn-view-export-filter"
+                                                            data-id="{{ filter.id }}"
+                                                            data-toggle="tooltip"
+                                                            data-placement="top" title=""
+                                                            data-original-title="View"><i
+                                                            class="dropdown-icon fa fa-search-plus"></i></button>
+                                                    <button class="btn btn-xs btn-success btn-export-filter"
+                                                            data-id="{{ filter.id }}" data-toggle="tooltip"
+                                                            data-placement="top"
+                                                            title="" data-original-title="Export"><i
+                                                            class="dropdown-icon fa fa-file-excel-o"></i></button>
+                                                    {#                                                    <button class="btn btn-xs btn-export-hotel"#}
+                                                    {#                                                            data-id="{{ filter.id }}" data-toggle="tooltip"#}
+                                                    {#                                                            data-placement="top"#}
+                                                    {#                                                            title="" data-original-title="Export as Hotel"><i#}
+                                                    {#                                                            class="dropdown-icon fa fa-home"></i></button>#}
+                                                </td>
+                                            {% endif %}
+                                        </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                            {% endfor %}
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <form id="export-form" action="/admin/export-filter/export/" target="_blank" method="post">
+            <input type="hidden" name="id">
+            <input type="hidden" name="export_as_hotel">
+            <input type="hidden" name="csrfmiddlewaretoken">
+        </form>
+
+        <!-- MODAL - TEXT -->
+        <div id="filters-add-preset" class="modal fade" role="dialog" style="display: none;">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        {#                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span#}
+                        {#                                aria-hidden="true">&times;</span></button>#}
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
+                        <h4 class="modal-title">Add Export</h4>
+                    </div>
+                    <div class="modal-body" id="modal_body">
+
+
+                    </div>
+                    <!-- / .modal-content -->
+                </div>
+                <!-- / .modal-dialog -->
+            </div>
+            <!-- / .modal -->
+            <!-- / Large modal -->
+        </div>
+    </div>
+    <!-- / #content-wrapper -->
+    <script>
+        $("#btn-add-preset").click(function () {
+
+            var csrf_token = $('input[name=csrfmiddlewaretoken]').val();
+            //get-export-html
+            $.ajax({
+                url: base_url + '/admin/get-export-html/',
+                type: "POST",
+                data: {
+                    csrfmiddlewaretoken: csrf_token
+                },
+                success: function (result) {
+                    $("#filters-add-preset").modal();
+                    $("#filters-add-preset .modal-title").html("Add");
+                    $("#modal_body").html(result.modal_html);
+                    accrodion_jquery();
+                    $('input[name=csrfmiddlewaretoken]').val(csrf_token);
+                }
+            });
+        });
+
+
+        $(document).on('click', '.btn-edit-export-filter', function () {
+            var csrf_token = $('input[name=csrfmiddlewaretoken]').val();
+            var filter_id = $(this).data('id');
+            var modal_class = 'edit';
+            //get-export-html
+            showExportFilterData(csrf_token, filter_id, modal_class)
+        });
+
+        $(document).on('click', '.btn-view-export-filter', function () {
+            var csrf_token = $('input[name=csrfmiddlewaretoken]').val();
+            var filter_id = $(this).data('id');
+            var modal_class = 'view';
+            //get-export-html
+            showExportFilterData(csrf_token, filter_id, modal_class)
+
+        });
+
+        function showExportFilterData(csrf_token, filter_id, modal_class) {
+            $.ajax({
+                url: base_url + '/admin/get-export-html/',
+                type: "POST",
+                data: {
+                    id: filter_id,
+                    csrfmiddlewaretoken: csrf_token
+                },
+                success: function (result) {
+                    $("#filters-add-preset").modal();
+                    $("#modal_body").html(result.modal_html);
+                    $("#filter-export-form").append("<input type='hidden' name='id' value='" + filter_id + "' >")
+                    accrodion_jquery();
+                    if (modal_class == 'view') {
+                        $("body #filters-add-preset").find("input, select").attr('disabled', 'disabled');
+                        $("#filters-add-preset .modal-title").html("View Export");
+                        $("#filters-add-preset .panel-heading").html("View Export Filter");
+                        $("#filters-add-preset .btn-group").closest('.row').remove();
+                    }
+                    else {
+                        $('input[name=csrfmiddlewaretoken]').val(csrf_token);
+                        $("#filters-add-preset .modal-title").html("Edit Export");
+                        $("#filters-add-preset .panel-heading").html("Edit Export Filter");
+                        $("#filters-add-preset .btn.save").html('<i class="fa fa-check-circle"> Save ')
+                    }
+
+                }
+            });
+        }
+
+
+        function accrodion_jquery() {
+
+            $('#selecctall').click(function (event) {  //on click
+                if (this.checked) { // check select status
+                    $('.allselect').each(function () { //loop through each checkbox
+                        this.checked = true;  //select all checkboxes with class "checkbox1"
+                    });
+                } else {
+                    $('.allselect').each(function () { //loop through each checkbox
+                        this.checked = false; //deselect all checkboxes with class "checkbox1"
+                    });
+                }
+            });
+
+
+            $('.groupname').click(function (event) {  //on click
+
+                if (this.checked) { // check select status
+                    $(this).parent().siblings()
+                            .find("input[type='checkbox']")
+                            .prop('checked', this.checked);
+                } else {
+                    $(this).parent().siblings()
+                            .find("input[type='checkbox']")
+                            .prop('checked', false);
+                }
+                event.stopPropagation();
+            });
+
+            $('.question').click(function (event) {
+                var groupname = $(this).closest('.row').siblings().find("input[type='checkbox']");
+                var allChecked = true;
+                var indeterminate = false;
+                $(this).closest('.row').find('.question').each(function () {
+                    if (!this.checked) {
+                        allChecked = false;
+                    } else {
+                        indeterminate = true;
+                    }
+                });
+                if (allChecked) {
+                    groupname.prop("indeterminate", false);
+                    groupname.prop('checked', true);
+                } else {
+                    if (indeterminate) {
+                        groupname.prop("indeterminate", true);
+                    } else {
+                        groupname.prop("indeterminate", false);
+                        groupname.prop('checked', false);
+                    }
+                }
+                event.stopPropagation();
+            });
+
+            $('.question').each(function () {
+                var groupname = $(this).closest('.row').siblings().find("input[type='checkbox']");
+                var allChecked = true;
+                var indeterminate = false;
+                $(this).closest('.row').find('.question').each(function () {
+                    if (!this.checked) {
+                        allChecked = false;
+                    } else {
+                        indeterminate = true;
+                    }
+                });
+                if (allChecked) {
+                    groupname.prop("indeterminate", false);
+                    groupname.prop('checked', true);
+                } else {
+                    if (indeterminate) {
+                        groupname.prop("indeterminate", true);
+                    } else {
+                        groupname.prop("indeterminate", false);
+                        groupname.prop('checked', false);
+                    }
+                }
+            });
+
+            $('.session').click(function (event) {
+                var groupname = $(this).closest('.row').siblings().find("input[type='checkbox']");
+                var allChecked = true;
+                var indeterminate = false;
+                $(this).closest('.row').find('.session').each(function () {
+                    if (!this.checked) {
+                        allChecked = false;
+                    } else {
+                        indeterminate = true;
+                    }
+                });
+                if (allChecked) {
+                    groupname.prop("indeterminate", false);
+                    groupname.prop('checked', true);
+                } else {
+                    if (indeterminate) {
+                        groupname.prop("indeterminate", true);
+                    } else {
+                        groupname.prop("indeterminate", false);
+                        groupname.prop('checked', false);
+                    }
+                }
+                event.stopPropagation();
+            });
+
+            $('.session').each(function () {
+                var groupname = $(this).closest('.row').siblings().find("input[type='checkbox']");
+                var allChecked = true;
+                var indeterminate = false;
+                $(this).closest('.row').find('.session').each(function () {
+                    if (!this.checked) {
+                        allChecked = false;
+                    } else {
+                        indeterminate = true;
+                    }
+                });
+                if (allChecked) {
+                    groupname.prop("indeterminate", false);
+                    groupname.prop('checked', true);
+                } else {
+                    if (indeterminate) {
+                        groupname.prop("indeterminate", true);
+                    } else {
+                        groupname.prop("indeterminate", false);
+                        groupname.prop('checked', false);
+                    }
+                }
+            });
+
+            $('.hotel').click(function (event) {
+                var groupname = $(this).closest('.row').siblings().find("input[type='checkbox']");
+                var allChecked = true;
+                var indeterminate = false;
+                $(this).closest('.row').find('.hotel').each(function () {
+                    if (!this.checked) {
+                        allChecked = false;
+                    } else {
+                        indeterminate = true;
+                    }
+                });
+                if (allChecked) {
+                    groupname.prop("indeterminate", false);
+                    groupname.prop('checked', true);
+                } else {
+                    if (indeterminate) {
+                        groupname.prop("indeterminate", true);
+                    } else {
+                        groupname.prop("indeterminate", false);
+                        groupname.prop('checked', false);
+                    }
+                }
+                event.stopPropagation();
+            });
+
+            $('.hotel').each(function () {
+                var groupname = $(this).closest('.row').siblings().find("input[type='checkbox']");
+                var allChecked = true;
+                var indeterminate = false;
+                $(this).closest('.row').find('.hotel').each(function () {
+                    if (!this.checked) {
+                        allChecked = false;
+                    } else {
+                        indeterminate = true;
+                    }
+                });
+                if (allChecked) {
+                    groupname.prop("indeterminate", false);
+                    groupname.prop('checked', true);
+                } else {
+                    if (indeterminate) {
+                        groupname.prop("indeterminate", true);
+                    } else {
+                        groupname.prop("indeterminate", false);
+                        groupname.prop('checked', false);
+                    }
+                }
+            });
+
+            $('.economy').click(function (event) {
+                var groupname = $(this).closest('.row').siblings().find("input[type='checkbox']");
+                var allChecked = true;
+                var indeterminate = false;
+                $(this).closest('.row').find('.economy').each(function () {
+                    if (!this.checked) {
+                        allChecked = false;
+                    } else {
+                        indeterminate = true;
+                    }
+                });
+                if (allChecked) {
+                    groupname.prop("indeterminate", false);
+                    groupname.prop('checked', true);
+                } else {
+                    if (indeterminate) {
+                        groupname.prop("indeterminate", true);
+                    } else {
+                        groupname.prop("indeterminate", false);
+                        groupname.prop('checked', false);
+                    }
+                }
+                event.stopPropagation();
+            });
+
+            $('.economy').each(function () {
+                var groupname = $(this).closest('.row').siblings().find("input[type='checkbox']");
+                var allChecked = true;
+                var indeterminate = false;
+                $(this).closest('.row').find('.economy').each(function () {
+                    if (!this.checked) {
+                        allChecked = false;
+                    } else {
+                        indeterminate = true;
+                    }
+                });
+                if (allChecked) {
+                    groupname.prop("indeterminate", false);
+                    groupname.prop('checked', true);
+                } else {
+                    if (indeterminate) {
+                        groupname.prop("indeterminate", true);
+                    } else {
+                        groupname.prop("indeterminate", false);
+                        groupname.prop('checked', false);
+                    }
+                }
+            });
+
+            $("#ui-accordion").accordion({
+                animate: 100,
+                collapsible: true,
+                heightStyle: "content",
+                header: "> div > h3",
+                beforeActivate: function (event, ui) {
+                    // The accordion believes a panel is being opened
+                    if (ui.newHeader[0]) {
+                        var currHeader = ui.newHeader;
+                        var currContent = currHeader.next('.ui-accordion-content');
+                        // The accordion believes a panel is being closed
+                    } else {
+                        var currHeader = ui.oldHeader;
+                        var currContent = currHeader.next('.ui-accordion-content');
+                    }
+                    // Since we've changed the default behavior, this detects the actual status
+                    var isPanelSelected = currHeader.attr('aria-selected') == 'true';
+
+                    // Toggle the panel's header
+                    currHeader.toggleClass('ui-corner-all', isPanelSelected).toggleClass('accordion-header-active ui-state-active ui-corner-top', !isPanelSelected).attr('aria-selected', ((!isPanelSelected).toString()));
+
+                    // Toggle the panel's icon
+                    currHeader.children('.ui-icon').toggleClass('ui-icon-triangle-1-e', isPanelSelected).toggleClass('ui-icon-triangle-1-s', !isPanelSelected);
+
+                    // Toggle the panel's content
+                    currContent.toggleClass('accordion-content-active', !isPanelSelected);
+                    if (isPanelSelected) {
+                        currContent.slideUp();
+                    } else {
+                        currContent.slideDown();
+                    }
+
+                    return false; // Cancels the default action
+                }
+            });
+
+
+            $("#ui-accordion2").accordion({
+                animate: 100,
+                collapsible: true,
+                heightStyle: "content",
+                header: "> div > h3",
+                beforeActivate: function (event, ui) {
+                    // The accordion believes a panel is being opened
+                    if (ui.newHeader[0]) {
+                        var currHeader = ui.newHeader;
+                        var currContent = currHeader.next('.ui-accordion-content');
+                        // The accordion believes a panel is being closed
+                    } else {
+                        var currHeader = ui.oldHeader;
+                        var currContent = currHeader.next('.ui-accordion-content');
+                    }
+                    // Since we've changed the default behavior, this detects the actual status
+                    var isPanelSelected = currHeader.attr('aria-selected') == 'true';
+
+                    // Toggle the panel's header
+                    currHeader.toggleClass('ui-corner-all', isPanelSelected).toggleClass('accordion-header-active ui-state-active ui-corner-top', !isPanelSelected).attr('aria-selected', ((!isPanelSelected).toString()));
+
+                    // Toggle the panel's icon
+                    currHeader.children('.ui-icon').toggleClass('ui-icon-triangle-1-e', isPanelSelected).toggleClass('ui-icon-triangle-1-s', !isPanelSelected);
+
+                    // Toggle the panel's content
+                    currContent.toggleClass('accordion-content-active', !isPanelSelected);
+                    if (isPanelSelected) {
+                        currContent.slideUp();
+                    } else {
+                        currContent.slideDown();
+                    }
+
+                    return false; // Cancels the default action
+                }
+            });
+
+            $("#ui-accordion3").accordion({
+                animate: 100,
+                collapsible: true,
+                heightStyle: "content",
+                header: "> div > h3",
+                beforeActivate: function (event, ui) {
+                    // The accordion believes a panel is being opened
+                    if (ui.newHeader[0]) {
+                        var currHeader = ui.newHeader;
+                        var currContent = currHeader.next('.ui-accordion-content');
+                        // The accordion believes a panel is being closed
+                    } else {
+                        var currHeader = ui.oldHeader;
+                        var currContent = currHeader.next('.ui-accordion-content');
+                    }
+                    // Since we've changed the default behavior, this detects the actual status
+                    var isPanelSelected = currHeader.attr('aria-selected') == 'true';
+
+                    // Toggle the panel's header
+                    currHeader.toggleClass('ui-corner-all', isPanelSelected).toggleClass('accordion-header-active ui-state-active ui-corner-top', !isPanelSelected).attr('aria-selected', ((!isPanelSelected).toString()));
+
+                    // Toggle the panel's icon
+                    currHeader.children('.ui-icon').toggleClass('ui-icon-triangle-1-e', isPanelSelected).toggleClass('ui-icon-triangle-1-s', !isPanelSelected);
+
+                    // Toggle the panel's content
+                    currContent.toggleClass('accordion-content-active', !isPanelSelected);
+                    if (isPanelSelected) {
+                        currContent.slideUp();
+                    } else {
+                        currContent.slideDown();
+                    }
+
+                    return false; // Cancels the default action
+                }
+            });
+
+            $("#ui-accordion-economy").accordion({
+                animate: 100,
+                collapsible: true,
+                heightStyle: "content",
+                header: "> div > h3",
+                beforeActivate: function (event, ui) {
+                    if (ui.newHeader[0]) {
+                        var currHeader = ui.newHeader;
+                        var currContent = currHeader.next('.ui-accordion-content');
+                    } else {
+                        var currHeader = ui.oldHeader;
+                        var currContent = currHeader.next('.ui-accordion-content');
+                    }
+                    var isPanelSelected = currHeader.attr('aria-selected') == 'true';
+
+                    currHeader.toggleClass('ui-corner-all', isPanelSelected).toggleClass('accordion-header-active ui-state-active ui-corner-top', !isPanelSelected).attr('aria-selected', ((!isPanelSelected).toString()));
+
+                    currHeader.children('.ui-icon').toggleClass('ui-icon-triangle-1-e', isPanelSelected).toggleClass('ui-icon-triangle-1-s', !isPanelSelected);
+
+                    currContent.toggleClass('accordion-content-active', !isPanelSelected);
+                    if (isPanelSelected) {
+                        currContent.slideUp();
+                    } else {
+                        currContent.slideDown();
+                    }
+
+                    return false; // Cancels the default action
+                }
+            });
+        }
+
+
+        $(document).on('click', '#save-export-btn', function (e) {
+            $("#filters-add-preset").modal('toggle');
+            var csrf_token = $('input[name=csrfmiddlewaretoken]').val();
+            var form_data = $("#filter-export-form").serialize();
+            try {
+                var rule_id_check = parseInt(form_data.split('&')[2].split('=')[1]);
+                if (rule_id_check < 1){
+                    $.growl.warning({message: 'You have to set filter first'});
+                    return;
+                }
+            }catch (ex_err){
+            }
+            $.ajax({
+                url: base_url + '/admin/export-filter/',
+                type: "POST",
+                data: form_data,
+                success: function (response) {
+                    response = jQuery.parseJSON(response);
+
+                    var row = '' +
+                            '<td>' + response.id + '</td>' +
+                            '      <td>' + response.name + '</td>' +
+                            '      <td>' +
+                            '          <button class="btn btn-xs btn-edit-export-filter" data-id="' + response.id + '" data-toggle="tooltip" data-placement="top" title="" data-original-title="Edit"><i class="dropdown-icon fa fa-cog"></i></button>' +
+                            '          <button class="btn btn-xs btn-duplicate-export-filter" data-id="' + response.id + '" data-toggle="tooltip" data-placement="top" title="" data-original-title="Duplicate"><i class="dropdown-icon fa fa-files-o"></i></button>' +
+                            '          <button class="btn btn-xs btn-danger btn-delete-export-filter" data-id="' + response.id + '" data-toggle="tooltip" data-placement="top" title="" data-original-title="Delete"><i class="dropdown-icon fa fa-times-circle"></i></button>' +
+                            '          <button class="btn btn-xs btn-success btn-export-filter" data-id="' + response.id + '" data-toggle="tooltip" data-placement="top" title="" data-original-title="Export"><i class="dropdown-icon fa fa-file-excel-o"></i></button>' +
+                            '      </td>';
+
+
+                    if (response.update == "success") {
+                        $.growl.notice({message: response.update});
+
+                        var old_group = response.old_group;
+                        if (old_group == response.group_id) {
+                            $('body .data-table-filter-export tbody tr').each(function () {
+                                if ($(this).find('td:first-child').html() == response.id) {
+                                    $(this).html(row);
+                                }
+                            });
+                        } else {
+                            $('body .data-table-filter-export tbody tr').each(function () {
+                                if ($(this).find('td:first-child').html() == response.id) {
+                                    $(this).remove();
+                                }
+                            });
+                            $('body #filter_export_group_' + response.group_id).next('.data-table-filter-export').find('tbody').append('<tr>' + row + '</tr>');
+
+                        }
+                    }
+                    else {
+
+                        $("#export-form input[name=id]").val(response.id);
+                        $("#export-form input[name=csrfmiddlewaretoken]").val(csrf_token);
+                        //$("#export-form").submit();
+                        var send_post_data={
+                            id:response.id,
+                            export_as_hotel:"",
+                            csrfmiddlewaretoken: csrf_token,
+                        };
+                        $(".loader").show();
+                        $.post("/admin/export-filter/export/",send_post_data,function(getdata){
+                            var export_message=JSON.parse(JSON.stringify(getdata));
+                            if(export_message){
+                                $(".loader").hide();
+                                if(export_message.error){
+                                    $.growl.warning({message:export_message.message});
+                                }else{
+                                    $.growl.notice({message:export_message.message});
+                                    check_export_status();
+                                }
+                            }else{
+                                $.growl.error("Try Again");
+                            }
+                        });
+
+                        $('body #filter_export_group_' + response.group_id).next('.data-table-filter-export').find('tbody').append('<tr>' + row + '</tr>');
+                    }
+
+                }
+            });
+
+        });
+
+        $(document).on('click', '.btn-duplicate-export-filter', function (e) {
+            var filter_id = $(this).data('id');
+            var csrfToken = $('input[name=csrfmiddlewaretoken]').val();
+            var data = {
+                filter_id: filter_id,
+                csrfmiddlewaretoken: csrfToken
+            }
+            $.ajax({
+                url: base_url + '/admin/export-filters/duplicate/',
+                type: "POST",
+                data: data,
+                success: function (response) {
+                    if (response.success) {
+                        $.growl.notice({message: response.success});
+                        var filter = response.filter;
+                        var row = '' +
+                                '<td>' + filter.id + '</td>' +
+                                '      <td>' + filter.name + '</td>' +
+                                '      <td>' +
+                                '          <button class="btn btn-xs btn-edit-export-filter" data-id="' + filter.id + '" data-toggle="tooltip" data-placement="top" title="" data-original-title="Edit"><i class="dropdown-icon fa fa-cog"></i></button>' +
+                                '          <button class="btn btn-xs btn-duplicate-export-filter" data-id="' + filter.id + '" data-toggle="tooltip" data-placement="top" title="" data-original-title="Duplicate"><i class="dropdown-icon fa fa-files-o"></i></button>' +
+                                '          <button class="btn btn-xs btn-danger btn-delete-export-filter" data-id="' + filter.id + '" data-toggle="tooltip" data-placement="top" title="" data-original-title="Delete"><i class="dropdown-icon fa fa-times-circle"></i></button>' +
+                                '          <button class="btn btn-xs btn-success btn-export-filter" data-id="' + filter.id + '" data-toggle="tooltip" data-placement="top" title="" data-original-title="Export"><i class="dropdown-icon fa fa-file-excel-o"></i></button>' +
+                                '      </td>';
+                        $('#filter_export_group_' + filter.group.id).next('.data-table-filter-export').find('tbody').append('<tr>' + row + '</tr>');
+                    } else {
+                        $.growl.warning({message: response.error});
+                    }
+                }
+            });
+        });
+
+
+        $(document).on('click', '.btn-delete-export-filter', function (e) {
+            var $this = $(this);
+            var rule_preset = $this.parent().prev('td').html();
+            bootbox.confirm("Are you sure you want to delete " + rule_preset + "?", function (result) {
+                if (result) {
+                    var id = $this.attr('data-id');
+                    var csrf_token = $('input[name=csrfmiddlewaretoken]').val();
+                    $.ajax({
+                        url: base_url + '/admin/export-filter/delete/',
+                        type: "POST",
+                        data: {
+                            id: id,
+                            csrfmiddlewaretoken: csrf_token
+                        },
+                        success: function (result) {
+                            if (result.error) {
+                                $.growl.error({message: result.error});
+                            } else {
+                                $.growl.notice({message: result.success});
+                                $this.closest('tr').remove();
+                            }
+                        }
+                    });
+                }
+            });
+        });
+
+        $(document).on('click', '.btn-export-filter', function (event) {
+            var $this = $(this);
+            var rule_preset = $this.parent().prev('td').html();
+{#            bootbox.confirm("Are you sure you want to Export " + rule_preset + "?", function (result) {#}
+{#                if (result) {#}
+                    var id = $this.attr('data-id');
+                    var csrf_token = $('input[name=csrfmiddlewaretoken]').val();
+
+
+{#                                   $("#export-form input[name=id]").val(id);#}
+{#                                    $("#export-form input[name=export_as_hotel]").val(false);#}
+{#                                    $("#export-form input[name=csrfmiddlewaretoken]").val(csrf_token);#}
+{##}
+{#                                    $("#export-form").submit();#}
+
+
+                    $(".loader").show();
+                    $.ajax({
+                        url: base_url + "/admin/export-filter/export/",
+                        data: {
+                            id: id,
+                            export_as_hotel: false,
+                            csrfmiddlewaretoken: csrf_token
+                        },
+                        type: "POST",
+                        success: function (result) {
+                            $(".loader").hide();
+                            $.growl.notice({message: result.message});
+                            check_export_status();
+                        },
+                        error: function () {
+                            $(".loader").hide();
+                            $.growl.error({message: "Something Wrong"});
+                        }
+                    });
+
+{#                }#}
+{#            });#}
+        });
+        {#    $(document).on('click', '.btn-export-hotel', function (event) {#}
+        {#        var $this = $(this);#}
+        {#        var rule_preset = $this.parent().prev('td').html();#}
+        {#        bootbox.confirm("Are you sure you want to Export " + rule_preset + " as Hotel?", function (result) {#}
+        {#            if (result) {#}
+        {#                var id = $this.attr('data-id');#}
+        {#                var csrf_token = $('input[name=csrfmiddlewaretoken]').val();#}
+        {##}
+        {#                $("#export-form input[name=id]").val(id);#}
+        {#                $("#export-form input[name=export_as_hotel]").val(true);#}
+        {#                $("#export-form input[name=csrfmiddlewaretoken]").val(csrf_token);#}
+        {##}
+        {#                $("#export-form").submit();#}
+        {##}
+        {##}
+        {#                $(".loader").show();#}
+        {#                $.ajax({#}
+        {#                    url:base_url+"/admin/export-filter/export/",#}
+        {#                    data : {#}
+        {#                        id : id,#}
+        {#                        export_as_hotel : true,#}
+        {#                        csrfmiddlewaretoken : csrf_token#}
+        {#                    },#}
+        {#                    type : "POST",#}
+        {#                    success : function(result){#}
+        {#                        $(".loader").hide();#}
+        {#                        $.growl.notice({message: result.message});#}
+        {#                    },#}
+        {#                    error : function(){#}
+        {#                        $(".loader").hide();#}
+        {#                        $.growl.error({message: "Something Wrong"});#}
+        {#                    }#}
+        {#                });#}
+        {##}
+        {#            }#}
+        {#        });#}
+        {#    });#}
+
+
+    </script>
+{% endblock %}

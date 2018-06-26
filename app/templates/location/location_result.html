@@ -1,0 +1,50 @@
+<div class="table-light">
+    {% for group in locationsGroups %}
+        <div class="table-header">
+            <div class="table-caption">
+                {{ group.name|safe }}
+            </div>
+        </div>
+        <table class="table table-bordered sortable data-table-location">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Edit</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for location in group.location %}
+                <tr>
+                    <td>{{ location.id }}</td>
+                    <td>{{ location.name }}</td>
+                    {% if request.session.admin_permission.content_permission.location_permission and request.session.admin_permission.content_permission.location_permission.access_level == 'write' or request.session.event_auth_user.type == 'super_admin' %}
+                        <td>
+                            <button class="btn btn-xs btn-edit-location" data-id="{{ location.id }}"
+                                    data-toggle="tooltip"
+                                    data-placement="top" title=""
+                                    data-original-title="Edit"><i class="dropdown-icon fa fa-cog"></i></button>
+                            <button class="btn btn-xs btn-duplicate-location" data-id="{{ location.id }}"
+                                    data-toggle="tooltip" data-placement="top" title=""
+                                    data-original-title="Duplicate"><i class="dropdown-icon fa fa-files-o"></i>
+                            </button>
+                            <button class="btn btn-xs btn-danger btn-delete-location"
+                                    data-id="{{ location.id }}" data-toggle="tooltip" data-placement="top"
+                                    title="" data-original-title="Delete"><i
+                                    class="dropdown-icon fa fa-times-circle"></i></button>
+                        </td>
+                    {% else %}
+                        <td style="text-align: center;">
+                            <button class="btn btn-xs btn-view-location" data-id="{{ location.id }}"
+                                    data-toggle="tooltip"
+                                    data-placement="top" title=""
+                                    data-original-title="View"><i
+                                    class="dropdown-icon fa fa-search-plus"></i></button>
+                        </td>
+                    {% endif %}
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    {% endfor %}
+</div>

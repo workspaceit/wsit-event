@@ -1,0 +1,17 @@
+{% if travel_group.travels %}
+    <label>{{ travel_bound }} :</label>
+
+    <div class="form-group show-travels">
+        <select name="travel-bound" class="selectpicker travel-bound-control" multiple
+                data-live-search="true"
+                data-live-search-placeholder="Search"
+                data-actions-box="false">
+            <optgroup label="{{ travel_group.name|safe }}">
+                {% for travel in  travel_group.travels %}
+                    <option class="selected_column"
+                            value="{{ travel.id }}">{{ travel.name|safe}}</option>
+                {% endfor %}
+            </optgroup>
+        </select>
+    </div>
+{% endif %}

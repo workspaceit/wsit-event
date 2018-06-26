@@ -1,0 +1,140 @@
+<div id="locations-view-location" class="modal fade" tabindex="-1" role="dialog" style="display: none;">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
+                        <h4 class="modal-title">View Location</h4>
+                    </div>
+                    <div class="modal-body">
+                        <form action="">
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="form-group no-margin-hr">
+                                        <input type="hidden" id="edit-location-id">
+                                        <label class="control-label">Name</label>
+                                        <input type="text" name="name" id="location_name" class="form-control"
+                                               placeholder="Name" disabled>
+                                    </div>
+                                    <div class="form-group no-margin-hr">
+                                        <label class="control-label">Location Group</label>
+                                        <select id="location_group" class="form-control" data-id="" disabled>
+                                            {% for group in locationGroup %}
+                                                <option value="{{ group.id }}">{{ group.name|safe }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <label class="control-label">Description</label>
+{#                                    <textarea id="location_description" rows="5" class="form-control" disabled></textarea>#}
+                                    <textarea id="description" rows="5" class="form-control" disabled></textarea>
+                                    <div id="description_out" style="display: none;"></div>
+                                </div>
+                            </div>
+                            <!-- row -->
+
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="form-group no-margin-hr">
+                                        <label class="control-label">Google Maps Highlight</label>
+
+                                        <div class="input-group">
+										<span class="input-group-addon">
+											<label class="px-single">
+                                                <input type="checkbox" id="id_checkbox_location_maps_highlights" name="" value=""
+                                                       class="px" disabled>
+                                                <span class="lbl"></span></label>
+										</span>
+                                            <input type="text" id="location_maps_highlights" class="form-control"
+                                                   placeholder="City+Hall,New+York,NY" disabled>
+                                            {#                                        {{ form.maps_highlight }}#}
+                                        </div>
+                                    </div>
+                                    <label class="control-label">Address</label>
+                                    <textarea id="location_address" rows="5" class="form-control" disabled></textarea>
+                                    {#                                {{ form.address }}#}
+                                </div>
+                                <div class="col-sm-6" id="location-map-container" style="height: 200px; pointer-events: none;">
+
+                                    {#								<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2034.3483971926307!2d18.004623!3d59.343832!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0000000000000000%3A0x211387e1960f00e9!2sSpringconf+AB!5e0!3m2!1ssv!2sus!4v1436629257301" width="100%" height="300" frameborder="0" style="border:0" allowfullscreen></iframe><!--https://www.google.com/maps/embed/v1/place?q=Springconf+AB,+Solna,+Sverig-->#}
+                                </div>
+                                <!-- col-sm-6 -->
+                            </div>
+                            <!-- row -->
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="form-group no-margin-hr">
+                                        <label class="control-label">Contact - Name</label>
+
+                                        <div class="input-group">
+										<span class="input-group-addon">
+											<label class="px-single"><input type="checkbox" id="id_checkbox_location_name"
+                                                                            name="" value="" class="px" disabled><span
+                                                    class="lbl"></span></label>
+										</span>
+                                            <input type="text" id="contact_name" class="form-control"
+                                                   placeholder="Contact Name" disabled>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- col-sm-6 -->
+                                <div class="col-sm-6">
+                                    <div class="form-group no-margin-hr">
+                                        <label class="control-label">Contact - Web</label>
+
+                                        <div class="input-group">
+										<span class="input-group-addon">
+											<label class="px-single"><input type="checkbox" id="id_checkbox_location_web" name=""
+                                                                            value="" class="px" disabled><span
+                                                    class="lbl"></span></label>
+										</span>
+                                            <input type="text" id="contact_web" class="form-control"
+                                                   placeholder="http://" disabled>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- col-sm-6 -->
+                            </div>
+                            <!-- row -->
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="form-group no-margin-hr">
+                                        <label class="control-label">Contact - Phone Number</label>
+
+                                        <div class="input-group">
+										<span class="input-group-addon">
+											<label class="px-single"><input type="checkbox" id="id_checkbox_location_phone"
+                                                                            name="" value="" class="px" disabled><span
+                                                    class="lbl"></span></label>
+										</span>
+                                            <input type="text" id="contact_phone" class="form-control"
+                                                   placeholder="Contact Phone Number" disabled>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- col-sm-6 -->
+                                <div class="col-sm-6">
+                                    <div class="form-group no-margin-hr">
+                                        <label class="control-label">Contact - Email Address</label>
+
+                                        <div class="input-group">
+										<span class="input-group-addon">
+											<label class="px-single"><input type="checkbox" id="id_checkbox_location_email"
+                                                                            name="" value="" class="px" disabled><span
+                                                    class="lbl"></span></label>
+										</span>
+                                            <input type="text" id="contact_email" class="form-control"
+                                                   placeholder="name@domain.com" disabled>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- col-sm-6 -->
+                            </div>
+                            <!-- row -->
+                        </form>
+                    </div>
+                </div>
+                <!-- / .modal-content -->
+            </div>
+            <!-- / .modal-dialog -->
+        </div>

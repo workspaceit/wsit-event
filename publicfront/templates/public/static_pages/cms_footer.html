@@ -1,0 +1,707 @@
+{% load staticfiles %}
+<div id="dialoge" class="_visible">
+
+</div>
+<script>
+    event_url = '{{ request.session.event_url }}';
+    jQuery.loadScript = function (url, callback) {
+        jQuery.ajax({
+            url: url,
+            dataType: 'script',
+            success: callback,
+            async: true
+        });
+    }
+    var kendo_load_status = false;
+    var plugin_js_need = {
+        'get_evaluation': false,
+        'get_messages': false,
+        'get_session_next_up': false,
+        'get_location_list': false,
+        'get_session_radio': false,
+        'get_session_checkbox': false,
+        'get_login_form': false,
+        'get_request_login': false,
+        'get_submit_button': false,
+        'get_reset_password': false,
+        'get_new_password': false,
+        'get_attendee_plugin': false,
+        'get_plugin_hotel_reservation': false,
+        'get_session_scheduler': false,
+        'get_archive_messages': false,
+        'get_photo_upload': false,
+        'get_photo_gallery': false,
+        'get_logout': false,
+        'get_multiple_registration': {
+            'loop_registration': false,
+            'inline_registration': false
+        }
+    }
+    var realTimeDataArrayQuestion = {};
+    var realTimeDataArraySession = {};
+</script>
+
+<input type="hidden" class="public-static-url" value="{{ static_url }}">
+{#<input type="hidden" id="filter-container" value="{{ static_page.filter }}"/>#}
+<input type="hidden" id="page-class-list" value='{{ class_list }}'/>
+<input type="hidden" id="growl_success" value='{{ request.growl_success }}'/>
+<input type="hidden" id="growl_warning" value='{{ request.growl_warning }}'/>
+<input type="hidden" id="growl_error" value='{{ request.growl_error }}'/>
+<input type="hidden" id="growl_notify" value='{{ request.growl_notify }}'/>
+<input type="hidden" id="disallow_page" value='{{ disallow_page }}'/>
+{#<input type="hidden" id="page_id" value='{{ page_id }}'/>#}
+<button id="given-answer-function" style="display: none;"></button>
+<button id="session-selection-function" style="display: none;"></button>
+<img src="{% static 'public/images/712.GIF' %}" class='loader submit-loader' alt=""/>
+{#<link href="{% static 'public/css/jquery.growl.css' %}" rel="stylesheet" type="text/css">#}
+{#<link href="{% static 'public/css/font-awesome.min.css' %}" rel="stylesheet" type="text/css">#}
+<script src="{% static 'public/js/jquery.growl.js' %}"></script>
+{#<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-jgrowl/1.4.5/jquery.jgrowl.min.js"></script>#}
+{#<script src="https://kendo.cdn.telerik.com/2017.1.223/js/kendo.all.min.js"></script>#}
+{#<script src="{% static 'public/js/hotel-reservation-plugin.js' %}"></script>#}
+
+{% if not 'is_user_login' in request.session %}
+    <input type="hidden" class="temporary_attendee_expire_time" value="{{ temporary_attendee_expire_time }}">
+    <input type="hidden" class="notify_attendee_registration_time_expire"
+           value="{{ notify_attendee_registration_time_expire }}">
+{% endif %}
+
+{% if 'is_user_login' in request.session %}
+    {% if request.session.event_user.attending == "Yes" %}
+        {% if 'cookie_expire' in request.session %}
+            <input type="hidden" id="cookie_expire" value="{{ request.session.cookie_expire }}">
+            <input type="hidden" id="cookie_expire_msg" value="{{ notify_session_expire }}">
+        {% endif %}
+
+        <input type="hidden" id="hidden_secret" value="{{ request.session.event_user.secret_key }}">
+        <input type="hidden" id="new_notification_count" value="{{ request.session.event_user.last_noty }}"/>
+        <script>
+            {#            var ws = new WebSocket("ws://0.0.0.0:5678/{{ request.session.event_user.secret_key }}");#}
+            var ws = new WebSocket("{{ request.session.socket_url }}:5678/{{ request.session.event_user.secret_key }}");
+            ws.onopen = function () {
+                if (window.location.hostname != 'eventdobby.com') {
+                    console.log("Socket Connected successfully");
+                }
+            };
+            ws.onmessage = function (event) {
+                var content = event.data;
+                var flag = false;
+                var socket_data = JSON.parse(content)
+                if (socket_data.nextup_data) {
+                    for (i = 0; i < socket_data.nextup_data.length; i++) {
+                        $.growl.notify({message: socket_data.nextup_data[i]});
+                        flag = true;
+                    }
+                }
+                if (socket_data.evaluation_data) {
+                    for (i = 0; i < socket_data.evaluation_data.length; i++) {
+                        $.growl.notify({message: socket_data.evaluation_data[i]});
+                        flag = true;
+                    }
+                }
+                if (socket_data.message_data) {
+                    for (i = 0; i < socket_data.message_data.length; i++) {
+                        var base_url = window.location.origin + '/' + event_url;
+                        $.growl.notify({message: socket_data.message_data[i], type: 'message', baseUrl: base_url});
+                        flag = true;
+                    }
+                }
+                if (flag) {
+                    console.log('found');
+                    Promise.resolve(get_eval_next_up_messages()).then(console.log);
+                    {#                    console.log("Promised")#}
+                }
+
+            };
+        </script>
+        <script type="application/javascript">
+
+            /*$('.defaultCountdown').each(
+             function () {
+
+             var self = $(this);
+             self.countdown('destroy');
+             }
+             );*/
+            function get_eval_next_up_messages() {
+                var csrfToken = $('input[name=csrfmiddlewaretoken]').val();
+                var data = {
+                    page_id: {{ footer_ajax_page_id }},
+                    csrfmiddlewaretoken: csrfToken
+                };
+                var base_url = window.location.origin + '/' + event_url;
+                $.ajax({
+                    url: base_url + '/get-eval-next-up-msg/',
+                    type: "POST",
+                    data: data,
+                    success: function (response) {
+                        if (response.success) {
+                            if (response.evaluation_status) {
+                                $.each(response.evaluation_html, function (key, value) {
+                                    {#                                console.log(key, value);#}
+                                    $("#" + key).parent().html(value);
+                                    $("#" + key).closest(".col").show();
+                                });
+                            }
+                            if (response.next_up_status) {
+                                $.each(response.next_up_html, function (key, value) {
+                                    {#                                console.log(key, value);#}
+                                    $("#" + key).parent().html(value);
+                                    $("#" + key).closest(".col").show();
+                                });
+                            }
+                            if (response.messages_status) {
+                                {#$('.defaultCountdown').each(#}
+                                {#        function () {#}
+                                {##}
+                                {#            var self = $(this);#}
+                                {#            self.countdown('destroy');#}
+                                {#        }#}
+                                {#);#}
+                                $.each(response.messages_html, function (key, value) {
+                                    console.log(key);
+                                    $("#" + key).parent().html(value);
+                                    $("#" + key).closest(".col").show();
+                                    $('.defaultCountdown').each(
+                                            function () {
+
+                                                var self = $(this);
+                                                var date_string = self.attr('data-id');
+                                                {#                                            console.log(date_string);#}
+                                                var timestamp = date_string.split("-");
+                                                var year = timestamp[0];
+                                                var month = timestamp[1];
+                                                var day = timestamp[2];
+                                                var hour = timestamp[3];
+                                                var minute = timestamp[4];
+                                                var second = timestamp[5];
+                                                var austDay = new Date(Date.UTC(year, month - 1, day, hour, minute, second));
+                                                var endTime = moment(austDay);
+                                                setInterval(function () {
+                                                    var curTime = moment();
+                                                    if (curTime.isBefore(endTime)) {
+                                                        var diffTime = moment.duration(endTime.diff(curTime));
+                                                        var dHour = diffTime.hours();
+                                                        var dMinute = diffTime.minutes();
+                                                        var dSeconds = diffTime.seconds();
+                                                        self.html(dHour + " Hours, " + dMinute + " Minutes, " + dSeconds + " Seconds");
+                                                    }
+                                                    else {
+                                                        var parentElem = self.closest('.form-plugin-messages');
+                                                        self.closest('.form-plugin-item').remove();
+                                                        if (parentElem.children('.form-plugin-list').children('.form-plugin-item').length == 0) {
+                                                            //$('.form-plugin-messages').parent().remove();
+                                                            {#parentElem.find('.messages-read-archived-messages').remove();#}
+                                                            parentElem.find('.messages-mark-all-button').remove();
+                                                        }
+                                                    }
+                                                }, 1000);
+                                                /*self.countdown({
+                                                 until: austDay,
+                                                 onExpiry: function () {
+                                                 var parentElem = self.closest('.form-plugin-messages');
+                                                 self.closest('.form-plugin-item').remove();
+                                                 if (parentElem.children('.form-plugin-list').children('.form-plugin-item').length == 0) {
+                                                 //$('.form-plugin-messages').parent().remove();
+                                                {#                                                        parentElem.find('.messages-read-archived-messages').remove();#}
+                                                 parentElem.find('.messages-mark-all-button').remove();
+                                                 }
+                                                 },
+                                                 layout: '{hn} {hl} ,{mn} {ml}'
+                                                 });*/
+                                            }
+                                    );
+                                });
+                            }
+                            if (response.archive_messages_status) {
+                                {#$('.defaultCountdown').each(#}
+                                {#        function () {#}
+                                {##}
+                                {#            var self = $(this);#}
+                                {#            self.countdown('destroy');#}
+                                {#        }#}
+                                {#);#}
+                                $.each(response.messages_html, function (key, value) {
+                                    {#                                console.log(key, value);#}
+                                    $("#" + key).parent().html(value);
+                                    $("#" + key).closest(".col").show();
+                                    $('.defaultCountdown').each(
+                                            function () {
+
+                                                var self = $(this);
+                                                var date_string = self.attr('data-id');
+                                                var timestamp = date_string.split("-");
+                                                var year = timestamp[0];
+                                                var month = timestamp[1];
+                                                var day = timestamp[2];
+                                                var hour = timestamp[3];
+                                                var minute = timestamp[4];
+                                                var second = timestamp[5];
+                                                var austDay = new Date(Date.UTC(year, month - 1, day, hour, minute, second));
+                                                var endTime = moment(austDay);
+                                                setInterval(function () {
+                                                    var curTime = moment();
+                                                    if (curTime.isBefore(endTime)) {
+                                                        var diffTime = moment.duration(endTime.diff(curTime));
+                                                        var dHour = diffTime.hours();
+                                                        var dMinute = diffTime.minutes();
+                                                        var dSeconds = diffTime.seconds();
+                                                        self.html(dHour + " Hours, " + dMinute + " Minutes, " + dSeconds + " Seconds");
+                                                    }
+                                                    else {
+                                                        var parentElem = self.closest('.form-plugin-archive-messages');
+                                                        self.closest('.form-plugin-item').remove();
+                                                    }
+                                                }, 1000);
+                                                /*self.countdown({
+                                                 until: austDay,
+                                                 onExpiry: function () {
+                                                 var parentElem = self.closest('.form-plugin-archive-messages');
+                                                 self.closest('.form-plugin-item').remove();
+                                                 },
+                                                 layout: '{hn} {hl} ,{mn} {ml}'
+                                                 });*/
+                                            }
+                                    );
+                                });
+                            }
+                        }
+                    }
+                });
+            }
+        </script>
+    {% endif %}
+{% endif %}
+
+<script type="application/javascript">
+
+
+    jQuery(document).ready(function ($) {
+        {#    global datepicker setting#}
+        {% if datepicker_global_setting_json %}
+            $.extend($.fn.pickadate.defaults, {{ datepicker_global_setting_json|safe }});
+        {% else %}
+            $.extend($.fn.pickadate.defaults, {formatSubmit: 'yyyy-mm-dd'});
+        {% endif %}
+        {% if timepicker_global_setting_json %}
+            $.extend($.fn.pickatime.defaults, {{ timepicker_global_setting_json|safe }});
+        {% endif %}
+
+
+        if (readCookie("hitcount")) {
+            {#            console.log(readCookie("hitcount"))#}
+        } else {
+            {#            console.log("creating new cookie")#}
+            createCookie("hitcount", generateUUID(), 7)
+        }
+
+
+    });
+
+    function generateUUID() {
+        var d = new Date().getTime();
+        if (window.performance && typeof window.performance.now === "function") {
+            d += performance.now(); //use high-precision timer if available
+        }
+        var uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+            var r = (d + Math.random() * 16) % 16 | 0;
+            d = Math.floor(d / 16);
+            return (c == 'x' ? r : (r & 0x3 | 0x8)).toString(16);
+        });
+        return uuid;
+    }
+
+    function createCookie(name, value, days) {
+        var expires;
+
+        if (days) {
+            var date = new Date();
+            date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+            expires = "; expires=" + date.toGMTString();
+        } else {
+            expires = "";
+        }
+        document.cookie = encodeURIComponent(name) + "=" + encodeURIComponent(value) + expires + "; path=/";
+    }
+
+    function readCookie(name) {
+        var nameEQ = encodeURIComponent(name) + "=";
+        var ca = document.cookie.split(';');
+        for (var i = 0; i < ca.length; i++) {
+            var c = ca[i];
+            while (c.charAt(0) === ' ') c = c.substring(1, c.length);
+            if (c.indexOf(nameEQ) === 0) return decodeURIComponent(c.substring(nameEQ.length, c.length));
+        }
+        return null;
+    }
+
+    function eraseCookie(name) {
+        createCookie(name, "", -1);
+    }
+</script>
+<script type="application/javascript">
+    jQuery(document).ready(function ($) {
+        {% for filter in static_page_filter %}$("#page-{{ page_id }}-{{ filter.box_id }}").hide();
+        {% endfor %}
+    });
+</script>
+<script type="application/javascript">
+    {#    $(".given-answer").on("change", function () {#}
+    $('body').bind('change', '.given-answer', function (event) {
+        $("#given-answer-function").trigger("questionSelection");
+        console.log(window.realTimeDataArrayQuestion);
+        {{ registration_date_filter_javascript|safe }}
+        {{ updated_date_filter_javascript|safe }}
+        {{ attendee_group_filter_javascript|safe }}
+        {{ attendee_tag_filter_javascript|safe }}
+        {{ session_filter_javascript|safe }}
+        {{ question_filter_javascript|safe }}
+        {{ app_filter_javascript|safe }}
+        {{ hotel_filter_javascript|safe }}
+        {{ speaker_filter_javascript|safe }}
+        {{ email_filter_javascript|safe }}
+        {{ message_filter_javascript|safe }}
+        {{ page_filter_javascript|safe }}
+        {{ language_filter_javascript|safe }}
+        {{ multiple_reg_filter_javascript|safe }}
+        {{ order_filter_javascript|safe }}
+        {{ rebate_filter_javascript|safe }}
+        {{ checkpoint_filter_javascript|safe }}
+        {{ first_empty_filter_javascript|safe }}
+        console.log('ok now');
+{#        setOrUnsetSession();#}
+    });
+    var q_timeout = null;
+    $('body').bind('keyup', '.given-answer', function (event) {
+        {#    $(".given-answer").on("keyup", function () {#}
+        {#            questionSelection();#}
+        clearTimeout(q_timeout);
+        $("#given-answer-function").trigger("questionSelection");
+        {{ question_filter_javascript|safe }}
+        q_timeout = setTimeout(function () {
+{#            setOrUnsetSession();#}
+        }, 500);
+    });
+    {#    $(".session-selection").on("change", function () {#}
+    $('body').on('change', '.session-selection', function (event) {
+        console.log('click here');
+        // note this
+        {#            sessionSelection();#}
+        $("#session-selection-function").trigger("sessionSelection");
+        {#        setOrUnsetSession();#}
+        console.log(window.realTimeDataArraySession);
+        {{ registration_date_filter_javascript|safe }}
+        {{ updated_date_filter_javascript|safe }}
+        {{ attendee_group_filter_javascript|safe }}
+        {{ attendee_tag_filter_javascript|safe }}
+        {{ session_filter_javascript|safe }}
+        {{ question_filter_javascript|safe }}
+        {{ app_filter_javascript|safe }}
+        {{ hotel_filter_javascript|safe }}
+        {{ speaker_filter_javascript|safe }}
+        {{ email_filter_javascript|safe }}
+        {{ message_filter_javascript|safe }}
+        {{ page_filter_javascript|safe }}
+        {{ language_filter_javascript|safe }}
+        {{ multiple_reg_filter_javascript|safe }}
+        {{ order_filter_javascript|safe }}
+        {{ rebate_filter_javascript|safe }}
+        {{ checkpoint_filter_javascript|safe }}
+        {{ first_empty_filter_javascript|safe }}
+{#        setOrUnsetSession();#}
+    });
+
+    $("#given-answer-function").bind("questionSelection", function () {
+        console.log("questionSelection");
+        {#        function questionSelection() {#}
+        var realTimeDataArray = {};// note this
+        $('.given-answer').each(function () {
+
+                    if (typeof(realTimeDataArray[$(this).attr('data-filter-id')]) === 'undefined') {
+                        if ($(this).attr('type') == "checkbox") {
+                            if ($(this).is(':checked')) {
+                                realTimeDataArray[$(this).attr('data-filter-id')] = [];
+                                realTimeDataArray[$(this).attr('data-filter-id')].push($(this).val());
+                            } else {
+                                realTimeDataArray[$(this).attr('data-filter-id')] = [];
+                                realTimeDataArray[$(this).attr('data-filter-id')].push("");
+                            }
+                        } else if ($(this).attr('type') == "radio") {
+                            if ($(this).is(':checked')) {
+                                realTimeDataArray[$(this).attr('data-filter-id')] = [];
+                                realTimeDataArray[$(this).attr('data-filter-id')].push($(this).val());
+                            } else {
+                                realTimeDataArray[$(this).attr('data-filter-id')] = [];
+                                realTimeDataArray[$(this).attr('data-filter-id')].push("");
+                            }
+                        } else {
+                            realTimeDataArray[$(this).attr('data-filter-id')] = [];
+                            realTimeDataArray[$(this).attr('data-filter-id')].push($(this).val());
+                        }
+                    } else {
+                        if ($(this).attr('type') == "checkbox") {
+                            if ($(this).is(':checked')) {
+                                realTimeDataArray[$(this).attr('data-filter-id')].push($(this).val());
+                            } else {
+                                realTimeDataArray[$(this).attr('data-filter-id')].push("");
+                            }
+                        } else if ($(this).attr('type') == "radio") {
+                            if ($(this).is(':checked')) {
+                                realTimeDataArray[$(this).attr('data-filter-id')].push($(this).val());
+                            } else {
+                                realTimeDataArray[$(this).attr('data-filter-id')].push("");
+                            }
+                        } else {
+                            realTimeDataArray[$(this).attr('data-filter-id')].push($(this).val());
+                        }
+                    }
+                }
+        );
+        window.realTimeDataArrayQuestion = {};
+        window.realTimeDataArrayQuestion = realTimeDataArray;
+    });
+
+    $("#session-selection-function").bind("sessionSelection", function () {
+        console.log("sessionSelection");
+
+        $('.session-selection').each(function () {
+
+            if (typeof(window.realTimeDataArraySession[$(this).attr('data-session-id')]) === 'undefined') {
+                if ($(this).attr('type') == "checkbox") {
+                    if ($(this).is(':checked')) {
+                        window.realTimeDataArraySession[$(this).attr('data-session-id')] = false;
+                        window.realTimeDataArraySession[$(this).attr('data-session-id')] = $(this).is(':checked');
+                    } else {
+                        window.realTimeDataArraySession[$(this).attr('data-session-id')] = false;
+                    }
+                } else if ($(this).attr('type') == "radio") {
+                    if ($(this).is(':checked')) {
+                        window.realTimeDataArraySession[$(this).attr('data-session-id')] = false;
+                        window.realTimeDataArraySession[$(this).attr('data-session-id')] = $(this).is(':checked');
+                    } else {
+                        window.realTimeDataArraySession[$(this).attr('data-session-id')] = false;
+                    }
+                } else {
+                    window.realTimeDataArraySession[$(this).attr('data-session-id')] = false;
+                    window.realTimeDataArraySession[$(this).attr('data-session-id')] = $(this).is(':checked');
+                }
+            } else {
+                if ($(this).attr('type') == "checkbox") {
+                    if ($(this).is(':checked')) {
+                        window.realTimeDataArraySession[$(this).attr('data-session-id')] = $(this).is(':checked');
+                    } else {
+                        window.realTimeDataArraySession[$(this).attr('data-session-id')] = false;
+                    }
+                } else if ($(this).attr('type') == "radio") {
+                    if ($(this).is(':checked')) {
+                        window.realTimeDataArraySession[$(this).attr('data-session-id')] = $(this).is(':checked');
+                    } else {
+                        window.realTimeDataArraySession[$(this).attr('data-session-id')] = false;
+                    }
+                } else {
+                    window.realTimeDataArraySession[$(this).attr('data-session-id')] = $(this).is(':checked');
+                }
+            }
+        });
+    });
+    function filterAttending(realTimeDataArray, value, dyanmic_result) {
+        var result = false;
+        try {
+            if (typeof(realTimeDataArray) === 'undefined') {
+                return dyanmic_result;
+            }
+            if (realTimeDataArray == value) {
+                result = true;
+            }
+        } catch (err) {
+            console.log("filter in error")
+            console.log("Error: " + err + ".");
+        }
+        return result;
+
+    }
+
+    function filterNotAttending(realTimeDataArray, value, dyanmic_result) {
+        var result = false;
+        try {
+            if (typeof(realTimeDataArray) === 'undefined') {
+                return dyanmic_result;
+            }
+            if (realTimeDataArray == value) {
+                result = true;
+            }
+        } catch (err) {
+            console.log("filter in error")
+            console.log("Error: " + err + ".");
+        }
+        return result;
+
+    }
+
+
+    function filter_is(realTimeDataArray, value, dyanmic_result) {
+        var result = false;
+        try {
+            if (typeof(realTimeDataArray) === 'undefined') {
+                return dyanmic_result;
+            }
+            $.map(realTimeDataArray, function (val, i) {
+                {#                console.log(val);#}
+                {#                console.log(value);#}
+                if (val == value) {
+                    result = true;
+                }
+            });
+        } catch (err) {
+            console.log("filter in error")
+            console.log("Error: " + err + ".");
+        }
+        return result;
+
+    }
+
+    function filter_isNot(realTimeDataArray, value, dyanmic_result) {
+        var result = true;
+        try {
+            if (typeof(realTimeDataArray) === 'undefined') {
+                return dyanmic_result;
+            }
+            $.map(realTimeDataArray, function (val, i) {
+                if (val == value) {
+                    result = false;
+                }
+            });
+        } catch (err) {
+            console.log("filter in error")
+            console.log("Error: " + err + ".");
+        }
+        return result;
+    }
+
+    function filter_isEmpty(realTimeDataArray, value, dyanmic_result) {
+        var result = true;
+        try {
+            if (typeof(realTimeDataArray) === 'undefined') {
+                return dyanmic_result;
+            }
+            $.map(realTimeDataArray, function (val, i) {
+                if (val != "") {
+                    result = false;
+                }
+            });
+        } catch (err) {
+            console.log("filter in error")
+            console.log("Error: " + err + ".");
+        }
+        return result;
+    }
+
+    function filter_isNotEmpty(realTimeDataArray, value, dyanmic_result) {
+        var result = true;
+        try {
+            if (typeof(realTimeDataArray) === 'undefined') {
+                return dyanmic_result;
+            }
+            $.map(realTimeDataArray, function (val, i) {
+                if (val == "") {
+                    result = false;
+                }
+            });
+        } catch (err) {
+            console.log("filter in error")
+            console.log("Error: " + err + ".");
+        }
+        return result;
+    }
+</script>
+<script>
+    jQuery(function () {
+        console.log("From jQuery.ready callback.");
+    });
+
+    $(window).load(function () {
+        console.log("From window.onload callback.");
+    });
+</script>
+{{ kendo_content|safe }}
+<script src="{% static 'public/js/page.js' %}"></script>
+{#<script src="{% static 'public/js/session_agenda.js' %}"></script>#}
+{#<script src="{% static 'public/js/details.js' %}"></script>#}
+<script src="{% static 'public/js/plugin_session.js' %}"></script>
+{#<script src="{% static 'public/js/plugins.js' %}"></script>#}
+{% if plugin_js_need.get_multiple_registration.loop_registration %}
+    <script>plugin_js_need["get_multiple_registration"]["loop_registration"] = true;</script>
+    <script src="{% static 'public/js/multiple_registration.js' %}"></script>
+{% endif %}
+{% if plugin_js_need.get_multiple_registration.inline_registration %}
+    <script>plugin_js_need["get_multiple_registration"]["inline_registration"] = true;</script>
+    <script src="{% static 'public/js/multiple_registration_inline.js' %}"></script>
+{% endif %}
+{% if plugin_js_need.get_plugin_hotel_reservation %}
+    <script>plugin_js_need["get_plugin_hotel_reservation"] = true;</script>
+{% endif %}
+<script src="{% static 'public/js/hotel_reservation_plugin.js' %}"></script>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
+{% if plugin_js_need.get_photo_upload or plugin_js_need.get_photo_gallery %}
+    {% if plugin_js_need.get_photo_upload %}
+        <script>plugin_js_need["get_photo_upload"] = true;</script>
+    {% endif %}
+    {% if plugin_js_need.get_photo_gallery %}
+        <script>plugin_js_need["get_photo_gallery"] = true;</script>
+    {% endif %}
+    <script src="{% static 'public/js/photo_gallery.js' %}"></script>
+{% endif %}
+<script>
+    $(function () {
+        $("#given-answer-function").trigger("questionSelection");
+        $("#session-selection-function").trigger("sessionSelection");
+        console.log(window.realTimeDataArrayQuestion);
+        console.log(window.realTimeDataArraySession);
+        {{ registration_date_filter_javascript|safe }}
+        {{ updated_date_filter_javascript|safe }}
+        {{ attendee_group_filter_javascript|safe }}
+        {{ attendee_tag_filter_javascript|safe }}
+        {{ session_filter_javascript|safe }}
+        {{ question_filter_javascript|safe }}
+        {{ app_filter_javascript|safe }}
+        {{ hotel_filter_javascript|safe }}
+        {{ speaker_filter_javascript|safe }}
+        {{ email_filter_javascript|safe }}
+        {{ message_filter_javascript|safe }}
+        {{ page_filter_javascript|safe }}
+        {{ language_filter_javascript|safe }}
+        {{ multiple_reg_filter_javascript|safe }}
+        {{ order_filter_javascript|safe }}
+        {{ rebate_filter_javascript|safe }}
+        {{ checkpoint_filter_javascript|safe }}
+        {{ first_empty_filter_javascript|safe }}
+{#        setOrUnsetSession();#}
+    });
+    function triggerSession() {
+        $("#session-selection-function").trigger("sessionSelection");
+        console.log("window.realTimeDataArrayQuestion");
+        console.log(window.realTimeDataArraySession);
+        {{ registration_date_filter_javascript|safe }}
+        {{ updated_date_filter_javascript|safe }}
+        {{ attendee_group_filter_javascript|safe }}
+        {{ attendee_tag_filter_javascript|safe }}
+        {{ session_filter_javascript|safe }}
+        {{ question_filter_javascript|safe }}
+        {{ app_filter_javascript|safe }}
+        {{ hotel_filter_javascript|safe }}
+        {{ speaker_filter_javascript|safe }}
+        {{ email_filter_javascript|safe }}
+        {{ message_filter_javascript|safe }}
+        {{ page_filter_javascript|safe }}
+        {{ language_filter_javascript|safe }}
+        {{ multiple_reg_filter_javascript|safe }}
+        {{ order_filter_javascript|safe }}
+        {{ rebate_filter_javascript|safe }}
+        {{ checkpoint_filter_javascript|safe }}
+        {{ first_empty_filter_javascript|safe }}
+{#        setOrUnsetSession();#}
+    }
+</script>
+
+<script src="{% static 'public/js/economy_plugin.js' %}"></script>

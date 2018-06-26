@@ -1,0 +1,206 @@
+{#<div id="content-wrapper">#}
+<div class="panel colourable">
+    <div class="panel-heading">
+        <span class="panel-title"><strong>New Checkpoint</strong></span>
+    </div>
+    <div class="panel-body tab-content">
+        <form action="/admin/add-checkpoint/" id="add-checkpoint-form" method="post">
+
+            {% if not isSession %}
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="form-group no-margin-hr">
+                            <label class="control-label">Checkpoint Name</label>
+
+                            <p>The checkpoint name as it will appear in attendee history</p>
+
+                            <input type="text" name="name" class="form-control" required value="{{ name }}">
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="form-group no-margin-hr">
+                        <label class="control-label">Allow for re-entry <input type="checkbox" name="re_entry"
+                                                                               class="form-control" {{ re_entry }}
+                                                                               value="1"></label>
+                    </div>
+                </div>
+            </div>
+
+            {% if not isSession %}
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="form-group no-margin-hr">
+                            <label class="control-label">Filter</label>
+
+                            <p>Attendees passing checkpoint mus satisfy prerequisite of the selected filter</p>
+                            <select class="form-control filter-rules-selector" name="rule_id" id="filter">
+                                <option value="{{ quick_filter_id }}" class="quick-filter"> Quick Filter</option>
+                                {% for group in filterGroup %}
+
+                                    <optgroup label="{{ group.name|safe }}">
+                                        {% for filter in group.filters %}
+                                            <option value="{{ filter.id }}" {{ filter.selected }}> {{ filter.name }}</option>
+                                        {% endfor %}
+                                    </optgroup>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+            {% endif %}
+
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="form-group no-margin-hr">
+                        <input type="checkbox" name="select_all" id="selecctall"/> <label for="selecctall">Select
+                        All</label>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="row">
+                <div class="col-md-8">
+                    <strong>
+                        <h3 id="uidemo-jquery-ui-accordions2" href="#uidemo-jquery-ui-accordions2" class="header-2">
+                            Questions</h3>
+                    </strong>
+
+                    <p> The questions selected selected below are displayed and searchable in the checkpoint</p>
+
+                </div>
+                <div class="col-md-12">
+                    <div id="ui-accordion2">
+
+                        <div class="group">
+                            <h3><input type="checkbox" class="allselect groupname">General</h3>
+
+                            <div class="row">
+                                {% for g_q in general_questions %}
+                                    <div class="col col-md-6 no">
+                                        <div class="col-md-1 width-sorter"><input type="checkbox"
+                                                                                  id="question_{{ g_q.id }}"
+                                                                                  name="questions" {{ g_q.checked }}
+                                                                                  class="allselect question"
+                                                                                  value="{{ g_q.id }}"/></div>
+                                        <div class="col-md-11 no-padding"><label
+                                                for="question_{{ g_q.id }}">{{ g_q.title }}</label></div>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+
+                        {% for q in questions %}
+                            {% if q.newGroup %}
+                                {% if forloop.counter  > 1 %}
+                                    </div>
+                                    </div> <!-- / .group -->
+
+                                {% endif %}
+
+                                <div class="group">
+                                <h3><input type="checkbox" class="allselect groupname"> {{ q.group.name|safe }}</h3>
+                                <div class="row">
+                            {% endif %}
+
+                            <div class="col col-md-6 no">
+                                <div class="col-md-1 width-sorter"><input type="checkbox" id="question_{{ q.id }}"
+                                                                          name="questions" {{ q.checked }}
+                                                                          class="allselect question"
+                                                                          value="{{ q.id }}"/></div>
+                                <div class="col-md-11 no-padding"><label for="question_{{ q.id }}">{{ q.title }}</label>
+                                </div>
+                            </div>
+
+                        {% endfor %}
+                        </div> <!-- / #ui-accordion -->
+                        </div>
+            </div>
+
+            <br>
+
+
+            <br>
+            {#                {% csrf_token %}#}
+            <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
+
+            <div class="row">
+                <div class="col-sm-12 text-right">
+                    {#                        <div class="btn-group">#}
+                    {#                            <button type="button"  class="btn btn-success save" id="save-export-btn">Save and export</button>#}
+                    {#                            <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>#}
+                    {#                        </div>#}
+                    {#                        #}
+
+
+                    <div class="btn-group float-right">
+                        <button type="button" class="btn btn-lg" data-dismiss="modal"><i
+                                class="fa fa-ban"></i>&nbsp;&nbsp;Cancel
+                        </button>
+                        <div class="btn-group">
+                            <button type="submit" class="btn btn-success btn-lg save" id="save-export-btn">
+                                <i class="fa fa-check-circle"></i>&nbsp;&nbsp;Save &nbsp;
+                            </button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </form>
+    </div>
+</div>
+{#</div>#}
+<style>
+
+    .width-sorter {
+        width: 6.333333% !important;
+    }
+
+</style>
+<script>
+    $(function () {
+        $('.filter-rules-selector').select2();
+        $('#filter').select2().on('select2-selecting', function (e) {
+            if (e.object.css == 'quick-filter') {
+                $.ajax({
+                    url: base_url + '/admin/filters/quick_filter_exists/',
+                    success: function (response) {
+                        if (response.status) {
+                            var modal_class = 'filters-add-filter';
+                            $('#quick-save-div').show();
+                            $('#filter-grp-div').hide();
+                            $('#preset-name-div').hide();
+                            showQuickFilterData(response.filter.id, modal_class);
+                        } else {
+                            $('#quick-save-div').show();
+                            $('#filter-grp-div').hide();
+                            $('#preset-name-div').hide();
+
+                            $('#btn-update-quick-filter').show();
+                            $('#btn-update-filter').hide();
+                            $('.any-or-all').val(1);
+                            $('#filters-add-filter').find('.modal-title').html('Quick Filter');
+                            $('#preset_filter_group').select2('val', '');
+
+                            $('.filter-panel-title').html("New Filter");
+                            $('#filters-add-filter').modal('show');
+                            $('#preset_name').attr('data-id', '');
+                            var rowCount = 0;
+                            $('.filter-list').html($('#filter-li-html').html());
+                            activeDatePicker();
+
+
+                        }
+                    }
+                });
+            }
+
+        });
+    });
+</script>

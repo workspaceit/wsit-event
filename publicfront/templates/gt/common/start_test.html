@@ -1,0 +1,132 @@
+{% extends "gt/layout/layout.html" %}
+{% block content %}
+    {% csrf_token %}
+    <div class="wrapper headline color8" style="padding: 0; z-index: 2;">
+        <div id="bg1"></div>
+        <div class="wrapper" style="z-index: 2; overflow-x: visible;">
+
+            <h1 class="color1">Start</h1>
+        </div>
+    </div>
+
+    <div class="wrapper">
+        <div class="container padding mainContent">
+            <p>&nbsp;</p>
+
+            <div class="row gutters">
+                    <div class="col span_4 elementNextUp">
+                        <h3>Härnäst</h3>
+                        <p>Upcoming session</p>
+                        <ul class="nextUp">
+                                <li>
+                                    <h4>Session 1</h4>
+
+                                    <div class="content">
+                                        <p class="data time">10:45
+                                            - 12:45</p>
+                                        <p class="data location">Stockholm
+                                        </p>
+
+                                            <p class="data presenter">
+                                                Mahedi Hasan</p>
+
+                                    </div>
+                                </li>
+                        </ul>
+                    </div>
+                    <div class="col span_4 elementEvaluate">
+                        <h3>Utvärdera</h3>
+                        <p>Klicka på stjärnorna för att utvärdera. När du är färdig klickar du på "Skicka utvärdering".</p>
+                        <ul class="evaluate">
+                                <li><h4>Session 2</h4>
+                                    <ul class="stars" id="rated_session_1"
+                                        data-id="1">
+                                        <li class="star" data-rating="1"></li>
+                                        <li class="star" data-rating="2"></li>
+                                        <li class="star" data-rating="3"></li>
+                                        <li class="star" data-rating="4"></li>
+                                        <li class="star" data-rating="5"></li>
+                                    </ul>
+                                </li>
+                        </ul>
+                        <a href="javascript:void(0);" class="button round session-evaluate"
+                           style="margin-bottom: 1em; float: right;">Skicka utvärdering</a>
+                    </div>
+                <div class="col span_4 elementNotifications">
+                    <h3 id="noti_hidden" style="">Meddelande</h3>
+                    <ul class="notifications">
+                                    <li>
+                                        <h4> Aktivitetskonflikt  <span
+                                                class="date">2016-09-04 10:45</span>
+                                        </h4>
+
+                                        <p>you have conflict</p>
+
+
+                                        <p><a href="javascript:void(0)" class="label color2 click-notification"
+                                              data-id="1">Ja</a>&nbsp;&nbsp;<a
+                                                href="javascript:void(0)"
+                                                class="label color3 click-notification"
+                                                data-id="1">Nej</a>
+                                        </p>
+                                        <br/>
+                                        <p>Om inget svar mottagits inom
+                                                                            <span class="defaultCountdown time"
+                                                                                  data-id="2016-09-04 10:45"></span>
+                                            så går platsen vidare till nästa i kön.
+                                        </p>
+                                    </li>
+                                    <li>
+                                        <div class="dismiss delete_notification" data-id="1"></div>
+                                        <h4>Admin <span
+                                                class="date">2016-09-04 10:45</span>
+                                        </h4>
+
+                                        <p>Hi Anik</p>
+                                    </li>
+                                    <li>
+                                        <div class="dismiss delete_notification" data-id="1"></div>
+                                        <h4>Session  <span
+                                                class="date">2016-09-04 10:45</span>
+                                        </h4>
+
+                                        <p>Hi Guys</p>
+                                    </li>
+                                    <li>
+                                        <div class="dismiss delete_notification" data-id="1"></div>
+                                        <h4>Grant Thorton Team <span
+                                                class="date">2016-09-04 10:45</span>
+                                        </h4>
+
+                                        <p>Hello</p>
+                                    </li>
+                    </ul>
+                </div>
+
+
+
+                <div class="col span_12">
+                    <h2>Välkommen till din personliga sida för Kunskapsveckan och GetTogether!</h2>
+
+                    <p>Under <a href="{% url 'gt-summering' %}">Min medverkan</a> hittar du ett samlat
+                        schema för din vecka. För att ha all information lättillgänglig är vårt tips att du även laddar
+                        ner appen till din telefon. Under fliken <a
+                                href="{% url 'gt-static-page' staticPage='information' %}">Information</a> finns
+                        instruktioner</p>
+
+                    <p>Har du frågor kring logi och middagar kontakta: <a href="mailto:my.nyander@springconf.se">my.nyander@springconf.se</a>
+                    </p>
+
+                    <p>Har du frågor kring kurser och seminarier kontakta: <a href="mailto:Utbildningsfragor@se.gt.com">Utbildningsfragor@se.gt.com</a>
+                    </p>
+                </div>
+            </div>
+
+        </div>
+        <!-- mainContent -->
+
+    </div><!--wrapper-->
+    </div><!-- mainContent -->
+
+    </div><!--wrapper-->
+{% endblock %}

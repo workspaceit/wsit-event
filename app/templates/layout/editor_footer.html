@@ -1,0 +1,41 @@
+{% load staticfiles %}
+<img src="{% static 'public/images/712.GIF' %}" id="loader" alt=""/>
+    <style>
+        #loader {
+            display: none;
+            position: absolute;
+            margin: auto;
+            left: 0;
+            right: 0;
+            top: 0;
+            bottom: 0;
+        }
+{#        #in{#}
+{#            border: 2px solid;#}
+{#            padding: 5px;#}
+{#            resize: both;#}
+{#            overflow: auto;#}
+{#        }#}
+    </style>
+<input type="hidden" id="editor_default_date_format" value="{{ editor_default_date_format }}">
+<input type="hidden" id="editor_default_time_format" value="{{ editor_default_time_format }}">
+<input type="hidden" id="editor_default_date_time_format" value="{{ editor_default_date_time_format }}">
+{% if editor_event_stylesheet %}
+    <input type="hidden" id="editor_event_stylesheet" value="{{ editor_event_stylesheet }}">
+{% endif %}
+<input type="hidden" id="editor_question_group_list" value="{{ editor_question_group_list }}">
+<input type="hidden" id="editor_fullpage" value="{{ editor_fullpage }}">
+<input type="hidden" id="editor_min_height" value="{{ editor_min_height }}">
+<input type="hidden" id="editor_max_height" value="{{ editor_max_height }}">
+<input type="hidden" id="editor_editor_iframe_style" value="{{ editor_iframe_style }}">
+<input type="hidden" id="editor_toolbar_inline" value="{{ editor_toolbar_inline }}">
+<input type="hidden" id="editor_link_styles" value="{{ editor_link_styles }}">
+<input type="hidden" id="editor_font_familys" value="{{ editor_font_familys }}">
+{#<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.25.0/codemirror.min.js"></script>#}
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.25.0/mode/xml/xml.min.js"></script>
+<script type="text/javascript" src="{% static 'assets/javascripts/froala_editor_2.8.1/froala_editor.pkgd.min.js' %}"></script>
+{#<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>#}
+{#<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.25.0/codemirror.min.js"></script>#}
+{#<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.25.0/mode/xml/xml.min.js"></script>#}
+{#<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/froala-editor/2.6.0//js/froala_editor.pkgd.min.js"></script>#}
+<script type="text/javascript" src="{% static 'assets/javascripts/editor/email_editor.js' %}"></script>

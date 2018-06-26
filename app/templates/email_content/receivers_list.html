@@ -1,0 +1,67 @@
+{% for receiver in email_receivers %}
+    <tr>
+        <td><input type="checkbox" data-id="{{ receiver.id }}"></td>
+        <td>{{ forloop.counter }}</td>
+        <td>{{ receiver.firstname }}</td>
+        <td>{{ receiver.lastname }}</td>
+        <td>{{ receiver.email }}</td>
+        <td data-status="{{ receiver.status }}" class="receiver-status">
+            {% if receiver.status == 'sent' %} Sent {% else %} Not Sent {% endif %}</td>
+        <td class="last-received">{{ receiver.last_received | date:'Y-m-d H:i' }}</td>
+        <td>
+            {% if request.session.admin_permission.content_permission.message_permission and request.session.admin_permission.content_permission.message_permission.access_level == 'write' or request.session.event_auth_user.type == 'super_admin' %}
+                <button class="btn btn-xs btn-info change-email-receiver-status"
+                        data-toggle="tooltip"
+                        data-placement="top"
+                        title=""
+                        data-original-title="Change Status">
+                    <i class="fa fa-refresh" aria-hidden="true"></i>
+
+                </button>
+                <a href="{% url 'email-receiver-preview' pk=receiver.id %}"
+                   class="btn btn-xs preview-receiver-email-content"
+                   data-toggle="tooltip"
+                   data-placement="top"
+                   title=""
+                   data-original-title="Preview" target="_blank">
+                    <i class="fa fa-share-square-o" aria-hidden="true"></i>
+
+                </a>
+                <a href="{% url 'download-receiver-email' pk=receiver.id %}"
+                   class="btn btn-xs btn-warning download-email-receiver"
+                   data-toggle="tooltip"
+                   data-placement="top"
+                   title=""
+                   data-original-title="Download" target="_blank">
+                    <i class="fa fa-download" aria-hidden="true"></i>
+                </a>
+                <button class="btn btn-xs btn-danger delete-email-receiver"
+                        data-toggle="tooltip"
+                        data-placement="top"
+                        title=""
+                        data-original-title="Delete">
+                    <i class="dropdown-icon fa fa-times-circle"></i>
+                </button>
+            {% else %}
+                <a href="{% url 'email-receiver-preview' pk=receiver.id %}"
+                   class="btn btn-xs preview-receiver-email-content"
+                   data-toggle="tooltip"
+                   data-placement="top"
+                   title=""
+                   data-original-title="Preview" target="_blank">
+                    <i class="fa fa-share-square-o" aria-hidden="true"></i>
+
+                </a>
+                <a href="{% url 'download-receiver-email' pk=receiver.id %}"
+                   class="btn btn-xs btn-warning download-email-receiver"
+                   data-toggle="tooltip"
+                   data-placement="top"
+                   title=""
+                   data-original-title="Download" target="_blank">
+                    <i class="fa fa-download" aria-hidden="true"></i>
+                </a>
+            {% endif %}
+        </td>
+
+    </tr>
+{% endfor %}

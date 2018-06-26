@@ -1,0 +1,97 @@
+{% extends "layout/main.html" %}
+{% block content %}
+<div id="content-wrapper">
+				
+		<div class="panel colourable">
+			<div class="panel-heading">
+                {% csrf_token %}
+				<span class="panel-title"><i class="fa fa-bed fa-lg"></i>&nbsp;&nbsp;&nbsp;<strong>Hotel Details</strong></span>
+			</div> <!-- / .panel-heading -->
+			<div class="panel-body tab-content">
+				<div class="tab-pane fade in active" id="hotel-details">					
+					<div class="row">
+						<div class="col-sm-6">
+							<div class="form-group no-margin-hr">
+								<label class="control-label">Hotel Name</label>
+								<input type="text" name="hotel-name" class="form-control hotel-name" placeholder="Hotel Name">
+							</div>
+						</div><!-- col-sm-6 -->
+						<div class="col-sm-6">
+							<div class="form-group no-margin-hr">
+								<label class="control-label">Location</label>
+								<select class="form-control filter-question-selector hotel-location">
+                                {% for group in locationGroup %}
+                                    <optgroup label="{{ group.name|safe }}">
+                                        {% for location in group.locations %}
+										<option value="{{ location.id }}">{{ location.name }}</option>
+                                        {% endfor %}
+									</optgroup>
+                                {% endfor %}
+								</select>
+							</div>
+						</div><!-- col-sm-6 -->
+					</div><!-- row -->
+					<div class="row">
+						<div class="col-sm-6">
+							<div class="form-group no-margin-hr">
+								<label class="control-label">Category</label>
+								<select class="form-control filter-question-selector hotel-category">
+                                    {% for group in category %}
+                                        <option value="{{ group.id }}">{{ group.name|safe }}</option>
+                                    {% endfor %}
+								</select>
+							</div>
+						</div>
+					</div>
+						
+					<div class="table-light">
+						<div class="table-header">
+							<div class="table-caption">
+								Room Types
+							</div>
+						</div>
+						<table class="table table-bordered links">
+							<thead>
+								<tr>
+									<th>#Beds</th>
+									<th>Description</th>
+
+									<th>Occupancy</th>
+								</tr>
+							</thead>
+							<tbody class="hotel-room">
+
+							</tbody>
+						</table>
+						<div class="table-footer text-right">
+							<div class="btn-group">
+								<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#hotel-details-add-room"><span class="icon fa fa-plus"></span>&nbsp;&nbsp;Add New Hotel Room</button>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+{#						<div class="col-sm-6">#}
+{#							<button type="button" class="btn btn-danger btn-lg" data-original-title="" title=""><i class="fa fa-times-circle"></i>&nbsp;&nbsp;Delete</button>#}
+{#						</div>#}
+						<div class="col-sm-12 text-right">
+							<div class="btn-group">
+								<a type="button" class="btn btn-labeled btn-lg" data-original-title="" title="" href="{% url "hotels" %}"><i class="fa fa-ban"></i>&nbsp;&nbsp;Cancel</a>
+								<button type="button" class="btn btn-success dropdown-toggle btn-lg createHotel btn-save"><i class="fa fa-check-circle"></i>&nbsp;&nbsp;Save</button>
+							</div>
+						</div>
+					</div>
+					
+				</div>
+
+				<!-- Add Hotel Room Modal -->
+				 {% include 'hotel/add_room.html' %}
+				<!-- / Large modal -->
+
+			</div>
+			
+		</div>				
+	</div> <!-- / #content-wrapper -->
+    <input type = 'hidden' id="roomList" name = '' value = '[]'/>
+    <input class="vat_select_box_element" type="hidden" value='<select class="form-control filter-question-selector-allotment-vat edit-room-allotment-vat">
+        <option value=""></option> {% for group in paymentGroup %} <option value="{{ group.name }}">{{ group.name|safe }}% </option> {% endfor %} </select>'>
+{% endblock %}

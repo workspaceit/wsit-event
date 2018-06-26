@@ -1,0 +1,779 @@
+{% extends "layout/main.html" %}
+{% block content %}
+    {% load staticfiles %}
+    {#    code mirror#}
+    <link rel=stylesheet href="{% static 'assets/stylesheets/kendo/kendo.common.min.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/stylesheets/kendo/kendo.bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/stylesheets/kendo/kendo.default.mobile.min.css' %}">
+    <script src="{% static 'assets/javascripts/kendo/kendo.all.min.js' %}"></script>
+
+    {% csrf_token %}
+    <div id="content-wrapper">
+        <div class="panel colourable">
+            <div class="panel-heading">
+            <span class="panel-title"><i class="fa fa-lg fa-files-o"></i></i>
+                &nbsp;&nbsp;&nbsp;<strong>Files</strong></span>
+
+            </div>
+            <!-- / .panel-heading -->
+            <div class="panel-body tab-content">
+                <div class="tab-pane fade in active">
+                    <div class="demo-section k-content">
+                        <div id="treedata" hidden>{{ filelist }}</div>
+                        <div id="treeview"></div>
+                    </div>
+
+                    {#        new #}
+                    <ul id="menu" style="width: 130px;">
+                        {% if request.session.admin_permission.content_permission.file_browser_permission and request.session.admin_permission.content_permission.file_browser_permission.access_level == 'write' or request.session.event_auth_user.type == 'super_admin' %}
+                            <li class="li-file-new-folder"><img src="{% static 'assets/images/file-icon/new-folde-iconr.png' %}" class="new-folder"/>New Folder
+                            </li>
+                            <li class="li-file-rename"><img
+                                    src="{% static 'assets/images/file-icon/rename-icon.png' %}"/>Rename
+                            </li>
+                            <li class="li-file-delete"><img
+                                    src="{% static 'assets/images/file-icon/delete-icon.png' %}"/>Delete
+                            </li>
+                            <li class="li-file-copy"><img src="{% static 'assets/images/file-icon/copy-icon.png' %}"/>Copy
+                            </li>
+                            <li class="li-file-cut"><img src="{% static 'assets/images/file-icon/cut-icon.png' %}"/>Cut
+                            </li>
+                            <li class="li-file-paste"><img src="{% static 'assets/images/file-icon/paste-icon.png' %}"/>Paste
+                            </li>
+                            <li class="li-file-upload"><img
+                                    src="{% static 'assets/images/file-icon/upload-icon.png' %}"/>Upload
+                            </li>
+                        {% endif %}
+                        <li class="li-file-get-details"><img
+                                src="{% static 'assets/images/file-icon/details-icon.png' %}"/>Get Details
+                        </li>
+                    </ul>
+
+
+                    {#        new folder modal#}
+                    <div id="modal-new-folder" class="modal fade" tabindex="-1" role="dialog" style="display: none;">
+                        <div class="modal-dialog modal-lg">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">X
+                                    </button>
+                                    <h4 class="modal-title">New Folder</h4>
+                                </div>
+                                <div class="modal-body">
+                                    <div id="add-session-form">
+                                        <input type="hidden" id="session-id"/>
+
+
+                                        <div class="row">
+                                            <div class="col-sm-12">
+
+                                                {#                                    <div class="form-group no-margin-hr">#}
+                                                <label class="control-label">Folder Name: </label>
+                                                <input type="text" class="form-control" id="new-folder-text">
+
+                                                {#                                    </div>#}
+
+                                            </div>
+
+                                        </div>
+
+
+                                        <div class="row">
+                                            <div class="col-sm-12 text-right">
+                                                <div class="btn-group">
+
+                                                    <button type="button" class="btn btn-lg" data-original-title=""
+                                                            title=""
+                                                            data-dismiss="modal" aria-hidden="true"><i
+                                                            class="fa fa-ban"></i>&nbsp;&nbsp;Cancel
+                                                    </button>
+                                                    <button type="button" id="save-new-folder-action-btn"
+                                                            class="btn btn-success btn-lg btn-save"><i
+                                                            class="fa fa-check-circle"></i>&nbsp;&nbsp;Save
+                                                    </button>
+                                                    {#                                <button type="button" id="btn-update-session" class="btn btn-success btn-lg btn-save"#}
+                                                    {#                                        style="display: none;"><i class="fa fa-check-circle"></i>&nbsp;&nbsp;Update#}
+                                                    {#                                </button>#}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- / .modal-content -->
+                        </div>
+                        <!-- / .modal-dialog -->
+                    </div>
+
+
+                    {#        rename modal#}
+                    <div id="modal-rename" class="modal fade" tabindex="-1" role="dialog" style="display: none;">
+                        <div class="modal-dialog modal-lg">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">X
+                                    </button>
+                                    <h4 class="modal-title">Rename</h4>
+                                </div>
+                                <div class="modal-body">
+                                    <div>
+
+                                        <div class="row">
+                                            <div class="col-sm-12">
+
+                                                {#                                    <div class="form-group no-margin-hr">#}
+                                                <label class="control-label">New Name: </label>
+                                                <input type="text" class="form-control" id="new-rename-text">
+
+                                                {#                                    </div>#}
+
+                                            </div>
+
+                                        </div>
+
+
+                                        <div class="row">
+                                            <div class="col-sm-12 text-right">
+                                                <div class="btn-group">
+
+                                                    <button type="button" class="btn btn-lg" data-original-title=""
+                                                            title=""
+                                                            data-dismiss="modal" aria-hidden="true"><i
+                                                            class="fa fa-ban"></i>&nbsp;&nbsp;Cancel
+                                                    </button>
+                                                    <button type="button" id="save-rename-action-btn"
+                                                            class="btn btn-success btn-lg btn-save"><i
+                                                            class="fa fa-check-circle"></i>&nbsp;&nbsp;Save
+                                                    </button>
+                                                    {#                                <button type="button" id="btn-update-session" class="btn btn-success btn-lg btn-save"#}
+                                                    {#                                        style="display: none;"><i class="fa fa-check-circle"></i>&nbsp;&nbsp;Update#}
+                                                    {#                                </button>#}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- / .modal-content -->
+                        </div>
+                        <!-- / .modal-dialog -->
+                    </div>
+
+                    {#        upload modal#}
+                    <div id="modal-upload" class="modal fade" tabindex="-1" role="dialog" style="display: none;">
+                        <div class="modal-dialog modal-lg">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">X
+                                    </button>
+                                    <h4 class="modal-title">Upload</h4>
+                                </div>
+                                <div class="modal-body">
+                                    <div>
+
+                                        <div class="row">
+                                            <div class="col-sm-12">
+
+                                                {#                                    <div class="form-group no-margin-hr">#}
+                                                {#                                    <label class="control-label">File </label>#}
+                                                {#                                    <input type="text" class="form-control" id="">#}
+
+                                                <input name="files" id="files" type="file"/>
+
+
+                                                {#                                    </div>#}
+
+                                            </div>
+
+                                        </div>
+
+
+                                        <div class="row">
+                                            <div class="col-sm-12 text-right">
+                                                <div class="btn-group">
+
+                                                    <button type="button" class="btn btn-lg" data-original-title=""
+                                                            title=""
+                                                            data-dismiss="modal" aria-hidden="true"><i
+                                                            class="fa fa-ban"></i>&nbsp;&nbsp;Cancel
+                                                    </button>
+                                                    <button type="button" id="save-upload-action-btn"
+                                                            class="btn btn-success btn-lg btn-save"><i
+                                                            class="fa fa-check-circle"></i>&nbsp;&nbsp;Save
+                                                    </button>
+                                                    {#                                <button type="button" id="btn-update-session" class="btn btn-success btn-lg btn-save"#}
+                                                    {#                                        style="display: none;"><i class="fa fa-check-circle"></i>&nbsp;&nbsp;Update#}
+                                                    {#                                </button>#}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- / .modal-content -->
+                        </div>
+                        <!-- / .modal-dialog -->
+                    </div>
+
+                    {#        get link modal#}
+                    <div id="modal-getlink" class="modal fade" tabindex="-1" role="dialog" style="display: none;">
+                        <div class="modal-dialog modal-lg">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">X
+                                    </button>
+                                    <h4 class="modal-title">Link</h4>
+                                </div>
+                                <div class="modal-body">
+                                    <div>
+
+                                        <div class="row">
+                                            <div class="col-sm-12">
+
+                                                {#                                    <div class="form-group no-margin-hr">#}
+                                                <label class="control-label"><img
+                                                        src="{% static 'assets/images/file-icon/hyperlink-icon.png' %}"/>
+                                                    Link: </label>
+                                                <input type="text" class="form-control" id="link-text">
+
+                                                {#                                    </div>#}
+
+                                            </div>
+
+                                            <div class="col-sm-12">
+
+                                                {#                                    <div class="form-group no-margin-hr">#}
+                                                <label class="control-label" id="img-preview-label"
+                                                       hidden>Preview: </label>
+                                                <img src="" id="img-preview" style="width:600px ; height: 600px;"
+                                                     hidden/>
+
+                                                {#                                    </div>#}
+
+                                            </div>
+
+                                        </div>
+
+
+                                        <div class="row">
+                                            <div class="col-sm-12 text-right">
+                                                <div class="btn-group">
+
+                                                    <button type="button" class="btn btn-lg" data-original-title=""
+                                                            title=""
+                                                            data-dismiss="modal" aria-hidden="true"><i
+                                                            class="fa fa-ban"></i>&nbsp;&nbsp;Cancel
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- / .modal-content -->
+                        </div>
+                        <!-- / .modal-dialog -->
+                    </div>
+
+                    <script id="treeview-template" type="text/kendo-ui-template">
+                        #: item.text #
+                        {#            # if (!item.items) { ##}
+                        {#            <a class='delete-link' href='\#'></a>#}
+                        {#            # } ##}
+                    </script>
+
+                    <script>
+                        $(document).ready(function () {
+                            var key;
+                            var type, type_for_CutCopy;
+                            var sourceFileKey;
+                            var cutCopyFlag, pasteHideShow = false;
+                            var csrf_token = $('input[name=csrfmiddlewaretoken]').val();
+                            var selectedNode, treeData, old_node_for_remove_when_cut, the_e_for_rename;
+
+                            $.ajax({
+                                url: base_url + '/admin/files/get-all-files/',
+                                type: "POST",
+                                data: {
+                                    csrfmiddlewaretoken: csrf_token
+                                },
+                                success: function (response) {
+                                    treeData = response;
+                                }
+                            });
+
+                            $("#treeview").kendoTreeView({
+                                template: kendo.template($("#treeview-template").html()),
+
+                                dataSource: JSON.parse($('#treedata').html()),
+                                select: onselect
+                            });
+
+                            // Delete button behavior
+                            $(document).on("click", ".delete-link", function (e) {
+                                e.preventDefault();
+                                var treeview = $("#treeview").data("kendoTreeView");
+                                treeview.remove($(this).closest(".k-item"));
+                            });
+
+
+                            $("#menu").kendoContextMenu({
+                                // listen to right-clicks on treeview container
+                                target: "#treeview",
+
+                                open: function (e) {
+                                    var treeview = $("#treeview").data("kendoTreeView");
+                                    var type = treeview.dataItem(e.target).spriteCssClass;
+                                    var menu = $("#menu").data("kendoContextMenu");
+
+                                    {#                                    visible all first #}
+                                    menu.enable("li.li-file-new-folder", true);
+                                    menu.enable("li.li-file-upload", true);
+                                    menu.enable("li.li-file-rename", true);
+                                    menu.enable("li.li-file-delete", true);
+                                    menu.enable("li.li-file-copy", true);
+                                    menu.enable("li.li-file-cut", true);
+                                    menu.enable("li.li-file-paste", true);
+
+                                    menu.enable("li.li-file-paste", pasteHideShow);
+
+                                    if (type == "folder" || type == "rootfolder") {
+                                        menu.enable("li.li-file-new-folder", true);
+                                        menu.enable("li.li-file-upload", true);
+                                        menu.enable("li.li-file-get-details", false);
+
+                                        menu.enable("li.li-file-rename", true);
+                                        menu.enable("li.li-file-delete", true);
+                                        menu.enable("li.li-file-copy", true);
+                                        menu.enable("li.li-file-cut", true);
+                                    }
+                                    else {
+                                        menu.enable("li.li-file-new-folder", false);
+                                        menu.enable("li.li-file-upload", false);
+                                        menu.enable("li.li-file-get-details", true);
+                                        menu.enable("li.li-file-paste", false);
+                                    }
+                                    if (type == 'rootfolder') {
+                                        menu.enable("li.li-file-rename", false);
+                                        menu.enable("li.li-file-delete", false);
+                                        menu.enable("li.li-file-copy", false);
+                                        menu.enable("li.li-file-cut", false);
+                                    }
+
+                                },
+
+                                // show when node text is clicked
+                                filter: ".k-in",
+
+                                // handle item clicks
+                                select: function (e) {
+                                    var button = $(e.item);
+                                    var node = $(e.target);
+                                    selectedNode = node;
+                                    the_e_for_rename = e.target;
+                                    var treeview = $("#treeview").data("kendoTreeView");
+                                    key = treeview.dataItem(e.target).path;
+                                    type = treeview.dataItem(e.target).spriteCssClass;
+
+
+                                    if (button.text().match("^New")) {
+                                        $('#modal-new-folder').find('.modal-title').html('New Folder');
+                                        $('#modal-new-folder').modal();
+                                    }
+
+                                    {#delete#}
+                                    if (button.text().match("^Delete")) {
+                                        if (type == "folder") {
+                                            key = key + "/";
+                                        }
+                                        var delete_files = [];
+                                        delete_files.push({"key": key, "type": type});
+                                        var msg = "Do you really want to delete this?";
+                                        bootbox.confirm(msg, function (result) {
+                                            if (result) {
+                                                $('.loader').show();
+                                                $.ajax({
+                                                    url: base_url + '/admin/files/deletefolder/',
+                                                    type: "POST",
+                                                    data: {
+                                                        delete_files: JSON.stringify(delete_files),
+                                                        csrfmiddlewaretoken: csrf_token
+                                                    },
+                                                    success: function (response) {
+                                                        $('.loader').hide();
+                                                        if (response.result) {
+                                                            for (var i = 0; i < treeData.length; i++) {
+                                                                if (treeData[i].startsWith(key)) {
+                                                                    treeData.splice(treeData.indexOf(treeData[i]), 1);
+                                                                    i--;
+                                                                }
+                                                            }
+                                                            treeview.remove(node);
+                                                            $.growl.notice({message: response.message});
+                                                        }
+                                                    }
+                                                });
+                                            }
+                                        });
+                                    }
+
+
+                                    if (button.text().match("^Rename")) {
+                                        $('#modal-rename').find('.modal-title').html('Rename');
+                                        $('#modal-rename').modal();
+                                        $("#new-rename-text").val(node.text().trim());
+                                    }
+
+                                    if (button.text().match("^Upload")) {
+                                        $('#modal-upload').find('.modal-title').html('Upload');
+                                        $('#modal-upload').modal();
+                                    }
+
+                                    if (button.text().match("^Copy")) {
+                                        sourceFileKey = key;
+                                        cutCopyFlag = 'copy';
+                                        type_for_CutCopy = type;
+                                        pasteHideShow = true;
+                                    }
+
+                                    if (button.text().match("^Cut")) {
+                                        sourceFileKey = key;
+                                        cutCopyFlag = 'cut';
+                                        type_for_CutCopy = type;
+                                        pasteHideShow = true;
+                                        old_node_for_remove_when_cut = node;
+                                    }
+
+                                    if (button.text().match("^Paste")) {
+                                        clog('source: ' + sourceFileKey);
+                                        var very_temp_var = sourceFileKey.split("/");
+                                        var dest_very_temp_var = key + '/' + very_temp_var[very_temp_var.length - 1];
+                                        clog('dest: ' + dest_very_temp_var);
+                                        if ($.inArray(dest_very_temp_var, treeData) != -1) {
+                                            if (confirm("Overwrite '" + very_temp_var[very_temp_var.length - 1] + "'?") == false) {
+                                                return;
+                                            }
+                                        }
+                                        $('.loader').show();
+                                        var url;
+                                        if (cutCopyFlag == 'copy')
+                                            url = base_url + '/admin/files/filecopy/';
+                                        else
+                                            url = base_url + '/admin/files/filecut/';
+                                        clog('type: ' + type_for_CutCopy);
+                                        $.ajax({
+                                            url: url,
+                                            type: "POST",
+                                            data: {
+                                                sourceKey: sourceFileKey,
+                                                destKey: key,
+                                                type: type_for_CutCopy,
+                                                csrfmiddlewaretoken: csrf_token
+                                            },
+                                            success: function (response) {
+                                                $('.loader').hide();
+                                                pasteHideShow = false;
+                                                if (response.result) {
+                                                    $.growl.notice({message: response.message});
+                                                    {#                                                    var treeview = $("#treeview").data("kendoTreeView");#}
+                                                    var file_name_only = sourceFileKey.split('/');
+                                                    file_name_only = file_name_only[file_name_only.length - 1];
+                                                    clog('here ' + key);
+                                                    var dest_key_with_filename = key + '/' + file_name_only;
+                                                    dest_key_with_filename = dest_key_with_filename.replace('//', '/');
+                                                    clog(dest_key_with_filename);
+                                                    clog(treeData);
+                                                    if (cutCopyFlag == 'copy' && $.inArray(dest_key_with_filename, treeData) == -1) {
+                                                        treeview.append({
+                                                                    text: file_name_only,
+                                                                    spriteCssClass: type_for_CutCopy,
+                                                                    path: dest_key_with_filename
+                                                                }, selectedNode
+                                                        );
+                                                        treeData.push(dest_key_with_filename);
+                                                        clog('new copy');
+                                                    } else {
+                                                        treeview.remove(old_node_for_remove_when_cut);
+                                                        if ($.inArray(dest_key_with_filename, treeData) == -1) {
+                                                            treeview.append({
+                                                                        text: file_name_only,
+                                                                        spriteCssClass: type_for_CutCopy,
+                                                                        path: dest_key_with_filename
+                                                                    }, selectedNode
+                                                            );
+                                                            treeData.push(dest_key_with_filename);
+                                                            clog('new cut');
+                                                        }
+                                                        treeData.splice(treeData.indexOf(sourceFileKey), 1);
+                                                    }
+
+                                                }
+                                            }
+                                        });
+                                    }
+
+                                    if (button.text().match("^Get")) {
+                                        $('.loader').show();
+                                        $.ajax({
+                                            url: base_url + '/admin/files/getlink/',
+                                            type: "POST",
+                                            data: {
+                                                key: key,
+                                                type: type,
+                                                csrfmiddlewaretoken: csrf_token
+                                            },
+                                            success: function (response) {
+                                                $('.loader').hide();
+                                                $('#modal-getlink').find('.modal-title').html('Link');
+                                                $('#modal-getlink').modal();
+                                                $("#link-text").val(response.key_url);
+                                                $('#img-preview').hide();
+                                                $('#img-preview-label').hide();
+                                                if (type == "image") {
+                                                    $('#img-preview').show();
+                                                    $('#img-preview-label').show();
+                                                    $('#img-preview').attr('src', response.key_url)
+                                                }
+
+
+                                            }
+                                        });
+
+                                    }
+
+                                    // you can get the node data (e.g. id) via the TreeView dataItem method:
+                                    // $("#treeview").data("kendoTreeView").dataItem(node);
+
+                                }
+                            });
+
+                            $("#save-new-folder-action-btn").click((function () {
+                                var new_folder_name = $("#new-folder-text").val(), new_folder_name_flag = true;
+                                if ($.inArray(key.endsWith('/') ? key + new_folder_name + '/' : key + '/' + new_folder_name + '/', treeData) > -1) {
+                                    if (confirm("Overwrite '" + new_folder_name + "'?") == false) {
+                                        return;
+                                    } else {
+                                        new_folder_name_flag = false;
+                                    }
+                                }
+                                clog(treeData);
+                                $('.loader').show();
+                                $.ajax({
+                                    url: base_url + '/admin/files/newfolder/',
+                                    type: "POST",
+                                    data: {
+                                        name: new_folder_name,
+                                        key: key.endsWith('/') ? key : key + '/',
+                                        csrfmiddlewaretoken: csrf_token
+                                    },
+                                    success: function (response) {
+                                        $('.loader').hide();
+                                        if (response.result) {
+                                            $('#modal-new-folder').modal('hide');
+                                            $.growl.notice({message: response.message});
+                                            if (new_folder_name_flag) {
+                                                var treeview = $("#treeview").data("kendoTreeView");
+                                                treeview.append(
+                                                        {
+                                                            text: response.folderName,
+                                                            spriteCssClass: "folder",
+                                                            path: response.key
+                                                        }, selectedNode
+                                                );
+                                                treeData.push(response.key);
+                                            }
+                                            clog(treeData);
+                                        }
+                                    }
+                                });
+                            }));
+
+                            $("#save-rename-action-btn").click((function () {
+                                $('.loader').show();
+                                clog(treeData);
+                                $.ajax({
+                                    url: base_url + '/admin/files/rename/',
+                                    type: "POST",
+                                    data: {
+                                        name: replaceCharFunction($("#new-rename-text").val()),
+                                        key: key,
+                                        type: type,
+                                        csrfmiddlewaretoken: csrf_token
+                                    },
+                                    success: function (response) {
+                                        $('.loader').hide();
+                                        if (response.result) {
+                                            $('#modal-rename').modal('hide');
+                                            $.growl.notice({message: response.message});
+
+                                            var arr_of_newKey = response.newKey.split('/');
+                                            var treeview = $("#treeview").data("kendoTreeView");
+                                            treeview.dataItem(the_e_for_rename).path = response.newKey;
+
+                                            if (type == 'folder') {
+                                                treeview.text(selectedNode, arr_of_newKey[arr_of_newKey.length - 2]);
+                                                treeData[treeData.indexOf(key + '/')] = response.newKey;
+                                                var temp_temp_arr;
+                                                for (var i = 0; i < treeData.length; i++) {
+                                                    if (treeData[i].startsWith(key)) {
+                                                        temp_temp_arr = treeData[i].split('/');
+                                                        treeData[i] = response.newKey + temp_temp_arr[temp_temp_arr.length - 1];
+                                                    }
+                                                }
+                                            } else {
+                                                treeview.text(selectedNode, arr_of_newKey[arr_of_newKey.length - 1]);
+                                                treeData[treeData.indexOf(key)] = response.newKey;
+                                            }
+
+                                            clog(treeData);
+                                        }
+                                    }
+                                });
+                            }));
+
+                            var noOfFiles, fileCounter = 0;
+
+                            $("#files").kendoUpload({
+                                async: {
+                                    saveUrl: base_url + '/admin/files/fileupload/',
+                                    {#                    removeUrl: "remove",#}
+                                    autoUpload: true
+                                },
+                                upload: function (e) {
+                                    e.data = {
+                                        csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val(),
+                                        key: key
+                                    }
+                                },
+
+                                select: function (e) {
+                                    noOfFiles = e.files.length;
+                                    var name = '';
+                                    for (var i = 0; noOfFiles > i; i++) {
+                                        if (key.endsWith('/')) {
+                                            name = key + e.files[i].name;
+                                        }
+                                        else {
+                                            name = key + '/' + e.files[i].name;
+                                        }
+                                        {#                                    clog(treeData);#}
+                                        if ($.inArray(name, treeData) > -1) {
+                                            clog('File exists');
+                                            only_file_name = name.split('/');
+                                            // here botobox.confirm doesn't work for autoupload
+                                            {#                                            bootbox.confirm("Do you overwrite '" + only_file_name[only_file_name.length-1] + "'?", function (result) {#}
+                                            {#                                                if ( ! result ) {#}
+                                            {#                                                    clog('cancel');#}
+                                            {#                                                var upload_status = $("#files").data("kendoUpload");#}
+                                            {#                                                    e.files.splice(i,1);#}
+                                            {#                                                    i--;#}
+                                            {#                                                    noOfFiles--;#}
+                                            {#                                                }#}
+                                            {#                                            });#}
+
+                                            if (confirm("Overwrite '" + only_file_name[only_file_name.length - 1] + "'?") == false) {
+                                                clog('cancel');
+                                                var upload_status = $("#files").data("kendoUpload");
+                                                e.files.splice(i, 1);
+                                                i--;
+                                                noOfFiles--;
+                                            }
+                                        }
+                                    }
+                                    clog('file remain : ' + e.files.length);
+                                },
+                                success: function (e) {
+                                    fileCounter++;
+                                    if (e.response.success) {
+                                        if ($.inArray(e.response.key, treeData) == -1) {
+                                            var treeview = $("#treeview").data("kendoTreeView");
+                                            treeview.append(
+                                                    {
+                                                        text: e.response.file_name,
+                                                        spriteCssClass: e.response.spriteCssClass,
+                                                        path: e.response.key
+                                                    }, selectedNode
+                                            );
+                                            treeData.push(e.response.key);
+                                        }
+                                        $('#collapseImage').collapse('hide');
+                                        $(".k-upload-files.k-reset").find("li").remove();
+
+                                        if (fileCounter == noOfFiles) {
+                                            $('#modal-upload').modal('hide');
+                                            $.growl.notice({message: e.response.msg});
+                                            fileCounter = 0;
+                                            noOfFiles = 0;
+                                        }
+                                        clog(treeData);
+                                    } else {
+                                        $.growl.error({message: e.response.msg});
+                                        $('#modal-upload').modal('hide');
+                                    }
+                                }
+
+                            });
+
+                            var replaceCharFunction = function (str) {
+                                str = str.trim().split(' ').join('_');
+                                var searchChars = ['Å', 'Ä', 'å', 'ä', 'Ö', 'ö'];
+                                var replaceChars = ['A', 'A', 'a', 'a', 'O', 'ö'];
+                                var char_index;
+                                for (var i = 0; i < str.length; i++) {
+                                    if ($.inArray(str[i], searchChars) > -1) {
+                                        char_index = searchChars.indexOf(str[i]);
+                                        str = str.slice(0, i) + replaceChars[char_index] + str.slice(i + 1, str.length);
+                                    }
+                                }
+                                return str;
+                            }
+
+                        });
+
+
+                    </script>
+
+                    <style>
+                        #treeview .k-sprite {
+                            background-image: url("{% static 'assets/stylesheets/kendo/treeview/coloricons-sprite.png' %}");
+                        }
+
+                        .rootfolder {
+                            background-position: 0 0;
+                        }
+
+                        .folder {
+                            background-position: 0 -16px;
+                        }
+
+                        .pdf {
+                            background-position: 0 -32px;
+                        }
+
+                        .html {
+                            background-position: 0 -48px;
+                        }
+
+                        .image {
+                            background-position: 0 -64px;
+                        }
+
+                        .delete-link {
+                            width: 12px;
+                            height: 12px;
+                            background: transparent url("{% static 'assets/stylesheets/kendo/treeview/close.png' %}") no-repeat 50% 50%;
+                            overflow: hidden;
+                            display: inline-block;
+                            font-size: 0;
+                            line-height: 0;
+                            vertical-align: top;
+                            margin: 2px 0 0 3px;
+                            -webkit-border-radius: 5px;
+                            -mox-border-radius: 5px;
+                            border-radius: 5px;
+                        }
+                    </style>
+
+                </div>
+
+{% endblock %}

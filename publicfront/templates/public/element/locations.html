@@ -1,0 +1,5 @@
+{% for group in locationGroups %}
+    {% for location in group.location %}
+        {% include 'public/element/location_details.html' %}
+    {% endfor %}
+{% endfor %}

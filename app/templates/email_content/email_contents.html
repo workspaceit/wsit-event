@@ -1,0 +1,171 @@
+{% extends "layout/main.html" %}
+{% block content %}
+    {% load staticfiles %}
+    {% csrf_token %}
+    <input type="hidden" value="{{ sender_email }}" class="event-sender-email">
+    <div id="content-wrapper">
+        <div class="panel colourable">
+            <div class="panel-heading">
+            <span class="panel-title"><i class="fa fa-lg fa-envelope-o"></i>
+                &nbsp;&nbsp;&nbsp;<strong>Emails</strong></span>
+            </div>
+            <!-- / .panel-heading -->
+            <div class="panel-body tab-content">
+                <div class="tab-pane fade in active">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            {% if request.session.admin_permission.content_permission.message_permission and request.session.admin_permission.content_permission.message_permission.access_level == 'write' or request.session.event_auth_user.type == 'super_admin' %}
+                                <button type="button"
+                                        class="btn btn-primary btn-lg new-email"
+                                        data-original-title="Add New Email"
+                                        data-toggle="modal" data-target="#email-modal"
+                                        title=""
+                                ><i
+                                        class="fa fa-plus-circle"></i>&nbsp;&nbsp;Add New Email
+                                </button>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <br>
+
+                    <div>
+                        <div class="table-light">
+                            <table class="table table-bordered sortable email-table">
+                                <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Name</th>
+                                    <th>Receivers</th>
+                                    <th>Actions</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for email in emails %}
+
+                                    <tr>
+                                        <td>{{ email.id }}</td>
+                                        <td>{{ email.name }}</td>
+                                        <td>{{ email.sent_receiver }}/{{ email.total_receiver }}</td>
+                                        <td>
+                                            <a href="{% url 'emails-receivers' pk=email.id %}"
+                                               class="btn btn-xs btn-info"
+                                               data-toggle="tooltip"
+                                               data-placement="top"
+                                               title=""
+                                               data-original-title="Receivers">
+                                                <i class="dropdown-icon fa fa-users"></i>
+                                            </a>
+                                            {% if request.session.admin_permission.content_permission.message_permission and request.session.admin_permission.content_permission.message_permission.access_level == 'write' or request.session.event_auth_user.type == 'super_admin' %}
+                                                <button class="btn btn-xs email-settings"
+                                                        data-id="{{ email.id }}"
+                                                        data-toggle="tooltip"
+                                                        data-placement="top"
+                                                        title=""
+                                                        data-original-title="Setting">
+                                                    <i class="dropdown-icon fa fa-cog"></i>
+                                                </button>
+                                                <a href="{% url 'emails-content' pk=email.id %}"
+                                                   class="btn btn-xs"
+                                                   data-toggle="tooltip"
+                                                   data-placement="top"
+                                                   title=""
+                                                   data-original-title="Edit Email Content" target="_blank">
+                                                    <i class="dropdown-icon fa fa-pencil"></i>
+                                                </a>
+
+                                                <button class="btn btn-xs btn-warning duplicate-email"
+                                                        data-id="{{ email.id }}"
+                                                        data-toggle="tooltip"
+                                                        data-placement="top"
+                                                        title=""
+                                                        data-original-title="Duplicate">
+                                                    <i class="dropdown-icon fa fa-files-o"></i>
+                                                </button>
+                                                <button class="btn btn-xs btn-danger delete-email"
+                                                        data-id="{{ email.id }}"
+                                                        data-toggle="tooltip"
+                                                        data-placement="top"
+                                                        title=""
+                                                        data-original-title="Delete">
+                                                    <i class="dropdown-icon fa fa-times-circle"></i>
+                                                </button>
+                                            {% else %}
+                                                <button class="btn btn-xs view-email-settings"
+                                                        data-id="{{ email.id }}"
+                                                        data-toggle="tooltip"
+                                                        data-placement="top"
+                                                        title=""
+                                                        data-original-title="Setting">
+                                                    <i class="dropdown-icon fa fa-cog"></i>
+                                                </button>
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="email-modal" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title"><i class="fa fa-lg fa-envelope-o"></i> New Email</h4>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" id="email-id" value="">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group no-margin-hr">
+                                <label class="control-label">Template</label>
+                                <select class="form-control email-template-selector" id="email-template">
+                                    {% for template in emailTemplates %}
+                                        <option value="{{ template.id }}">{{ template.name }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group no-margin-hr">
+                                <label class="control-label">Name</label>
+                                <input type="text" class="form-control" id="email-name" placeholder="Email Name">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group no-margin-hr">
+                                <label class="control-label">Subject</label>
+                                <input type="text" class="form-control" id="email-subject" placeholder="Subject">
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group no-margin-hr">
+                                <label class="control-label">Sender</label>
+                                <input type="text" class="form-control" id="email-sender" value="{{ sender_email }}"
+                                       placeholder="Sender <project@eventbody.com>" disabled>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                        {% if request.session.admin_permission.content_permission.message_permission and request.session.admin_permission.content_permission.message_permission.access_level == 'write' or request.session.event_auth_user.type == 'super_admin' %}
+                            <button type="button" class="btn btn-primary" id="btn-save-email">Save Email</button>
+                            <button type="button" class="btn btn-primary" id="btn-update-email" style="display: none;">
+                                Update Email
+                            </button>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

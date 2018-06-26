@@ -1,0 +1,48 @@
+{% extends "layout/main.html" %}
+{% block content %}
+<br>
+<br>
+<div class="panel-body tab-content">
+
+
+    <table class="table table-bordered">
+        <thead>
+        <tr>
+            <td>Booking</td>
+            <td>Attendee</td>
+            <td>Messages</td>
+            <td>Errors</td>
+        </tr>
+        </thead>
+        <tbody>
+        {% for msg in messages %}
+            <tr>
+                <td>{{ msg.booking.id }}</td>
+                <td>{{ msg.booking.attendee.firstname }} {{ msg.booking.attendee.lastname }}</td>
+
+                <td>
+                    <ul>
+                        {% for mm in msg.msgs %}
+                            {% for mdetails in mm %}
+                                <li>{{ mdetails }}</li>
+                            {% endfor %}
+                        {% endfor %}
+                    </ul>
+                </td>
+
+                <td>
+                    <ul>
+                        {% for err in msg.errors %}
+                            <li>{{ err }}</li>
+                        {% endfor %}
+                    </ul>
+
+                </td>
+
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+</div>
+{% endblock %}

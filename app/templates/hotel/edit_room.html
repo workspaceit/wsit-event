@@ -1,0 +1,206 @@
+<div class="modal-dialog modal-lg">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
+            <h4 class="modal-title">Edit Hotel Room</h4>
+        </div>
+
+        <div class="modal-body">
+            <div class="row">
+                {% csrf_token %}
+                <input type="hidden" id="room-edit-id" value="{{ room.id }}">
+
+                <div class="col-sm-6">
+                    <div class="form-group no-margin-hr">
+                        <label class="control-label">Room Description</label>
+                        <input type="text" name="room-name" class="form-control edit-room-name"
+                               placeholder="Room Description" value="{{ room.description }}">
+                    </div>
+                </div>
+                <!-- col-sm-6 -->
+                <div class="col-sm-6">
+                    <div class="form-group no-margin-hr">
+                        <label class="control-label">#Beds</label>
+                        <input min="1" type="number" name="bed-no" class="form-control edit-bed-no"
+                               value="{{ room.beds }}">
+                    </div>
+                </div>
+                <!-- col-sm-6 -->
+            </div>
+            <!-- row -->
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="form-group no-margin-hr">
+                        <label class="control-label">Cost / night</label>
+                        <input type="number" min="0" name="room-cost" class="form-control edit-room-cost" placeholder=""
+                               value="{{ room.cost|floatformat }}">
+                    </div>
+                </div>
+                <!-- col-sm-6 -->
+                <div class="col-sm-6">
+                    <div class="form-group no-margin-hr">
+                        <label class="control-label">VAT</label>
+                        <select class="form-control filter-question-selector-vat edit-room-vat">
+                            <option value=""></option>
+                            {% for group in paymentGroup %}
+                                <option value="{{ group.name }}" {% if room.vat|floatformat == group.name %} selected {% endif %}>{{ group.name|safe }}%
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="form-group no-margin-hr">
+                        <input class="filter-question-selector-pay-whole-hotel-amount" {% if room.pay_whole_amount %} checked {% endif %} type="checkbox" id="room-edit-pay-whole-hotel-amount">
+                        <label class="control-label" for="room-edit-pay-whole-hotel-amount">Pay whole hotel amount</label>
+                    </div>
+                </div>
+                <!-- col-sm-6 -->
+            </div>
+            <!-- row -->
+            <div class="table-light">
+                <div class="table-header">
+                    <div class="table-caption">
+                        Allotments
+                    </div>
+                </div>
+                <table class="table table-bordered" id="hotel-details-room-allotments_edit">
+                    <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Allotments</th>
+                        <th width="10%">Cost</th>
+                        <th width="7%">VAT%</th>
+                        <th>Matched Pairs</th>
+                        <th>Matched Singles</th>
+                        <th>Unmatched</th>
+                        <th>Total</th>
+                        <th>Best Scenario</th>
+                        <th>Occupancy</th>
+                        <th>Available</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for allotment in room_alloments %}
+                        <tr tr-allotment_id="{{ allotment.id }}" class="existing_allotment_tr">
+                            <td>{{ allotment.available_date }}</td>
+                            <td width="5%">
+                                <div>
+                                    <a href="#" class="room-allotments" data-type="number"
+                                       data-min="{{ allotment.booking }}" data-name="update"
+                                       data-params="{csrfmiddlewaretoken:'{{ csrf_token }}'}"
+                                       data-pk="{{ allotment.id }}"
+                                       data-title="Allotment">{{ allotment.allotments }}</a>
+                                    <!--<input type="number" min="{{allotment.booking}}" class="form-control allotments-total"-->
+                                    <!--value="{{allotment.allotments}}">-->
+                                </div>
+                            </td>
+                            <td>
+                                <input type="number" min="0" name="room-allotment-cost" data-cost="{{ allotment.cost|floatformat }}" class="form-control edit-room-allotment-cost" placeholder="" value="{{ allotment.cost|floatformat }}">
+                            </td>
+                            <td>
+                                <select class="form-control filter-question-selector-allotment-vat edit-room-allotment-vat" data-vat="{{ allotment.vat|floatformat }}">
+                                    <option value=""></option>
+                                    {% for group in paymentGroup %}
+                                        <option value="{{ group.name }}" {% if group.name == allotment.vat|floatformat %} selected {% endif %}>{{ group.name }}% </option>
+                                    {% endfor %}
+                                </select>
+                            </td>
+
+                            <td>{{ allotment.matched_pairs }}</td>
+                            <td>{{ allotment.matched_singles }}</td>
+                            <td>{{ allotment.unmatched }}</td>
+                            <td>{{ allotment.total }}</td>
+                            <td>{{ allotment.best_scenario }}</td>
+                            <td>{{ allotment.occupancy }} %</td>
+                            <td>{{ allotment.free }}
+                                <div class="col col-md-3 pull-right">
+                                    <button class="btn btn-xs btn-danger delete-allotment"
+                                            data-allotment_id="{{ allotment.id }}"><i
+                                            class="fa fa fa-times-circle pull-right"></i></button>
+                                </div>
+
+                            </td>
+
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+                <input class="vat_select_box_element" type="hidden" value='<select class="form-control filter-question-selector-allotment-vat edit-room-allotment-vat">
+                                    <option value=""></option>
+                                    {% for group in paymentGroup %}
+                                        <option value="{{ group.name }}">{{ group.name|safe }}% </option>
+                                    {% endfor %}
+                                </select>'>
+                <div class="table-footer">
+                    <div class="row">
+                        <div class="col-md-2">
+                            <select class="form-control" id="allotment-type">
+                                <option value="add">Add</option>
+                                <option value="remove">Remove</option>
+                            </select>
+                        </div>
+                        <div class="col-md-2">
+                            <input type="number" min="1" name="room_amount" placeholder="#" class="form-control">
+                        </div>
+                        <div class="col-md-2 text-center" style="margin-top: 0.35em">
+                            room(s) per night between
+                        </div>
+                        <div class="col-md-4">
+                            <div class="input-daterange input-group hotel-details-add-room-datepicker-range">
+                                <input type="text" class="form-control" name="start" placeholder="Start date">
+                                <span class="input-group-addon">and</span>
+                                <input type="text" class="form-control" name="end" placeholder="End date">
+                            </div>
+                        </div>
+                        <div class="col-md-2 text-right">
+                            <button type="button" id="add_allotment_edit_rooms" class="btn btn-primary">Add / Remove
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-6">
+                    <button type="button" class="btn btn-danger btn-lg deleteRoom" data-id="{{ room.id }}"
+                            data-original-title="" title=""><i
+                            class="fa fa-times-circle"></i>&nbsp;&nbsp;Delete
+                    </button>
+                </div>
+                <div class="col-sm-6 text-right">
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-lg" data-original-title="" title=""
+                                data-dismiss="modal" aria-hidden="true"><i class="fa fa-ban"></i>&nbsp;&nbsp;Cancel
+                        </button>
+                        <button type="button" class="btn btn-success dropdown-toggle btn-lg editRoom btn-save"><i
+                                class="fa fa-check-circle"></i>&nbsp;&nbsp;Update
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- / .modal-content -->
+</div>
+<!-- / .modal-dialog -->
+<script>
+    $(document).ready(function () {
+        $('#hotel-details-room-allotments_edit').dataTable({
+            "order": [[0, "asc"]],
+            "searching": false,
+            "bPaginate": false,
+            "bLengthChange": false,
+            "bFilter": true,
+            "bInfo": false,
+            "bAutoWidth": false,
+            "columnDefs": [{
+                "targets": [1, 2, 3],
+                "orderable": false
+            }]
+
+        });
+        {#        $(".filter-question-selector-vat").select2({#}
+        {#            placeholder: "Select a Group"#}
+        {#        });#}
+    })
+</script>

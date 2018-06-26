@@ -1,0 +1,102 @@
+{% extends "layout/main.html" %}
+{% block content %}
+    {% load staticfiles %}
+    <div id="content-wrapper">
+        <div class="panel colourable">
+            <div class="panel-heading">
+            <span class="panel-title"><i class="fa fa-lg fa-envelope-o"></i></i>
+                &nbsp;&nbsp;&nbsp;<strong>Emails</strong></span>
+            </div>
+            <!-- / .panel-heading -->
+            {% csrf_token %}
+            <div class="panel-body tab-content">
+                <div class="tab-pane fade in active">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <a type="button" class="btn btn-primary btn-lg" id="btn-add-email-content"
+                               data-original-title=""
+                               title=""
+                               href="{% url 'emails' %}add"><i
+                                    class="fa fa-plus-circle"></i>&nbsp;&nbsp;Add New Email
+                            </a>
+                        </div>
+                    </div>
+                    <br>
+
+                    <div id="emails">
+                        <div class="table-light">
+                            <div class="table-header">
+                                <div class="table-caption">
+                                    Templates
+                                </div>
+                            </div>
+                            <table class="table table-bordered sortable data-table-emails">
+                                <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Name</th>
+                                    <th>Edit</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for email_content in email_contents %}
+                                    <tr>
+                                        <td>{{ email_content.id }}</td>
+                                        <td>{{ email_content.name }}</td>
+                                        <td>
+                                            <a href="{% url 'emails' %}edit/{{ email_content.id }}"
+                                               class="btn btn-xs btn-edit-email-content"
+                                               data-toggle="tooltip"
+                                               data-placement="top" title=""
+                                               data-original-title="Edit Email Content"><i
+                                                    class="dropdown-icon fa fa-pencil"></i></a>
+                                            <button class="btn btn-xs btn-danger btn-delete-email-content"
+                                                    data-id="{{ email_content.id }}" data-toggle="tooltip"
+                                                    data-placement="top"
+                                                    title="" data-original-title="Delete"><i
+                                                    class="dropdown-icon fa fa-times-circle"></i></button>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        $(function () {
+            var $body = $('body');
+            $body.on('click', '.btn-delete-email-content', function (event) {
+                var $this = $(this);
+                bootbox.confirm("Are you sure you want to delete this Email?", function (result) {
+                    if (result) {
+                        var id = $this.attr('data-id');
+                        var csrf_token = $('input[name=csrfmiddlewaretoken]').val();
+                        $.ajax({
+                            url: base_url + '/admin/emails/delete/',
+                            type: "POST",
+                            data: {
+                                id: id,
+                                csrfmiddlewaretoken: csrf_token
+                            },
+                            success: function (result) {
+                                if (result.error) {
+                                    $.growl.error({message: result.error});
+                                }else if (result.warning) {
+                                    $.growl.warning({message: result.warning});
+                                } else {
+                                    $.growl.notice({message: result.success});
+                                    $this.closest('tr').remove();
+                                }
+                            }
+                        });
+                    }
+                });
+            });
+        });
+    </script>
+
+{% endblock %}

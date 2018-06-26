@@ -1,0 +1,55 @@
+<div class="table-light">
+    <table class="table table-bordered sortable admin-table">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Email</th>
+            <th>Company</th>
+            <th>Phone number</th>
+            <th>Status</th>
+            <th>Edit</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for admin in admins %}
+            <tr>
+                <td>{{ admin.id }}</td>
+                <td>{{ admin.firstname }}</td>
+                <td>{{ admin.lastname }}</td>
+                <td>{{ admin.email }}</td>
+                <td>{{ admin.company }}</td>
+                <td>{{ admin.phonenumber }}</td>
+                <td>{{ admin.status }}</td>
+                <td>
+                    <button class="btn btn-xs btn-edit-admin" data-id="{{ admin.id }}"
+                            data-toggle="tooltip" data-placement="top" title=""
+                            data-original-title="Edit"><i
+                            class="dropdown-icon fa fa-cog"></i>
+                    </button>
+                    {% if admin.status == "inactive" %}
+                        <button class="btn btn-xs btn-primary btn-active-admin"
+                                data-id="{{ admin.id }}" data-toggle="tooltip"
+                                data-placement="top"
+                                title="" data-original-title="active"><i
+                                class="dropdown-icon fa fa-unlock"></i></button>
+                    {% endif %}
+                    {% if admin.status == "active" %}
+                        <button class="btn btn-xs btn-warning btn-inactive-admin"
+                                data-id="{{ admin.id }}" data-toggle="tooltip"
+                                data-placement="top"
+                                title="" data-original-title="inactive"><i
+                                class="dropdown-icon fa fa-lock"></i></button>
+                    {% endif %}
+                    <button class="btn btn-xs btn-danger btn-delete-admin"
+                            data-id="{{ admin.id }}" data-toggle="tooltip"
+                            data-placement="top"
+                            title="" data-original-title="Delete"><i
+                            class="dropdown-icon fa fa-times-circle"></i></button>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>

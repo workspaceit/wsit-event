@@ -1,0 +1,45 @@
+{% for menu in all_menu %}
+    <li>
+        {% if menu.content_id %}
+            <a href="javascript:void(0);"
+               class="{{ menu.content.url }} menu-item-
+                       {{ menu.id }}{% if menu.items|length > 0 %} has-submenu {% endif %}">{{ menu.title }}</a>
+        {% else %}
+            <a href="javascript:void(0);"
+               class="menu-item-
+                       {{ menu.id }}{% if menu.items|length > 0 %} has-submenu {% endif %}">{{ menu.title }}</a>
+        {% endif %}
+        {% if menu.items %}
+            <ul>
+                {% for item in menu.items %}
+                    <li>
+                        {% if item.content_id %}
+                            <a href="javascript:void(0);"
+                               class="{{ item.content.url }} menu-item-
+                                       {{ item.id }}{% if item.items|length > 0 %} has-submenu {% endif %}">{{ item.title }}</a>
+                        {% else %}
+                            <a href="javascript:void(0);"
+                               class="menu-item-
+                                       {{ item.id }}{% if item.items|length > 0 %} has-submenu {% endif %}">{{ item.title }}</a>
+                        {% endif %}
+                        {% if item.items %}
+                            <ul>
+                                {% for item in item.items %}
+                                    <li>
+                                        {% if item.content_id %}
+                                            <a href="javascript:void(0);"
+                                               class="{{ item.content.url }} menu-item-{{ item.id }}">{{ item.title }}</a>
+                                        {% else %}
+                                            <a href="javascript:void(0);"
+                                               class="menu-item-{{ item.id }}">{{ item.title }}</a>
+                                        {% endif %}
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        {% endif %}
+                    </li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    </li>
+{% endfor %}

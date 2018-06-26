@@ -1,0 +1,133 @@
+{% load staticfiles %}
+{% include 'page/cms_page_head_new.html' %}
+<div id="hidden-content" style="display: none;" {% if content %} data-content="update" {% endif %}>
+    {% if content %}
+        {{ content|safe }}
+    {% endif %}
+</div>
+<div id="content_data" class="ui-sortable">
+
+</div>
+<input type="hidden" id="current-editor-box" value="">
+<input type="hidden" id="question-tree" value="{{ question_groups_json }}">
+<input type="hidden" id="plugin-tree" value="{{ plugins }}">
+<input type="hidden" id="filter-tree" value="{{ filter_groups }}">
+<input type="hidden" id="fliter-data" value="{{ static_page.filter }}">
+<input type="hidden" id="element-settings-data" value="{{ element_settings }}">
+<input type="hidden" id="element-settings-title-data" value="{{ element_settings_title }}">
+<input type="hidden" id="page-class-list" value="{{ class_list }}">
+<input type="hidden" id="static-url" value="{{ static_url }}">
+{#<div id="file-tree" hidden>{{ filelist }}</div>#}
+
+{% include 'page/cms_admin_menu_new.html' %}
+{% include 'page/plugins_settings.html' %}
+<div id="all-plugins">
+    {% include 'page/plugins.html' %}
+</div>
+
+<script id="confirmationTemplate" type="text/x-kendo-template">
+    <div class="popupMessage"></div>
+    </br>
+    <div class="dialog_buttons">
+        <input type="button" class="confirm_yes k-button" value="Yes" style="width: 70px"/>
+    </div>
+</script>
+<script>
+    function showConfirmationWindow(message) {
+        return showWindow('#confirmationTemplate', message)
+    }
+
+    function showWindow(template, message) {
+        var dfd = new jQuery.Deferred();
+        var result = false;
+        $("<div id='popupWindow'></div>")
+                .appendTo("body")
+                .kendoWindow({
+                    modal: true,
+                    title: "",
+                    modal: true,
+                    visible: false,
+                    close: function (e) {
+                        this.destroy();
+                        dfd.resolve(result);
+                        window.location.reload();
+                    }
+                }).data('kendoWindow').content($(template).html()).center().open();
+        $('.popupMessage').html(message);
+        $('#popupWindow .confirm_yes').val('OK');
+        $('#popupWindow .confirm_yes').click(function () {
+            result = true;
+            $('#popupWindow').data('kendoWindow').close();
+        });
+        return dfd.promise();
+    }
+</script>
+
+{# event change function #}
+<script>
+    $(function () {
+
+        $(window).load(function () {
+            $('body').css('margin-bottom', window.innerHeight / 2);
+        });
+        $(window).resize(function () {
+            $('body').css('margin-bottom', window.innerHeight / 2);
+        });
+        window.addEventListener('focus', function () {
+            var event_id = {{ request.session.event_auth_user.event_id }};
+            $.ajax({
+                url: base_url + '/admin/check-current-event/',
+                type: "GET",
+                data: {
+                    'event_id': event_id
+                },
+                success: function (result) {
+                    if (result.change_event) {
+                        $.when(showConfirmationWindow("You have chenge the event. you need to reload!")).then(function (confirmed) {
+                            if (confirmed) {
+                                window.location.reload();
+                            }
+                        });
+                    }
+                }
+            });
+        });
+    });
+
+</script>
+{#{% include 'layout/editor_footer.html' %}#}
+
+<img src="{% static 'public/images/712.GIF' %}" id="loader" alt=""/>
+    <style>
+        #loader {
+            display: none;
+            position: absolute;
+            margin: auto;
+            left: 0;
+            right: 0;
+            top: 0;
+            bottom: 0;
+        }
+    </style>
+<input type="hidden" id="editor_default_date_format" value="{{ editor_default_date_format }}">
+<input type="hidden" id="editor_default_time_format" value="{{ editor_default_time_format }}">
+<input type="hidden" id="editor_default_date_time_format" value="{{ editor_default_date_time_format }}">
+{% if editor_event_stylesheet %}
+    <input type="hidden" id="editor_event_stylesheet" value="{{ editor_event_stylesheet }}">
+{% endif %}
+<input type="hidden" id="editor_question_group_list" value="{{ editor_question_group_list }}">
+<input type="hidden" id="editor_fullpage" value="{{ editor_fullpage }}">
+<input type="hidden" id="editor_min_height" value="{{ editor_min_height }}">
+<input type="hidden" id="editor_max_height" value="{{ editor_max_height }}">
+<input type="hidden" id="editor_editor_iframe_style" value="{{ editor_iframe_style }}">
+<input type="hidden" id="editor_toolbar_inline" value="{{ editor_toolbar_inline }}">
+<input type="hidden" id="editor_link_styles" value="{{ editor_link_styles }}">
+<input type="hidden" id="editor_font_familys" value="{{ editor_font_familys }}">
+{#<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.25.0/codemirror.min.js"></script>#}
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.25.0/mode/xml/xml.min.js"></script>
+<script type="text/javascript" src="{% static 'assets/javascripts/froala_editor_2.8.1/froala_editor.pkgd.min.js' %}"></script>
+
+
+
+
+

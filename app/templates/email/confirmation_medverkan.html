@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="sv-se">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="shortcut icon" href="images/favicon.ico">
+    <link href="css/style.css" rel="stylesheet">
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    <title>Bekräftelse - Grant Thornton</title>
+    <style>
+        body {
+            font-family: "Garamond", serif;
+        }
+        .button {
+            font-family: "Garamond", serif;
+            color: #ffffff;
+            text-decoration: none;
+            border-radius: 3px;
+            -webkit-border-radius: 3px;
+            -moz-border-radius: 3px;
+            background-color: #4F2D7F;
+            border-top: 12px solid #4F2D7F;
+            border-bottom: 12px solid #4F2D7F;
+            border-right: 18px solid #4F2D7F;
+            border-left: 18px solid #4F2D7F;
+            display: inline-block;
+        }
+        .button:visited {
+            color: white;
+            mso-style-priority: 99;
+        }
+        table {
+            border-collapse: separate;
+        }
+        a, a:link, a:visited {
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        h2, h2 a, h2 a:visited, h4, h5, h6, .t_cht {
+            color: #000 !important
+        }
+        h3 {
+            color: #4F2D7F;
+        }
+        .ExternalClass p, .ExternalClass span, .ExternalClass font, .ExternalClass td {
+            line-height: 100%
+        }
+    </style>
+</head>
+<body>
+<p>Hej {{ attendee.firstname }} {{ attendee.lastname }}!</p>
+
+<p>Gå in på din personliga sida för att se din aktuella bokning. Där kan du bland annat se vilket hotell du och din
+    (eventuella) rumskamrat har blivit placerad på.</p>
+
+<p>Vänligen följ länken nedan för att säkerställa att dina detaljer stämmer.</p>
+
+<p><a href="{{ base_url }}/gt/summering/?uid={{ secret_key }}" target="_blank" class="button" style="text-decoration: none;color: #ffffff;font-family: 'Garamond', serif;border-radius: 3px;-webkit-border-radius: 3px;-moz-border-radius: 3px;background-color: #4F2D7F;border-top: 12px solid #4F2D7F;border-bottom: 12px solid #4F2D7F;border-right: 18px solid #4F2D7F;border-left: 18px solid #4F2D7F;display: inline-block;"><span style="color: white!important;">Din personliga sida</span></a></p>
+
+<p>Om du har några frågor vänligen kontakta <a href="mailto:my.nyander@springconf.com">my.nyander@springconf.com</a> så
+    ska vi göra vårt bästa för att tillmötesgå dina behov. Notera dock att det inte kommer gå att förlänga din logi så
+    här nära inpå Kunskapsveckan och GetTogether.</p>
+
+<p>Mvh</p>
+
+<p>&nbsp;</p>
+
+
+</body>
+</html>

@@ -1,0 +1,173 @@
+{% load i18n %}
+{% if travels %}
+    <table class="confirmation-table confirmation-table-travels"
+           style="width: 100%; border-top: 1px solid #DADAC4; border-right: 1px solid #DADAC4; border-left: 1px solid #DADAC4; margin: 0 0 1em 0; border-spacing: 0;border-collapse: collapse;">
+        <thead style="font-weight: bold;">
+        <tr style="border-bottom: 1px solid #DADAC4;">
+            {% if "name" in travel_rules.columns %}
+                <th class="column-name">
+                    {{ language.langkey.th_travel_name }}
+                </th>
+            {% endif %}
+            {% if "group" in travel_rules.columns %}
+                <th class="column-group">
+                    {{ language.langkey.th_travel_group }}
+                </th>
+            {% endif %}
+            {% if "departure-city" in travel_rules.columns %}
+                <th class="column-departure-city">
+                    {{ language.langkey.th_travel_departure_city }}
+                </th>
+            {% endif %}
+            {% if "arrival-city" in travel_rules.columns %}
+                <th class="column-arrival-city">
+                    {{ language.langkey.th_travel_arrival_city }}
+                </th>
+            {% endif %}
+            {% if "departure-time-date" in travel_rules.columns %}
+                <th class="column-departure-time-date">
+                    {{ language.langkey.th_travel_departure_time }}
+                </th>
+            {% endif %}
+            {% if "arrival-time-date" in travel_rules.columns %}
+                <th class="column-arrival-time-date">
+                    {{ language.langkey.th_travel_arrival_time }}
+                </th>
+            {% endif %}
+            {% if "location" in travel_rules.columns %}
+                <th class="column-location">
+                    {{ language.langkey.th_travel_location }}
+                </th>
+            {% endif %}
+            {% if "description" in travel_rules.columns %}
+                <th class="column-description">
+                    {{ language.langkey.th_travel_description }}
+                </th>
+            {% endif %}
+        </tr>
+        </thead>
+        <tbody>
+        {% if preview %}
+            <tr style="border-bottom: 1px solid #DADAC4;">
+
+                {% if "name" in travel_rules.columns %}
+                    <td class="column-name">
+                        Travel home
+                    </td>
+                {% endif %}
+                {% if "group" in travel_rules.columns %}
+                    <td class="column-group">
+                        Travel group 1
+                    </td>
+                {% endif %}
+                {% if "departure-city" in travel_rules.columns %}
+                    <td class="column-departure-city">
+                        Stockholm, ARL
+                    </td>
+                {% endif %}
+                {% if "arrival-city" in travel_rules.columns %}
+                    <td class="column-arrival-city">
+                        Berlin, TXL
+                    </td>
+                {% endif %}
+                {% if "departure-time-date" in travel_rules.columns %}
+                    <td class="column-departure-time-date">
+                        {% language language.lang_preset.language_code %}
+                            {% if 'timedate' in travel_rules %}
+                                {{ travel_rules.now |date:travel_rules.timedate }}
+                            {% else %}
+                                {{ travel_rules.now |date:language.lang_preset.datetime_format }}
+                            {% endif %}
+                        {% endlanguage %}
+                    </td>
+                {% endif %}
+                {% if "arrival-time-date" in travel_rules.columns %}
+                    <td class="column-arrival-time-date">
+                        {% language language.lang_preset.language_code %}
+                            {% if 'timedate' in travel_rules %}
+                                {{ travel_rules.now |date:travel_rules.timedate }}
+                            {% else %}
+                                {{ travel_rules.now |date:language.lang_preset.datetime_format }}
+                            {% endif %}
+                        {% endlanguage %}
+                    </td>
+                {% endif %}
+                {% if "location" in travel_rules.columns %}
+                    <td class="column-location">
+                        Stockholm
+                    </td>
+                {% endif %}
+                {% if "description" in travel_rules.columns %}
+                    <td class="column-description">
+                        Rendered markdown
+                    </td>
+                {% endif %}
+
+
+            </tr>
+        {% else %}
+
+            {% for flight in travels %}
+                <tr style="border-bottom: 1px solid #DADAC4;">
+
+                    {% if "name" in travel_rules.columns %}
+                        <td class="column-name">
+                            {{ flight.name|safe }}
+                        </td>
+                    {% endif %}
+                    {% if "group" in travel_rules.columns %}
+                        <td class="column-group">
+                            {{ flight.group.name|safe }}
+                        </td>
+                    {% endif %}
+                    {% if "departure-city" in travel_rules.columns %}
+                        <td class="column-departure-city">
+                            {{ flight.departure_city }}
+                        </td>
+                    {% endif %}
+                    {% if "arrival-city" in travel_rules.columns %}
+                        <td class="column-arrival-city">
+                            {{ flight.arrival_city }}
+                        </td>
+                    {% endif %}
+                    {% if "departure-time-date" in travel_rules.columns %}
+                        <td class="column-departure-time-date">
+                            {% language language.lang_preset.language_code %}
+                                {% if 'timedate' in travel_rules %}
+                                    {{ flight.departure |date:travel_rules.timedate }}
+                                {% else %}
+                                    {{ flight.departure |date:language.lang_preset.datetime_format }}
+                                {% endif %}
+                            {% endlanguage %}
+                        </td>
+                    {% endif %}
+                    {% if "arrival-time-date" in travel_rules.columns %}
+                        <td class="column-arrival-time-date">
+                            {% language language.lang_preset.language_code %}
+                                {% if 'timedate' in travel_rules %}
+                                    {{ flight.arrival |date:travel_rules.timedate }}
+                                {% else %}
+                                    {{ flight.arrival |date:language.lang_preset.datetime_format }}
+                                {% endif %}
+                            {% endlanguage %}
+                        </td>
+                    {% endif %}
+                    {% if "location" in travel_rules.columns %}
+                        <td class="column-location">
+                            {{ flight.location.name }}
+                        </td>
+                    {% endif %}
+                    {% if "description" in travel_rules.columns %}
+                        <td class="column-description">
+                            {{ flight.description | safe }}
+                        </td>
+                    {% endif %}
+
+
+                </tr>
+            {% endfor %}
+        {% endif %}
+        </tbody>
+    </table>
+
+{% endif %}

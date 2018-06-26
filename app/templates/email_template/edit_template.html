@@ -1,0 +1,79 @@
+{% extends "layout/main.html" %}
+{% block content %}
+    {% load staticfiles %}
+        code mirror
+    <link rel=stylesheet href="{% static 'assets/stylesheets/codemirror/docs.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/stylesheets/codemirror/codemirror.css' %}">
+    <script src="{% static 'assets/javascripts/codemirror/codemirror.js' %}"></script>
+    <script src="{% static 'assets/javascripts/codemirror/matchbrackets.js' %}"></script>
+    <script src="{% static 'assets/javascripts/codemirror/colorize.js' %}"></script>
+    <script src="{% static 'assets/javascripts/codemirror/sass.js' %}"></script>
+    <script src="{% static 'assets/javascripts/template.js' %}"></script>
+        code mirror end
+    <style>
+        .CodeMirror {
+        border: 1px solid #ddd;
+        font-size: 12px;
+        height: 500px
+    }
+    </style>
+    <div id="content-wrapper">
+        <div class="panel colourable">
+            <div class="panel-heading">
+            <span class="panel-title"><i class="fa fa-lg fa-file"></i>
+                &nbsp;&nbsp;&nbsp;<strong style="text-decoration:none">Edit Template</strong></span>
+            </div>
+            {% csrf_token %}
+            <div class="panel-body tab-content">
+                <div class="tab-pane fade in active">
+                    <textarea id="code_email_template">{{ content }}</textarea>
+                    <br>
+                    <div class="row">
+                        <button type="button" id="btn-save-email-template" class="btn btn-success btn-lg btn-save"
+                                style="float:right;"><i
+                                class="fa fa-check-circle"></i>&nbsp;&nbsp;Save
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        $(function () {
+            var editor = CodeMirror.fromTextArea(document.getElementById("code_email_template"), {
+                lineNumbers: true,
+                matchBrackets: true,
+                mode: "text/x-sass",
+                styleActiveLine: true
+            });
+            $('body').on('click', '#btn-save-email-template', function (e) {
+
+                var csrf_token = $('input[name=csrfmiddlewaretoken]').val();
+                var content = editor.getValue()
+                content  = content.replace('<div id="content-body-data">{content}</div>','{content}');
+                var template_id = window.location.pathname.split('/')[3];
+                $.ajax({
+                    url: base_url + '/admin/templates/',
+                    type: "POST",
+                    data: {
+                        content: JSON.stringify(content),
+                        csrfmiddlewaretoken: csrf_token,
+                        id: template_id,
+                    },
+                    success: function (response) {
+                        if (response.success) {
+                            $.growl.notice({message: response.message});
+                            setTimeout(function () {
+                                window.location = ''
+                            }, 500);
+                        }
+                        else {
+                            $.growl.error({message: response.message});
+                        }
+                    }
+                });
+            });
+        });
+
+    </script>
+{% endblock %}

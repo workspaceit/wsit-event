@@ -1,0 +1,74 @@
+{% extends "layout/main.html" %}
+{% block content %}
+    {% load i18n %}
+    {% load staticfiles %}
+    {% block extra_head %}
+        <script src="{% static 'assets/javascripts/deleted-history.js' %}"></script>
+        <script type="text/javascript">
+            var ATTENDEE_LIST_JSON_URL = '{% url "deleted-attendees-list" %}';
+            // translations for datatables
+
+            var dt_language = {
+                "emptyTable": "{% trans "No data available in table" %}",
+                "info": "{% trans "Showing _START_ to _END_ of _TOTAL_ entries" %}",
+                "infoEmpty": "{% trans "Showing 0 to 0 of 0 entries" %}",
+                "infoFiltered": "{% trans "(filtered from _MAX_ total entries)" %}",
+                "infoPostFix": "",
+                "thousands": ",",
+                "lengthMenu": "{% trans "Show _MENU_ entries" %}",
+                "loadingRecords": "{% trans "Loading..." %}",
+                "processing": "{% trans "Processing..." %}",
+                "search": "{% trans "Search:" %}",
+                "zeroRecords": "{% trans "No matching records found" %}",
+                "paginate": {
+                    "first": "{% trans "First" %}",
+                    "last": "{% trans "Last" %}",
+                    "next": "{% trans "Next" %}",
+                    "previous": "{% trans "Previous" %}"
+                },
+                "aria": {
+                    "sortAscending": "{% trans ": activate to sort column ascending" %}",
+                    "sortDescending": "{% trans ": activate to sort column descending" %}"
+                }
+            }
+        </script>
+        <style>
+        .input-sm{
+            margin-left: 10px;
+        }
+        </style>
+    {% endblock %}
+
+    <div id="content-wrapper">
+        <input type="hidden" id="search_key" value="{{ search_key }}"/>
+
+        <div class="panel colourable">
+            <div class="panel-heading">
+            <span class="panel-title"><i class="fa fa-lg fa-user"></i></i>
+                &nbsp;&nbsp;&nbsp;<strong>Deleted Attendee Search</strong></span>
+            </div>
+            <!-- / .panel-heading -->
+            <div class="panel-body tab-content">
+                <div class="tab-pane fade in active" id="attendee-search">
+                    <table cellpadding="0" cellspacing="0" border="0"
+                           class="datatable table table-striped table-bordered links"
+                           id="filter-search-table" style="display: none;">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Firstname</th>
+                                <th>Lastname</th>
+                                <th>Email</th>
+                                <th>Phone</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+    </div>
+{% include "deleted-history/edit.html" %}
+{% endblock %}

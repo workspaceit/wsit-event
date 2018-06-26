@@ -1,0 +1,184 @@
+{% load i18n %}
+{% load thousand_filter %}
+{% if hotels %}
+    <table class="confirmation-table confirmation-table-hotels">
+        <thead>
+        <tr>
+            {% if "name" in hotel_rules.columns %}
+                <th class="column-name">
+                    {{ language.langkey.th_hotel_name }}
+                </th>
+            {% endif %}
+            {% if "group_id" in hotel_rules.columns %}
+                <th class="column-group">
+                    {{ language.langkey.th_hotel_group }}
+                </th>
+            {% endif %}
+            {% if "room-description" in hotel_rules.columns %}
+                <th class="column-description">
+                    {{ language.langkey.th_hotel_room_description }}
+                </th>
+            {% endif %}
+            {% if "beds" in hotel_rules.columns %}
+                <th class="column-beds">
+                    # {{ language.langkey.th_hotel_beds }}
+                </th>
+            {% endif %}
+            {% if "check-in" in hotel_rules.columns %}
+                <th class="column-check-in">
+                    {{ language.langkey.th_hotel_check_in }}
+                </th>
+            {% endif %}
+            {% if "check-out" in hotel_rules.columns %}
+                <th class="column-check-out">
+                    {{ language.langkey.th_hotel_check_out }}
+                </th>
+            {% endif %}
+
+            {% if "room-buddy-requested" in hotel_rules.columns %}
+                <th class="column-room-buddy-requested">
+                    {{ language.langkey.th_hotel_requested_room_buddy }}
+                </th>
+            {% endif %}
+            {% if "room-buddy-actual" in hotel_rules.columns %}
+                <th class="column-room-buddy-actual">
+                    {{ language.langkey.th_hotel_actual_room_buddy }}
+                </th>
+            {% endif %}
+            {% if "location" in hotel_rules.columns %}
+                <th class="column-location">
+                    {{ language.langkey.th_hotel_location }}
+                </th>
+            {% endif %}
+            {% if "vat" in hotel_rules.columns %}
+                <th class="column-status">
+                    {{ language.langkey.economy_txt_vat }}
+                </th>
+            {% endif %}
+            {% if "vat_percentage" in hotel_rules.columns %}
+                <th class="column-status">
+                    {{ language.langkey.economy_txt_vat }} %
+                </th>
+            {% endif %}
+            {% if "cost_excl_vat" in hotel_rules.columns %}
+                <th class="column-status">
+                    {{ language.langkey.economy_txt_cost_excl_vat }}
+                </th>
+            {% endif %}
+            {% if "cost_incl_vat" in hotel_rules.columns %}
+                <th class="column-status">
+                    {{ language.langkey.economy_txt_cost_incl_vat }}
+                </th>
+            {% endif %}
+            {% if "rebate" in hotel_rules.columns %}
+                <th class="column-status">
+                    {{ language.langkey.economy_txt_rebate_amount }}
+                </th>
+            {% endif %}
+        </tr>
+        </thead>
+        <tbody>
+        {% for hotel in hotels %}
+            <tr>
+
+                {% if "name" in hotel_rules.columns %}
+                    <td class="column-name">
+                        {{ hotel.room.hotel.name|safe }}
+                    </td>
+                {% endif %}
+                {% if "group_id" in hotel_rules.columns %}
+                    <td class="column-group">
+                        {{ hotel.room.hotel.group.name|safe }}
+                    </td>
+                {% endif %}
+                {% if "room-description" in hotel_rules.columns %}
+                    <td class="column-room-description">
+                        {{ hotel.room.description|safe }}
+                    </td>
+                {% endif %}
+                {% if "beds" in hotel_rules.columns %}
+                    <td class="column-beds">
+                        {{ hotel.room.beds }}
+                    </td>
+                {% endif %}
+                {% if "check-in" in hotel_rules.columns %}
+                    <td class="column-check-in">
+                        {% language language.lang_preset.language_code %}
+                            {% if 'timedate' in hotel_rules %}
+                                {{ hotel.check_in |date:hotel_rules.timedate }}
+                            {% else %}
+                                {{ hotel.check_in |date:language.lang_preset.date_format }}
+                            {% endif %}
+                        {% endlanguage %}
+                    </td>
+                {% endif %}
+                {% if "check-out" in hotel_rules.columns %}
+                    <td class="column-check-out">
+                        {% language language.lang_preset.language_code %}
+                            {% if 'timedate' in hotel_rules %}
+                                {{ hotel.check_out |date:hotel_rules.timedate }}
+                            {% else %}
+                                {{ hotel.check_out |date:language.lang_preset.date_format }}
+                            {% endif %}
+                        {% endlanguage %}
+                    </td>
+                {% endif %}
+                {% if "room-buddy-requested" in hotel_rules.columns %}
+                    <td class="column-room-buddy-requested">
+                        {% for buddy in hotel.buddy %}
+                            {% if buddy.buddy %}
+                                {{ buddy.buddy.firstname }}&nbsp;{{ buddy.buddy.lastname }}
+                            {% else %}
+                                {{ buddy.email }}
+                            {% endif %}
+                            {% if not forloop.last %}
+                                {{ ", " }}
+                            {% endif %}
+                        {% endfor %}
+                    </td>
+                {% endif %}
+                {% if "room-buddy-actual" in hotel_rules.columns %}
+                    <td class="column-room-buddy-actual">
+                        {% for buddy in hotel.actualbuddy %}
+                            <a href="mailto:{{ buddy.booking.attendee.email }}">{{ buddy.booking.attendee.firstname }}&nbsp;{{ buddy.booking.attendee.lastname }}</a>
+                            {% if not forloop.last %}
+                                {{ ", " }}
+                            {% endif %}
+                        {% endfor %}
+                    </td>
+                {% endif %}
+                {% if "location" in hotel_rules.columns %}
+                    <td class="column-location">
+                        {{ hotel.room.hotel.location.name|safe }}
+                    </td>
+                {% endif %}
+                {% if "vat" in hotel_rules.columns %}
+                    <td class="column-status">
+                        {{ hotel.room.get_vat_amount|floatformat:"-2"|format_thousands }} {{ language.langkey.economy_txt_currency }}
+                    </td>
+                {% endif %}
+                {% if "vat_percentage" in hotel_rules.columns %}
+                     <td class="column-status">
+                        {{ hotel.room.vat|floatformat:"-2"|format_thousands }}
+                    </td>
+                {% endif %}
+                {% if "cost_excl_vat" in hotel_rules.columns %}
+                    <td class="column-status">
+                        {{ hotel.room.cost|floatformat:"-2"|format_thousands }}{% if hotel.room.cost %} {{ language.langkey.economy_txt_currency }}{% endif %}
+                    </td>
+                {% endif %}
+                {% if "cost_incl_vat" in hotel_rules.columns %}
+                    <td class="column-status">
+                        {{ hotel.room.cost_included_vat|floatformat:"-2"|format_thousands }}{% if hotel.room.cost_included_vat %} {{ language.langkey.economy_txt_currency }}{% endif %}
+                    </td>
+                {% endif %}
+                {% if "rebate" in hotel_rules.columns %}
+                    <td class="column-status">
+                        {{ hotel.room.rebate_amount|floatformat:"-2"|format_thousands }} {{ language.langkey.economy_txt_currency }}
+                    </td>
+                {% endif %}
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endif %}

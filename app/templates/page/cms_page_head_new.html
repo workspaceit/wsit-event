@@ -1,0 +1,119 @@
+{% load staticfiles %}
+{% include 'layout/editor_header.html' %}
+{% csrf_token %}
+<link href="{% static 'assets/stylesheets/cms_admin.css' %}" rel="stylesheet" type="text/css"/>
+
+<link href="{% static 'assets/stylesheets/kendo.common-office365.min.css' %}" rel="stylesheet"/>
+<link href="{% static 'assets/stylesheets/kendo.office365.min.css' %}" rel="stylesheet"/>
+<link href="{% static 'assets/stylesheets/kendo.office365.mobile.min.css' %}" rel="stylesheet"/>
+<script src="{% static 'assets/javascripts/jquery-1.12.4.min.js' %}"></script>
+<script src="{% static 'assets/plugin/jquery/jquery-ui-1.11.min.js' %}"></script>
+<script src="{% static 'assets/javascripts/kendo.all.min.js' %}"></script>
+<link href="https://fonts.googleapis.com/css?family=Lato|Merriweather" rel="stylesheet">
+<link href="{% static 'assets/stylesheets/select2.css' %}" rel="stylesheet" type="text/css">
+<script src="{% static 'assets/javascripts/moment.js' %}"></script>
+
+{#<script src="{% static 'assets/markdown/markdown-it.js' %}"></script>#}
+{#<script src="{% static 'assets/markdown/to-markdown.js' %}"></script>#}
+{#<script src="{% static 'assets/markdown/markdown-it-footnote.js' %}"></script>#}
+{#<script src="{% static 'assets/markdown/highlight.pack.js' %}"></script>#}
+{#<script src="{% static 'assets/markdown/emojify.js' %}"></script>#}
+{#<script src="{% static 'assets/markdown/codemirror/lib/codemirror.js' %}"></script>#}
+{#<script src="{% static 'assets/markdown/codemirror/overlay.js' %}"></script>#}
+{#<script src="{% static 'assets/markdown/codemirror/xml/xml.js' %}"></script>#}
+{#<script src="{% static 'assets/markdown/codemirror/markdown/markdown.js' %}"></script>#}
+{#<script src="{% static 'assets/markdown/codemirror/gfm/gfm.js' %}"></script>#}
+{#<script src="{% static 'assets/markdown/codemirror/javascript/javascript.js' %}"></script>#}
+{#<script src="{% static 'assets/markdown/codemirror/css/css.js' %}"></script>#}
+{#<script src="{% static 'assets/markdown/codemirror/htmlmixed/htmlmixed.js' %}"></script>#}
+{#<script src="{% static 'assets/markdown/codemirror/lib/util/continuelist.js' %}"></script>#}
+{#<script src="{% static 'assets/markdown/rawinflate.js' %}"></script>#}
+{#<script src="{% static 'assets/markdown/rawdeflate.js' %}"></script>#}
+
+<script src="{% static 'assets/javascripts/jquery.growl.js' %}"></script>
+
+
+{#<link href="{% static 'assets/markdown/base16-light.css' %}" media="all" rel="stylesheet">#}
+{#<link href="{% static 'assets/markdown/codemirror/lib/codemirror.css' %}" media="all" rel="stylesheet">#}
+{#<link href="{% static 'assets/markdown/default.css' %}" media="all" rel="stylesheet">#}
+
+{#remodal#}
+<link rel="stylesheet" href="{% static 'assets/stylesheets/remodal/remodal.css' %}">
+<link rel="stylesheet" href="{% static 'assets/stylesheets/remodal/remodal-default-theme.css' %}">
+<script src="{% static 'assets/javascripts/remodal/remodal.js' %}"></script>
+
+{#<script src="{% static 'assets/javascripts/respond.min.js' %}"></script>#}
+<script src="{% static 'assets/javascripts/pixel-admin-select2.js' %}"></script>
+{#<script src="{% static 'assets/javascripts/cms_new.js' %}"></script>#}
+<script src="{% static 'assets/javascripts/cms_new_editor.js' %}"></script>
+{#<script src="{% static 'assets/javascripts/cms_content.js' %}"></script>#}
+<script src="{% static 'assets/javascripts/cms_content_new.js' %}"></script>
+
+<link href="{% static 'assets/stylesheets/kendo/kendo.common.min.css' %}" rel="stylesheet" type="text/css"/>
+<link href="{% static 'assets/stylesheets/kendo/kendo.default.min.css' %}" rel="stylesheet" type="text/css"/>
+<link href="{% static 'assets/stylesheets/font-awesome-4.7.0/css/font-awesome.min.css' %}" rel="stylesheet"
+      type="text/css"/>
+
+{#<script src="//cdn.jsdelivr.net/clipboard.js/1.5.8/clipboard.min.js"></script>#}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
+<script type="application/javascript">
+    var filter_datepicker = true;
+</script>
+{% if 'cookie_expire' in request.session %}
+    <input id="cookie-expire" type="hidden" value="{{ request.session.cookie_expire }}">
+{% endif %}
+
+<style>
+
+</style>
+
+{#<div id="dialoge" class="">#}
+{#    <div class="dialogue-content">#}
+{#        <div class="close-dialouge"></div>#}
+{#        <div class="section">#}
+{#            {% include 'page/filter_data.html' %}#}
+{##}
+{#        </div>#}
+{#    </div>#}
+{#</div>#}
+<div class="remodal" data-remodal-id="modal" role="dialog" aria-labelledby="modal1Title" aria-describedby="modal1Desc">
+    <button data-remodal-action="close" class="remodal-close" aria-label="Close"></button>
+    <div class="section">
+        {#        <h2 id="modal1Title"></h2>#}
+
+
+        {% include 'page/filter_data.html' %}
+    </div>
+    <br>
+</div>
+
+<div class="remodal" data-remodal-id="upload-modal" role="dialog" aria-labelledby="modal1Title"
+     aria-describedby="modal1Desc">
+    <button data-remodal-action="close" class="remodal-close" aria-label="Close"></button>
+    <div class="section">
+        <h2>Upload File</h2>
+
+        <div class="row">
+            <div class="col-sm-12">
+                <input name="files" id="upload-files" type="file"/>
+            </div>
+        </div>
+    </div>
+</div>
+<img src="{% static 'public/images/712.GIF' %}" class='loader' alt=""/>
+
+{##}
+{#<div class="dialoge" class="">#}
+{#    <div class="dialogue-content">#}
+{#        <div class="close-dialouge"></div>#}
+{#        <div class="section">#}
+{#            <h2>Upload File</h2>#}
+{##}
+{#            <div class="row">#}
+{#                <div class="col-sm-12">#}
+{#                    <input name="files" id="upload-files" type="file"/>#}
+{#                </div>#}
+{#            </div>#}
+{#        </div>#}
+{#    </div>#}
+{#</div>#}

@@ -1,0 +1,201 @@
+{% load i18n %}
+{% load thousand_filter %}
+{% if sessions_data and session_length != 0 %}
+    {% for session in sessions_data %}
+        <tr class="session session-group-{{ session.group.id }} session-id-{{ session.id }} {% for session_status in session.all_status %} {{ session_status }}{% endfor %}{% for custom_class in session.custom_classes %} {{ custom_class.classname.classname }}{% endfor %}"
+            data-box-id="{{ box_id }}" data-page-id="{{ page_id }}" data-id="{{ session.id }}"
+            data-start="{{ session.start |date:"m/d/Y" }}">
+            {% if element_settings.session_agenda_column_session_group_available_in_agenda_view %}
+                <td class="{% if search_group_name %}session-agenda-searchable-property{% endif %}">{{ session.group.name|safe }}</td>
+            {% endif %}
+            {% if element_settings.session_agenda_column_date_available_in_agenda_view %}
+                <td>{% language language.lang_preset.language_code %}
+                    {{ session.start |date:language.lang_preset.date_format }}{% endlanguage %}</td>
+            {% endif %}
+            {% if element_settings.session_agenda_column_time_available_in_agenda_view %}
+                <td>{% language language.lang_preset.language_code %}
+                    {{ session.start |date:language.lang_preset.time_format }} -
+                    {{ session.end |date:language.lang_preset.time_format }}{% endlanguage %}</td>
+            {% endif %}
+            <td>
+                <div>
+                    <div class="session-title {% if search_session_name %}session-agenda-searchable-property{% endif %}">{{ session.name|safe }}</div>
+                    {#                    {% if session.current_status != "not-attending" and session.current_status != "not-answered" %}#}
+                    <div class="status {{ session.current_status }}" {% if session.current_status == "not-attending" or session.current_status == "not-answered" %}style="display: none;" {% endif %}>
+                        {% if session.current_status == "in-queue" %}
+                            {{ session_details_language.langkey.sessiondetails_txt_status_in_queue }}
+                        {% elif session.current_status == "attending" %}
+                            {{ session_details_language.langkey.sessiondetails_txt_status_attending }}
+                        {% elif session.current_status == "deciding" %}
+                            {{ session_details_language.langkey.sessiondetails_txt_status_deciding }}
+                        {% elif session.current_status == "time-conflict" %}
+                            {{ session_details_language.langkey.sessiondetails_txt_status_time_conflict }}
+                        {% elif session.current_status == "full" %}
+                            {{ session_details_language.langkey.sessiondetails_txt_status_full }}
+                            {% if session.full_queue_open %}
+                                <span class="queue-open">{{ session_details_language.langkey.sessiondetails_txt_status_queue_open }}</span>
+                            {% endif %}
+                        {% elif session.current_status == "rsvp-ended" %}
+                            {{ session_details_language.langkey.sessiondetails_txt_status_rsvp_passed }}
+                        {% endif %}
+                    </div>
+                    {#                    {% endif %}#}
+                    <div class="session-section" data-role="tooltip">
+                        {% if session_agenda_session_start_time or session_agenda_session_start_date or session_agenda_session_end_time or session_agenda_session_end_date %}
+                            <div class="session-section-item time-and-date" title="Start &amp; End Time">
+                                <span class="session-time-and-date-icon"></span>
+                                {% if session_agenda_session_start_time %}
+                                    <span class="time start">{% language language.lang_preset.language_code %}
+                                        {{ session.start |date:language.lang_preset.time_format }}{% endlanguage %}</span>
+                                {% endif %}
+                                {% if session_agenda_session_start_date %}
+                                    <span class="date start">{% language language.lang_preset.language_code %}
+                                        {{ session.start |date:language.lang_preset.date_format }}{% endlanguage %}</span>
+                                {% endif %}
+                                -
+                                {% if session_agenda_session_end_time %}
+                                    <span class="time end">{% language language.lang_preset.language_code %}
+                                        {{ session.end |date:language.lang_preset.time_format }}{% endlanguage %}</span>
+                                {% endif %}
+                                {% if session_agenda_session_end_date %}
+                                    <span class="date end">{% language language.lang_preset.language_code %}
+                                        {{ session.end |date:language.lang_preset.date_format }}{% endlanguage %}</span>
+                                {% endif %}
+                            </div>
+                        {% endif %}
+
+                        {% if session_agenda_session_rvsp_date %}
+                            <div class="session-section-item rsvp-deadline"
+                                 title="{{ session_details_language.langkey.sessiondetails_txt_rsvp }}">
+                                <span class="session-rsvp-deadline-icon"></span>
+                    <span class="date">{% language language.lang_preset.language_code %}
+                        {{ session.reg_between_end |date:language.lang_preset.date_format }}{% endlanguage %}
+                    </span>
+                            </div>
+                        {% endif %}
+                        {% if session_agenda_session_cost %}
+                            <div class="session-section-item cost"
+                                 title="{{ language.langkey.session_agenda_session_cost }}">
+                                <span class="session-cost-icon"></span>
+                    <span class="cost">
+                            {% if session_agenda_session_incl_vat %}
+                                {{ session.cost_included_vat| floatformat:"-2"|format_thousands }}
+                                {{ economy_currency_txt }}
+                                <span class="vat">
+                                {{ session.lang_vat_included }}
+                                </span>
+                            {% else %}
+                                {{ session.cost| floatformat:"-2"|format_thousands }} {{ economy_currency_txt }}
+                                <span class="vat">
+                                {{ session.lang_vat_excluded }}
+                                </span>
+                            {% endif %}
+                    </span>
+                            </div>
+                        {% endif %}
+                        {% if session_agenda_session_speaker or session_agenda_session_link_speaker %}
+                            {% if session.speakers %}
+                                <div class="session-section-item speaker"
+                                     title="{{ session_details_language.langkey.sessiondetails_txt_speakers }}">
+                                    <span class="session-speaker-icon"></span>
+                                    {% for speaker in session.speakers %}
+
+                                        {% if session.speakers|length  == 1 %}
+                                            {% if session_agenda_session_link_speaker %}
+                                                <a href="/attendee-bio/{{ speaker.id }}" class="attendee-details"
+                                                   data-attendee-id="{{ speaker.id }}" data-page-id="{{ page_id }}"
+                                                   data-box-id="{{ box_id }}"><span
+                                                        class="{% if search_speaker_name %}session-agenda-searchable-property{% endif %}">{{ speaker.firstname }} {{ speaker.lastname }}</span></a>
+                                            {% else %}
+                                                <span class="{% if search_speaker_name %}session-agenda-searchable-property{% endif %}">{{ speaker.firstname }} {{ speaker.lastname }}</span>
+                                            {% endif %}
+
+                                        {% elif session.speakers|length > 1 %}
+                                            {% if forloop.last %}
+                                                {% if session_agenda_session_link_speaker %}
+                                                    <a href="/attendee-bio/{{ speaker.id }}" class="attendee-details"
+                                                       data-attendee-id="{{ speaker.id }}" data-page-id="{{ page_id }}"
+                                                       data-box-id="{{ box_id }}"><span
+                                                            class="{% if search_speaker_name %}session-agenda-searchable-property{% endif %}">{{ speaker.firstname }} {{ speaker.lastname }}</span></a>
+                                                {% else %}
+                                                    <span class="{% if search_speaker_name %}session-agenda-searchable-property{% endif %}">{{ speaker.firstname }} {{ speaker.lastname }}</span>
+                                                {% endif %}
+                                            {% else %}
+                                                {% if session_agenda_session_link_speaker %}
+                                                    <a href="/attendee-bio/{{ speaker.id }}" class="attendee-details"
+                                                       data-attendee-id="{{ speaker.id }}" data-page-id="{{ page_id }}"
+                                                       data-box-id="{{ box_id }}"><span
+                                                            class="{% if search_speaker_name %}session-agenda-searchable-property{% endif %}">{{ speaker.firstname }} {{ speaker.lastname }}</span></a>
+                                                    ,
+                                                {% else %}
+                                                    <span class="{% if search_speaker_name %}session-agenda-searchable-property{% endif %}">{{ speaker.firstname }} {{ speaker.lastname }}</span>
+                                                    ,
+                                                {% endif %}
+                                            {% endif %}
+                                        {% endif %}
+
+
+                                    {% endfor %}
+                                </div>
+
+                            {% endif %}
+                        {% endif %}
+                        {% if session_agenda_session_tags %}
+                            {% if session.taglist %}
+                                <div class="session-section-item tags"
+                                     title="{{ session_details_language.langkey.sessiondetails_txt_tags }}">
+                                    <span class="session-tags-icon"></span>
+
+                                    <div class="form-plugin-tags-list">
+
+                                        {% for tag in session.taglist %}
+                                            <div class="form-plugin-tag {% if search_tag_name %}session-agenda-searchable-property{% endif %}">
+                                                {{ tag }}
+                                            </div>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            {% endif %}
+                        {% endif %}
+                        {% if session_agenda_session_session_groups %}
+                            <div class="session-section-item session-group"
+                                 title="{{ session_details_language.langkey.sessiondetails_txt_session_group }}">
+                                <span class="session-group-icon"></span>
+                                <span class="{% if search_group_name %}session-agenda-searchable-property{% endif %}">{{ session.group.name|safe }}</span>
+                            </div>
+                        {% endif %}
+                        {% if session.availability != "" %}
+                            <div class="session-section-item seats-available"
+                                 title="{{ session_details_language.langkey.sessiondetals_txt_seat_availability }}">
+                                <span class="session-seats-available-icon"></span>
+                                {{ session.availability }}
+                            </div>
+                        {% endif %}
+                        {% if session_agenda_session_location or session_agenda_session_limk_location %}
+                            <div class="session-section-item location"
+                                 title="{{ session_details_language.langkey.sessiondetals_txt_location }}">
+                                <span class="session-location-icon"></span>
+                                {% if session_agenda_session_limk_location %}
+                                    <a href="/locations/{{ session.location.id }}" class="location-details"
+                                       target="_blank"
+                                       data-location-id="{{ session.location.id }}" data-page-id="{{ page_id }}"
+                                       data-box-id="{{ box_id }}">
+                                        {{ session.location.name|safe }}
+                                    </a>
+                                {% else %}
+                                    {{ session.location.name|safe }}
+                                {% endif %}
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </td>
+        </tr>
+    {% endfor %}
+{% else %}
+    <tr>
+        <td colspan="100%">
+            <div class="placeholder empty">{{ language.langkey.session_agenda_txt_empty }}</div>
+        </td>
+    </tr>
+{% endif %}

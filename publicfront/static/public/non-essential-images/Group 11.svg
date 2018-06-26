@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="110px" height="110px" viewBox="0 0 110 110" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 41 (35326) - http://www.bohemiancoding.com/sketch -->
+    <title>Group 11</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Group-11">
+            <path d="M110,55 C110,85.376 85.375,110 55,110 C24.625,110 0,85.376 0,55 C0,24.625 24.625,0 55,0 C85.375,0 110,24.625 110,55" id="Fill-833-Copy" fill="#FFD75E"></path>
+            <g id="Group-3" transform="translate(23.000000, 22.000000)">
+                <path d="M32,13 C29.791,13 28,11.209 28,9 C28,6.791 29.791,5 32,5 C34.209,5 36,6.791 36,9 C36,11.209 34.209,13 32,13 L32,13 Z M60,41.5 C60,28.131 50.627,16.957 38.096,14.173 C39.281,12.778 40,10.974 40,9 C40,4.582 36.418,1 32,1 C27.582,1 24,4.582 24,9 C24,10.974 24.719,12.778 25.904,14.173 C13.373,16.958 4,28.131 4,41.5 L4,45 L60,45 L60,41.5 Z" id="Fill-5010" fill="#FFF5D9"></path>
+                <path d="M32,12 C29.791,12 28,10.209 28,8 C28,5.791 29.791,4 32,4 L32,0 C27.582,0 24,3.582 24,8 C24,9.974 24.719,11.778 25.904,13.173 C13.373,15.958 4,27.131 4,40.5 L4,44 L32,44 L32,12 Z" id="Fill-5011" fill="#FFFFFF"></path>
+                <path d="M64,48 C64,50.209 62.209,52 60,52 L4,52 C1.791,52 0,50.209 0,48 C0,45.791 1.791,44 4,44 L60,44 C62.209,44 64,45.791 64,48" id="Fill-5012" fill="#66510D"></path>
+                <path d="M32,44 L4,44 C1.791,44 0,45.791 0,48 C0,50.209 1.791,52 4,52 L32,52 L32,44 Z" id="Fill-5013" fill="#947614"></path>
+            </g>
+        </g>
+    </g>
+</svg>

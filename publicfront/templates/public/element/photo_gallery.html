@@ -1,0 +1,65 @@
+{#<style>#}
+{#    .pagination {#}
+{#        display: inline-block;#}
+{#    }#}
+{##}
+{#    .photo-pagination {#}
+{#        float: right;#}
+{#    }#}
+{##}
+{#    .photo-pagination a {#}
+{#        color: black;#}
+{#        float: left;#}
+{#        padding: 8px 16px;#}
+{#        text-decoration: none !important;#}
+{#    }#}
+{##}
+{#    .photo-pagination a.active {#}
+{#        background-color: #4CAF50;#}
+{#        color: white;#}
+{#    }#}
+{##}
+{#    .photo-pagination a:hover:not(.active) {#}
+{#        background-color: #ddd;#}
+{#    }#}
+{##}
+{#    .li_class {#}
+{#        float: left;#}
+{#    }#}
+{#</style>#}
+<div class="form-plugin element form-plugin-photo-gallery box"
+     {% if data_user_id %}id="page-{{ page_id }}-box-{{ box_id }}-u-{{ data_user_id }}" data-uid="{{ data_user_id }}"
+     {% else %}id="page-{{ page_id }}-box-{{ box_id }}"{% endif %} data-id="{{ element_id }}"
+     data-name="photo-gallery">
+    <div class="form-plugin-intro">
+        {{ message|safe }}
+    </div>
+    <div class="form-plugin-list">
+    </div>
+
+    <input type="hidden" value="{{ full_size_photo }}" class="pg_full_size_photo">
+    <input type="hidden" value="{{ only_my_photos }}" class="pg_only_my_photos">
+    <input type="hidden" value="{{ show_comment }}" class="pg_show_comment">
+    <input type="hidden" value="{{ submitter_name }}" class="pg_uploader_name">
+    <input type="hidden" value="{{ photo_per_page }}" class="pg_photo_per_page">
+    <input type="hidden" value="{{ photo_groups }}" class="pg_photo_groups">
+    <input type="hidden" value="1" class="pagination_previous_page">
+    <input type="hidden" value="{{ language.langkey.photo_gallery_pagination_text }}" class="pagination_text">
+    <input type="hidden" value="{{ language.langkey.photo_gallery_comment_text }}" class="comment_lang_text">
+    <input type="hidden" value="{{ language.langkey.photo_gallery_uploader_text }}" class="uploader_lang_text">
+    <input type="hidden" value="{{ language.langkey.photo_gallery_image_details_text }}" class="image_details_lang_text">
+    {% if no_photo_exists %}
+        <div class="placeholder empty">{{ language.langkey.photo_gallery_no_photo_exist_text }}</div>
+    {% endif %}
+    {% if pagination %}
+        <span class="pagination-info"></span>
+        <div class="photo-pagination pagination">
+            <a data-value="prev" class="previous pagination-button">{{ language.langkey.photo_gallery_previous_text }}</a>
+            {% for item in no_of_pagination %}
+                <a class="pagination-button">{{ forloop.counter }}</a>
+            {% endfor %}
+            <a data-value="next" class="next pagination-button">{{ language.langkey.photo_gallery_next_text }}</a>
+        </div>
+    {% endif %}
+
+</div>

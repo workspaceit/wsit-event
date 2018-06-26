@@ -1,0 +1,156 @@
+{% load staticfiles %}
+{% if plugin_js_need.get_multiple_registration.loop_registration %}
+    if(plugin_js_need["get_multiple_registration"]["loop_registration"]){}else{
+    plugin_js_need["get_multiple_registration"]["loop_registration"]=true;
+    $.getScript("{% static 'public/js/multiple_registration.js' %}");
+    }
+{% endif %}
+{% if plugin_js_need.get_multiple_registration.inline_registration %}
+    if(plugin_js_need["get_multiple_registration"]["inline_registration"]){}else{
+    plugin_js_need["get_multiple_registration"]["inline_registration"]=true;
+    $.getScript("{% static 'public/js/multiple_registration_inline.js' %}")
+    }
+{% endif %}
+{% if plugin_js_need.get_plugin_hotel_reservation %}
+    if(plugin_js_need["get_plugin_hotel_reservation"]){}else{
+    plugin_js_need["get_plugin_hotel_reservation"]=true;
+{#    $.getScript("{% static 'public/js/hotel_reservation_plugin.js' %}")#}
+{#    $.getStylesheet("https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css")#}
+{#    $.getScript("https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js")#}
+    }
+{% endif %}
+{% if plugin_js_need.get_photo_upload or plugin_js_need.get_photo_gallery %}
+    {% if plugin_js_need.get_photo_upload %}
+        if(plugin_js_need["get_photo_upload"]){}else{
+            plugin_js_need["get_photo_upload"]=true;
+        }
+    {% endif %}
+    {% if plugin_js_need.get_photo_gallery %}
+        if(plugin_js_need["get_photo_gallery"]){}else{
+            plugin_js_need["get_photo_gallery"]=true;
+        }
+    {% endif %}
+    $.getScript("{% static 'public/js/photo_gallery.js' %}")
+{% endif %}
+$("#page-class-list").val(JSON.stringify($.merge(JSON.parse( $("#page-class-list").val()), JSON.parse('{{ class_list|safe }}') )));
+{% if kendo_content_js %}
+{#    {% if plugin_js_need.get_plugin_hotel_reservation %}#}
+{#        $.when($.getScript("{% static 'public/js/hotel_reservation_plugin.js' %}"), $.getScript("https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"))#}
+{#        .then(function () {#}
+{#          console.log('the css and js loaded successfully and are both ready');#}
+{#            {{ kendo_content_js|safe }}#}
+{#        }, function () {#}
+{#          console.log('an error occurred somewhere');#}
+{#        });#}
+{#    {% else %}#}
+    {{ kendo_content_js|safe }}
+{#    {% endif %}#}
+{% else %}
+{#    {% if plugin_js_need.get_plugin_hotel_reservation %}#}
+{#        $.when($.getScript("{% static 'public/js/hotel_reservation_plugin.js' %}"), $.getScript("https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"))#}
+{#        .then(function () {#}
+{#            console.log('the css and js loaded successfully and are both ready');#}
+{#            onLoadJs();#}
+{#            onLoadDateJs();#}
+{#            onLoadPluginSession();#}
+{#        }, function () {#}
+{#            console.log('an error occurred somewhere');#}
+{#        });#}
+{#    {% else %}#}
+    onLoadJs();
+    onLoadDateJs();
+    onLoadPluginSession();
+{#    {% endif %}#}
+{% endif %}
+$(".given-answer" ).on( "change", function() {
+$("#given-answer-function").trigger("questionSelection");
+{{ registration_date_filter_javascript|safe }}
+{{ updated_date_filter_javascript|safe }}
+{{ attendee_group_filter_javascript|safe }}
+{{ attendee_tag_filter_javascript|safe }}
+{{ session_filter_javascript|safe }}
+{{ question_filter_javascript|safe }}
+{{ app_filter_javascript|safe }}
+{{ hotel_filter_javascript|safe }}
+{{ speaker_filter_javascript|safe }}
+{{ email_filter_javascript|safe }}
+{{ message_filter_javascript|safe }}
+{{ page_filter_javascript|safe }}
+{{ language_filter_javascript|safe }}
+{{ multiple_reg_filter_javascript|safe }}
+{{ order_filter_javascript|safe }}
+{{ rebate_filter_javascript|safe }}
+{{ checkpoint_filter_javascript|safe }}
+{{ first_empty_filter_javascript|safe }}
+console.log("given-anser");
+setOrUnsetSession();
+});
+var q_timeout = null;
+$( ".given-answer" ).on( "keyup", function() {
+clearTimeout(q_timeout);
+$("#given-answer-function").trigger("questionSelection");
+{{ question_filter_javascript|safe }}
+console.log("given-anser-key");
+q_timeout = setTimeout(function () {
+setOrUnsetSession();
+}, 500);
+});
+$( ".session-selection" ).on( "change", function() {
+$("#session-selection-function").trigger("sessionSelection");
+{{ registration_date_filter_javascript|safe }}
+{{ updated_date_filter_javascript|safe }}
+{{ attendee_group_filter_javascript|safe }}
+{{ attendee_tag_filter_javascript|safe }}
+{{ session_filter_javascript|safe }}
+{{ question_filter_javascript|safe }}
+{{ app_filter_javascript|safe }}
+{{ hotel_filter_javascript|safe }}
+{{ speaker_filter_javascript|safe }}
+{{ email_filter_javascript|safe }}
+{{ message_filter_javascript|safe }}
+{{ page_filter_javascript|safe }}
+{{ language_filter_javascript|safe }}
+{{ multiple_reg_filter_javascript|safe }}
+{{ order_filter_javascript|safe }}
+{{ rebate_filter_javascript|safe }}
+{{ checkpoint_filter_javascript|safe }}
+{{ first_empty_filter_javascript|safe }}
+console.log("session-selection")
+setOrUnsetSession();
+});
+
+
+jQuery(function () {
+console.log("From jQuery.ready callback.");
+});
+
+$(window).load(function () {
+console.log("From window.onload callback.");
+
+});
+$(function () {
+$("#given-answer-function").trigger("questionSelection");
+$("#session-selection-function").trigger("sessionSelection");
+console.log(window.realTimeDataArrayQuestion);
+console.log(window.realTimeDataArraySession);
+{{ registration_date_filter_javascript|safe }}
+{{ updated_date_filter_javascript|safe }}
+{{ attendee_group_filter_javascript|safe }}
+{{ attendee_tag_filter_javascript|safe }}
+{{ session_filter_javascript|safe }}
+{{ question_filter_javascript|safe }}
+{{ app_filter_javascript|safe }}
+{{ hotel_filter_javascript|safe }}
+{{ speaker_filter_javascript|safe }}
+{{ email_filter_javascript|safe }}
+{{ message_filter_javascript|safe }}
+{{ page_filter_javascript|safe }}
+{{ language_filter_javascript|safe }}
+{{ multiple_reg_filter_javascript|safe }}
+{{ order_filter_javascript|safe }}
+{{ rebate_filter_javascript|safe }}
+{{ checkpoint_filter_javascript|safe }}
+{{ first_empty_filter_javascript|safe }}
+setOrUnsetSession();
+});
+

@@ -1,0 +1,50 @@
+<div class="modal-dialog modal-lg">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
+            <h4 class="modal-title">Checklist</h4>
+        </div>
+        <div class="modal-body" style="overflow-x: auto;">
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="table-light">
+                        <div class="table-header">
+                            <div class="table-caption">
+                                {{ session.name }}
+                            </div>
+                        </div>
+                        <table class="table table-bordered sortable ui-sortable" id="edit-session-attending"
+                               data-id="{{ session.id }}">
+                            <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Scan time</th>
+                                {% for column in visible_columns_info %}
+                                    <th>{{ column }}</th>
+                                {% endfor %}
+
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for seminar_user in attendee_attending %}
+                                <tr class="userInfo" data-id="{{ seminar_user.attendee_id }}">
+                                    <td>{{ forloop.counter }}</td>
+                                    <td>{% if seminar_user.scan_time %}{{ seminar_user.scan_time|date:'H:i d-m-Y' }}{% endif %}</td>
+                                    {% for answer in seminar_user.question_answers %}
+                                        <td>{{ answer.answer }}</td>
+
+                                    {% endfor %}
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- / .modal-content -->
+    </div>
+    <!-- / .modal-dialog -->
+</div>
+<!-- / .modal -->
+<!-- / Large modal -->

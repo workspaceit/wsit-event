@@ -1,0 +1,293 @@
+<div id="questions-view" class="modal fade" tabindex="-1" role="dialog" style="display: none;">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
+                <h4 class="modal-title">View Question</h4>
+            </div>
+            <div class="modal-body">
+                <div class="panel colourable">
+                    <div class="panel-heading">
+                        <span class="panel-title question-panel-title"></span>
+                        <ul class="nav nav-tabs nav-tabs">
+                            <li class="active">
+                                <a href="#basic-settings_checkbox" data-toggle="tab"><span
+                                        class="fa fa-cog fa-user"></span>&nbsp;&nbsp;Basic Settings</a>
+                            </li>
+                            {#        <li class="">#}
+                            {#            <a href="#advanced-settings_checkbox" data-toggle="tab"><span#}
+                            {#                    class="fa fa-cogs fa-lg"></span>&nbsp;&nbsp;Advanced Settings</a>#}
+                            {#        </li>#}
+                        </ul>
+                        <!-- / .nav -->
+                    </div>
+                    <!-- / .panel-heading -->
+                    <div class="panel-body tab-content">
+                        <div class="tab-pane fade in active" id="basic-settings_checkbox">
+                            <div class="note note-info">
+                                <strong>Question ID:</strong> <span id="questions-view-id"></span>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="form-group no-margin-hr">
+                                        <label class="control-label">Label</label>
+                                        <input type="text" name="label" class="form-control viewTitle"
+                                               placeholder="Label" disabled>
+                                    </div>
+                                </div>
+                                <!-- col-sm-6 -->
+                                <div class="col-sm-6">
+                                    <div class="form-group no-margin-hr">
+                                        <label class="control-label">Description</label>
+
+                                        <div class="input-group">
+													<span class="input-group-addon">
+														<label class="px-single"><input type="checkbox" name="" value=""
+                                                                                        id="id_checkbox_view_description"
+                                                                                        class="px" disabled><span
+                                                                class="lbl"></span></label>
+													</span>
+                                            <input type="text" class="form-control" placeholder="Description"
+                                                   id="view-description" disabled>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- col-sm-6 -->
+                            </div>
+                            <!-- row -->
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="form-group no-margin-hr">
+                                        <label class="control-label">Question Group</label>
+                                        <select class="form-control" id="view-question-group" data-id="" disabled>
+                                            {% for group in questionGroup %}
+                                                <option value="{{ group.id }}">{{ group.name|safe }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                </div>
+                                <div id="view-date-type-date-range" style="display:none">
+                                   <div class="col-sm-3">
+                                        <div class="form-group no-margin-hr">
+                                            <label class="control-label">From Date</label>
+                                            <input type="text" class="form-control" id="view-from-date">
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <div class="form-group no-margin-hr">
+                                            <label class="control-label">To Date</label>
+                                            <input type="text" class="form-control" id="view-to-date">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id="view-date-type-time-range" style="display:none">
+                                   <div class="col-sm-3">
+                                        <div class="form-group no-margin-hr">
+                                            <label class="control-label">From Time</label>
+                                            <input type="text" class="form-control" id="view-from-time">
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <div class="form-group no-margin-hr">
+                                            <label class="control-label">To Time</label>
+                                            <input type="text" class="form-control" id="view-to-time">
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- col-sm-6 -->
+                                <div class="col-sm-6">
+                                    <div class="form-group no-margin-hr">
+                                        <div class="col-sm-4 no-margin-hr no-padding-hr">
+                                            <div class="form-group">
+                                                <label class="control-label">Min selected options</label>
+
+                                                <div class="input-group">
+															<span class="input-group-addon">
+																<label class="px-single"><input type="checkbox" name=""
+                                                                                                value=""
+                                                                                                id="id_checkbox_view_min_character"
+                                                                                                class="px"
+                                                                                                disabled><span
+                                                                        class="lbl"></span></label>
+															</span>
+                                                    <input type="number" class="form-control" disabled
+                                                           id="view-min-character">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- col-sm-6 -->
+                                        <div class="col-sm-1 no-margin-hr no-padding-hr ">
+                                        </div>
+                                        <div class="col-sm-4 no-margin-hr no-padding-hr">
+                                            <div class="form-group">
+                                                <label class="control-label">Max selected options</label>
+
+                                                <div class="input-group">
+															<span class="input-group-addon">
+																<label class="px-single"><input type="checkbox" name=""
+                                                                                                value=""
+                                                                                                id="id_checkbox_view_max_character"
+                                                                                                class="px"
+                                                                                                disabled><span
+                                                                        class="lbl"></span></label>
+															</span>
+                                                    <input type="number" class="form-control" disabled
+                                                           id="view-max-character">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- col-sm-5 -->
+                                    </div>
+                                </div>
+                                <!-- col-sm-6 -->
+                            </div>
+                            <!-- row -->
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="form-group no-margin-hr">
+                                        <label class="control-label">Is Required?</label>
+
+                                        <div class="radio">
+                                            <label>
+                                                <input type="radio" name="questionViewRequired"
+                                                       id="questionViewRequired_1" value="1" class="px" disabled>
+                                                <span class="lbl">Yes</span>
+                                            </label>
+                                        </div>
+                                        <div class="radio">
+                                            <label>
+                                                <input type="radio" name="questionViewRequired"
+                                                       id="questionViewRequired_2" value="0"
+                                                       class="px" disabled>
+                                                <span class="lbl">No</span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- col-sm-6 -->
+                                <div class="col-sm-6">
+                                </div>
+                                <!-- col-sm-6 -->
+                            </div>
+                            <!-- row -->
+                            <div class="row" id="q_options">
+                                <div class="col-sm-12">
+                                    <div class="table-light">
+                                        <div class="table-header col-sm-12">
+                                            <div class="table-caption col-sm-6" style="">
+                                                Options
+                                            </div>
+                                            <div class="table-caption col-sm-6" style="">Pre-Selected
+                                            </div>
+                                        </div>
+                                        <script>
+                                            init.push(function () {
+
+                                                $('.view-radio-button-label').editable({
+                                                    type: 'text',
+                                                    name: '',
+                                                    title: 'Label'
+                                                });
+
+                                                $('.view-radio-button-add-attendee-group').editable({
+                                                    source: [
+                                                        {value: 1, text: 'Participant'},
+                                                        {value: 2, text: 'Speaker'},
+                                                        {value: 3, text: 'Student'},
+                                                        {value: 4, text: 'VIP'}
+                                                    ]
+                                                });
+
+                                                $('.view-radio-button-attendee-tags').editable({
+                                                    select2: {
+                                                        tags: ['Received Invitation', 'Registered Late', 'Early Birds'],
+                                                        tokenSeparators: [","]
+                                                    }
+                                                });
+                                            });
+                                        </script>
+                                        <table class="table table-bordered sortable" id="options_table">
+                                            <thead>
+                                            <tr>
+                                                <th>#</th>
+                                                <th>Title</th>
+                                                <th>Add Attendee Group</th>
+                                                <th>Add Tag</th>
+                                                <th>Edit</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            </tbody>
+                                        </table>
+                                        {#                <div class="table-footer text-right">#}
+                                        {#                    <div class="btn-group">#}
+                                        {#                        <button type="button" class="btn btn-primary add_new_option"><span#}
+                                        {#                                class="icon fa fa-plus"></span>&nbsp;&nbsp;Add#}
+                                        {#                            New Option#}
+                                        {#                        </button>#}
+                                        {#                    </div>#}
+                                        {#                </div>#}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {#<div class="tab-pane fade" id="advanced-settings_checkbox">#}
+                        {#    <div class="row">#}
+                        {#        <div class="col-sm-6">#}
+                        {#            <div class="form-group no-margin-hr">#}
+                        {#                <label class="control-label">Add Classes to Question</label>#}
+                        {#                <input class="add-classes form-control" id="view-class" disabled>#}
+                        {#            </div>#}
+                        {#        </div>#}
+                        {#        <!-- col-sm-6 -->#}
+                        {#    </div>#}
+                        {#    <!-- row -->#}
+                        {#    <div class="row padding-xs-vr">#}
+                        {#        <div class="col-sm-12 form-inline">#}
+                        {#            <label class="control-label">Use Filter to Decide Visibility</label>#}
+                        {#        </div>#}
+                        {#    </div>#}
+                        {#    <div class="row">#}
+                        {##}
+                        {#        <div class="col-sm-12 form-inline">#}
+                        {#            <input type="checkbox" class="form-control">#}
+                        {#            <select class="form-control">#}
+                        {#                <option value="">Show</option>#}
+                        {#                <option value="">Hide</option>#}
+                        {#            </select>#}
+                        {#            this question while the filter#}
+                        {#            <select class="form-control select-filter">#}
+                        {#                <option></option>#}
+                        {#                <optgroup label="Searches">#}
+                        {#                    <option value="">View Late Arrivals</option>#}
+                        {#                    <option value="">View All Missing Hotel</option>#}
+                        {#                </optgroup>#}
+                        {#                <optgroup label="Lists">#}
+                        {#                    <option value="">All Attendees</option>#}
+                        {#                    <option value="">Only Hotel Guests</option>#}
+                        {#                    <option value="">Only Spanish Attendees</option>#}
+                        {#                </optgroup>#}
+                        {#                <optgroup label="Questions">#}
+                        {#                    <option value="">If rated above 3</option>#}
+                        {#                    <option value="">If birthday is before 1980</option>#}
+                        {#                </optgroup>#}
+                        {#            </select>#}
+                        {#            is#}
+                        {#            <select class="form-control">#}
+                        {#                <option value="">true</option>#}
+                        {#                <option value="">false</option>#}
+                        {#            </select>#}
+                        {#        </div>#}
+                        {#    </div>#}
+                        {#</div>#}
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <!-- / .modal-content -->
+    </div>
+    <!-- / .modal-dialog -->
+</div>
+<!-- / .modal -->
+<!-- / Large modal -->

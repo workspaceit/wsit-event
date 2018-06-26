@@ -1,0 +1,350 @@
+{% extends "layout/main.html" %}
+{% block content %}
+    <div id="content-wrapper">
+        <div class="panel colourable">
+            <div class="panel-heading">
+            <span class="panel-title"><i class="fa fa-lg fa-file-o"></i></i>
+                &nbsp;&nbsp;&nbsp;<strong>Update Database</strong></span>
+            </div>
+            <!-- / .panel-heading -->
+            {% csrf_token %}
+            <div class="panel-body">
+                <div class="tab-pane fade in active">
+                    <div class="row">
+                        <div class="col-sm-12 ">
+                            <div class="inline-group" id="update_or_clear_button">
+                                <div class="col-sm-4">
+                                    <a type="button" class="btn btn-primary  pull-left"
+                                       data-target="#update-database"
+                                       data-toggle="modal"
+                                       title=""><i class="fa fa-recycle" aria-hidden="true"></i>&nbsp;Update Database
+                                    </a>
+                                </div>
+                                {% if element_row != element_sql_row or element_default_lang_row != element_default_lang_sql_row or elements_questions_row != elements_questions_sql_row %}
+                                    <div class="col-sm-4">
+                                        <a type="button" class="btn btn-danger  pull-left"
+                                           data-target="#clean-database"
+                                           data-toggle="modal"
+                                           title=""><i class="fa fa-trash" aria-hidden="true"></i>&nbsp;Clean Database
+                                        </a>
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-sm-12 ">
+                        <table class="table">
+                            <thead>
+                            <th class="text-left">Table Name</th>
+                            <th class="text-center">Database Row</th>
+                            <th class="text-center">Sql File Row</th>
+                            <th class="text-right">Action Need</th>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td class="text-left">ELements</td>
+                                <td class="text-center" id="element_row">{{ element_row }}</td>
+                                <td class="text-center" id="element_sql_row">{{ element_sql_row }}</td>
+                                <td class="text-right"  id="element_sql_action">
+                                    {% if element_row == element_sql_row %}
+                                        <span class="label label-info">No</span>
+                                    {% elif element_row > element_sql_row %}
+                                        <span class="label label-danger">Clean / Update Sql File</span>
+                                    {% elif element_row < element_sql_row %}
+                                        <span class="label label-warning">Update</span>
+                                    {% else %}
+                                        <span class="label label-danger">Yes</span>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Element Default Language</td>
+                                <td class="text-center" id="element_default_lang_row">{{ element_default_lang_row }}</td>
+                                <td class="text-center" id="element_default_lang_sql_action">{{ element_default_lang_sql_row }}</td>
+                                <td class="text-right"  id="element_default_lang_action">
+                                    {% if element_default_lang_row == element_default_lang_sql_row %}
+                                        <span class="label label-info">No</span>
+                                    {% elif element_default_lang_row > element_default_lang_sql_row %}
+                                        <span class="label label-danger">Clean / Update Sql File</span>
+                                    {% elif element_default_lang_row < element_default_lang_sql_row %}
+                                        <span class="label label-warning">Update</span>
+                                    {% else %}
+                                        <span class="label label-danger">Yes</span>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="text-left">Element Question</td>
+                                <td class="text-center" id="elements_questions_row">{{ elements_questions_row }}</td>
+                                <td class="text-center" id="elements_questions_sql_row">{{ elements_questions_sql_row }}</td>
+                                <td class="text-right"  id="elements_questions_action">
+                                    {% if elements_questions_row == elements_questions_sql_row %}
+                                        <span class="label label-info">No</span>
+                                    {% elif elements_questions_row > elements_questions_sql_row %}
+                                        <span class="label label-danger">Clean / Update Sql File</span>
+                                    {% elif elements_questions_row < elements_questions_sql_row %}
+                                        <span class="label label-warning">Update</span>
+                                    {% else %}
+                                        <span class="label label-danger">Yes</span>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script type="application/javascript">
+        {#        $('#update-database').modal('toggle')#}
+    </script>
+
+    <div id="update-database" class="modal fade" tabindex="-1" role="dialog" style="display: none;">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                    <h4 class="modal-title">Update Database</h4>
+                </div>
+                <div class="modal-body">
+
+                    <div class="panel">
+
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="form-group no-margin-hr">
+                                        <label class="control-label">Type "CONFIRM" for confirmation update
+                                            database</label>
+                                        <input type="text" name="update-confirm" class="form-control"
+                                               id="update-confirm" placeholder="Type CONFIRM here...">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12 text-right">
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-lg" data-original-title="" title=""
+                                        data-dismiss="modal" aria-hidden="true"><i
+                                        class="fa fa-ban"></i>&nbsp;&nbsp;Cancel
+                                </button>
+                                <button type="button" class="btn btn-success btn-lg" id="update-database-button"><i
+                                        class="fa fa-check-circle"></i>&nbsp;&nbsp;Save
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="clean-database" class="modal fade" tabindex="-1" role="dialog" style="display: none;">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                    <h4 class="modal-title">Clean Database</h4>
+                </div>
+                <div class="modal-body">
+
+                    <div class="panel">
+
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="form-group no-margin-hr">
+                                        {#                                        <div class="checkbox">#}
+                                        {#                                            <label>#}
+                                        {#                                                <input type="checkbox" value="element">#}
+                                        {#                                                <span class="lbl">Elements</span>#}
+                                        {#                                            </label>#}
+                                        {#                                        </div>#}
+                                        {#                                        <div class="checkbox">#}
+                                        {#                                            <label>#}
+                                        {#                                                <input class="checkbox" type="checkbox"#}
+                                        {#                                                       value="element_default_language">#}
+                                        {#                                                <span class="lbl">Elements Default Language</span>#}
+                                        {#                                            </label>#}
+                                        {#                                        </div>#}
+                                        {#                                        <div class="checkbox">#}
+                                        {#                                            <label>#}
+                                        {#                                                <input class="checkbox" type="checkbox" value="element_question">#}
+                                        {#                                                <span class="lbl">Elements Question</span>#}
+                                        {#                                            </label>#}
+                                        {#                                        </div>#}
+                                        <label class="checkbox" class="control-label">Type "CONFIRM" for confirmation
+                                            clean
+                                            database</label>
+                                        <input type="text" name="clean-confirm" class="form-control"
+                                               id="clean-confirm" placeholder="Type CONFIRM here...">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12 text-right">
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-lg" data-original-title="" title=""
+                                        data-dismiss="modal" aria-hidden="true"><i
+                                        class="fa fa-ban"></i>&nbsp;&nbsp;Cancel
+                                </button>
+                                <button type="button" class="btn btn-success btn-lg" id="clean-database-button"><i
+                                        class="fa fa-check-circle"></i>&nbsp;&nbsp;Save
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="application/javascript">
+        $('body').on('click', '#update-database-button', function (event) {
+            $("#update-database-button").prop('disabled', true);
+            var confirm = $("#update-confirm").val()
+            var requiredFields = [
+                {fieldId: 'update-confirm', message: 'CONFIRM'},
+            ];
+            if (!requiredFieldValidator(requiredFields)) {
+                return;
+            }
+            if (confirm != null) {
+                var data = {
+                    confirm: confirm,
+                    csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val()
+                };
+                var request = $.ajax({
+                    url: base_url + '/admin/update-database-request/',
+                    type: 'POST',
+                    data: data
+                });
+
+                request.done(function (e) {
+                    $.growl.notice({
+                        message: e.message
+                    });
+                    $('#update-database').modal('toggle');
+                    $("#update-database-button").prop('disabled', false);
+                    update_or_clear(e.content);
+                });
+
+                request.fail(function (jqXHR, textStatus) {
+                    $.growl.error({message: "Request failed: " + textStatus});
+                    $("#update-database-button").prop('disabled', false);
+                });
+
+            }
+        });
+        $('body').on('click', '#clean-database-button', function (event) {
+            var confirm = $("#clean-confirm").val()
+            var requiredFields = [
+                {fieldId: 'clean-confirm', message: 'CONFIRM'},
+            ];
+            if (!requiredFieldValidator(requiredFields)) {
+                return;
+            }
+            if (confirm != null) {
+                var data = {
+                    confirm: confirm,
+                    csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val()
+                };
+                var request = $.ajax({
+                    url: base_url + '/admin/clean-database-request/',
+                    type: 'POST',
+                    data: data
+                });
+
+                request.done(function (e) {
+                    $.growl.notice({
+                        message: e.message
+                    });
+                    $('#clean-database').modal('toggle')
+                    update_or_clear(e.content);
+                });
+
+                request.fail(function (jqXHR, textStatus) {
+                    $.growl.error({message: "Request failed: " + textStatus});
+
+                });
+
+            }
+        });
+        function requiredFieldValidator(requiredFields) {
+            var message = '';
+            var valid = true;
+            for (var i = 0; i < requiredFields.length; i++) {
+                var Id = requiredFields[i].fieldId;
+                if ($.trim($('#' + Id).val()) == '') {
+                    message += "*" + requiredFields[i].message + " can't be blank" + "<br>";
+                    valid = false;
+                }
+            }
+
+            if (!valid) {
+                $.growl.warning({message: message});
+            }
+            return valid;
+        }
+        function update_or_clear(data){
+            $("#element_row").html(data.element_row);
+            $("#element_sql_row").html(data.element_sql_row);
+            $("#element_row_action").html(sqlNeedAction(data.element_row,data.element_sql_row));
+
+            $("#element_default_lang_row").html(data.element_default_lang_row);
+            $("#element_default_lang_sql_row").html(data.element_default_lang_sql_row);
+            $("#element_default_lang_action").html(sqlNeedAction(data.element_default_lang_row,data.element_default_lang_sql_row));
+
+            $("#elements_questions_row").html(data.elements_questions_row);
+            $("#elements_questions_sql_row").html(data.elements_questions_sql_row);
+            $("#elements_questions_action").html(sqlNeedAction(data.elements_questions_row,data.elements_questions_sql_row));
+
+            if(data.element_row != data.element_sql_row | data.element_default_lang_row != data.element_default_lang_sql_row | data.elements_questions_row != data.elements_questions_sql_row){
+                $("#update_or_clear_button").html('' +
+                    '<div class="col-sm-4">\n' +
+                    '                                    <a type="button" class="btn btn-primary  pull-left"\n' +
+                    '                                       data-target="#update-database"\n' +
+                    '                                       data-toggle="modal"\n' +
+                    '                                       title=""><i class="fa fa-recycle" aria-hidden="true"></i>&nbsp;Update Database\n' +
+                    '                                    </a>\n' +
+                    '                                </div>' +
+                    '<div class="col-sm-4">\n' +
+                    '                                        <a type="button" class="btn btn-danger  pull-left"\n' +
+                    '                                           data-target="#clean-database"\n' +
+                    '                                           data-toggle="modal"\n' +
+                    '                                           title=""><i class="fa fa-trash" aria-hidden="true"></i>&nbsp;Clean Database\n' +
+                    '                                        </a>\n' +
+                    '                                    </div>');
+            }else{
+                $("#update_or_clear_button").html('' +
+                    '<div class="col-sm-4">\n' +
+                    '                                    <a type="button" class="btn btn-primary  pull-left"\n' +
+                    '                                       data-target="#update-database"\n' +
+                    '                                       data-toggle="modal"\n' +
+                    '                                       title=""><i class="fa fa-recycle" aria-hidden="true"></i>&nbsp;Update Database\n' +
+                    '                                    </a>\n' +
+                    '                                </div>');
+            }
+        }
+
+        function sqlNeedAction(row,sql_row){
+            if (row == sql_row){
+                return '<span class="label label-info">No</span>'
+            }else if (row > sql_row){
+                return '<span class="label label-danger">Clean / Update Sql File</span>'
+            }else if (row < sql_row){
+                return '<span class="label label-danger">Yes</span>';
+            }
+        }
+    </script>
+{% endblock %}

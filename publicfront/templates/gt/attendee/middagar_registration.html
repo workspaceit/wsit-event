@@ -1,0 +1,201 @@
+{% extends "gt/layout/layout.html" %}
+{% block content %}
+    {% csrf_token %}
+    <div class="wrapper headline color8" style="padding: 0; z-index: 2;">
+        <div id="bg1"></div>
+        <div class="wrapper" style="z-index: 2; overflow-x: visible;">
+
+            <h1 class="color1">Min medverkan</h1>
+        </div>
+    </div>
+    <div class="wrapper">
+        <div class="container padding mainContent">
+            <p>Här anmäler du dig till både Kunskapsveckan och GetTogether. I detta ingår även hur du tänkt bo och vilka
+                middagar du vill vara med på. När du är klar med dina val klickar du på bekräfta. Du kommer då att få
+                ett mail som sammanfattar de val du gjort för veckan.</p>
+            <p>Kom ihåg att du närsomhelst innan den 6 maj kan återvända till denna sida och ändra dina val.</p>
+
+            <form id="initalForm">
+                <h2>Logi</h2>
+                <div class="row gutters">
+                    <div class="col span_12 formQuestion attendee" id="attendee18" data-id="141" data-req="0">
+                        <label>Logi sker i del i dubbelrum. Endast ett fåtal enkelrum finns att tillgå. Om du av
+                            medicinska eller andra skäl önskar att bo i ett enkelrum, vänligen kryssa i rutan nedan och
+                            motivera varför du önskar ett enkelrum.<span>Du förväntas fortfarande ange vem du önskar dela boende med i hotellbokningen nedan, om din önskan avslås.</span></label><br/>
+                        <input type="checkbox" id="participants-enkelrum" value="Jag önskar att sova i ett enkelrum"
+                               class="given-answer"/><label for="participants-enkelrum">Jag önskar
+                        att sova i ett enkelrum</label>
+
+                    </div>
+                </div>
+
+                <div class="row gutters">
+                    <div class="col span_12 formQuestion attendee" id="attendee19" data-id="149" data-req="0">
+                        <label for="participants-enkelrum-motivering">Vänligen motivera varför du önskar bo i ett
+                            enkelrum</label>
+                        <textarea id="participants-enkelrum-motivering" class="given-answer"></textarea>
+                        <div class="errorValidating noMargin">
+                            Motivera varför du önskar bo i ett enkelrum
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row gutters">
+                    <div class="col span_12 formQuestion attendee" id="attendee7" data-id="140" data-req="0">
+                        <label for="attendee-ovrigt">Övrig information, t.ex. matavvikelser</label>
+                        <textarea id="attendee-ovrigt" class="given-answer"></textarea>
+                    </div>
+                </div>
+
+                <h2>Kunskapsveckan</h2>
+                <div class="row gutters">
+                    <div class="col span_6 formQuestion attendee" id="attendee11" data-id="142" data-req="1">
+                        <label>Jag kommer att delta på Kunskapsveckan</label><br/>
+                        <input type="radio" name="participants-" id="participants-kunskapsveckan-ja" value="Ja"
+                               class="given-answer"><label
+                            for="participants-kunskapsveckan-ja">Ja</label>
+                        <input type="radio" name="participants-" id="participants-kunskapsveckan-nej" value="Nej"
+                               class="given-answer"><label
+                            for="participants-kunskapsveckan-nej">Nej</label>
+                    </div>
+                    <div class="col span_6 attendee" id="attendee16">
+                        <div class="well color1">
+                            <div class="content">
+                                <h3>Information</h3>
+                                <p class="fontSmall">Efter att du har bekräftat registreringen nedan har du möjlighet
+                                    att göra dina kurs- och seminarieval. Du kan när som helst innan den 6 maj återvända
+                                    till denna sida och anpassa dina logi- och middagsval till dina kurs- och
+                                    seminarieval under Kunskapsveckan.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row gutters">
+                    <div class="col span_12 attendee registration-item" id="attendee15">
+                        <label>Jag vill ha middag följande dagar <span>Middag fredag 9 september och lördag 10 september inkluderas om du väljer att delta i GetTogether.</span></label><br/>
+                        <input type="checkbox" name="participants-" id="dinner-kunskapsveckan-sondag"
+                               value="145" class="gt-session"><label
+                            for="dinner-kunskapsveckan-sondag">Middag söndagen den 4 september</label><br/>
+                        <input type="checkbox" name="participants-" id="dinner-kunskapsveckan-mandag"
+                               value="146" class="gt-session"><label
+                            for="dinner-kunskapsveckan-mandag">Middag måndagen den 5 september</label><br/>
+                        <input type="checkbox" name="participants-" id="dinner-kunskapsveckan-tisdag"
+                               value="147" class="gt-session"><label
+                            for="dinner-kunskapsveckan-tisdag">Middag tisdagen den 6 september</label><br/>
+                        <input type="checkbox" name="participants-" id="dinner-kunskapsveckan-onsdag"
+                               value="148" class="gt-session"><label
+                            for="dinner-kunskapsveckan-onsdag">Middag onsdagen den 7 september</label><br/>
+                        <input type="checkbox" name="participants-" id="dinner-kunskapsveckan-torsdag"
+                               value="149" class="gt-session"><label
+                            for="dinner-kunskapsveckan-torsdag">Middag torsdagen den 8 september</label><br/>
+                    </div>
+                </div>
+
+                <div class="row gutters">
+                    <div class="col span_6 formQuestion attendee" id="attendee12" data-id="144" data-req="1">
+                        <label>Jag önskar logi under Kunskapsveckan <span>Logival för GetTogether sker under dess rubrik nedan.</span></label><br/>
+                        <input type="radio" name="participants-kunskapsveckan-hotell"
+                               id="participants-kunskapsveckan-hotell-ja" value="Ja" class="given-answer"/><label
+                            for="participants-kunskapsveckan-hotell-ja">Ja</label>
+                        <input type="radio" name="participants-kunskapsveckan-hotell"
+                               id="participants-kunskapsveckan-hotell-nej" value="Nej" class="given-answer"><label
+                            for="participants-kunskapsveckan-hotell-nej">Nej</label>
+                    </div>
+
+                    <div class="col span_6 registration-item attendee white gt-hotel" data-room="6" id="attendee13"
+                         style="padding: 1em;">
+                        <h3 class="color1">Hotell under Kunskapsveckan</h3>
+                        <p>Välj de in- och utcheckningsdatum som passar dina kurs- och seminarieval.</p>
+                        <p>Du kan när som helst återvända och anpassa dina logival till dina kurs- och seminarieval.</p>
+
+                        <label for="kunskapsveckan-hotell">Datum <span>In- och utcheckningsdatum</span></label>
+                        <div id="kunskapsveckan-hotell-wrapper">
+                            <input type="text" id="kunskapsveckan-hotell">
+                            <div class="errorValidating noMargin">
+                                Ange ditt in- och utcheckningsdatum
+                            </div>
+                        </div>
+                        <div>
+                            <label for="kunskapsveckan-hotell-dela-rum-med">Jag önskar dela rum med<span>Ange personens e-postadress (@se.gt.com). Glöm inte att meddela personen du önskar dela rum med.</span></label>
+                            <input type="text" class="gt-buddy" id="kunskapsveckan-hotell-dela-rum-med"/>
+                            <div class="errorValidating noMargin">
+                                Ange e-postadressen till den person du önskar dela rum med
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <h2>GetTogether</h2>
+
+                <div class="row gutters">
+                    <div class="col span_6 formQuestion attendee" id="attendee8" data-id="147" data-req="1">
+                        <label>Jag kommer att delta på GetTogether</label><br/>
+                        <input type="radio" name="participants-get-together" id="participants-get-together-ja"
+                               value="Ja" class="given-answer"/><label
+                            for="participants-get-together-ja">Ja</label>
+                        <input type="radio" name="participants-get-together" id="participants-get-together-nej"
+                               value="Nej" class="given-answer"><label
+                            for="participants-get-together-nej">Nej</label>
+                    </div>
+                    <div class="col span_6 formInfo attendee" id="attendee17">
+                        <div class="well color1">
+                            <div class="content">
+                                <h3>Information</h3>
+                                <p class="fontSmall">För dig som deltar på GetTogether ingår middag fredag 9 september
+                                    och lördag 10 september.</p>
+                                <p class="fontSmall">Önskar du ändra login under GetTogether, vänligen kontakta <a
+                                        href="mailto:my.nyander@springconf.com" style="color: white;">my.nyander@springconf.com</a>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row gutters">
+                    <div class="col span_6 formQuestion attendee" id="attendee9" data-id="148" data-req="1">
+                        <label>Jag önskar logi under GetTogether</label><br/>
+                        <input type="radio" name="participants-get-together-hotell"
+                               id="participants-get-together-hotell-ja" value="Ja" class="given-answer"/><label
+                            for="participants-get-together-hotell-ja">Ja</label>
+                        <input type="radio" name="participants-get-together-hotell"
+                               id="participants-get-together-hotell-nej" value="Nej" class="given-answer"><label
+                            for="participants-get-together-hotell-nej">Nej</label>
+                    </div>
+
+                    <div class="col span_6 registration-item attendee white gt-hotel" data-room="7" id="attendee10"
+                         style="padding: 1em;">
+                        <h3 class="color1">Hotell under GetTogether</h3>
+                        <p>Du har tilldelats en del i dubbelrum med incheckning fredag 9 september och utcheckning
+                            söndag 11 september. Önskar du ändra login under GetTogether, vänligen kontakta
+                            <a href="mailto:my.nyander@springconf.com">my.nyander@springconf.com</a></p>
+                        <label for="get-together-hotell">Datum <span>In- och utcheckningsdatum</span></label>
+                        <div id="get-together-hotell-wrapper">
+                            <input type="text" id="get-together-hotell" value="2016-09-09 till 2016-09-11" disabled>
+                            <div class="errorValidating noMargin">
+                                Ange ditt in- och utcheckningsdatum
+                            </div>
+                        </div>
+                        <div>
+                            <label for="get-together-hotell-dela-rum-med">Jag önskar dela rum med<span>Ange personens e-postadress (@se.gt.com). Glöm inte att meddela personen du önskar dela rum med.</span></label>
+                            <input type="text" class="gt-buddy" id="get-together-hotell-dela-rum-med"/>
+                            <div class="errorValidating noMargin">
+                                Ange e-postadressen till den person du önskar dela rum med
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row gutters">
+                    <div class="col span_12 attendee" id="attendee14" style="text-align: right;">
+                        <input type="button" class="button color2 rounded" id="btn-middagar-attendee" value="Bekräfta"/>
+                    </div>
+                </div>
+
+            </form>
+        </div><!-- mainContent -->
+
+    </div><!--wrapper-->
+    {% load staticfiles %}
+    <img src="{% static 'gt/images/712.GIF' %}" class="loader" alt=""/>
+    <script src="{% static 'gt/js/middagar_registration.js' %}" type="text/javascript"></script>
+{% endblock %}

@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="sv-se">
+{% load staticfiles %}
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link href="{% static 'assets/print/css/style.css' %}" rel="stylesheet">
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+    <title>Testsida</title>
+    <script src='{% static 'assets/print/build/pdfmake.min.js' %}'></script>
+    <script src='{% static 'assets/print/build/vfs_fonts.js' %}'></script>
+    <script src='{% static 'assets/print/qrcode/jquery.qrcode-0.12.0.min.js' %}'></script>
+
+    <style>
+        * {
+            animation-duration: 0s !important;
+            -webkit-animation: none !important;
+            -webkit-transition-duration: 0.0s !important;
+            transition-duration: 0.0s !important;
+        }
+
+        .wrapper {
+            max-width: 3000px !important;
+        }
+
+        .mainContent {
+            margin-top: 0;
+        }
+
+        #checkPoint input {
+            margin-bottom: 1em;
+        }
+
+        body {
+            padding: 2em;
+        }
+
+        #checkPoint_SearchTable {
+            border-bottom: 1px solid #DADAC4;
+        }
+
+        #checkPoint_SearchTable tbody {
+        {#				height: 12em;#} overflow: auto;
+            display: block;
+        }
+
+        #checkPoint_SearchTable tr {
+            display: table;
+            width: 100%;
+            table-layout: fixed;
+        }
+
+        #checkPoint_SearchTable tr:last-child {
+            border-bottom: none;
+        }
+
+        #checkPoint_SearchTable_filter {
+            margin-top: -142px;
+        }
+
+        .checkPoint_AttendeeRow label {
+            margin: 0px;
+        }
+
+        .checkPoint_AttendeeRow:hover {
+            background: #00B67D;
+            cursor: pointer;
+        }
+
+        .checkPoint_AttendeeRow:hover td {
+            color: white;
+        }
+
+        .attendeeInfo label {
+            margin: 0px;
+        }
+
+        .attendeeInfo:hover {
+            background: #00B67D;
+            cursor: pointer;
+        }
+
+        .attendeeInfo:hover td {
+            color: white;
+        }
+
+        @media (max-width: 768px) {
+            #checkPoint_SearchTable td label {
+                display: none;
+            }
+
+            #checkPoint_SearchTable_filter {
+                margin-top: -30px;
+            }
+        }
+
+        table thead th {
+            text-align: center !important;
+        }
+
+        table tbody td {
+            text-align: center !important;
+        }
+
+        table tbody td:last-child {
+            text-align: right !important;
+        }
+
+        #checkPoint_SearchWrapper {
+            width: 100%;
+        }
+
+        #checkPoint_SearchWrapper {
+            position: absolute;
+            right: 0;
+            bottom: 0;
+            text-align: right;
+        }
+
+        #checkPoint_SearchWrapper h4 {
+            padding-bottom: 0;
+        }
+
+        .SameHeight {
+        }
+
+        .dataTable thead tr th {
+            width: 20% !important;
+        }
+
+
+    </style>
+</head>
+
+
+{% load i18n %}
+{% block extra_head %}
+    <script src="//cdn.datatables.net/1.10.0/js/jquery.dataTables.js"></script>
+    <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.0/css/jquery.dataTables.css"/>
+
+
+    <script type="text/javascript">
+        var ATTENDEE_LIST_JSON_URL = '{% url "attendeeUserList" %}';
+        // translations for datatables
+
+        var dt_language = {
+            "emptyTable": "{% trans "No data available in table" %}",
+            "info": "{% trans "Showing _START_ to _END_ of _TOTAL_ entries" %}",
+            "infoEmpty": "{% trans "Showing 0 to 0 of 0 entries" %}",
+            "infoFiltered": "{% trans "(filtered from _MAX_ total entries)" %}",
+            "infoPostFix": "",
+            "thousands": ",",
+            "loadingRecords": "{% trans "Loading..." %}",
+            {#                "processing": "{% trans "Processing..." %}",#}
+            "search": "{% trans "<h4 class='color2'>SEARCH</h4>" %}",
+            "zeroRecords": "{% trans "No matching records found" %}",
+            "paginate": {
+                "first": "{% trans "First" %}",
+                "last": "{% trans "Last" %}",
+                "next": "{% trans "Next" %}",
+                "previous": "{% trans "Previous" %}"
+            },
+            "aria": {
+                "sortAscending": "{% trans ": activate to sort column ascending" %}",
+                "sortDescending": "{% trans ": activate to sort column descending" %}"
+            }
+        }
+
+
+    </script>
+    <style>
+        .input-sm {
+            margin-left: 10px;
+        }
+    </style>
+{% endblock %}
+
+
+
+
+<body id="checkPoint">
+<div class="wrapper">
+    <div class="container padding mainContent">
+        <div class="container">
+            <div class="row gutters">
+                <div class="col span_3 formQuestion SameHeight">
+                    <label for="contact-emergency-contact">First name</label>
+                    <input id="firstname" type="text">
+                    <label for="contact-emergency-contact">Last name</label>
+                    <input id="lastname" type="text">
+                </div>
+                <div class="col span_3 formQuestion SameHeight">
+                    <label for="contact-emergency-contact">Office</label>
+                    <input id="office" type="text">
+                    <label for="contact-emergency-contact">UID</label>
+                    <input id="uid" type="text">
+                </div>
+                <div class="col span_3 formQuestion SameHeight">
+                    <p><a id="print" href="" class="button round color2"><i class="fa fa-print" aria-hidden="true"></i>
+                        Print Badge</a></p>
+                    <p><a id="clear" href="" class="button round color3"><i class="fa fa-times" aria-hidden="true"></i>
+                        Clear</a></p>
+                </div>
+                <div class="col span_3 formQuestion SameHeight">
+                    <input type="text" style="visibility: hidden;">
+                    {#		                    <div id="checkPoint_SearchWrapper">#}
+                    {#								<label for="contact-emergency-contact"><h4 class="color2">SEARCH</h4></label>#}
+                    {#								<input type="text" id="checkPoint_Search">#}
+                    {#		                    </div>#}
+                </div>
+            </div>
+            <div class="row gutters">
+                <div class="col span_12 formQuestion">
+                    <table class="color4" id="checkPoint_SearchTable">
+                        <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>UID</th>
+                            {% for q_group in question_groups %}
+                                {% for q in  q_group.questions %}
+                                    <th data-id="{{ q.id }}">{{ q.title }}</th>
+                                {% endfor %}
+                            {% endfor %}
+                        </tr>
+
+                        </thead>
+                        <tbody>
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="qrImage" style="display: none;"></div>
+{% csrf_token %}
+<script>
+    //Funktioner som uträttas på (window).resize
+    $(window).resize(function () {
+        if ($(window).width() > 768) {
+            equalHeight($(".SameHeight"));
+        } else {
+            $(".SameHeight").css("height", "auto");
+        }
+    });
+
+    $(document).ready(function () {
+        if ($(window).width() > 768) {
+            equalHeight($(".SameHeight"));
+        } else {
+            $(".SameHeight").css("height", "auto");
+        }
+
+    });
+
+    function equalHeight(group) {
+        var tallest = 0;
+        group.css("height", "");
+        group.each(function () {
+            var thisHeight = $(this).height();
+            if (thisHeight > tallest) {
+                tallest = thisHeight;
+            }
+        });
+        group.height(tallest);
+    }
+    ;
+
+    $("#clear").click(function () {
+        event.preventDefault();
+        $("[type='text']").val("");
+    });
+
+    $("#print").click(function () {
+        event.preventDefault();
+        $("#qrImage").html("");
+        $("#qrImage").qrcode({
+            "render": 'image',
+            "size": 500,
+            "text": $("#uid").val()
+        });
+    });
+
+
+    $("#print").click(function () {
+        $("#qrImage").html("");
+        $("#qrImage").qrcode({
+            "render": 'image',
+            "size": 500,
+            "text": $("#uid").val()
+        });
+
+        var docDefinition = {
+            // a string or { width: number, height: number }
+            pageSize: {width: 204.094488, height: 325.03937},
+            pageMargins: [5, 5, 5, 5],
+            content: [
+                {
+                    text: [
+                        $('#firstname').val()
+                    ],
+                    alignment: 'center',
+                    fontSize: 28,
+                    margin: [0, 180, 0, 0]
+                },
+
+                {
+                    text: [
+                        $('#lastname').val()
+                    ],
+                    alignment: 'center',
+                    fontSize: 23,
+                    margin: [0, 0, 0, 0]
+                },
+
+                {
+                    text: [
+                        $('#office').val()
+                    ],
+                    pageBreak: 'after',
+                    alignment: 'center',
+                    fontSize: 18,
+                    margin: [0, 0, 0, 0]
+                },
+
+                {
+                    image: $('#qrImage img').attr("src"),
+                    width: 85,
+                    height: 85,
+                    margin: [56, 178, 0, 0]
+                }],
+        };
+
+        pdfMake.createPdf(docDefinition).print();
+    });
+
+
+    $(document).ready(function () {
+
+        var visibleColumns = [0, 1, 2, 3, 8];
+        var csrf_token = $('input[name=csrfmiddlewaretoken]').val();
+        var data = {
+            csrfmiddlewaretoken: csrf_token
+        };
+
+        var $dataTableContainer = $('#checkPoint_SearchTable');
+
+        var attendee_table = $dataTableContainer.DataTable({
+            "scrollX": true,
+            "bAutoWidth": true,
+            "language": dt_language,
+            "order": [
+                [1, "asc"]
+            ],
+            "sDom": '<"dt_top" <"dt_left"f><"clear">>rt<"dt_bottom" <"dt_left"i><"dt_right"p><"clear">>',
+            "createdRow": function (row, data, index) {
+                $(row).addClass('attendeeInfo');
+                $(row).attr('data-id', data[0]);
+            },
+            "columnDefs": [
+                {
+                    "orderable": false,
+                    "searchable": false,
+                    "className": "",
+                    "targets": 0,
+                    "visible": false,
+                    'render': function (data, type, full, meta) {
+                        return data;
+                    }
+                },
+                {
+                    "orderable": false,
+                    "searchable": false,
+                    "className": "",
+                    "targets": 9,
+                    "title": '<i class="fa fa-wrench" aria-hidden="true"></i>',
+                    "visible": true,
+                    'render': function (data, type, full, meta) {
+                        var col5HTML='<a href="/admin/attendee-info/'+full[0]+'" class="label color1" target="_blank"><i class="fa fa-user" aria-hidden="true"></i> <label>Info</label></a>';
+                        col5HTML +=' <a href="/kingfomarket/?uid='+full[1]+'" class="label color1" target="_blank"><i class="fa fa-link" aria-hidden="true"></i> <label>Login</label></a>';
+                        return col5HTML;
+                    }
+                },
+                {
+                    "orderable": true,
+                    "searchable": true,
+                    "className": "",
+                    "targets": '_all'
+                },
+                {"visible": true, "targets": visibleColumns},
+                {"visible": false, "targets": ['_all']}
+            ],
+            "searching": true,
+            "processing": true,
+            "serverSide": true,
+            "destroy": true,
+            "oSearch": {"sSearch": ""},
+            "ajax": {
+                'type': 'POST',
+                'url': ATTENDEE_LIST_JSON_URL,
+                'data': data
+            },
+            "fnServerParams": function (aoData) {
+                aoData['visible'] = visibleColumns.join(",");
+                aoData['activate_rule'] = false;
+                aoData['rule_id'] = "";
+            },
+            "initComplete": function () {
+                clog("data-table initialized");
+
+            }
+        });
+
+        $('body').on('click', '.attendeeInfo', function () {
+            var secret_key = $(this).find('td:first').html();
+            var first_name = $(this).find('td').eq(1).html();
+            var last_name = $(this).find('td').eq(2).html();
+            var office = $(this).find('td').eq(3).html();
+            $('#firstname').val(first_name)
+            $('#lastname').val(last_name)
+            $('#office').val(office)
+            $('#uid').val(secret_key)
+        })
+
+
+    });
+
+
+</script>
+</body>
+</html>

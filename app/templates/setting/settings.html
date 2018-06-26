@@ -1,0 +1,1890 @@
+{% extends "layout/main.html" %}
+{% block content %}
+    {% load staticfiles %}
+    {#    <link rel=stylesheet href="{% static 'assets/stylesheets/kendo.common-office365.min.css' %}">#}
+    {#    <link rel="stylesheet" href="{% static 'assets/stylesheets/kendo.office365.min.css' %}">#}
+    <link rel="stylesheet" href="{% static 'assets/javascripts/fancytree/skin-lion/ui.fancytree.min.css' %}">
+    <input type="hidden" id="settings_defualt_language_id" value="{{ presetsEvent.preset_id }}"/>
+    <style>
+        .fancytree-treefocus, span.fancytree-selected, .fancytree-title, span.fancytree-selected, .fancytree-container, .fancytree-focused {
+            color: #000 !important;
+            background-color: transparent !important;
+            outline: none !important;
+            font-style: normal !important;
+        }
+    </style>
+    <div id="content-wrapper">
+        {% csrf_token %}
+        <div class="panel colourable">
+            <div class="panel-heading">
+                <div class="row">
+                    <div class="col-sm-8">
+                        <span class="panel-title"><i
+                                class="fa fa-cog fa-lg"></i>&nbsp;&nbsp;&nbsp;<strong>Settings</strong></span>
+                    </div>
+                    <div class="language-preset-selector col-sm-4">
+                        <label class="language-preset-selector-label">Language:</label>
+                        <select class="form-control pull-right group-language-presets-selector" style="width: 70%;">
+                            {% for preset in all_presets %}
+                                <option value="{{ preset.id }}"
+                                        {% if preset.id == presetsEvent.preset_id %}
+                                        selected="selected"{% endif %}>{{ preset.preset_name }}({{ preset.id }})
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+                <!-- / .nav -->
+            </div>
+            <!-- / .panel-heading -->
+            <div class="panel-body tab-content settings-tab">
+                <ul class="nav nav-tabs nav-tabs nav_pad" style="font-size: 12px !important;">
+                    <li class="active">
+                        <a href="#settings-attendees" data-toggle="tab"><span class="fa fa-search fa-user"></span>&nbsp;&nbsp;Attendees</a>
+                    </li>
+                    {#                    <li class="">#}
+                    {#                        <a href="#settings-menus" data-toggle="tab"><span class="fa fa-bars fa-lg"></span>&nbsp;&nbsp;Menus</a>#}
+                    {#                    </li>#}
+                    <li class="">
+                        <a href="#settings-sessions" data-toggle="tab"><span class="fa fa-calendar fa-lg"></span>&nbsp;&nbsp;Sessions</a>
+                    </li>
+                    <li class="">
+                        <a href="#settings-hotels" data-toggle="tab"><span class="fa fa-bed fa-lg"></span>&nbsp;&nbsp;Hotels</a>
+                    </li>
+                    <li class="">
+                        <a href="#settings-filters" data-toggle="tab"><span
+                                class="fa fa-filter fa-lg"></span>&nbsp;&nbsp;Filters</a>
+                    </li>
+                    <li class="">
+                        <a href="#settings-export-filter" data-toggle="tab"><span class="fa fa-filter fa-lg"></span>&nbsp;&nbsp;Export</a>
+                    </li>
+                    <li class="">
+                        <a href="#settings-questions" data-toggle="tab"><span class="fa fa-question fa-lg"></span>&nbsp;&nbsp;Questions</a>
+                    </li>
+                    <li class="">
+                        <a href="#settings-locations" data-toggle="tab"><span class="fa fa-map-marker fa-lg"></span>&nbsp;&nbsp;Locations</a>
+                    </li>
+                    <li class="">
+                        <a href="#settings-photo-reel" data-toggle="tab"><span class="fa fa-camera fa-lg"></span>&nbsp;&nbsp;Photo
+                            Reel</a>
+                    </li>
+                    <li class="">
+                        <a href="#settings-travel" data-toggle="tab"><span class="fa fa-plane fa-lg"></span>&nbsp;&nbsp;Travel</a>
+                    </li>
+                    <li class="">
+                        <a href="#settings-timezone" data-toggle="tab"><span class="fa fa-clock-o fa-lg"></span>&nbsp;&nbsp;Timezone</a>
+                    </li>
+                    <li class="">
+                        <a href="#default-answer" id="default_answer" data-toggle="tab"><span
+                                class="fa fa-info-circle fa-lg"></span>&nbsp;&nbsp;Default Answer</a>
+                    </li>
+                    <li class="">
+                        <a href="#settings-emails" data-toggle="tab"><span class="fa fa-envelope fa-lg"></span>&nbsp;&nbsp;Email
+                            Settings</a>
+                    </li>
+                    <li class="">
+                        <a href="#settings-project" data-toggle="tab"><span class="fa fa-object-group fa-lg"></span>&nbsp;&nbsp;Default
+                            Project</a>
+                    </li>
+                    <li class="">
+                        <a href="#settings-language" data-toggle="tab"><span class="fa fa-language fa-lg"></span>&nbsp;&nbsp;Language</a>
+                    </li>
+                    {#                    <li class="">#}
+                    {#                        <a href="#settings-email-confirmation" data-toggle="tab"><span#}
+                    {#                                class="fa fa-envelope fa-lg"></span>&nbsp;&nbsp;Email Confirmation</a>#}
+                    {#                    </li>#}
+                    <li class="">
+                        <a href="#settings-cookie" data-toggle="tab"><span
+                                class="fa fa-clock-o fa-lg"></span>&nbsp;&nbsp;Session Cookie</a>
+                    </li>
+                    <li class="">
+                        <a href="#settings-global-details" class="class-settings-global-details" data-toggle="tab"><span
+                                class="fa fa-globe fa-lg"></span>&nbsp;&nbsp;Global Details</a>
+                    </li>
+                    <li class="">
+                        <a href="#settings-uid-length" class="class-settings-uid-length" data-toggle="tab"><span
+                                class="fa fa-globe fa-lg"></span>&nbsp;&nbsp;UID Length</a>
+                    </li>
+                    <li class="">
+                        <a href="#settings-economy" class="class-settings-economy" data-toggle="tab"><span
+                                class="fa fa-money fa-lg"></span>&nbsp;&nbsp;Economy</a>
+                    </li>
+                </ul>
+                <div class="tab-pane fade in active" id="settings-attendees">
+
+                    <script>
+                        init.push(function () {
+                            $('.settings-attendee-group, .settings-session-group, .settings-hotel-group, .settings-filter-group, .settings-export_filter-group, .settings-payment-vat, .settings-question, .settings-location, .settings-email-group , .settings-menu-group').editable({
+                                type: 'text',
+                                name: 'Name',
+                                title: 'Name'
+                            });
+                        });
+                    </script>
+
+                    <div class="table-light">
+                        <div class="table-header">
+                            <div class="table-caption">
+                                Attendee Groups
+                            </div>
+                        </div>
+                        <table class="table table-bordered settings-groups-table sortable" id="settings-attendee-group">
+                            <thead>
+                            <tr>
+                                <th><input type="checkbox" class="checkAllGroup"></th>
+                                <th>#</th>
+                                <th>Id</th>
+                                <th>Name</th>
+                                {#                                <th>Is Searchable</th>#}
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for group in attendeeGroup %}
+                                <tr>
+                                    <td><input type="checkbox" name="checkGroup" class="checkGroup"
+                                               data-id="{{ group.id }}"></td>
+                                    <td>{{ forloop.counter }}</td>
+                                    <td>{{ group.id }}</td>
+                                    <td class="searchableGroup" data-id="{{ group.id }}"><a href="#"
+                                                                                            class="settings-attendee-group"
+                                                                                            id="{{ group.id }}"
+                                                                                            data-type="text"
+                                                                                            data-pk="1"
+                                                                                            data-title="Name"
+                                                                                            data-lang="{{ group.name_lang }}"
+                                                                                            data-prev-name="{{ group.name|safe }}">{{ group.name|safe }}</a>
+                                    </td>
+                                    {#                                    <td><input type="checkbox" class="searchableGroup" {% if group.is_searchable == 1 %}#}
+                                    {#                                               checked {% endif %}data-id="{{ group.id }}"></td>#}
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                        <div class="table-footer">
+                            <div class="btn-group">
+                                <button type="button" class="btn add-group"><span class="icon fa fa-plus"></span>&nbsp;&nbsp;Add
+                                    New
+                                    Group
+                                </button>
+                                <button type="button" class="btn delete-group"><span class="icon fa fa-minus"></span>&nbsp;&nbsp;Delete
+                                    Selected
+                                    Group(s)
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {#                <div class="tab-pane fade" id="settings-menus">#}
+                {#                    <div class="table-light">#}
+                {#                        <div class="table-header">#}
+                {#                            <div class="table-caption">#}
+                {#                                Menu Groups#}
+                {#                            </div>#}
+                {#                        </div>#}
+                {#                        <table class="table table-bordered settings-groups-table sortable" id="settings-menu-group">#}
+                {#                            <thead>#}
+                {#                            <tr>#}
+                {#                                <th><input type="checkbox" class="checkAllGroup"></th>#}
+                {#                                <th>#</th>#}
+                {#                                <th>Id</th>#}
+                {#                                <th>Name</th>#}
+                {#                                <th>Is Searchable</th>#}
+                {#                            </tr>#}
+                {#                            </thead>#}
+                {#                            <tbody>#}
+                {#                            {% for group in menuGroup %}#}
+                {#                                <tr>#}
+                {#                                    <td><input type="checkbox" class="checkGroup" data-id="{{ group.id }}"></td>#}
+                {#                                    <td>{{ forloop.counter }}</td>#}
+                {#                                    <td>{{ group.id }}</td>#}
+                {#                                    <td class="searchableGroup" data-id="{{ group.id }}"><a href="#" class="settings-menu-group" id="{{ group.id }}" data-type="text"#}
+                {#                                           data-pk="1" data-title="Name" data-lang="{{ group.name_lang }}" data-prev-name="{{ group.name|safe }}">{{ group.name|safe }}</a></td>#}
+                {#                                    <td><input type="checkbox" class="searchableGroup" {% if group.is_searchable == 1 %}#}
+                {#                                               checked {% endif %}data-id="{{ group.id }}"></td>#}
+                {#                                </tr>#}
+                {#                            {% endfor %}#}
+                {#                            </tbody>#}
+                {#                        </table>#}
+                {#                        <div class="table-footer">#}
+                {#                            <div class="btn-group">#}
+                {#                                <button type="button" class="btn add-group"><span class="icon fa fa-plus"></span>&nbsp;&nbsp;Add#}
+                {#                                    New#}
+                {#                                    Group#}
+                {#                                </button>#}
+                {#                                <button type="button" class="btn delete-group"><span class="icon fa fa-minus"></span>&nbsp;&nbsp;Delete#}
+                {#                                    Selected#}
+                {#                                    Group(s)#}
+                {#                                </button>#}
+                {#                            </div>#}
+                {#                        </div>#}
+                {#                    </div>#}
+                {#                </div>#}
+                <div class="tab-pane fade" id="settings-sessions">
+                    <div class="table-light">
+                        <div class="table-header">
+                            <div class="table-caption">
+                                Time for attendee to decide session if in queue and time conflict (hrs)
+                            </div>
+                        </div>
+                        <div class="input-group date">
+                            <input type="text" value="{{ notification_timeout }}"
+                                   class="timepicker-timeout timepicker-start form-control" id="notification_timeout"/>
+                            <span class="input-group-addon"><i class="fa fa-clock-o"></i></span>
+                        </div>
+                    </div>
+                    <div class="table-light">
+                        <div class="table-header">
+                            <div class="table-caption">
+                                Session Next Up Setting (hrs)
+                            </div>
+                        </div>
+                        <br>
+                        <div class="table-caption form-inline row">
+                            <label class="col-sm-4">Appear before:</label>
+                            <div class="input-group date col-sm-4">
+                                <input type="text" value="{{ appear_next_up }}"
+                                       class="timepicker-timeout timepicker-start form-control"
+                                       id="appear_next_up_setting"/>
+                                <span class="input-group-addon"><i class="fa fa-clock-o"></i></span>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="table-caption form-inline row">
+                            <label class="col-sm-4">Disappear after:</label>
+                            <div class="input-group date col-sm-4">
+                                <input type="text" value="{{ disappear_next_up }}"
+                                       class="timepicker-timeout timepicker-start form-control"
+                                       id="disappear_next_up_setting"/>
+                                <span class="input-group-addon"><i class="fa fa-clock-o"></i></span>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="table-light">
+                        <div class="table-header">
+                            <div class="table-caption">
+                                Session Evaluation Setting (hrs)
+                            </div>
+                        </div>
+                        <br>
+                        <div class="table-caption form-inline row">
+                            <label class="col-sm-4">Appear before:</label>
+                            <div class="input-group date col-sm-4">
+                                <input type="text" value="{{ appear_evaluation }}"
+                                       class="timepicker-timeout timepicker-start form-control"
+                                       id="appear_evaluation_setting"/>
+                                <span class="input-group-addon"><i class="fa fa-clock-o"></i></span>
+                            </div>
+                        </div>
+                        {#                        <br>#}
+                        {#                        <div class="table-caption form-inline row">#}
+                        {#                            <label class="col-sm-4">Disappear after:</label>#}
+                        {#                            <div class="input-group date col-sm-4">#}
+                        {#                                <input type="text" value="{{ disappear_evaluation }}"#}
+                        {#                                       class="timepicker-timeout timepicker-start form-control"#}
+                        {#                                       id="disappear_evaluation_setting"/>#}
+                        {#                                <span class="input-group-addon"><i class="fa fa-clock-o"></i></span>#}
+                        {#                            </div>#}
+                        {#                        </div>#}
+
+                    </div>
+                    <div class="table-light">
+                        <div class="table-header">
+                            <div class="table-caption">
+                                Session Groups
+                            </div>
+                        </div>
+                        <table class="table table-bordered settings-groups-table sortable" id="settings-session-group">
+                            <thead>
+                            <tr>
+                                <th><input type="checkbox" class="checkAllGroup"></th>
+                                <th>#</th>
+                                <th>Id</th>
+                                <th>Name</th>
+                                {#                                <th>Is Searchable</th>#}
+                                {#                                <th>Color</th>#}
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for group in sessionGroup %}
+                                <tr>
+                                    <td><input type="checkbox" class="checkGroup" data-id="{{ group.id }}"></td>
+                                    <td>{{ forloop.counter }}</td>
+                                    <td>{{ group.id }}</td>
+                                    <td class="searchableGroup" data-id="{{ group.id }}"><a href="#"
+                                                                                            class="settings-session-group"
+                                                                                            id="{{ group.id }}"
+                                                                                            data-type="text"
+                                                                                            data-pk="1"
+                                                                                            data-title="Name"
+                                                                                            data-lang="{{ group.name_lang }}"
+                                                                                            data-prev-name="{{ group.name|safe }}">{{ group.name|safe }}</a>
+                                    </td>
+                                    {#                                    <td><input type="checkbox" class="searchableGroup" {% if group.is_searchable == 1 %}#}
+                                    {#                                               checked {% endif %}data-id="{{ group.id }}"></td>#}
+                                    {#                                    <td>#}
+                                    {#                                        <div class="minicolors minicolors-theme-bootstrap minicolors-position-bottom minicolors-position-left minicolors-focus">#}
+                                    {#                                            <input type="text" id="hue-demo" class="form-control demo group_color minicolors-input"#}
+                                    {#                                                   data-control="hue" value="{{ group.color }}" size="7" data-id="{{ group.id }}"><span#}
+                                    {#                                                class="minicolors-swatch minicolors-sprite minicolors-input-swatch"><span#}
+                                    {#                                                class="minicolors-swatch-color"#}
+                                    {#                                                style="opacity: 1; background-color: {% if group.color %} {{ group.color }} {% else %}transparent {% endif %};"></span></span>#}
+                                    {#                                            <div class="minicolors-panel minicolors-slider-hue" style="display: block;">#}
+                                    {#                                                <div class="minicolors-slider minicolors-sprite">#}
+                                    {#                                                    <div class="minicolors-picker" style="top: 150px;"></div>#}
+                                    {#                                                </div>#}
+                                    {#                                                <div class="minicolors-opacity-slider minicolors-sprite">#}
+                                    {#                                                    <div class="minicolors-picker"></div>#}
+                                    {#                                                </div>#}
+                                    {#                                                <div class="minicolors-grid minicolors-sprite"#}
+                                    {#                                                     style="background-color: rgb(255, 0, 0);">#}
+                                    {#                                                    <div class="minicolors-grid-inner"></div>#}
+                                    {#                                                    <div class="minicolors-picker" style="top: 0px; left: 93px;">#}
+                                    {#                                                        <div></div>#}
+                                    {#                                                    </div>#}
+                                    {#                                                </div>#}
+                                    {#                                            </div>#}
+                                    {#                                        </div>#}
+                                    {#                                    </td>#}
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                        <div class="table-footer">
+                            <div class="btn-group">
+                                <button type="button" class="btn add-group"><span class="icon fa fa-plus"></span>&nbsp;&nbsp;Add
+                                    New
+                                    Group
+                                </button>
+                                <button type="button" class="btn delete-group"><span class="icon fa fa-minus"></span>&nbsp;&nbsp;Delete
+                                    Selected
+                                    Group(s)
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tab-pane fade" id="settings-hotels">
+                    <div class="table-light">
+                        <div class="table-header">
+                            <div class="table-caption">
+                                Hotel Groups
+                            </div>
+                        </div>
+                        <table class="table table-bordered settings-groups-table sortable" id="settings-hotel-group">
+                            <thead>
+                            <tr>
+                                <th><input type="checkbox" class="checkAllGroup"></th>
+                                <th>#</th>
+                                <th>Id</th>
+                                <th>Name</th>
+                                {#                                <th>Is Searchable</th>#}
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for group in hotelGroup %}
+                                <tr>
+                                    <td><input type="checkbox" class="checkGroup" data-id="{{ group.id }}"></td>
+                                    <td>{{ forloop.counter }}</td>
+                                    <td>{{ group.id }}</td>
+                                    <td class="searchableGroup" data-id="{{ group.id }}"><a href="#"
+                                                                                            class="settings-hotel-group"
+                                                                                            id="{{ group.id }}"
+                                                                                            data-type="text"
+                                                                                            data-pk="1"
+                                                                                            data-title="Name"
+                                                                                            data-lang="{{ group.name_lang }}"
+                                                                                            data-prev-name="{{ group.name|safe }}">{{ group.name|safe }}</a>
+                                    </td>
+                                    {#                                    <td><input type="checkbox" class="searchableGroup" {% if group.is_searchable == 1 %}#}
+                                    {#                                               checked {% endif %}data-id="{{ group.id }}"></td>#}
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                        <div class="table-footer">
+                            <div class="btn-group">
+                                <button type="button" class="btn add-group"><span class="icon fa fa-plus"></span>&nbsp;&nbsp;Add
+                                    New
+                                    Group
+                                </button>
+                                <button type="button" class="btn delete-group"><span class="icon fa fa-minus"></span>&nbsp;&nbsp;Delete
+                                    Selected
+                                    Group(s)
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tab-pane fade" id="settings-filters">
+                    <div class="table-light">
+                        <div class="table-header">
+                            <div class="table-caption">
+                                Filter Groups
+                            </div>
+                        </div>
+                        <table class="table table-bordered settings-groups-table sortable" id="settings-filter-group">
+                            <thead>
+                            <tr>
+                                <th><input type="checkbox" class="checkAllGroup"></th>
+                                <th>#</th>
+                                <th>Id</th>
+                                <th>Name</th>
+                                {#                                <th>Is Searchable</th>#}
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for group in filterGroup %}
+                                <tr>
+                                    <td><input type="checkbox" class="checkGroup" data-id="{{ group.id }}"></td>
+                                    <td>{{ forloop.counter }}</td>
+                                    <td>{{ group.id }}</td>
+                                    <td class="searchableGroup" data-id="{{ group.id }}"><a href="#"
+                                                                                            class="settings-filter-group"
+                                                                                            id="{{ group.id }}"
+                                                                                            data-type="text"
+                                                                                            data-pk="1"
+                                                                                            data-title="Name"
+                                                                                            data-lang="{{ group.name_lang }}"
+                                                                                            data-prev-name="{{ group.name|safe }}">{{ group.name|safe }}</a>
+                                    </td>
+                                    {#                                    <td><input type="checkbox" class="searchableGroup" {% if group.is_searchable == 1 %}#}
+                                    {#                                               checked {% endif %}data-id="{{ group.id }}"></td>#}
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                        <div class="table-footer">
+                            <div class="btn-group">
+                                <button type="button" class="btn add-group"><span class="icon fa fa-plus"></span>&nbsp;&nbsp;Add
+                                    New
+                                    Group
+                                </button>
+                                <button type="button" class="btn delete-group"><span class="icon fa fa-minus"></span>&nbsp;&nbsp;Delete
+                                    Selected
+                                    Group(s)
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tab-pane fade" id="settings-export-filter">
+                    <div class="table-light">
+                        <div class="table-header">
+                            <div class="table-caption">
+                                Export Groups
+                            </div>
+                        </div>
+                        <table class="table table-bordered settings-groups-table sortable"
+                               id="settings-export_filter-group">
+                            <thead>
+                            <tr>
+                                <th><input type="checkbox" class="checkAllGroup"></th>
+                                <th>#</th>
+                                <th>Id</th>
+                                <th>Name</th>
+                                {#                                <th>Is Searchable</th>#}
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for group in exportFilterGroup %}
+                                <tr>
+                                    <td><input type="checkbox" class="checkGroup" data-id="{{ group.id }}"></td>
+                                    <td>{{ forloop.counter }}</td>
+                                    <td>{{ group.id }}</td>
+                                    <td class="searchableGroup" data-id="{{ group.id }}"><a href="#"
+                                                                                            class="settings-export_filter-group"
+                                                                                            id="{{ group.id }}"
+                                                                                            data-type="text"
+                                                                                            data-pk="1"
+                                                                                            data-title="Name"
+                                                                                            data-lang="{{ group.name_lang }}"
+                                                                                            data-prev-name="{{ group.name|safe }}">{{ group.name|safe }}</a>
+                                    </td>
+                                    {#                                    <td><input type="checkbox" class="searchableGroup" {% if group.is_searchable == 1 %}#}
+                                    {#                                               checked {% endif %}data-id="{{ group.id }}"></td>#}
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                        <div class="table-footer">
+                            <div class="btn-group">
+                                <button type="button" class="btn add-group"><span class="icon fa fa-plus"></span>&nbsp;&nbsp;Add
+                                    New
+                                    Group
+                                </button>
+                                <button type="button" class="btn delete-group"><span class="icon fa fa-minus"></span>&nbsp;&nbsp;Delete
+                                    Selected
+                                    Group(s)
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                {#    q, location#}
+                <div class="tab-pane fade" id="settings-questions">
+                    <div class="table-light">
+                        <div class="table-header">
+                            <div class="table-caption">
+                                Question Groups
+                            </div>
+                        </div>
+                        <table class="table table-bordered settings-groups-table sortable" id="settings-question-group">
+                            <thead>
+                            <tr>
+                                <th><input type="checkbox" class="checkAllGroup"></th>
+                                <th>#</th>
+                                <th>Id</th>
+                                <th>Name</th>
+                                {#                                <th>Is Searchable</th>#}
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for group in questionGroup %}
+                                <tr>
+                                    <td><input type="checkbox" class="checkGroup" data-id="{{ group.id }}"></td>
+                                    <td>{{ forloop.counter }}</td>
+                                    <td>{{ group.id }}</td>
+                                    <td class="searchableGroup" data-id="{{ group.id }}"><a href="#"
+                                                                                            class="settings-filter-group"
+                                                                                            id="{{ group.id }}"
+                                                                                            data-type="text"
+                                                                                            data-pk="1"
+                                                                                            data-title="Name"
+                                                                                            data-lang="{{ group.name_lang }}"
+                                                                                            data-prev-name="{{ group.name|safe }}">{{ group.name|safe }}</a>
+                                    </td>
+                                    {#                                    <td><input type="checkbox" class="searchableGroup" {% if group.is_searchable == 1 %}#}
+                                    {#                                               checked {% endif %}data-id="{{ group.id }}"></td>#}
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                        <div class="table-footer">
+                            <div class="btn-group">
+                                <button type="button" class="btn add-group"><span class="icon fa fa-plus"></span>&nbsp;&nbsp;Add
+                                    New
+                                    Group
+                                </button>
+                                <button type="button" class="btn delete-group"><span class="icon fa fa-minus"></span>&nbsp;&nbsp;Delete
+                                    Selected
+                                    Value(s)
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="settings-locations">
+                    <div class="table-light">
+                        <div class="table-header">
+                            <div class="table-caption">
+                                Location Groups
+                            </div>
+                        </div>
+                        <table class="table table-bordered settings-groups-table sortable" id="settings-location-group">
+                            <thead>
+                            <tr>
+                                <th><input type="checkbox" class="checkAllGroup"></th>
+                                <th>#</th>
+                                <th>Id</th>
+                                <th>Name</th>
+                                {#                                <th>Is Searchable</th>#}
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for group in locationGroup %}
+                                <tr>
+                                    <td><input type="checkbox" class="checkGroup" data-id="{{ group.id }}"></td>
+                                    <td>{{ forloop.counter }}</td>
+                                    <td>{{ group.id }}</td>
+                                    <td class="searchableGroup" data-id="{{ group.id }}"><a href="#"
+                                                                                            class="settings-filter-group"
+                                                                                            id="{{ group.id }}"
+                                                                                            data-type="text"
+                                                                                            data-pk="1"
+                                                                                            data-title="Name"
+                                                                                            data-lang="{{ group.name_lang }}"
+                                                                                            data-prev-name="{{ group.name|safe }}">{{ group.name|safe }}</a>
+                                    </td>
+                                    {#                                    <td><input type="checkbox" class="searchableGroup" {% if group.is_searchable == 1 %}#}
+                                    {#                                               checked {% endif %}data-id="{{ group.id }}"></td>#}
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                        <div class="table-footer">
+                            <div class="btn-group">
+                                <button type="button" class="btn add-group"><span class="icon fa fa-plus"></span>&nbsp;&nbsp;Add
+                                    New
+                                    Group
+                                </button>
+                                <button type="button" class="btn delete-group"><span class="icon fa fa-minus"></span>&nbsp;&nbsp;Delete
+                                    Selected
+                                    Value(s)
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tab-pane fade" id="settings-photo-reel">
+                    <div class="table-light">
+                        <div class="table-header">
+                            <div class="table-caption">
+                                Photo Slider Duration
+                            </div>
+                        </div>
+                        <div class="input-group">
+                            <input type="text" class="form-control" id="slider-duration"
+                                   value="{% if slider_duration %}{{ slider_duration.0.value }}{% endif %}"
+                                   placeholder="Duration in Milliseconds"/>
+                            <span class="input-group-addon"><i class="fa fa-clock-o"></i></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tab-pane fade" id="settings-travel">
+                    <div class="table-light">
+                        <div class="table-header">
+                            <div class="table-caption">
+                                Travel Groups
+                            </div>
+                        </div>
+                        <table class="table table-bordered settings-groups-table sortable" id="settings-travel-group">
+                            <thead>
+                            <tr>
+                                <th><input type="checkbox" class="checkAllGroup"></th>
+                                <th>#</th>
+                                <th>Id</th>
+                                <th>Name</th>
+                                {#                                <th>Is Searchable</th>#}
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for group in travelGroup %}
+                                <tr>
+                                    <td><input type="checkbox" class="checkGroup" data-id="{{ group.id }}"></td>
+                                    <td>{{ forloop.counter }}</td>
+                                    <td>{{ group.id }}</td>
+                                    <td class="searchableGroup" data-id="{{ group.id }}"><a href="#"
+                                                                                            class="settings-filter-group"
+                                                                                            id="{{ group.id }}"
+                                                                                            data-type="text"
+                                                                                            data-pk="1"
+                                                                                            data-title="Name"
+                                                                                            data-lang="{{ group.name_lang }}"
+                                                                                            data-prev-name="{{ group.name|safe }}">{{ group.name|safe }}</a>
+                                    </td>
+                                    {#                                    <td><input type="checkbox" class="searchableGroup" {% if group.is_searchable == 1 %}#}
+                                    {#                                               checked {% endif %}data-id="{{ group.id }}"></td>#}
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                        <div class="table-footer">
+                            <div class="btn-group">
+                                <button type="button" class="btn add-group"><span class="icon fa fa-plus"></span>&nbsp;&nbsp;Add
+                                    New
+                                    Group
+                                </button>
+                                <button type="button" class="btn delete-group"><span class="icon fa fa-minus"></span>&nbsp;&nbsp;Delete
+                                    Selected
+                                    Value(s)
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="settings-timezone">
+                    <div class="table-light">
+                        <div class="table-header">
+                            <div class="table-caption">
+                                Timezones
+                            </div>
+                        </div>
+                        <br>
+
+                        <div class="table-caption">
+                            {% load tz %}
+                            <div class="table-caption form-inline row">
+                                <label class="col-sm-2" for="timezone">Time zone:</label>
+                                <div class="input-group date col-sm-4">
+                                    <select name="timezone" id="timezone">
+                                        {% for tz in timezones %}
+                                            <option value="{{ tz.timezone }}"{% if tz.timezone == timezone_now %}
+                                                    selected="selected"{% endif %}
+                                                    data-value="{{ tz.offset }}">{{ tz.timezone }} ( GMT {{ tz.offset }}
+                                                )
+                                            </option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="table-caption">
+                            <div class="table-caption form-inline row">
+                                <label class="col-sm-2" for="week_start">Weeks starts with:</label>
+                                <div class="input-group date col-sm-4">
+                                    <select name="week_start" id="week_start_day">
+                                        <option value="sun"{% if week_start_day == 'sun' %}
+                                                selected="selected"{% endif %}>Sunday
+                                        </option>
+                                        <option value="mon"{% if week_start_day == 'mon' %}
+                                                selected="selected"{% endif %}>Monday
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="table-caption">
+                            <div class="table-caption form-inline row">
+                                <label class="col-sm-2" for="plugin_language">Plugin Language:</label>
+                                <div class="input-group date col-sm-4">
+                                    <select name="plugin_language" id="plugin_language">
+                                        <option value="en"{% if plugin_language == 'en' %}
+                                                selected="selected"{% endif %}>English
+                                        </option>
+                                        <option value="sv-SE"{% if plugin_language == 'sv-SE' %}
+                                                selected="selected"{% endif %}>Swedish
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="table-caption">
+                            <div class="table-caption form-inline row">
+                                <label class="col-sm-2" for="default_date_format">Default date format:</label>
+                                <div class="input-group date col-sm-4">
+                                    <select name="default_date_format" id="default_date_format">
+
+                                        <option value='{"kendo":"MM-dd-yy","python":"m-d-y","datepicker":"mm-dd-yy","moment":"MM-DD-YY"}'
+                                                {% if default_date_format == '{"kendo":"MM-dd-yy","python":"m-d-y","datepicker":"mm-dd-yy","moment":"MM-DD-YY"}' %}
+                                                selected="selected"{% endif %}>04-28-17
+                                        </option>
+                                        <option value='{"kendo":"MM/dd/yy","python":"m/d/y","datepicker":"mm/dd/yy","moment":"MM/DD/YY"}'
+                                                {% if default_date_format == '{"kendo":"MM/dd/yy","python":"m/d/y","datepicker":"mm/dd/yy","moment":"MM/DD/YY"}' %}
+                                                selected="selected"{% endif %}>04/28/17
+                                        </option>
+                                        <option value='{"kendo":"MM dd yy","python":"m d y","datepicker":"mm dd yy","moment":"MM DD YY"}'
+                                                {% if default_date_format == '{"kendo":"MM dd yy","python":"m d y","datepicker":"mm dd yy","moment":"MM DD YY"}' %}
+                                                selected="selected"{% endif %}>04 28 17
+                                        </option>
+                                        <option value='{"kendo":"MM-dd-yyyy","python":"m-d-Y","datepicker":"mm-dd-yyyy","moment":"MM-DD-YYYY"}'
+                                                {% if default_date_format == '{"kendo":"MM-dd-yyyy","python":"m-d-Y","datepicker":"mm-dd-yyyy","moment":"MM-DD-YYYY"}' %}
+                                                selected="selected"{% endif %}>04-28-2017
+                                        </option>
+                                        <option value='{"kendo":"MM/dd/yyyy","python":"m/d/Y","datepicker":"mm/dd/yyyy","moment":"MM/DD/YYYY"}'
+                                                {% if default_date_format == '{"kendo":"MM/dd/yyyy","python":"m/d/Y","datepicker":"mm/dd/yyyy","moment":"MM/DD/YYYY"}' %}
+                                                selected="selected"{% endif %}>04/28/2017
+                                        </option>
+                                        <option value='{"kendo":"MM dd yyyy","python":"m d Y","datepicker":"mm dd yyyy","moment":"MM DD YYYY"}'
+                                                {% if default_date_format == '{"kendo":"MM dd yyyy","python":"m d Y","datepicker":"mm dd yyyy","moment":"MM DD YYYY"}' %}
+                                                selected="selected"{% endif %}>04 28 2017
+                                        </option>
+                                        <option value='{"kendo":"MMM dd yyyy","python":"b d Y","datepicker":"M dd yyyy","moment":"MMM DD YYYY"}'
+                                                {% if default_date_format == '{"kendo":"MMM dd yyyy","python":"b d Y","datepicker":"M dd yyyy","moment":"MMM DD YYYY"}' %}
+                                                selected="selected"{% endif %}>Apr 28 2017
+                                        </option>
+                                        <option value='{"kendo":"dd MMM yyyy","python":"d b Y","datepicker":"dd M yyyy","moment":"DD MMM YYYY"}'
+                                                {% if default_date_format == '{"kendo":"dd MMM yyyy","python":"d b Y","datepicker":"dd M yyyy","moment":"DD MMM YYYY"}' %}
+                                                selected="selected"{% endif %}>28 Apr 2017
+                                        </option>
+                                        <option value='{"kendo":"yyyy-MM-dd","python":"Y-m-d","datepicker":"yyyy-mm-dd","moment":"YYYY-MM-DD"}'
+                                                {% if default_date_format == '{"kendo":"yyyy-MM-dd","python":"Y-m-d","datepicker":"yyyy-mm-dd","moment":"YYYY-MM-DD"}' %}
+                                                selected="selected"{% endif %}>2017-04-28
+                                        </option>
+                                        <option value='{"kendo":"yyyy/MM/dd","python":"Y/m/d","datepicker":"yyyy/mm/dd","moment":"YYYY/MM/DD"}'
+                                                {% if default_date_format == '{"kendo":"yyyy/MM/dd","python":"Y/m/d","datepicker":"yyyy/mm/dd","moment":"YYYY/MM/DD"}' %}
+                                                selected="selected"{% endif %}>2017/04/28
+                                        </option>
+                                        <option value='{"kendo":"yyyy MM dd","python":"Y m d","datepicker":"yyyy mm dd","moment":"YYYY MM DD"}'
+                                                {% if default_date_format == '{"kendo":"yyyy MM dd","python":"Y m d","datepicker":"yyyy mm dd","moment":"YYYY MM DD"}' %}
+                                                selected="selected"{% endif %}>2017 04 28
+                                        </option>
+
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tab-pane fade" id="default-answer">
+                    <div class="table-light">
+                        <div class="table-header">
+                            <div class="table-caption">
+                                Default Answer
+                            </div>
+                        </div>
+                        <br>
+
+                        <div class="tab-pane fade in active" id="edit-attendee-questions">
+
+                            <div class="table-info">
+                                <table id="group-category-information"
+                                       class="table table-bordered table-striped"
+                                       style="clear: both">
+                                    <thead>
+                                    <tr>
+                                        <td colspan="3">Group</td>
+                                    </tr>
+                                    </thead>
+                                    <tbody class="attendee-group-group-allQuestions">
+                                    <tr>
+                                        <td width="50%">Default Group</td>
+                                        <td>
+                                            <a href="#" id="default-answer-group-selection" data-type="select"
+                                               data-pk="1" data-title="Select Group"></a>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <div class="table-info">
+                                <table id="tag-category-information"
+                                       class="table table-bordered table-striped"
+                                       style="clear: both">
+                                    <thead>
+                                    <tr>
+                                        <td colspan="3">Tag</td>
+                                    </tr>
+                                    </thead>
+                                    <tbody class="attendee-group-tag-allQuestions">
+                                    <tr>
+                                        <td width="50%">Default Tags</td>
+                                        <td>
+                                            <a href="#" class="attendee-question-attendee-tags" data-type="select2"
+                                               data-pk="1"
+                                               data-title="Enter tags">Registered Late, Received Invitation</a>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            {% for group in questionGroup %}
+                                <div class="table-info">
+                                    <table id="question-category-information"
+                                           class="table table-bordered table-striped"
+                                           style="clear: both">
+                                        <thead>
+                                        <tr>
+                                            <td colspan="3">{{ group.name|safe }}</td>
+                                        </tr>
+                                        </thead>
+                                        <tbody class="attendee-group-{{ group.id }}-allQuestions">
+                                        </tbody>
+                                    </table>
+                                </div>
+                            {% endfor %}
+
+                            <div class="table-info">
+                                <table id="session-information"
+                                       class="table table-bordered table-striped"
+                                       style="clear: both">
+                                    <thead>
+                                    <tr>
+                                        <td colspan="3">Sessions</td>
+                                    </tr>
+                                    </thead>
+                                    <tbody class="allSessions">
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="table-info">
+                                <table id="travel-information"
+                                       class="table table-bordered table-striped"
+                                       style="clear: both">
+                                    <thead>
+                                    <tr>
+                                        <td colspan="3">Travels</td>
+                                    </tr>
+                                    </thead>
+                                    <tbody class="allTravels">
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="table-info">
+                                <table id="travel-information"
+                                       class="table table-bordered table-striped"
+                                       style="clear: both">
+                                    <thead>
+                                    <tr>
+                                        <td colspan="2">Hotels</td>
+                                    </tr>
+                                    </thead>
+                                    <tbody class="allHotels">
+                                    {% for room in rooms %}
+                                        <tr>
+                                            <td width="50%">{{ room.hotel.name }} ( {{ room.description }})</td>
+                                            <td>
+                                                <select class="form-control default-hotel" data-room="{{ room.id }}">
+                                                    <option value="1">Keep</option>
+
+                                                    {% if room.keep_hotel == 0 %}
+                                                        <option selected value="0">Empty</option>
+                                                    {% else %}
+                                                        <option value="0">Empty</option>
+
+                                                    {% endif %}
+                                                </select>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+
+                        </div>
+
+
+                    </div>
+                </div>
+
+                <div class="tab-pane fade" id="settings-emails">
+                    <div class="table-light">
+                        <div class="table-header">
+                            <div class="table-caption">
+                                Senders Email
+                            </div>
+                        </div>
+                        <div class="input-group col-sm-6">
+                            <input type="text" value="{{ sender_email }}" class="form-control" id="sender_email"/>
+                        </div>
+                    </div>
+
+                    <div class="table-light">
+                        <div class="table-header">
+                            <div class="table-caption">
+                                Email confimation for Attendee Add/Edit
+                            </div>
+                        </div>
+                        <br>
+
+                        <div class="table-caption form-inline row">
+                            <label class="col-sm-3" for="attendee-add-confirmation">Attendee Add confirmation:</label>
+                            <select class="form-control col-sm-9" style="width: 30%" name="attendee_add_confirmation"
+                                    id="attendee-add-confirmation">
+                                {% for email_confirmation in email_confirmations %}
+                                    <option value="{{ email_confirmation.id }}">{{ email_confirmation.name }}
+                                    </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <br/>
+                        <div class="table-caption form-inline row">
+                            <label class="col-sm-3" for="attendee-edit-confirmation">Attendee Edit confirmation:</label>
+                            <select class="form-control col-sm-9" style="width: 30%" name="attendee_edit_confirmation"
+                                    id="attendee-edit-confirmation">
+                                {% for email_confirmation in email_confirmations %}
+                                    <option value="{{ email_confirmation.id }}">{{ email_confirmation.name }}
+                                    </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <br>
+                        <div class="table-caption form-inline row">
+                            <label class="col-sm-3" for="session-conflict-confirmation">Email template to user for
+                                attendee to decide session if in queue and time conflict:</label>
+                            <select class="form-control col-sm-9" style="width: 30%"
+                                    name="session_conflict_confirmation"
+                                    id="session-conflict-confirmation">
+                                {% for email_confirmation in email_confirmations %}
+                                    <option value="{{ email_confirmation.id }}">{{ email_confirmation.name }}
+                                    </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <br/>
+                        <div class="table-caption form-inline row">
+                            <label class="col-sm-3" for="session-no-conflict-confirmation">Email template to user for
+                                attendee automatically become in queue to attending:</label>
+                            <select class="form-control col-sm-9" style="width: 30%"
+                                    name="session_no_conflict_confirmation"
+                                    id="session-no-conflict-confirmation">
+                                {% for email_confirmation in email_confirmations %}
+                                    <option value="{{ email_confirmation.id }}">{{ email_confirmation.name }}
+                                    </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <br>
+
+                    </div>
+                    <div class="table-light">
+                        <div class="table-header">
+                            <div class="table-caption">
+                                Allowed emails
+                            </div>
+                        </div>
+                        <table class="table table-bordered settings-groups-table sortable" id="settings-email-group">
+                            <thead>
+                            <tr>
+                                <th><input type="checkbox" class="checkAllGroup"></th>
+                                <th>#</th>
+                                <th>Id</th>
+                                <th>Name</th>
+                                {#                                <th>Is Searchable</th>#}
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for group in allowedEmail %}
+                                <tr>
+                                    <td><input type="checkbox" class="checkGroup" data-id="{{ group.id }}"></td>
+                                    <td>{{ forloop.counter }}</td>
+                                    <td>{{ group.id }}</td>
+                                    <td class="searchableGroup" data-id="{{ group.id }}"><a href="#"
+                                                                                            class="settings-email-group"
+                                                                                            id="{{ group.id }}"
+                                                                                            data-type="text"
+                                                                                            data-pk="1"
+                                                                                            data-title="Name">{{ group.name }}</a>
+                                    </td>
+                                    {#                                    <td><input type="checkbox" class="searchableGroup" {% if group.is_searchable == 1 %}#}
+                                    {#                                               checked {% endif %}data-id="{{ group.id }}"></td>#}
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                        <div class="table-footer">
+                            <div class="btn-group">
+                                <button type="button" class="btn add-group"><span class="icon fa fa-plus"></span>&nbsp;&nbsp;Add
+                                    New Allowed Email
+                                </button>
+                                <button type="button" class="btn delete-group"><span class="icon fa fa-minus"></span>&nbsp;&nbsp;Delete
+                                    Selected Allowed Email(s)
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="table-light">
+                        <div class="table-header">
+                            <input type="checkbox" {% if allow_same_email_multiple_registration %} checked {% endif %} id="allow-same-email-registered-more-than-once">
+                            <label class="table-caption" for="allow-same-email-registered-more-than-once">
+                                &nbsp;Allow same email address to registered more than once
+                            </label>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="tab-pane fade" id="settings-project">
+                    <div class="table-light">
+                        <div class="table-header">
+                            <div class="table-caption">
+                                Projects
+                            </div>
+                        </div>
+                        <br>
+
+                        <div class="table-caption">
+                            <label for="default_project">Default project:</label>
+                            <select name="default_project" id="default_project" class="filter-question-selector">
+                                {% for project in projects %}
+                                    <option value="{{ project.url }}"{% if project.url == defailt_project_url %}
+                                            selected="selected"{% endif %}>{{ project.name }}
+                                    </option>
+                                {% endfor %}
+                            </select>
+
+                        </div>
+
+
+                    </div>
+                </div>
+
+
+                <div class="tab-pane fade" id="settings-language">
+                    <div class="table-light">
+                        <div class="table-header">
+                            <div class="table-caption">
+                                Language
+                            </div>
+                        </div>
+                        <br>
+
+                        <div class="table-caption">
+                            <label for="default_language">Default Language:</label>
+                            <select name="default_language" id="default_language">
+                                {% for preset in presets %}
+                                    <option value="{{ preset.id }}">{{ preset.preset_name }} ({{ preset.id }})
+                                    </option>
+                                {% endfor %}
+                            </select>
+
+                        </div>
+
+
+                    </div>
+                </div>
+
+                {#                <div class="tab-pane fade" id="settings-email-confirmation">#}
+                {#                    <div class="table-light">#}
+                {#                        <div class="table-header">#}
+                {#                            <div class="table-caption">#}
+                {#                                Email confimation for Attendee Add/Edit#}
+                {#                            </div>#}
+                {#                        </div>#}
+                {#                        <br>#}
+                {##}
+                {#                        <div class="table-caption form-inline row">#}
+                {#                            <label class="col-sm-3" for="attendee-add-confirmation">Attendee Add confirmation:</label>#}
+                {#                            <select class="form-control col-sm-9" style="width: 30%" name="attendee_add_confirmation"#}
+                {#                                    id="attendee-add-confirmation">#}
+                {#                                {% for email_confirmation in email_confirmations %}#}
+                {#                                    <option value="{{ email_confirmation.id }}">{{ email_confirmation.name }}#}
+                {#                                    </option>#}
+                {#                                {% endfor %}#}
+                {#                            </select>#}
+                {#                        </div>#}
+                {#                        <br/>#}
+                {#                        <div class="table-caption form-inline row">#}
+                {#                            <label class="col-sm-3" for="attendee-add-confirmation">Attendee Edit confirmation:</label>#}
+                {#                            <select class="form-control col-sm-9" style="width: 30%" name="attendee_edit_confirmation"#}
+                {#                                    id="attendee-edit-confirmation">#}
+                {#                                {% for email_confirmation in email_confirmations %}#}
+                {#                                    <option value="{{ email_confirmation.id }}">{{ email_confirmation.name }}#}
+                {#                                    </option>#}
+                {#                                {% endfor %}#}
+                {#                            </select>#}
+                {#                        </div>#}
+                {#                        <br>#}
+                {##}
+                {#                    </div>#}
+                {#                </div>#}
+
+                <div class="tab-pane fade" id="settings-cookie">
+                    <div class="table-light">
+                        <div class="table-header">
+                            <div class="table-caption">
+                                Session Cookie Expire in
+                            </div>
+                        </div>
+                        <div class="input-group">
+                            <label>
+                                <input type="checkbox" class="" id="session_cookie_expire_year"
+                                        {% if cookie_expire_year %}
+                                       checked {% endif %}/><span>A year</span></label>
+                        </div>
+                        <div class="input-group cookie_time"
+                             {% if cookie_expire_year %}style="display: none;"{% endif %}>
+                            <input type="text" value="{{ cookie_expire }}"
+                                   class="form-control" id="session_cookie_expire_hour"
+                                   placeholder="Set hour(hh:mm) or minutes"/>
+                            <span class="input-group-addon">Minutes</span>
+                        </div>
+                        <br>
+                        <div class="table-caption">
+                            <div class="table-caption form-inline row">
+                                <label class="col-sm-2" for="temporary_attendee_time_expire">Temporary attendee expire
+                                    time (registration):</label>
+                                <div class="input-group date col-sm-4">
+                                    <input type="number" id="temporary_attendee_time_expire"
+                                           value="{{ temporary_attendee_expire_time }}" min="1"> Minute
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tab-pane fade" id="settings-global-details">
+                    <div class="table-light">
+                        <div class="table-header">
+                            <div class="table-caption">
+                                Session Details
+                            </div>
+                        </div>
+                        <div class="global-session-details-settings global-details">
+                            <label>Each session shows the following information:</label>
+                            <ul style="display: none">
+                                <li
+                                        {% if global_session_settings.description %}data-selected="true"{% endif %}
+                                        id="global-setting-session-description"
+                                        class="settings-global-answer"
+                                        data-setting-key="description">Description
+                                </li>
+                                <li
+                                        {% if global_session_settings.start_time %}data-selected="true"{% endif %}
+                                        id="global-setting-session-start-time"
+                                        class="settings-global-answer"
+                                        data-setting-key="start_time">Start time
+                                </li>
+                                <li
+                                        {% if global_session_settings.star_date %}data-selected="true"{% endif %}
+                                        id="global-setting-session-start-date"
+                                        class="settings-global-answer"
+                                        data-setting-key="star_date">Start date
+                                </li>
+                                <li
+                                        {% if global_session_settings.end_time %}data-selected="true"{% endif %}
+                                        id="global-setting-session-end-time"
+                                        class="settings-global-answer"
+                                        data-setting-key="end_time">End time
+                                </li>
+                                <li
+                                        {% if global_session_settings.end_date %}data-selected="true"{% endif %}
+                                        id="global-setting-session-end-date"
+                                        class="settings-global-answer"
+                                        data-setting-key="end_date">End Date
+                                </li>
+                                <li
+                                        {% if global_session_settings.rvsp_date %}data-selected="true"{% endif %}
+                                        id="global-setting-session-rvsp-date"
+                                        class="settings-global-answer"
+                                        data-setting-key="rvsp_date">RVSP Date
+                                </li>
+                                <li
+                                        {% if global_session_settings.cost %}data-selected="true"{% endif %}
+                                        id="global-setting-session-cost"
+                                        class="settings-global-answer"
+                                        data-setting-key="cost">Cost
+                                    <ul>
+                                        <li
+                                                {% if global_session_settings.cost_incl_vat %}data-selected="true"{% endif %}
+                                                id="global-setting-session-cost-incl-vat"
+                                                class="settings-global-answer"
+                                                data-setting-key="cost_incl_vat">Include vat
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li
+                                        {% if global_session_settings.speaker %}data-selected="true"{% endif %}
+                                        id="global-setting-session-speaker"
+                                        class="settings-global-answer"
+                                        data-setting-key="speaker">Speaker
+                                    <ul>
+                                        <li
+                                                {% if global_session_settings.link_to_speaker %}data-selected="true"{% endif %}
+                                                id="global-setting-session-speaker-as-link"
+                                                class="settings-global-answer"
+                                                data-setting-key="link_to_speaker">Link to speaker
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li
+                                        {% if global_session_settings.tags %}data-selected="true"{% endif %}
+                                        id="global-setting-session-tags"
+                                        class="settings-global-answer"
+                                        data-setting-key="tags">Tags
+                                </li>
+                                <li
+                                        {% if global_session_settings.session_group %}data-selected="true"{% endif %}
+                                        id="global-setting-session-session-group"
+                                        class="settings-global-answer"
+                                        data-setting-key="session_group">Session Group
+                                </li>
+                                <li
+                                        {% if global_session_settings.location %}data-selected="true"{% endif %}
+                                        id="global-setting-session-location"
+                                        class="settings-global-answer"
+                                        data-setting-key="location">Location
+                                    <ul>
+                                        <li
+                                                {% if global_session_settings.link_to_location %}data-selected="true"{% endif %}
+                                                id="global-setting-session-location-as-link"
+                                                class="settings-global-answer"
+                                                data-setting-key="link_to_location">Link To Location
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li
+                                        {% if global_session_settings.session_available %}data-selected="true"{% endif %}
+                                        id="global-setting-session-available-options"
+                                        class="settings-global-answer"
+                                        data-setting-key="" data-checkbox="false" data-radiogroup="true">Session
+                                    Available
+                                    <ul>
+                                        <li
+                                                {% if global_session_settings.session_available_1 %}data-selected="true"{% endif %}
+                                                id="global-setting-session-available_1"
+                                                class="settings-global-answer"
+                                                data-setting-key="session_available_1">Show X seats
+                                        </li>
+                                        <li
+                                                {% if global_session_settings.session_available_2 %}data-selected="true"{% endif %}
+                                                id="global-setting-session-available_2"
+                                                class="settings-global-answer"
+                                                data-setting-key="session_available_2">Show X of Y seats
+                                        </li>
+                                        <li
+                                                {% if global_session_settings.session_available_3 %}data-selected="true"{% endif %}
+                                                id="global-setting-session-available_3"
+                                                class="settings-global-answer"
+                                                data-setting-key="session_available_3">Show estimate
+                                        </li>
+                                        <li
+                                                {% if global_session_settings.session_available_4 %}data-selected="true"{% endif %}
+                                                id="global-setting-session-available_4"
+                                                class="settings-global-answer"
+                                                data-setting-key="session_available_4">Do not show availability
+                                        </li>
+                                    </ul>
+                                </li>
+
+                                {#                                <li>#}
+                                {#                                    <input type="checkbox"#}
+                                {#                                           {% if global_session_settings.description %}checked="checked"{% endif %}#}
+                                {#                                           id="global-setting-session-description"#}
+                                {#                                           class="settings-global-answer"#}
+                                {#                                           data-setting-key="description">#}
+                                {#                                    <label#}
+                                {#                                            for="global-setting-session-description">Description</label>#}
+                                {#                                </li>#}
+                                {#                                <li>#}
+                                {#                                    <input type="checkbox"#}
+                                {#                                           {% if global_session_settings.start_time %}checked="checked"{% endif %}#}
+                                {#                                           id="global-setting-session-start-time"#}
+                                {#                                           class="settings-global-answer"#}
+                                {#                                           data-setting-key="start_time"> <label#}
+                                {#                                        for="global-setting-session-start-time">Start time</label>#}
+                                {#                                </li>#}
+                                {#                                <li>#}
+                                {#                                    <input type="checkbox"#}
+                                {#                                           {% if global_session_settings.star_date %}checked="checked"{% endif %}#}
+                                {#                                           id="global-setting-session-start-date"#}
+                                {#                                           class="settings-global-answer"#}
+                                {#                                           data-setting-key="star_date">#}
+                                {#                                    <label#}
+                                {#                                            for="global-setting-session-start-date">Start date</label>#}
+                                {#                                </li>#}
+                                {#                                <li>#}
+                                {#                                    <input type="checkbox"#}
+                                {#                                           {% if global_session_settings.end_time %}checked="checked"{% endif %}#}
+                                {#                                           id="global-setting-session-end-time"#}
+                                {#                                           class="settings-global-answer"#}
+                                {#                                           data-setting-key="end_time">#}
+                                {#                                    <label#}
+                                {#                                            for="global-setting-session-end-time">End time</label>#}
+                                {#                                </li>#}
+                                {#                                <li>#}
+                                {#                                    <input type="checkbox"#}
+                                {#                                           {% if global_session_settings.end_date %}checked="checked"{% endif %}#}
+                                {#                                           id="global-setting-session-end-date"#}
+                                {#                                           class="settings-global-answer"#}
+                                {#                                           data-setting-key="end_date">#}
+                                {#                                    <label#}
+                                {#                                            for="global-setting-session-end-date">End date</label>#}
+                                {#                                </li>#}
+                                {#                                <li>#}
+                                {#                                    <input type="checkbox"#}
+                                {#                                           {% if global_session_settings.rvsp_date %}checked="checked"{% endif %}#}
+                                {#                                           id="global-setting-session-rvsp-date"#}
+                                {#                                           class="settings-global-answer"#}
+                                {#                                           data-setting-key="rvsp_date">#}
+                                {#                                    <label#}
+                                {#                                            for="global-setting-session-rvsp-date">RVSP date</label>#}
+                                {#                                </li>#}
+                                {#                                <li>#}
+                                {#                                    <input type="checkbox"#}
+                                {#                                           {% if global_session_settings.cost %}checked="checked"{% endif %}#}
+                                {#                                           id="global-setting-session-cost"#}
+                                {#                                           class="settings-global-answer"#}
+                                {#                                           data-setting-key="cost">#}
+                                {#                                    <label#}
+                                {#                                            for="global-setting-session-cost">Cost</label>#}
+                                {#                                    <ul>#}
+                                {#                                        <li>#}
+                                {#                                            <input type="checkbox"#}
+                                {#                                                   {% if global_session_settings.cost_incl_vat %}checked="checked"{% endif %}#}
+                                {#                                                   id="global-setting-session-cost-incl-vat"#}
+                                {#                                                   class="settings-global-answer"#}
+                                {#                                                   data-setting-key="cost_incl_vat">#}
+                                {#                                            <label for="global-setting-session-cost-incl-vat">Include vat</label>#}
+                                {#                                        </li>#}
+                                {#                                    </ul>#}
+                                {#                                </li>#}
+                                {#                                <li>#}
+                                {#                                    <input type="checkbox"#}
+                                {#                                           {% if global_session_settings.speaker %}checked="checked"{% endif %}#}
+                                {#                                           id="global-setting-session-speaker"#}
+                                {#                                           class="settings-global-answer"#}
+                                {#                                           data-setting-key="speaker">#}
+                                {#                                    <label#}
+                                {#                                            for="global-setting-session-speaker">Speaker</label>#}
+                                {#                                    <ul>#}
+                                {#                                        <li>#}
+                                {#                                            <input type="checkbox"#}
+                                {#                                                   {% if global_session_settings.link_to_speaker %}checked="checked"{% endif %}#}
+                                {#                                                   id="global-setting-session-speaker-as-link"#}
+                                {#                                                   class="settings-global-answer"#}
+                                {#                                                   data-setting-key="link_to_speaker">#}
+                                {#                                            <label for="global-setting-session-speaker-as-link">Link to speaker#}
+                                {#                                                details</label>#}
+                                {#                                        </li>#}
+                                {#                                    </ul>#}
+                                {#                                </li>#}
+                                {#                                <li>#}
+                                {#                                    <input type="checkbox"#}
+                                {#                                           {% if global_session_settings.tags %}checked="checked"{% endif %}#}
+                                {#                                           id="global-setting-session-tags"#}
+                                {#                                           class="settings-global-answer"#}
+                                {#                                           data-setting-key="tags">#}
+                                {#                                    <label#}
+                                {#                                            for="global-setting-session-tags">Tags</label>#}
+                                {#                                </li>#}
+                                {#                                <li>#}
+                                {#                                    <input type="checkbox"#}
+                                {#                                           {% if global_session_settings.session_group %}checked="checked"{% endif %}#}
+                                {#                                           id="global-setting-session-session-group"#}
+                                {#                                           class="settings-global-answer"#}
+                                {#                                           data-setting-key="session_group">#}
+                                {#                                    <label#}
+                                {#                                            for="global-setting-session-session-group">Session group</label>#}
+                                {#                                </li>#}
+                                {#                                <li>#}
+                                {#                                    <input type="checkbox"#}
+                                {#                                           {% if global_session_settings.location %}checked="checked"{% endif %}#}
+                                {#                                           id="global-setting-session-location"#}
+                                {#                                           class="settings-global-answer"#}
+                                {#                                           data-setting-key="location">#}
+                                {#                                    <label#}
+                                {#                                            for="global-setting-session-location">Location</label>#}
+                                {#                                    <ul>#}
+                                {#                                        <li>#}
+                                {#                                            <input type="checkbox"#}
+                                {#                                                   {% if global_session_settings.link_to_location %}checked="checked"{% endif %}#}
+                                {#                                                   id="global-setting-session-location-as-link"#}
+                                {#                                                   class="settings-global-answer"#}
+                                {#                                                   data-setting-key="link_to_location">#}
+                                {#                                            <label for="global-setting-session-location-as-link">Link to location#}
+                                {#                                                details</label>#}
+                                {#                                        </li>#}
+                                {#                                    </ul>#}
+                                {#                                </li>#}
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="table-light">
+                        <div class="table-header">
+                            <div class="table-caption">
+                                Location Details
+                            </div>
+                        </div>
+                        <div class="global-location-details-settings global-details">
+                            <label>Each location shows the following information:</label>
+                            <ul style="display: none">
+                                <li
+                                        {% if global_location_settings.title %}data-selected="true"{% endif %}
+                                        id="global-setting-location-title"
+                                        class="settings-global-answer"
+                                        data-setting-key="title">Title
+                                    <ul>
+                                        <li
+                                                {% if global_location_settings.title_as_link %}data-selected="true"{% endif %}
+                                                id="global-setting-location-title-as-link"
+                                                class="settings-global-answer"
+                                                data-setting-key="title_as_link">Link to location
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li
+                                        {% if global_location_settings.description %}data-selected="true"{% endif %}
+                                        id="global-setting-location-description"
+                                        class="settings-global-answer"
+                                        data-setting-key="description">Description
+                                </li>
+                                <li
+                                        {% if global_location_settings.link_to_map %}data-selected="true"{% endif %}
+                                        id="global-setting-location-link-to-map"
+                                        class="settings-global-answer"
+                                        data-setting-key="link_to_map">Link to Map
+                                </li>
+                                <li
+                                        {% if global_location_settings.address_details %}data-selected="true"{% endif %}
+                                        id="global-setting-location-address"
+                                        class="settings-global-answer"
+                                        data-setting-key="address_details">Address details
+                                </li>
+                                <li
+                                        {% if global_location_settings.contact_details %}data-selected="true"{% endif %}
+                                        id="global-setting-location-contact"
+                                        class="settings-global-answer"
+                                        data-setting-key="contact_details">Contact details
+                                </li>
+
+
+                                {#                                <li>#}
+                                {#                                    <input type="checkbox"#}
+                                {#                                           {% if global_location_settings.title %}checked="checked"{% endif %}#}
+                                {#                                           id="global-setting-location-title"#}
+                                {#                                           class="settings-global-answer"#}
+                                {#                                           data-setting-key="title">#}
+                                {#                                    <label#}
+                                {#                                            for="global-setting-location-title">Title</label>#}
+                                {#                                    <ul>#}
+                                {#                                        <li>#}
+                                {#                                            <input type="checkbox"#}
+                                {#                                                   {% if global_location_settings.title_as_link %}checked="checked"{% endif %}#}
+                                {#                                                   id="global-setting-location-title-as-link"#}
+                                {#                                                   class="settings-global-answer"#}
+                                {#                                                   data-setting-key="title_as_link">#}
+                                {#                                            <label#}
+                                {#                                                    for="global-setting-location-title-as-link">Link to location#}
+                                {#                                                details</label>#}
+                                {#                                        </li>#}
+                                {#                                    </ul>#}
+                                {#                                </li>#}
+                                {#                                <li>#}
+                                {#                                    <input type="checkbox"#}
+                                {#                                           {% if global_location_settings.description %}checked="checked"{% endif %}#}
+                                {#                                           id="global-setting-location-description"#}
+                                {#                                           class="settings-global-answer"#}
+                                {#                                           data-setting-key="description">#}
+                                {#                                    <label#}
+                                {#                                            for="global-setting-location-description">Description</label>#}
+                                {#                                </li>#}
+                                {#                                <li>#}
+                                {#                                    <input type="checkbox"#}
+                                {#                                           {% if global_location_settings.link_to_map %}checked="checked"{% endif %}#}
+                                {#                                           id="global-setting-location-link-to-map"#}
+                                {#                                           class="settings-global-answer"#}
+                                {#                                           data-setting-key="link_to_map">#}
+                                {#                                    <label#}
+                                {#                                            for="global-setting-location-link-to-map">Link to map</label>#}
+                                {#                                </li>#}
+                                {#                                <li>#}
+                                {#                                    <input type="checkbox"#}
+                                {#                                           {% if global_location_settings.address_details %}checked="checked"{% endif %}#}
+                                {#                                           id="global-setting-location-address"#}
+                                {#                                           class="settings-global-answer"#}
+                                {#                                           data-setting-key="address_details">#}
+                                {#                                    <label#}
+                                {#                                            for="global-setting-location-address">Address details</label>#}
+                                {#                                </li>#}
+                                {#                                <li>#}
+                                {#                                    <input type="checkbox"#}
+                                {#                                           {% if global_location_settings.contact_details %}checked="checked"{% endif %}#}
+                                {#                                           id="global-setting-location-contact"#}
+                                {#                                           class="settings-global-answer"#}
+                                {#                                           data-setting-key="contact_details">#}
+                                {#                                    <label#}
+                                {#                                            for="global-setting-location-contact">Contact details</label>#}
+                                {#                                </li>#}
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="table-light">
+                        <div class="table-header">
+                            <div class="table-caption">
+                                Attendee Details
+                            </div>
+                        </div>
+                        <div class="global-attendee-details-settings global-details">
+                            <label>Each Attendee shows the following information:</label>
+                            <div class="global-settings-attendee-list-visible-columns"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tab-pane fade" id="settings-uid-length">
+                    <div class="table-light">
+                        <div class="table-header">
+                            <div class="table-caption">
+                                Length of UID
+                            </div>
+                        </div>
+                        </br>
+                        <div class="table-caption">
+                            <div class="table-caption form-inline row">
+                                <label class="col-sm-2" for="uid-length">UID length:</label>
+                                <div class="input-group date col-sm-2">
+                                    <input id="uid-length" value="{{ uid_length }}" type="number" min="4" max="256">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tab-pane fade" id="settings-economy">
+                    <div class="table-light">
+                        <div class="table-header">
+                            <div class="table-caption">
+                                Economy
+                            </div>
+                        </div>
+                        </br>
+                        <div class="table-caption">
+                            <div class="table-caption form-inline row">
+                                <label class="col-sm-2" for="start-order-number">Start order number:</label>
+                                <div class="input-group date col-sm-2">
+                                    <input id="start-order-number" value="{{ start_order_number }}" type="text"
+                                           disabled>
+                                </div>
+                            </div>
+                        </div>
+                        </br>
+                        <div class="table-caption">
+                            <div class="table-caption form-inline row">
+                                <label class="col-sm-2" for="due-date">Due date:</label>
+                                <div class="input-group date col-sm-2">
+                                    <input id="due-date" value="{{ due_date }}" type="number" min="0">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="table-light">
+                        <div class="table-header">
+                            <div class="table-caption">
+                                Order Table
+                            </div>
+                        </div>
+                        <div class="global-economy-order-table-settings global-details">
+                            <label>Economy Order table shows the following columns:</label>
+                            <ul style="display: none;">
+                                <li
+                                        {% if global_order_table_settings.item_name %}data-selected="true"{% endif %}
+                                        id="global-setting-order-table-item-name"
+                                        class="settings-global-answer"
+                                        data-setting-key="item_name">Item name
+                                </li>
+                                <li
+                                        {% if global_order_table_settings.cost_excl_vat %}data-selected="true"{% endif %}
+                                        id="global-setting-order-table-cost-excl-vat"
+                                        class="settings-global-answer"
+                                        data-setting-key="cost_excl_vat">Cost excl. VAT
+                                </li>
+                                <li
+                                        {% if global_order_table_settings.rebate_amount %}data-selected="true"{% endif %}
+                                        id="global-setting-order-table-rebate-amount"
+                                        class="settings-global-answer"
+                                        data-setting-key="rebate_amount">Rebate amount
+                                </li>
+                                <li
+                                        {% if global_order_table_settings.vat_amount %}data-selected="true"{% endif %}
+                                        id="global-setting-order-table-vat-amount"
+                                        class="settings-global-answer"
+                                        data-setting-key="vat_amount">VAT amount
+                                </li>
+                                <li
+                                        {% if global_order_table_settings.vat_rate %}data-selected="true"{% endif %}
+                                        id="global-setting-order-table-vat-rate"
+                                        class="settings-global-answer"
+                                        data-setting-key="vat_rate">VAT rate
+                                <li
+                                        {% if global_order_table_settings.cost_incl_vat %}data-selected="true"{% endif %}
+                                        id="global-setting-order-table-cost-incl-vat"
+                                        class="settings-global-answer"
+                                        data-setting-key="cost_incl_vat">Cost incl. VAT
+                                </li>
+
+
+                                {#                                <li>#}
+                                {#                                    <input type="checkbox"#}
+                                {#                                           {% if global_order_table_settings.item_name %}checked="checked"{% endif %}#}
+                                {#                                           id="global-setting-order-table-item-name"#}
+                                {#                                           class="settings-global-answer"#}
+                                {#                                           data-setting-key="item_name">#}
+                                {#                                    <label#}
+                                {#                                            for="global-setting-order-table-item-name">Item name</label>#}
+                                {#                                </li>#}
+                                {#                                <li>#}
+                                {#                                    <input type="checkbox"#}
+                                {#                                           {% if global_order_table_settings.cost_excl_vat %}checked="checked"{% endif %}#}
+                                {#                                           id="global-setting-order-table-cost-excl-vat"#}
+                                {#                                           class="settings-global-answer"#}
+                                {#                                           data-setting-key="cost_excl_vat">#}
+                                {#                                    <label#}
+                                {#                                            for="global-setting-order-table-cost-excl-vat">Cost excl. VAT</label>#}
+                                {#                                </li>#}
+                                {#                                <li>#}
+                                {#                                    <input type="checkbox"#}
+                                {#                                           {% if global_order_table_settings.rebate_amount %}checked="checked"{% endif %}#}
+                                {#                                           id="global-setting-order-table-rebate-amount"#}
+                                {#                                           class="settings-global-answer"#}
+                                {#                                           data-setting-key="rebate_amount">#}
+                                {#                                    <label#}
+                                {#                                            for="global-setting-order-table-rebate-amount">Rebate amount</label>#}
+                                {#                                </li>#}
+                                {#                                <li>#}
+                                {#                                    <input type="checkbox"#}
+                                {#                                           {% if global_order_table_settings.vat_amount %}checked="checked"{% endif %}#}
+                                {#                                           id="global-setting-order-table-vat-amount"#}
+                                {#                                           class="settings-global-answer"#}
+                                {#                                           data-setting-key="vat_amount">#}
+                                {#                                    <label#}
+                                {#                                            for="global-setting-order-table-vat-amount">VAT amount</label>#}
+                                {#                                </li>#}
+                                {#                                <li>#}
+                                {#                                    <input type="checkbox"#}
+                                {#                                           {% if global_order_table_settings.vat_rate %}checked="checked"{% endif %}#}
+                                {#                                           id="global-setting-order-table-vat-rate"#}
+                                {#                                           class="settings-global-answer"#}
+                                {#                                           data-setting-key="vat_rate">#}
+                                {#                                    <label#}
+                                {#                                            for="global-setting-order-table-vat-rate">VAT rate</label>#}
+                                {#                                </li>#}
+                                {#                                <li>#}
+                                {#                                    <input type="checkbox"#}
+                                {#                                           {% if global_order_table_settings.cost_incl_vat %}checked="checked"{% endif %}#}
+                                {#                                           id="global-setting-order-table-cost-incl-vat"#}
+                                {#                                           class="settings-global-answer"#}
+                                {#                                           data-setting-key="cost_incl_vat">#}
+                                {#                                    <label#}
+                                {#                                            for="global-setting-order-table-cost-incl-vat">Cost incl. VAT</label>#}
+                                {#                                </li>#}
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="table-light">
+                        <div class="table-header">
+                            <div class="table-caption">
+                                VAT % Available
+                            </div>
+                        </div>
+                        <table class="table table-bordered settings-groups-table sortable"
+                               id="settings-payment-vat">
+                            <thead>
+                            <tr>
+                                <th><input type="checkbox" class="checkAllGroup"></th>
+                                <th>#</th>
+                                <th>Id</th>
+                                <th>VAT %</th>
+                                {#                                <th>Is Searchable</th>#}
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for group in paymentGroup %}
+                                <tr>
+                                    <td><input type="checkbox" class="checkGroup" data-id="{{ group.id }}"></td>
+                                    <td>{{ forloop.counter }}</td>
+                                    <td>{{ group.id }}</td>
+                                    <td class="searchableGroup" data-id="{{ group.id }}"><a href="#"
+                                                                                            class="settings-payment-vat"
+                                                                                            id="{{ group.id }}"
+                                                                                            data-type="number"
+                                                                                            data-pk="1"
+                                                                                            data-title="Name">{{ group.name }}</a>
+                                    </td>
+                                    {#                                    <td><input type="checkbox" class="searchableGroup"#}
+                                    {#                                            {% if group.is_searchable == 1 %}#}
+                                    {#                                               checked {% endif %}data-id="{{ group.id }}"></td>#}
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                        <div class="table-footer">
+                            <div class="btn-group">
+                                <button type="button" class="btn add-group" data-text-value="vat"><span
+                                        class="icon fa fa-plus"></span>&nbsp;&nbsp;Add
+                                    New
+                                    VAT
+                                </button>
+                                <button type="button" class="btn delete-group"><span
+                                        class="icon fa fa-minus"></span>&nbsp;&nbsp;Delete
+                                    Selected
+                                    Value(s)
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                {#    end q, location#}
+                <div class="row">
+                    <div class="col-sm-12 text-right">
+                        <div class="btn-group">
+                            <a type="button" class="btn btn-lg" data-original-title="" title=""
+                               href="{% url 'settings' %}"><i
+                                    class="fa fa-ban"></i>&nbsp;&nbsp;Cancel
+                            </a>
+                            <button type="button" class="btn btn-success dropdown-toggle btn-lg createGroup btn-save"><i
+                                    class="fa fa-check-circle"></i>&nbsp;&nbsp;Save
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div> <!-- / #content-wrapper -->
+    <input type='hidden' id="groupList" name='' value='[]'/>
+    <input type='hidden' id="deleteGroupList" name='' value='[]'/>
+    <input type="hidden" id="admin-setting-write-access"
+           value="{% if request.session.admin_permission.content_permission.setting_permission and request.session.admin_permission.content_permission.setting_permission.access_level == 'write' or request.session.event_auth_user.type == 'super_admin' %} 1 {% else %} 0 {% endif %}">
+    <style>
+        .nav_pad > li > a {
+            padding: 8px 10px !important;
+        }
+
+        .minicolors-theme-default .minicolors-input {
+            height: 35px;
+        }
+
+        {#                .minicolors-theme-default .minicolors-swatch {#}
+        {#                    top: 5px;#}
+        {#                    left: 5px;#}
+        {#                    width: 18px;#}
+        {#                    height: 35px;#}
+        {#                }#}
+        {##}
+        {#                .minicolors-theme-default.minicolors-position-right .minicolors-swatch {#}
+        {#                    left: auto;#}
+        {#                    right: 5px;#}
+        {#                }#}
+    </style>
+    <script>
+        $(document).ready(function () {
+            $("#default_language").select2();
+            $("#default_language").select2("val", "{{ presetsEvent.preset_id }}")
+            $("#attendee-add-confirmation").select2();
+            $("#attendee-add-confirmation").select2("val", "{{ attendee_add_confirmation }}")
+            $("#attendee-edit-confirmation").select2();
+            $("#attendee-edit-confirmation").select2("val", "{{ attendee_edit_confirmation }}")
+            $("#session-conflict-confirmation").select2();
+            $("#session-conflict-confirmation").select2("val", "{{ session_conflict_confirmation }}")
+            $("#session-no-conflict-confirmation").select2();
+            $("#session-no-conflict-confirmation").select2("val", "{{ session_no_conflict_confirmation }}")
+        });
+        $(function () {
+            $('.demo').each(function () {
+                $(this).minicolors({
+                    control: $(this).attr('data-control') || 'hue',
+                    defaultValue: $(this).attr('data-defaultValue') || '',
+                    format: $(this).attr('data-format') || 'hex',
+                    keywords: $(this).attr('data-keywords') || '',
+                    inline: $(this).attr('data-inline') === 'true',
+                    letterCase: $(this).attr('data-letterCase') || 'lowercase',
+                    opacity: $(this).attr('data-opacity'),
+                    position: $(this).attr('data-position') || 'bottom left',
+                    swatches: $(this).attr('data-swatches') ? $(this).attr('data-swatches').split('|') : [],
+                    change: function (hex, opacity) {
+                        var log;
+                        try {
+                            log = hex ? hex : 'transparent';
+                            $(this).parent().parent().find('.minicolors-swatch-color').css('background-color', log);
+                            if (opacity) log += ', ' + opacity;
+                            clog(log);
+                        } catch (e) {
+                        }
+                    },
+                    theme: 'default'
+                });
+            });
+            var setting_access = $('#admin-setting-write-access').val();
+            if ($.trim(setting_access) == '0') {
+                $('.btn-group').remove();
+                $('.settings-tab').find("input, select").attr('disabled', 'disabled');
+                $('.settings-tab').find(".settings-attendee-group, .settings-session-group, .settings-hotel-group, .settings-filter-group, .settings-export_filter-group, .settings-payment-vat, .settings-question, .settings-location, .settings-menu-group").editable({
+                    disabled: true
+                });
+                $(".settings-groups-table").css('pointer-events', 'none');
+
+            }
+
+        });
+    </script>
+    <script src="{% static 'assets/plugin/jquery/jquery-ui-1.11.min.js' %}"></script>
+    {#    <script src="{% static 'assets/javascripts/kendo/kendo.all.min.js' %}"></script>#}
+    <script src="{% static 'assets/javascripts/setting.js' %}"></script>
+    <script src="{% static 'assets/javascripts/fancytree/jquery.fancytree-all.min.js' %}"></script>
+
+{% endblock %}

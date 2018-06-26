@@ -1,0 +1,30 @@
+{% load staticfiles %}
+{#kendo scheduler#}
+{% if filter == "css" %}
+    <link href="{% static 'assets/stylesheets/kendo.common-office365.min.css' %}" rel="stylesheet"/>
+    <link href="{% static 'assets/stylesheets/kendo.office365.min.css' %}" rel="stylesheet"/>
+    <link href="{% static 'assets/stylesheets/kendo.office365.mobile.min.css' %}" rel="stylesheet"/>
+{% elif filter == "js" %}
+    if(kendo_load_status){
+    onLoadJs();
+    onLoadDateJs();
+    onLoadPluginSession();
+    }else{
+    kendo_load_status=true;
+    $.getScript("https://kendo.cdn.telerik.com/2017.1.223/js/kendo.all.min.js")
+    .done(function( script, textStatus ) {
+    onLoadJs();
+    onLoadDateJs();
+    onLoadPluginSession();
+    $.getScript("{% static 'public/js/kendo/kendo.timezones.min.js' %}");
+    $.getScript("{% static 'public/js/session_scheduler.js' %}");
+    $.getScript("{% static 'public/js/kendo.culture.sv-SE.js' %}");
+    });
+    }
+{% elif filter == "script" %}
+    <script>kendo_load_status = true;</script>
+    <script src="https://kendo.cdn.telerik.com/2017.1.223/js/kendo.all.min.js"></script>
+    <script src="{% static 'public/js/kendo/kendo.timezones.min.js' %}"></script>
+    <script src="{% static 'public/js/session_scheduler.js' %}"></script>
+    <script src="{% static 'public/js/kendo.culture.sv-SE.js' %}"></script>
+{% endif %}

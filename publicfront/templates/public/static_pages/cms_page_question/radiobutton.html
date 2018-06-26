@@ -1,0 +1,13 @@
+{% if opt.default_value %}
+    <input type="radio"
+           data-filter-id="{{ question.id }}"
+           name="attendee-question-{{ question.id }}" value="{{ opt.option }}"
+           id="attendee-question-{{ question.id }}-{{ counter }}" class="given-answer" checked>
+    <label for="attendee-question-{{ question.id }}-{{ counter }}">{{ opt.option }}</label>
+{% else %}
+    <input type="radio"
+           data-filter-id="{{ question.id }}"
+           name="attendee-question-{{ question.id }}" value="{{ opt.option }}"
+           id="attendee-question-{{ question.id }}-{{ counter }}" class="given-answer">
+    <label for="attendee-question-{{ question.id }}-{{ counter }}">{{ opt.option }}</label>
+{% endif %}

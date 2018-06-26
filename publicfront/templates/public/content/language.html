@@ -1,0 +1,8 @@
+<ul id="language-select">
+    <li><a class="current {{ current_language.preset_class }}" data-id="{{ current_language.id }}">{{ current_language.preset_name }}</a>
+        <ul>
+            {% for language in languages %}
+            <li><a class="{{ language.preset_class }} {% if current_language.id == language.id %}current{% endif %}" data-id="{{ language.id }}">{{ language.preset_name }}</a></li>
+            {% endfor %}
+        </ul>
+</ul>

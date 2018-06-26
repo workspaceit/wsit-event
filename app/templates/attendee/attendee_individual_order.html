@@ -1,0 +1,99 @@
+<table class="table table-bordered">
+    <thead>
+    <tr>
+        <th>Order Number: <span class="" style="font-weight:normal;">{{ order.order.order_number }}</span>
+        </th>
+        <th>Cost excl. vat</th>
+        <th>Rebate Amount</th>
+        <th>Vat</th>
+        <th>Vat %</th>
+        <th>Cost Incl. Vat</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for order_item in order.order_items %}
+        <tr>
+
+            {% if order_item.item_type == 'rebate' %}
+                <td>
+                    {% if order.order.status != 'open' and order_item.rebate_is_deleted %}
+                        <span class="text-muted">[removed]</span>
+                        {% if order.order.status == 'pending' or order.order.status == 'paid' %}
+                            {% if not order_item.applied_on_open_order %}
+                                <span class="text-muted">[applied later]</span>
+                            {% endif %}
+                        {% endif %}
+                    {% else %}
+                        {% if order.order.status != 'cancelled' %}
+                            <span>
+                            {% if request.session.admin_permission.content_permission.economy_permission and request.session.admin_permission.content_permission.economy_permission.access_level == 'write' or request.session.event_auth_user.type == 'super_admin' %}
+                                <button class="btn btn-danger btn-sm remove-rebate-from-order"
+                                        data-order-id="{{ order_item.order.id }}"
+                                        data-rebate-id="{{ order_item.item_id }}"
+                                        data-rebate-for-item-id="{{ order_item.rebate_for_item_id }}"
+                                        data-rebate-for-item-type="{{ order_item.rebate_for_item_type }}"
+                                        data-attendee-id="{{ order.order.attendee.id }}">
+                                    <i class="fa fa-minus"></i> </button>
+                            {% endif %}
+                        </span> &nbsp;
+                            {% if order.order.status == 'pending' or order.order.status == 'paid' %}
+                                {% if not order_item.applied_on_open_order %}
+                                    <span class="text-muted">[applied later]</span>
+                                {% endif %}
+                            {% endif %}
+                        {% endif %}
+                    {% endif %}
+                    {{ order_item.item_name }}
+                </td>
+                <td></td>
+                <td>-{{ order_item.rebate_amount }}</td>
+                <td></td>
+                <td></td>
+                <td></td>
+            {% else %}
+                <td>
+                    {% if order.order.status != 'open' and order_item.rebate_is_deleted %}
+                        <span class="text-muted">[removed]</span>
+                    {% endif %}
+                    {{ order_item.item_name }}
+                </td>
+                <td>{{ order_item.cost }}</td>
+                <td></td>
+                {% if order_item.item_type == 'adjustment' %}
+                    <td></td>
+                    <td></td>
+                {% else %}
+                    <td>{{ order_item.vat_amount }}</td>
+                    <td>{{ order_item.vat_rate }}%</td>
+                {% endif %}
+                <td>{{ order_item.total_cost }}</td>
+            {% endif %}
+        </tr>
+    {% endfor %}
+    <tr>
+        <td>Grand Total</td>
+        <td>{{ order.total_cost_exl_vat }}</td>
+        <td>{{ order.total_rebate_amount }}</td>
+        <td>{{ order.total_vat_amount }}</td>
+        <td></td>
+        <td>{{ order.total_cost_incl_vat }}</td>
+    </tr>
+    </tbody>
+</table>
+
+<table class="table table-bordered">
+    <thead>
+    <tr>
+        <th>Vat</th>
+        <th>Amount</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for vat in order.vats %}
+        <tr>
+            <td>{{ vat.vat_rate }}</td>
+            <td>{{ vat.amount }}</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>

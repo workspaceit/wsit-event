@@ -1,0 +1,43 @@
+<table class="attendee-plugin-dt-table">
+    <thead>
+        <tr>
+            {% if show_counting_column %}
+                <th data-th-checker="not-question" class="attendee-list-counting-header not-sortable">{{ show_counting_column_header }}</th>
+            {% endif %}
+            {% if 'uid' in general_ques %}
+                <th>ID</th>
+            {% endif %}
+            {% if 'rdate' in general_ques %}
+                <th data-id="r_date">Registration Date</th>
+            {% endif %}
+            {% if 'udate' in general_ques %}
+                <th data-id="u_date">Updated Date</th>
+            {% endif %}
+            {% if 'secret' in general_ques %}
+                <th data-id="uid_external">UID(External)</th>
+            {% endif %}
+            {% if 'bid' in general_ques %}
+                <th data-id="bid_badge">BID(Badge)</th>
+            {% endif %}
+            {% if 'att_grp' in general_ques %}
+                <th data-id="group">Group</th>
+            {% endif %}
+            {% if 'att_tag' in general_ques %}
+                <th data-id="tag">Tag</th>
+            {% endif %}
+
+            {% for ques in headers %}
+                <th data-id="{{ ques.id }}">{{ ques.title }}</th>
+            {% endfor %}
+            {% for session in sessions %}
+                <th data-id="{{ session.id }}">{{ session.title }}</th>
+            {% endfor %}
+            {% for hotel in hotels %}
+                <th class='not-sortable'> {{ hotel }}</th>
+            {% endfor %}
+            {% for e_header in economy_headers %}
+                <th class='not-sortable'> {{ e_header }}</th>
+            {% endfor %}
+        </tr>
+    </thead>
+</table>

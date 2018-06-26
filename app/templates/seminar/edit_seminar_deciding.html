@@ -1,0 +1,111 @@
+<div class="modal-dialog modal-lg">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
+            <h4 class="modal-title">Pending</h4>
+        </div>
+        <div class="modal-body" style="overflow-x: auto;">
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="table-light">
+                        <div class="table-header">
+                            <div class="table-caption">
+                                {{ session.name }}
+                            </div>
+                        </div>
+                        <table class="table table-bordered sortable ui-sortable" id="edit-session-deciding"
+                               data-id="{{ session.id }}">
+                            <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Started Deciding</th>
+                                {% for column in visible_columns_info %}
+                                    <th>{{ column }}</th>
+                                {% endfor %}
+                                <th>Time left to decide</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for seminar_user in attendee_deciding %}
+                                <tr class="userInfo" data-id="{{ seminar_user.attendee_id }}">
+                                    <td>{{ forloop.counter }}</td>
+                                    <td>{% if seminar_user.created %}
+                                        {{ seminar_user.created|date:'H:i d-m-Y' }}{% endif %}</td>
+                                    {% for answer in seminar_user.question_answers %}
+                                        <td>{{ answer.answer }}</td>
+
+                                    {% endfor %}
+                                    <td>{{ seminar_user.hours }} Hours, {{ seminar_user.minutes }} Min</td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+{#                <div class="row">#}
+{#                    <div class="col-sm-12 text-right">#}
+{#                        {% if attendee_queue %}#}
+{#                        <button type="button" class="btn btn-lg" id="btn-remove-queue" aria-hidden="true"><i#}
+{#                                class="fa fa-ban"></i>&nbsp;&nbsp;Remove Queue#}
+{#                        </button>#}
+{#                        {% endif %}#}
+{#                        <div class="btn-group">#}
+{#                            <button type="button" class="btn btn-lg" data-original-title="" title="" data-dismiss="modal"><i#}
+{#                                    class="fa fa-ban"></i>&nbsp;&nbsp;Cancel#}
+{#                            </button>#}
+{#                            <button type="button" class="btn btn-success btn-lg"><i#}
+{#                                    class="fa fa-check-circle"></i>&nbsp;&nbsp;Save#}
+{#                            </button>#}
+{#                        </div>#}
+{#                    </div>#}
+{#                </div>#}
+            </div>
+        </div>
+        <!-- / .modal-content -->
+    </div>
+    <!-- / .modal-dialog -->
+</div>
+<!-- / .modal -->
+<!-- / Large modal -->
+<script>
+    $(document).ready(function () {
+{#        $('#edit-session-queue tbody')#}
+{#                .sortable({#}
+{#                    revert: true,#}
+{#                    connectWith: ".sortable",#}
+{#                    stop: function (event, ui) { /* do whatever here */#}
+{#                        var session_id = $(this).closest('#edit-session-queue').attr('data-id');#}
+{#                        queueRowOrder = [];#}
+{#                        var count = 0;#}
+{#                        $('#edit-session-queue tbody tr').each(function () {#}
+{#                            var seminar_id = $(this).find('#btn-remove-session-queue').attr('data-id');#}
+{#                            count++;#}
+{#                            rowOrder = {'order': count, 'seminar_id': seminar_id};#}
+{#                            queueRowOrder.push(rowOrder);#}
+{##}
+{#                        });#}
+{#                        console.log(queueRowOrder);#}
+{#                        if (queueRowOrder.length > 0) {#}
+{#                            var csrf_token = $('input[name=csrfmiddlewaretoken]').val();#}
+{#                            $.ajax({#}
+{#                                url: base_url + '/admin/sessions/queue_order/',#}
+{#                                type: "POST",#}
+{#                                data: {#}
+{#                                    queue_order: JSON.stringify(queueRowOrder),#}
+{#                                    session_id: session_id,#}
+{#                                    csrfmiddlewaretoken: csrf_token#}
+{#                                },#}
+{#                                success: function (result) {#}
+{#                                    if (result.error) {#}
+{#                                        $.growl.error({message: result.error});#}
+{#                                    } else {#}
+{#                                        $.growl.notice({message: result.success});#}
+{##}
+{#                                    }#}
+{#                                }#}
+{#                            });#}
+{#                        }#}
+{#                    }#}
+{#                });#}
+    });
+</script>

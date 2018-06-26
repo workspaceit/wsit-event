@@ -1,0 +1,46 @@
+{% for menu in request.menus %}
+    <li>
+        {% if menu.menu.content_id %}
+            <a href="{% url "static-pages" event_url=request.session.event_url staticPage=menu.menu.content.url %}{% if 'is_user_login' in request.session and request.session.is_user_login %}{% if menu.menu.uid_include %}?uid={{ request.session.event_user.secret_key }}{% endif %}{% endif %}"
+               class="{{ menu.menu.content.url }} menu-item-{{ menu.menu.id }}{% if request.session.current_url == menu.menu.content.url %} active{% endif %} {% if menu.items|length > 0 %} has-submenu {% endif %}"
+               data-url="">{{ menu.menu.title|safe }}</a>
+        {% else %}
+            <a href="{{ menu.menu.url }}" target="_blank" class="menu-item-{{ menu.menu.id }}{% if menu.items|length > 0 %} has-submenu {% endif %}"
+               data-url="">{{ menu.menu.title|safe }}</a>
+        {% endif %}
+        {% if menu.items %}
+            <ul>
+                {% for item in menu.items %}
+                    <li>
+                        {% if item.menu.content_id %}
+                            <a href="{% url "static-pages" event_url=request.session.event_url staticPage=item.menu.content.url %}{% if 'is_user_login' in request.session and request.session.is_user_login %}{% if item.menu.uid_include %}?uid={{ request.session.event_user.secret_key }}{% endif %}{% endif %}"
+                               class="{{ item.menu.content.url }} menu-item-{{ item.menu.id }}{% if request.session.current_url == item.menu.content.url %} active{% endif %} {% if item.items|length > 0 %} has-submenu {% endif %}"
+                               data-url="">{{ item.menu.title|safe }}</a>
+                        {% else %}
+                            <a href="{{ item.menu.url }}" target="_blank"
+                               class="menu-item-{{ item.menu.id }}{% if item.items|length > 0 %} has-submenu {% endif %}"
+                               data-url="">{{ item.menu.title|safe }}</a>
+                        {% endif %}
+                        {% if item.items %}
+                            <ul>
+                                {% for item in item.items %}
+                                    <li>
+                                        {% if item.menu.content_id %}
+                                            <a href="{% url "static-pages" event_url=request.session.event_url staticPage=item.menu.content.url %}{% if 'is_user_login' in request.session and request.session.is_user_login %}{% if item.menu.uid_include %}?uid={{ request.session.event_user.secret_key }}{% endif %}{% endif %}"
+                                               class="{{ item.menu.content.url }} menu-item-{{ item.menu.id }}{% if request.session.current_url == item.menu.content.url %} active{% endif %}"
+                                               data-url="">{{ item.menu.title|safe }}</a>
+                                        {% else %}
+                                            <a href="{{ item.menu.url }}" target="_blank" class="menu-item-{{ item.menu.id }}"
+                                               data-url="">{{ item.menu.title|safe }}</a>
+                                        {% endif %}
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        {% endif %}
+                    </li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    </li>
+{% endfor %}
+

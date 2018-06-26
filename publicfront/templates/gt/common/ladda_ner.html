@@ -1,0 +1,36 @@
+{% extends "gt/layout/layout.html" %}
+{% block content %}
+    {% load staticfiles %}
+    <div class="wrapper headline color8" style="padding: 0; z-index: 2;">
+        <div id="bg1"></div>
+        <div class="wrapper" style="z-index: 2; overflow-x: visible;">
+
+            <h1 class="color1">Ladda ner som app</h1>
+        </div>
+    </div>
+
+    <div class="wrapper">
+        <div class="container padding mainContent">
+            <p>&nbsp;</p>
+            <div class="row gutters">
+                <div class="col span_12">
+                    <ul>
+                        <li>Öppna din e-postbekräftelse i din mobiltelefon</li>
+                        <li>Klicka på din personliga länk i bekräftelsen för att logga in på sidan för Kunskapsveckan
+                            och GetTogether.
+                        </li>
+                        <li>Så snart sidan har laddats så väljer du <img src="{% static 'gt/images/instructions_ios.png' %}"
+                                                                         class="noScale"> i den nedre menyraden.
+                        </li>
+                        <li>Välj alternativet "Lägg till på hemskärmen"</li>
+                        <li>Klicka "Lägg till" i övre högra hörnet.</li>
+                        <li>Nu kan du nå din personliga sida för Kunskapsveckan och GetTogether när och vart du vill.
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+        </div><!-- mainContent -->
+
+    </div><!--wrapper-->
+{% endblock %}

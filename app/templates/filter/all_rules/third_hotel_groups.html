@@ -1,0 +1,7 @@
+{% for data in hotelGroups %}
+    <optgroup label="{{ data.name }}">
+        {% for room in data.rooms %}
+            <option value="{{ room.id }}">{{ room.hotel.name }}-{{ room.description }}</option>
+        {% endfor %}
+    </optgroup>
+{% endfor %}

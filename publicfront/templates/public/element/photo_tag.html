@@ -1,0 +1,5 @@
+<div class="photo-tag">
+    {% for photo in photos %}
+        <img src="{{ photo.src }}" class="photo {{ photo.group }}"/>
+    {% endfor %}
+</div>

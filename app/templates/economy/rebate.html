@@ -1,0 +1,192 @@
+{% extends "layout/main.html" %}
+{% block content %}
+    {% load staticfiles %}
+    <div id="content-wrapper">
+        {% csrf_token %}
+        <div class="panel colourable">
+            <div class="panel-heading">
+                <span class="panel-title"><i class="fa fa-lg fa-exchange"></i></i>
+                    &nbsp;&nbsp;&nbsp;<strong>Rebates</strong></span>
+            </div>
+            <!-- / .panel-heading -->
+            <div class="panel-body tab-content">
+                <div class="tab-pane fade in active">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            {% if request.session.admin_permission.content_permission.economy_permission and request.session.admin_permission.content_permission.economy_permission.access_level == 'write' or request.session.event_auth_user.type == 'super_admin' %}
+                                <button type="button" class="btn btn-primary btn-lg"
+                                        data-toggle="modal" data-target="#add-rebate-modal"><i
+                                        class="fa fa-plus-circle"></i>&nbsp;&nbsp;Add
+                                    Rebate
+                                </button>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <br>
+
+                    <div id="rebate-table">
+                        <div class="table-light">
+                            <table class="table table-bordered data-table-rebate">
+                                <thead>
+                                <tr>
+                                    <th>Rebate name</th>
+                                    {#                                    <th>Rebate for</th>#}
+                                    <th>Rebate type</th>
+                                    <th>Value</th>
+                                    <th>Action</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for rebate in rebates %}
+                                    <tr class="">
+                                        <td class="rbt-name-val">{{ rebate.name }}</td>
+                                        <input type="hidden" value="{{ rebate.type_id }}" class="rbt-item-type-id"/>
+                                        {#                                        <td class="rbt-itemtype-val">{{ rebate.item_type }}</td>#}
+                                        <td class="rbt-rebatetype-val">{{ rebate.rebate_type }}</td>
+                                        <td class="rbt-value-val">{{ rebate.value }}</td>
+
+                                        <td>
+                                            {% if request.session.admin_permission.content_permission.economy_permission and request.session.admin_permission.content_permission.economy_permission.access_level == 'write' or request.session.event_auth_user.type == 'super_admin' %}
+                                                <button class="btn btn-xs btn-edit-rebate"
+                                                        data-id="{{ rebate.id }}"
+                                                        data-toggle="tooltip"
+                                                        data-placement="top" title=""
+                                                        data-original-title="Edit"><i
+                                                        class="dropdown-icon fa fa-cog"></i>
+                                                </button>
+
+                                                <button class="btn btn-xs btn-danger btn-delete-rebate"
+                                                        data-id="{{ rebate.id }}" data-toggle="tooltip"
+                                                        data-placement="top"
+                                                        title="" data-original-title="Delete"><i
+                                                        class="dropdown-icon fa fa-times-circle"></i>
+                                                </button>
+                                            {% else %}
+                                                <button class="btn btn-xs btn-view-rebate"
+                                                        data-id="{{ rebate.id }}"
+                                                        data-toggle="tooltip"
+                                                        data-placement="top" title=""
+                                                        data-original-title="Edit"><i
+                                                        class="dropdown-icon fa fa-search-plus"></i>
+                                                </button>
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+
+        <!-- MODAL - TEXT -->
+        <div id="add-rebate-modal" class="modal fade" role="dialog" style="display: none;">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title">Rebate</h4>
+                    </div>
+                    <div class="modal-body" id="modal_body">
+                        <div class="panel colourable">
+                            <div class="panel-heading">
+                                <span class="panel-title"><strong>Add Rebate</strong></span>
+                            </div>
+                            <div class="panel-body tab-content">
+                                <form action="/admin/economy/rebate/add-edit-rebate/" id="add-edit-rebate-form"
+                                      method="post" class="">
+                                    <input type="hidden" class="rebate-id-for-edit" value="">
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <div class="form-group  ">
+                                                <label for="rebate-name">Name:</label>
+                                                <input type="text" class="form-control" id="rebate-name">
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label for="rebate-for">Rebate for: </label>
+                                                <select id="rebate-for"
+                                                        class="form-control selectpicker datatable-column-control"
+                                                        data-live-search="true"
+                                                        data-live-search-placeholder="Search"
+                                                        data-actions-box="false" multiple>
+                                                    <optgroup label="session">
+                                                        {% for session in sessions %}
+                                                            <option value="session-{{ session.id }}">{{ session.name }}</option>
+                                                        {% endfor %}
+                                                    </optgroup>
+                                                    <optgroup label="hotel">
+                                                        {% for room in rooms %}
+                                                            <option value="room-{{ room.id }}">{{ room.hotel.name }}-{{ room.description }}</option>
+                                                        {% endfor %}
+                                                    </optgroup>
+                                                    <optgroup label="travel">
+                                                        {% for travel in travels %}
+                                                            <option value="travel-{{ travel.id }}">{{ travel.name }}</option>
+                                                        {% endfor %}
+                                                    </optgroup>
+
+
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label for="rebate-type">Rebate type: </label>
+                                                <select id="rebate-type" class="form-control">
+                                                    <option value="percentage">Percentage</option>
+                                                    <option value="fixed">Fixed sum</option>
+                                                </select>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label for="rebate-value">Rebate Amount: </label>
+                                                <input type="number" step="any" class="form-control" id="rebate-value" min="0">
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-sm-12 text-right">
+
+                                            <div class="btn-group float-right">
+                                                <button type="button" class="btn btn-lg" data-dismiss="modal"><i
+                                                        class="fa fa-ban"></i>&nbsp;&nbsp;Cancel
+                                                </button>
+                                                {% if request.session.admin_permission.content_permission.economy_permission and request.session.admin_permission.content_permission.economy_permission.access_level == 'write' or request.session.event_auth_user.type == 'super_admin' %}
+                                                    <div class="btn-group">
+                                                        <button type="submit" class="btn btn-success btn-lg save"
+                                                                id="">
+                                                            <i class="fa fa-check-circle"></i>&nbsp;&nbsp;Save &nbsp;
+                                                        </button>
+                                                    </div>
+                                                {% endif %}
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+                                </form>
+                            </div>
+                        </div>
+
+                    </div>
+                    <!-- / .modal-content -->
+                </div>
+                <!-- / .modal-dialog -->
+            </div>
+            <!-- / .modal -->
+            <!-- / Large modal -->
+        </div>
+
+    </div>
+
+    <script src="{% static 'assets/javascripts/economy.js' %}"></script>
+
+{% endblock %}

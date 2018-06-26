@@ -1,0 +1,66 @@
+<div class="table-light">
+                            {% for group in filterGroup %}
+                                <div class="table-header" id="filter_export_group_{{ group.id }}">
+                                    <div class="table-caption">
+                                        {{ group.name|safe }}
+                                    </div>
+                                </div>
+                                <table class="table table-bordered sortable data-table-filter-export">
+                                    <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Name</th>
+                                        <th>Edit</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% for filter in group.filters %}
+                                        <tr>
+                                            <td>{{ filter.id }}</td>
+                                            <td>{{ filter.name }}</td>
+                                            {% if request.session.admin_permission.content_permission.export_filter_permission and request.session.admin_permission.content_permission.export_filter_permission.access_level == 'write' or request.session.event_auth_user.type == 'super_admin' %}
+                                                <td>
+                                                    <button class="btn btn-xs btn-edit-export-filter"
+                                                            data-id="{{ filter.id }}"
+                                                            data-toggle="tooltip"
+                                                            data-placement="top" title=""
+                                                            data-original-title="Edit"><i
+                                                            class="dropdown-icon fa fa-cog"></i></button>
+                                                    <button class="btn btn-xs btn-duplicate-export-filter"
+                                                            data-id="{{ filter.id }}"
+                                                            data-toggle="tooltip" data-placement="top" title=""
+                                                            data-original-title="Duplicate"><i
+                                                            class="dropdown-icon fa fa-files-o"></i>
+                                                    </button>
+                                                    <button class="btn btn-xs btn-danger btn-delete-export-filter"
+                                                            data-id="{{ filter.id }}" data-toggle="tooltip"
+                                                            data-placement="top"
+                                                            title="" data-original-title="Delete"><i
+                                                            class="dropdown-icon fa fa-times-circle"></i></button>
+                                                    <button class="btn btn-xs btn-success btn-export-filter"
+                                                            data-id="{{ filter.id }}" data-toggle="tooltip"
+                                                            data-placement="top"
+                                                            title="" data-original-title="Export"><i
+                                                            class="dropdown-icon fa fa-file-excel-o"></i></button>
+                                                </td>
+                                            {% else %}
+                                                <td style="text-align: center;">
+                                                    <button class="btn btn-xs btn-view-export-filter"
+                                                            data-id="{{ filter.id }}"
+                                                            data-toggle="tooltip"
+                                                            data-placement="top" title=""
+                                                            data-original-title="View"><i
+                                                            class="dropdown-icon fa fa-search-plus"></i></button>
+                                                    <button class="btn btn-xs btn-success btn-export-filter"
+                                                            data-id="{{ filter.id }}" data-toggle="tooltip"
+                                                            data-placement="top"
+                                                            title="" data-original-title="Export"><i
+                                                            class="dropdown-icon fa fa-file-excel-o"></i></button>
+                                                </td>
+                                            {% endif %}
+                                        </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                            {% endfor %}
+                        </div>

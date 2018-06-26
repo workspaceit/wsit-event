@@ -1,0 +1,106 @@
+{% load i18n %}
+<div class="form-plugin element form-plugin-session-agenda box"
+     {% if data_user_id %}id="page-{{ page_id }}-box-{{ box_id }}-u-{{ data_user_id }}" data-uid="{{ data_user_id }}"
+     {% else %}id="page-{{ page_id }}-box-{{ box_id }}"{% endif %} data-id="{{ element_id }}"
+     data-name="session-agenda">
+    <input type="hidden" class="agenda_settings_options" value="{{ element_settings_info }} "/>
+    <input type="hidden" class="page_id" value="{{ page_id }} "/>
+    <input type="hidden" class="box_id" value="{{ box_id }} "/>
+    <div class="form-plugin-intro">
+        <h4 class="settings-plugin-element elm-title"></h4>
+        {{ session_agenda_message|safe }}
+    </div>
+    {% if element_settings.session_agenda_searchable %}
+        <div class="form-plugin-search-wrapper">
+            <input id="temporary-id-1" class="form-plugin-search page-search-session-agenda" type="text"
+                   placeholder="{{ language.langkey.session_agenda_txt_placeholder_search }}"/>
+            <div class="form-plugin-clear-search"></div>
+        </div>
+    {% endif %}
+    {% if element_settings.session_agenda_show_session_group_toggle %}
+        <div class="session-agenda-group-toggle-list">
+            {% for group in session_group_list %}
+                <div class="session-agenda-group-toggle-list-item">
+                    <input id="session-agenda-group-{{ group.id }}" checked="checked" type="checkbox"
+                           value="{{ group.id }}">
+                    <label class="session-agenda-group-toggle-list-item-label"
+                           for="session-agenda-group-{{ group.id }}">{{ group.name|safe }}</label>
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+    {% if element_settings.session_agenda_show_all_or_my_sessions %}
+        <div class="switch-wrapper">
+            <label class="switch">
+                <input class="session-agenda-my-session-toggle" id="session-agenda-my-session-toggle"
+                       type="checkbox">
+                <div class="slider round"></div>
+            </label>
+            <label class="toggle-label session-agenda-my-session-toggle-label"
+                   for="session-agenda-my-session-toggle">{{ language.langkey.session_agenda_txt_show_my_sess }}
+            </label>
+        </div>
+    {% endif %}
+    {% if element_settings.session_agenda_show_subscribe_to_calender %}
+        <a class="form-plugin-button session-subscribe-to-calendar"
+           href="{{ request.session.webcal_url }}/webcal/?uid={{ request.session.event_user.secret_key }}">{{ language.langkey.session_agenda_btn_subscribe_sessions }}</a>
+    {% endif %}
+
+    <div class="session-agenda-date-range" data-date-range="{{ sdate |date:"m/d/Y" }}">
+        <div class="session-agenda-date">
+            {% if element_settings.session_agenda_show_toolbar_move_day_forward_or_backwards_buttons %}
+                <div class="session-agenda-prev previous">{{ language.langkey.session_agenda_btn_prev }}</div>
+            {% endif %}
+{#            {% if element_settings.session_agenda_show_toolbar_today_button %}#}
+{#                <div class="session-agenda-today today">{{ language.langkey.session_agenda_btn_today }}</div>#}
+{#            {% endif %}#}
+            {% if element_settings.session_agenda_show_toolbar_currently_selected_date %}
+                <div class="date-picker-control date">
+{#                    <div class="clickable-text daterange__picker daterange__picker--start_date">#}
+{#                        <input type="text" name="start_date" class="session-agenda-date-picker">#}
+                        {#                        <span>{{ sdate |date:"Y-m-d" }}</span>#}
+{#                        <span>{% language language.lang_preset.language_code %}#}
+{#                            {{ sdate |date:language.lang_preset.date_format }}{% endlanguage %}</span>#}
+{#                    </div>#}
+                    <div class="amsul_date_picker">
+                        {% language language.lang_preset.language_code %}
+                            <input type="text" name="start_date"
+                                   data-value="{{ sdate |date:language.lang_preset.date_format }}"
+                                   class="session-agenda-date-picker">
+                        {% endlanguage %}
+                    </div>
+                </div>
+            {% endif %}
+            {% if element_settings.session_agenda_show_toolbar_move_day_forward_or_backwards_buttons %}
+                <div class="session-agenda-next next">{{ language.langkey.session_agenda_btn_next }}</div>
+            {% endif %}
+        </div>
+    </div>
+    <div class="scroll-x session-agenda">
+        <table class="form-plugin-table lines session-agenda-table" data-all-date='["{{ sdate |date:"m/d/Y" }}"]'>
+            <thead>
+            <tr>
+                {% if element_settings.session_agenda_column_session_group_available_in_agenda_view %}
+                    <th>{{ language.langkey.session_agenda_txt_column_session_group }}</th>
+                {% endif %}
+                {% if element_settings.session_agenda_column_date_available_in_agenda_view %}
+                    <th>{{ language.langkey.session_agenda_txt_column_date }}</th>
+                {% endif %}
+                {% if element_settings.session_agenda_column_time_available_in_agenda_view %}
+                    <th>{{ language.langkey.session_agenda_txt_column_time }}</th>
+                {% endif %}
+                <th>{{ language.langkey.session_agenda_txt_column_event }}</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% include "public/element/session_agenda_list.html" %}
+            <tr style="display:none;" class="empty-session-agenda-table">
+                <td colspan="100%">
+                    <div class="placeholder empty">{{ language.langkey.session_agenda_txt_empty }}</div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+</div>

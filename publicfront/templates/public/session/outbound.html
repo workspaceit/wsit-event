@@ -1,0 +1,23 @@
+{% for group in session_groups %}
+<tr class="titleOrigin Stockholm outbound">
+    <td colspan="4"><strong>{{ group.group.name }}</strong></td>
+</tr>
+    {% for session in group.sessions %}
+<tr class="Stockholm outbound">
+    <td>
+        <input type="radio" name="outbound" value="Stockholm - Barcelona, 2015-11-18, 10:00"
+               id="stockholm_outbound_1"
+               data-homebound="#stockholm_homebound_1">
+    </td>
+    <td>
+        <label for="stockholm_outbound_1">{{ session.name }}</label>
+    </td>
+    <td>
+        <span class="date_checkin">{{ session.start }}</span>
+    </td>
+    <td>
+        {{ session.end }}
+    </td>
+</tr>
+        {% endfor %}
+{% endfor %}

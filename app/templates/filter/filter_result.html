@@ -1,0 +1,54 @@
+<div class="table-light">
+    {% for group in filterGroup %}
+        <div class="table-header" id="filter_group_{{ group.id }}">
+            <div class="table-caption">
+                {{ group.name|safe }}
+            </div>
+        </div>
+        <table class="table table-bordered sortable data-table-filter">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Edit</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for filter in group.filters %}
+                <tr>
+                    <td>{{ filter.id }}</td>
+                    <td>{{ filter.name }}</td>
+                    {% if request.session.admin_permission.content_permission.filter_permission and request.session.admin_permission.content_permission.filter_permission.access_level == 'write' or request.session.event_auth_user.type == 'super_admin' %}
+                        <td>
+                            <button class="btn btn-xs btn-edit-filter" data-id="{{ filter.id }}"
+                                    data-toggle="tooltip"
+                                    data-placement="top" title=""
+                                    data-original-title="Edit"><i
+                                    class="dropdown-icon fa fa-cog"></i></button>
+                            <button class="btn btn-xs btn-duplicate-filter"
+                                    data-id="{{ filter.id }}"
+                                    data-toggle="tooltip" data-placement="top" title=""
+                                    data-original-title="Duplicate"><i
+                                    class="dropdown-icon fa fa-files-o"></i>
+                            </button>
+                            <button class="btn btn-xs btn-danger btn-delete-filter"
+                                    data-id="{{ filter.id }}" data-toggle="tooltip"
+                                    data-placement="top"
+                                    title="" data-original-title="Delete"><i
+                                    class="dropdown-icon fa fa-times-circle"></i></button>
+                        </td>
+                    {% else %}
+                        <td style="text-align: center;">
+                            <button class="btn btn-xs btn-view-filter" data-id="{{ filter.id }}"
+                                    data-toggle="tooltip"
+                                    data-placement="top" title=""
+                                    data-original-title="View"><i
+                                    class="dropdown-icon fa fa-search-plus"></i></button>
+                        </td>
+                    {% endif %}
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    {% endfor %}
+</div>

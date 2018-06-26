@@ -1,0 +1,314 @@
+{% extends "layout/main.html" %}
+{% block content %}
+    {% load staticfiles %}
+    {#    {% load i18n %}#}
+    {#    {% load staticfiles %}#}
+    {#    {% block extra_head %}#}
+    {#        <script src="{% static 'assets/javascripts/datatable.js' %}"></script>#}
+    {#        <script type="text/javascript">#}
+    {#            var HOTEL_LIST_JSON_URL = '{% url "hotelList" %}';#}
+    {#            // translations for datatables#}
+    {##}
+    {#            var dt_language = {#}
+    {#                "emptyTable": "{% trans "No data available in table" %}",#}
+    {#                "info": "{% trans "Showing _START_ to _END_ of _TOTAL_ entries" %}",#}
+    {#                "infoEmpty": "{% trans "Showing 0 to 0 of 0 entries" %}",#}
+    {#                "infoFiltered": "{% trans "(filtered from _MAX_ total entries)" %}",#}
+    {#                "infoPostFix": "",#}
+    {#                "thousands": ",",#}
+    {#                "lengthMenu": "{% trans "Show _MENU_ entries" %}",#}
+    {#                "loadingRecords": "{% trans "Loading..." %}",#}
+    {#                "processing": "{% trans "Processing..." %}",#}
+    {#                "search": "{% trans "Search:" %}",#}
+    {#                "zeroRecords": "{% trans "No matching records found" %}",#}
+    {#                "paginate": {#}
+    {#                    "first": "{% trans "First" %}",#}
+    {#                    "last": "{% trans "Last" %}",#}
+    {#                    "next": "{% trans "Next" %}",#}
+    {#                    "previous": "{% trans "Previous" %}"#}
+    {#                },#}
+    {#                "aria": {#}
+    {#                    "sortAscending": "{% trans ": activate to sort column ascending" %}",#}
+    {#                    "sortDescending": "{% trans ": activate to sort column descending" %}"#}
+    {#                }#}
+    {#            }#}
+    {#        </script>#}
+    {#    {% endblock %}#}
+    <div id="content-wrapper">
+
+        <div class="panel colourable">
+            <div class="panel-heading">
+                <span class="panel-title"><i
+                        class="fa fa-bed fa-lg"></i>&nbsp;&nbsp;&nbsp;<strong>Hotels</strong></span>
+                <span style="float:right"><img style="display:none" height="25px"
+                                               src="{% static 'public/images/712.GIF' %}" id="loader" alt=""/><input
+                        type="text" name="search_key_hotel" id="search_key_hotel"/></span>
+            </div>
+            <!-- / .panel-heading -->
+
+            <div class="panel-body tab-content">
+                <div class="tab-pane fade in active" id="hotels">
+                    {% csrf_token %}
+                    <div class="row">
+                        <div class="col-sm-6">
+                            {% if request.session.admin_permission.content_permission.hotel_permission and request.session.admin_permission.content_permission.hotel_permission.access_level == 'write' or request.session.event_auth_user.type == 'super_admin' %}
+                                <a type="button" class="btn btn-primary btn-lg" data-original-title="" title=""
+                                   href="{% url 'hotels' %}add"><i
+                                        class="fa fa-plus-circle"></i>&nbsp;&nbsp;Add Hotel
+                                </a>
+                            {% endif %}
+                            <a type="button" class="btn btn-primary btn-lg" data-original-title="" title=""
+                               href="{% url 'export-hotels-allotment-report' %}"><i
+                                    class="fa fa-file-excel-o"></i>&nbsp;&nbsp;Hotel allotment report
+                            </a>
+                        </div>
+                    </div>
+                    <br>
+
+                    <div id="hotellist">
+                        <div class="table-light">
+                            {% for data in hotelRooms %}
+                                <div class="table-header">
+                                    <div class="table-caption">
+                                        {{ data.name }}
+                                    </div>
+                                </div>
+
+                                <table class="table table-bordered sortable hotel-table" id="group_{{ data.id }}">
+                                    <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Name</th>
+                                        <th>Description</th>
+                                        {#                            <th>Cost</th>#}
+                                        <th>Occupancy</th>
+                                        <th>Edit</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% for room in data.rooms %}
+                                        <tr>
+                                            <td data-id="{{ room.id }}">{{ room.id }}</td>
+                                            <td>{{ room.hotel.name }}</td>
+                                            <td>{{ room.description }}</td>
+                                            {#                                <td>€{{ room.cost }}</td>#}
+                                            <td>{{ room.occupancy }}%</td>
+                                            {% if request.session.admin_permission.content_permission.hotel_permission and request.session.admin_permission.content_permission.hotel_permission.access_level == 'write' or request.session.event_auth_user.type == 'super_admin' %}
+                                                <td>
+                                                    <a class="btn btn-xs"
+                                                       href="{% url 'hotels' %}match?room_id={{ room.id }}"
+                                                       data-toggle="tooltip"
+                                                       data-placement="top"
+                                                       title="" data-original-title="Room Matching"><i
+                                                            class="fa fa-link"></i></a>
+                                                    <a class="btn btn-xs" data-toggle="tooltip" data-placement="top"
+                                                       title=""
+                                                       href="{% url 'hotels' %}{{ room.hotel_id }}"
+                                                       data-original-title="Edit"><i
+                                                            class="fa fa-gear"></i></a>
+                                                    <button class="btn btn-xs btn-danger deleteRoom"
+                                                            data-id="{{ room.id }}"
+                                                            data-page="hotel"
+                                                            data-toggle="tooltip"
+                                                            data-placement="top" title="" data-original-title="Delete">
+                                                        <i
+                                                                class="fa fa-times-circle"></i></button>
+                                                </td>
+                                            {% else %}
+                                                <td style="text-align: center;">
+                                                    <a class="btn btn-xs" data-toggle="tooltip" data-placement="top"
+                                                       title=""
+                                                       href="{% url 'hotels' %}{{ room.hotel_id }}"
+                                                       data-original-title="View"><i
+                                                            class="fa fa-search-plus"></i></a>
+                                                </td>
+                                            {% endif %}
+                                        </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                            {% endfor %}
+                            {#        <div class="table-header">#}
+                            {#            <div class="table-caption">#}
+                            {#                Far Away Hotels#}
+                            {#            </div>#}
+                            {#        </div>#}
+                            {#        <table class="table table-bordered sortable far-hotel-table">#}
+                            {#            <thead>#}
+                            {#            <tr>#}
+                            {#                <th>#</th>#}
+                            {#                <th>Name</th>#}
+                            {#                <th>Description</th>#}
+                            {#                <th>Cost</th>#}
+                            {#                <th>Occupancy</th>#}
+                            {#                <th>Edit</th>#}
+                            {#            </tr>#}
+                            {#            </thead>#}
+                            {#            <tbody>#}
+                            {#            {% for room in FarHotelRooms %}#}
+                            {#                <tr>#}
+                            {#                    <td>{{ room.id }}</td>#}
+                            {#                    <td>{{ room.hotel.name }}</td>#}
+                            {#                    <td>{{ room.description }}</td>#}
+                            {#                    <td>€{{ room.cost }}</td>#}
+                            {#                    <td>{{ room.vat }}%</td>#}
+                            {#                    <td>#}
+                            {#                        <button class="btn btn-xs" data-id="{{ room.id }}" data-toggle="tooltip" data-placement="top"#}
+                            {#                                title="" data-original-title="Room Matching"><i class="fa fa-link"></i></button>#}
+                            {#                        <a class="btn btn-xs" data-toggle="tooltip" data-placement="top" title=""#}
+                            {#                           href="{% url 'hotels' %}{{ room.hotel_id }}" data-original-title="Edit"><i#}
+                            {#                                class="fa fa-gear"></i></a>#}
+                            {#                        <button class="btn btn-xs btn-danger deleteRoom" data-id="{{ room.id }}" data-toggle="tooltip"#}
+                            {#                                data-placement="top" title="" data-original-title="Delete"><i#}
+                            {#                                class="fa fa-times-circle"></i></button>#}
+                            {#                    </td>#}
+                            {#                </tr>#}
+                            {#            {% endfor %}#}
+                            {#            </tbody>#}
+                            {#        </table>#}
+                        </div>
+                    </div>
+
+
+                </div>
+
+                <!-- Edit Hotel Room Modal -->
+                <div id="hotel-details-edit-room" class="modal fade" tabindex="-1" role="dialog" style="display: none;">
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
+                                <h4 class="modal-title">Edit Hotel Room</h4>
+                            </div>
+                            <div class="modal-body">
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <div class="form-group no-margin-hr">
+                                            <label class="control-label">Room Description</label>
+                                            <input type="text" name="room-name" class="form-control"
+                                                   placeholder="Room Description">
+                                        </div>
+                                    </div>
+                                    <!-- col-sm-6 -->
+                                    <div class="col-sm-6">
+                                        <div class="form-group no-margin-hr">
+                                            <label class="control-label">#Beds</label>
+                                            <input min="1" type="number" name="room-name" class="form-control">
+                                        </div>
+                                    </div>
+                                    <!-- col-sm-6 -->
+                                </div>
+                                <!-- row -->
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <div class="form-group no-margin-hr">
+                                            <label class="control-label">Cost / night</label>
+                                            <input type="number" name="room-cost" class="form-control" placeholder="">
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <!-- col-sm-6 -->
+                                    <div class="col-sm-6">
+                                        <div class="form-group no-margin-hr">
+                                            <label class="control-label">VAT</label>
+                                            <select class="form-control filter-question-selector">
+                                                <option value="">0%</option>
+                                                <option value="">6%</option>
+                                                <option value="" selected>12%</option>
+                                                <option value="">25%</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <!-- col-sm-6 -->
+                                </div>
+                                <!-- row -->
+                                <div class="table-light">
+                                    <div class="table-header">
+                                        <div class="table-caption">
+                                            Allotments
+                                        </div>
+                                    </div>
+                                    <table class="table table-bordered" id="hotel-details-room-allotments">
+                                        <thead>
+                                        <tr>
+                                            <th>Date</th>
+                                            <th>Allotments</th>
+                                            <th>Booked</th>
+                                            <th>Avalible</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr>
+                                            <td>2015-09-22</td>
+                                            <td>10</td>
+                                            <td>7</td>
+                                            <td>3</td>
+                                        </tr>
+                                        <tr>
+                                            <td>2015-09-23</td>
+                                            <td>15</td>
+                                            <td>12</td>
+                                            <td>3</td>
+                                        </tr>
+                                        <tr>
+                                            <td>2015-09-24</td>
+                                            <td>15</td>
+                                            <td>12</td>
+                                            <td>3</td>
+                                        </tr>
+                                        <tr>
+                                            <td>2015-09-25</td>
+                                            <td>10</td>
+                                            <td>7</td>
+                                            <td>3</td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                    <div class="table-footer">
+                                        <div class="row">
+                                            <div class="col-md-2">
+                                                <select class="form-control">
+                                                    <option value="">Add</option>
+                                                    <option value="">Remove</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <input type="number" name="room_amount" placeholder="#"
+                                                       class="form-control">
+                                            </div>
+                                            <div class="col-md-2 text-center" style="margin-top: 0.35em">
+                                                rooms between
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="input-daterange input-group hotel-details-add-room-datepicker-range">
+                                                    <input type="text" class="form-control" name="start"
+                                                           placeholder="Start date">
+                                                    <span class="input-group-addon">and</span>
+                                                    <input type="text" class="form-control" name="end"
+                                                           placeholder="End date">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-2 text-right">
+                                                <button type="button" class="btn btn-primary" data-toggle="modal"
+                                                        data-target="#hotel-details-edit-room">Add / Remove
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- / .modal-content -->
+                    </div>
+                    <!-- / .modal-dialog -->
+                </div>
+                <!-- / .modal -->
+                <!-- / Large modal -->
+
+            </div>
+
+        </div>
+
+    </div> <!-- / #content-wrapper -->
+    <img src="{% static 'public/images/712.GIF' %}" class="loader" alt=""/>
+{% endblock %}

@@ -1,0 +1,168 @@
+{% extends "layout/main.html" %}
+{% block content %}
+    <div id="content-wrapper">
+        <div class="panel colourable">
+            <div class="panel-heading">
+                {% csrf_token %}
+                <div class="row">
+                    <div class="col-sm-8">
+                        <span class="panel-title"><i class="fa fa-bed fa-lg"></i>&nbsp;&nbsp;&nbsp;<strong>Hotel Details</strong></span>
+                    </div>
+                    <div class="language-preset-selector col-sm-3">
+                        <label class="language-preset-selector-label">Language:</label>
+                        <select class="form-control pull-right hotel-language-presets-selector" style="width: 70%;">
+                            {% for preset in all_presets %}
+                                <option value="{{ preset.id }}"
+                                        {% if preset.id == presetsEvent.preset_id %}
+                                        selected="selected"{% endif %}>{{ preset.preset_name }}({{ preset.id }})
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <!-- / .panel-heading -->
+            <div class="panel-body tab-content">
+                <div class="tab-pane fade in active" id="hotel-details">
+                    <div class="row">
+                        <input type="hidden" id="hotel-edit-id" value="{{ hotel.id }}">
+                        <input type="hidden" id="hotel_defualt_language_id" value="{{ presetsEvent.preset_id }}">
+
+                        <div class="col-sm-6">
+                            <div class="form-group no-margin-hr">
+                                <label class="control-label">Hotel Name</label>
+                                <input type="text" name="hotel-name" class="form-control hotel-name"
+                                       placeholder="Hotel Name" data-lang="{{ hotel.name_lang }}"
+                                       value="{{ hotel.name }}">
+                            </div>
+                        </div>
+                        <!-- col-sm-6 -->
+                        <div class="col-sm-6">
+                            <div class="form-group no-margin-hr">
+                                <label class="control-label">Location</label>
+                                <select class="form-control filter-question-selector hotel-location">
+                                    {% for group in locationGroup %}
+                                        <optgroup label="{{ group.name|safe }}">
+                                            {% for location in group.locations %}
+                                                <option value="{{ location.id }}"
+                                                        {% if hotel.location_id == location.id %}
+                                                        selected {% endif %}>{{ location.name|safe }}</option>
+                                            {% endfor %}
+                                        </optgroup>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                        <!-- col-sm-6 -->
+                    </div>
+                    <!-- row -->
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group no-margin-hr">
+                                <label class="control-label">Category</label>
+                                <select class="form-control filter-question-selector hotel-category">
+                                    {% for group in category %}
+                                        <option value="{{ group.id }}" {% if hotel.group_id == group.id %}
+                                                selected {% endif %}>{{ group.name|safe }}</option>
+                                    {% endfor %}
+                                    {#                        <option value="Near By Hotels" {% if hotel.category == "Near By Hotels" %} selected {% endif %}>#}
+                                    {#                            Near By Hotels#}
+                                    {#                        </option>#}
+                                    {#                        <option value="Far Away Hotels" {% if hotel.category == "Far Away Hotels" %}#}
+                                    {#                                selected {% endif %}>Far Away Hotels#}
+                                    {#                        </option>#}
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="table-light">
+                        <div class="table-header">
+                            <div class="table-caption">
+                                Room Types
+                            </div>
+                        </div>
+                        <table class="table table-bordered links">
+                            <thead>
+                            <tr>
+                                <th>#Beds</th>
+                                <th>Description</th>
+{#                                <th>Cost</th>#}
+                                <th>Occupancy</th>
+                            </tr>
+                            </thead>
+                            <tbody class="hotel-room">
+                            {% for room in rooms %}
+                                <tr class="roomInfo" data-id="{{ room.id }}">
+                                    <td>{{ room.beds }}</td>
+                                    <td class="room-description" data-lang="{{ room.description_lang }}">{{ room.description }}</td>
+{#                                    <td>€{{ room.cost }}</td>#}
+                                    <td>{{ room.occupancy }}%</td>
+                                </tr>
+                            {% endfor %}
+
+                            </tbody>
+                        </table>
+                        {% if request.session.admin_permission.content_permission.hotel_permission and request.session.admin_permission.content_permission.hotel_permission.access_level == 'write' or request.session.event_auth_user.type == 'super_admin' %}
+                            <div class="table-footer text-right">
+                                <div class="btn-group">
+                                    <button type="button" class="btn btn-primary" data-toggle="modal"
+                                            data-target="#hotel-details-add-room"><span class="icon fa fa-plus"></span>&nbsp;&nbsp;Add
+                                        New Hotel Room
+                                    </button>
+                                </div>
+                            </div>
+                        {% endif %}
+                    </div>
+                    {% if request.session.admin_permission.content_permission.hotel_permission and request.session.admin_permission.content_permission.hotel_permission.access_level == 'write' or request.session.event_auth_user.type == 'super_admin' %}
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <button type="button" class="btn btn-danger btn-lg deleteHotel" data-id="{{ hotel.id }}"
+                                        data-original-title="" title=""><i
+                                        class="fa fa-times-circle"></i>&nbsp;&nbsp;Delete
+                                </button>
+                            </div>
+                            <div class="col-sm-6 text-right">
+                                <div class="btn-group">
+                                    <a type="button" class="btn btn-labeled btn-lg" data-original-title="" title=""
+                                       href="{% url "hotels" %}"><i class="fa fa-ban"></i>&nbsp;&nbsp;Cancel</a>
+                                    <button type="button"
+                                            class="btn btn-success dropdown-toggle btn-lg editHotel btn-save"><i
+                                            class="fa fa-check-circle"></i>&nbsp;&nbsp;Update
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    {% endif %}
+
+                </div>
+
+                <!-- Edit Hotel Room Modal -->
+                {% include 'hotel/add_room.html' %}
+                <!-- / .modal -->
+                <!-- / Large modal -->
+                <div id="hotel-details-edit-room" class="modal fade" role="dialog" style="display: none;">
+                </div>
+
+            </div>
+
+        </div>
+    </div> <!-- / #content-wrapper -->
+    <input type='hidden' id="roomList" name='' value='[]'/>
+    <input type="hidden" id="admin-hotel-write-access"
+           value="{% if request.session.admin_permission.content_permission.hotel_permission and request.session.admin_permission.content_permission.hotel_permission.access_level == 'write' or request.session.event_auth_user.type == 'super_admin' %} 1 {% else %} 0 {% endif %}">
+
+{# following 'vat_select_box_element' added for both add-room/edit-room usage #}
+    <input class="vat_select_box_element" type="hidden" value='<select class="form-control filter-question-selector-allotment-vat edit-room-allotment-vat">
+        <option value=""></option> {% for group in paymentGroup %} <option value="{{ group.name }}">{{ group.name|safe }}% </option> {% endfor %} </select>'>
+
+    <script>
+        $(function () {
+            var hotel_access = $('#admin-hotel-write-access').val();
+            if ($.trim(hotel_access) == '0') {
+                $('#hotel-details').find("input, select").attr('disabled', 'disabled');
+
+            }
+        });
+    </script>
+{% endblock %}

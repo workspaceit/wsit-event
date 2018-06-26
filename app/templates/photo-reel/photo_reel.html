@@ -1,0 +1,77 @@
+{% extends "layout/main.html" %}
+{% block content %}
+    {% load staticfiles %}
+    {% csrf_token %}
+    <div id="content-wrapper">
+        <div class="panel colourable">
+            <div class="panel-heading">
+            <span class="panel-title"><i class="{{ icon }}"></i></i>
+                &nbsp;&nbsp;&nbsp;<strong>{{ title }}</strong></span>
+            </div>
+            <span hidden id="pagename" data-val="{{ page }}"></span>
+            {% for group in photo_groups %}
+                <div class="table-light">
+
+                    <div class="table-header" data-group-id="{{ group.id }}">
+                        <div class="table-caption">
+                            {{ group.name }}
+                        </div>
+                    </div>
+                    <table class="table table-condensed table-bordered photo-table">
+                        <thead>
+                        <tr>
+                            <th>Image</th>
+                            <th>Name</th>
+                            {% if request.session.admin_permission.content_permission.photo_reel_permission and request.session.admin_permission.content_permission.photo_reel_permission.access_level == 'write' or request.session.event_auth_user.type == 'super_admin' %}
+                                <th>Action</th>
+                            {% endif %}
+                        </tr>
+                        </thead>
+                        <tbody>
+
+                        {% for photo in group.photos %}
+                            <tr>
+                                <td>
+                                    <img src="{{ img_src_origin }}{{ photo.thumb_image }}" width="30px">
+                                </td>
+                                <td>
+                                    {{ photo.attendee.firstname }} {{ photo.attendee.lastname }}
+                                </td>
+                                {% if request.session.admin_permission.content_permission.photo_reel_permission and request.session.admin_permission.content_permission.photo_reel_permission.access_level == 'write' or request.session.event_auth_user.type == 'super_admin' %}
+                                    <td>
+                                        {% if allow_btn or photo.allow_btn %}
+                                            <button class="allow_btn btn btn-xs btn-success"
+                                                    data-photoId="{{ photo.id }}"
+                                                    data-toggle="tooltip" data-placement="top"
+                                                    data-original-title="Allow">
+                                                <i class="fa fa-check"></i></button>
+                                        {% endif %}
+                                        {% if deny_btn or photo.deny_btn %}
+                                            <button class="deny_btn btn btn-xs" data-photoId="{{ photo.id }}"
+                                                    data-toggle="tooltip" data-placement="top"
+                                                    data-original-title="Deny">
+                                                <i class="fa fa-ban"></i></button>
+                                        {% endif %}
+                                        <button class="delete_btn btn-danger btn btn-xs" data-photoId="{{ photo.id }}"
+                                                data-toggle="tooltip" data-placement="top" data-original-title="Delete">
+                                            <i class="fa fa-times-circle"></i></button>
+
+                                    </td>
+                                {% endif %}
+                            </tr>
+
+                        {% endfor %}
+
+                        </tbody>
+
+
+                    </table>
+                </div>
+            {% endfor %}
+        </div>
+
+    </div>
+
+    <script src="{% static 'assets/javascripts/photo-reel.js' %}"></script>
+
+{% endblock %}

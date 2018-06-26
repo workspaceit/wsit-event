@@ -1,0 +1,38 @@
+<div class="modal-dialog">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
+            <h4 class="modal-title">Change Event</h4>
+        </div>
+        <div class="modal-body">
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="form-group no-margin-hr">
+                        <label class="control-label">Event</label>
+                        <select class="form-control" id="choose_event" name="event">
+                        {% if request.session.event_auth_user.type == 'super_admin' %}
+                            {% for event in all_event %}
+                                <option value="{{ event.id }}" {% if request.session.event_auth_user.event_id == event.id %} selected {% endif %}>{{ event.name }}</option>
+                            {% endfor %}
+                        {% else %}
+                            {% for event in all_event %}
+                                <option value="{{ event.event.id }}" {% if request.session.event_auth_user.event_id == event.event.id %} selected {% endif %}>{{ event.event.name }}</option>
+                            {% endfor %}
+                        {% endif %}
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div style="margin-left: 10px;">
+                    <button class="btn btn-primary change-event">Select Event</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(function(){
+       $('#choose_event').select2();
+    });
+</script>

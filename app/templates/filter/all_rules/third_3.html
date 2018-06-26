@@ -1,0 +1,3 @@
+{% for group in attendee_groups %}
+    <option value="{{ group.id }}">{{ group.name|safe }}</option>
+{% endfor %}

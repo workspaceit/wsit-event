@@ -1,0 +1,174 @@
+{% extends "public/layout/layout.html" %}
+{% block content %}
+    {% load staticfiles %}
+    <div class="wrapper">
+        <div class="container padding mainContent">
+            <div class="container">
+
+                <div class="row gutters">
+                    <div class="col span_12">
+
+
+                        <h1>Sign up for your KingfoMarket Sessions!</h1>
+
+
+
+                        <p>Before starting to sign up for sessions please read the below so you understand how the day
+                            is structured and what we need you to do!</p>
+
+                        <p>All King activities, as part of the KingfoMarket Day, are pre-populated in your grid on the portal, except for the ‘Session’ activity which you need to register for. These will then also appear in your grid view. We encourage you to attend as many sessions as you can!</p>
+
+                        <table>
+                            <thead>
+                            <tr>
+                                <td>Time</td>
+                                <td>Activity</td>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td>08:15 - 08:45</td>
+                                <td>Arrival/Welcome Coffee</td>
+                            </tr>
+                            <tr>
+                                <td>08:45 - 10:15</td>
+                                <td>All King Kick Off</td>
+                            </tr>
+                            <tr>
+                                <td>10:15 - 10:30</td>
+                                <td>Move It / Break</td>
+                            </tr>
+                            <tr>
+                                <td>10:30 - 13:00</td>
+                                <td>Sessions - sign up required</td>
+                            </tr>
+                            <tr>
+                                <td>13:00 - 14:00</td>
+                                <td>Lunch<sup>*</sup></td>
+                            </tr>
+                            <tr>
+                                <td>14:00 - 16:00</td>
+                                <td>Sessions - sign up required</td>
+                            </tr>
+                            <tr>
+                                <td>16:00 - 16:15</td>
+                                <td>Move It / Break</td>
+                            </tr>
+                            <tr>
+                                <td>16:15 - 17:30</td>
+                                <td>All King Closing</td>
+                            </tr>
+                            <tr>
+                                <td>19:30 - 03:00</td>
+                                <td>Party!</td>
+                            </tr>
+                            </tbody>
+                        </table>
+
+                        <p><sup>*</sup> some sessions finish at 12.30pm, so lunch will be available from 12.30pm to help
+                            avoid queues by staggering Kingsters lunchtimes.</p>
+
+                        <p>Sessions are cross functional and are divided into 6 Tracks:</p>
+
+                        <table class="tableNoLines">
+                            <tbody>
+                            <tr>
+                                <td style="text-align: center;"><p class="label color2">Creative</p>
+                                </td>
+                                <td style="text-align: center;"><p class="label color2">Data and Analytics</p>
+                                </td>
+                                <td style="text-align: center;"><p class="label color2">Games and Platform</p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="text-align: center;"><p class="label color2">Kingdom and Support</p>
+                                </td>
+                                <td style="text-align: center;"><p class="label color2">Marketing</p>
+                                </td>
+                                <td style="text-align: center;"><p class="label color2">Tech and Development</p>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+
+                        <p>You’re welcome to attend any session in any track that interests you! The tracks are designed
+                            to give you an idea of the content and below is a guide on the level of knowledge
+                            required.</p>
+
+                        <h3>Knowledge levels:</h3>
+
+                        <table>
+                            <tbody>
+                            <tr>
+                                <td><strong>Beginners</strong></td>
+                                <td>Kingsters who have little or no knowledge about the topic.</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Intermediate</strong></td>
+                                <td>Kingsters who have a base knowledge or more experience on the topic.</td>
+                            </tr>
+                            </tbody>
+                        </table>
+
+                        <h3>To sign up for sessions follow the steps below:</h3>
+
+                        <h4>1. View all the KingfoMarket Sessions</h4>
+                        <ul>
+                            <li>Click on the MENU button in the top right hand side of your screen and select SESSIONS
+                            </li>
+                            <li>This defaults to your ‘GRID’ view where you will see a breakdown of sessions by Track
+                                and Time
+                            </li>
+                            <li>The list of sessions can be filtered by category/track or timings</li>
+                        </ul>
+
+                        <h4>2. Select your Sessions</h4>
+                        <ul>
+                            <li>Click on the SESSION TITLE to view more information about the session</li>
+                            <li>If you would like to attend the session click on the pink NOT ATTENDING button which will then change to read ATTENDING and you will be registered for the session</li>
+                            <li>To cancel your attendance click on the green ATTENDING button which will then change to read NOT ATTENDING and you will no longer be registered for the session.</li>
+                        </ul>
+                        <img src="{% static 'public/images/notattending.png' %}" class="noScale"><img src="{% static 'public/images/attending.png' %}" class="noScale">
+
+                        <h4>3. Navigate back to your Sessions</h4>
+                        <ul>
+                            <li>Click on the browser's BACK button to return to your GRID listing</li>
+                        </ul>
+
+                        <h4>4. Sign up for more Sessions</h4>
+                        <ul>
+                            <li>Repeat steps 2 & 3!</li>
+                        </ul>
+
+                        <h4>Manage your sessions/agenda:</h4>
+                        <ul>
+                            <li>Click on the MENU button in the top right hand side of your screen and select MY SESSIONS<br/></li>
+                            <li>This will show you the Sessions you have registered for. You can view this in a LIST or
+                                GRID view using the button in the right side of the window
+                            </li>
+                        </ul>
+
+                        <h3>Good to know:</h3>
+
+                        <p><strong>Sessions capacity is limited, so it works on a first come first served
+                            basis!</strong><br/>
+                            If a session is full by the time you decide to attend it, you will be placed in an automated
+                            queue and be notified by email when a seat becomes available.<br/>
+                            If there is a clash with another session, you will get an email giving you a short period of
+                            time to manage your sessions - either accept the space or decline it<br/>
+                            If no action is taken to accept or decline the space within the time period the next
+                            attendee in queue will be offered the seat.</p>
+
+                        <p>For quick and easy access to the registration session tool, use the web portal via your mobile device or browser.</p>
+
+
+                    </div>
+                    <!--col-->
+                </div>
+                <!--row-->
+
+
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,489 @@
+<div id="filters-add-filter" class="modal fade" role="dialog" style="display: none;">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
+                <h4 class="modal-title">Add Filter</h4>
+            </div>
+            <div class="modal-body">
+                <div class="panel colourable">
+                    <div class="panel-heading">
+                        <span class="panel-title filter-panel-title"></span>
+                    </div>
+                    <div class="panel-body tab-content">
+                        <div class="row" id="quick-save-div">
+                            <div class="col-sm-6">
+                                <div class="form-group no-margin-hr">
+                                    <input type="checkbox" name="is_save" id="is_save" value="True">
+                                    <label class="control-label">Save </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+
+
+                            <div class="col-sm-6" id="filter-grp-div">
+                                <div class="form-group no-margin-hr">
+                                    <label class="control-label">Filter Group</label>
+                                    <select class="form-control filter-question-selector"
+                                            id="preset_filter_group" name="group" data-id="">
+                                        {% for group in filterGroup %}
+                                            <option value="{{ group.id }}">{{ group.name|safe }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-sm-6" id="preset-name-div">
+                                <div class="form-group no-margin-hr">
+                                    <label class="control-label">Preset Name</label>
+                                    <input type="text" id="preset_name" class="form-control"
+                                           placeholder="Preset Name">
+                                </div>
+                            </div>
+
+                            <div class="col-sm-6">
+                                <div class="form-group no-margin-hr">
+                                    <input type="checkbox" name="is_limit" id="is_limit" value="True">
+                                    <label class="control-label"> Limit filter to </label>
+                                    <input type="number" id="limit_amount" name="limit_amount">
+                                    <label class="control-label">attendees</label>
+                                </div>
+                            </div>
+                        </div>
+                        <form class="form-inline">
+                            <div class="row">
+                                {% csrf_token %}
+                                <div class="form-group filter-nested-rule-form-group">
+                                    Match
+                                    <select class="form-control any-or-all" id="main-matchfor">
+                                        <option value="1">Any</option>
+                                        <option value="2">All</option>
+                                    </select>
+                                    of the following rules:
+                                </div>
+                                <button class="btn float-right btn-add-nested-rule" data-toggle="tooltip"
+                                        data-placement="bottom" title=""
+                                        data-original-title="Rules can be nested inside other rules to convey a more complex logical structure">
+                                    <span class="icon fa fa-plus"></span> &nbsp;Nested Filter
+                                </button>
+                                <hr class="">
+
+                                <ul class="list-group filter-rule-list filter-list" id="filter-list">
+                                    {#            {% include 'attendee/filter_extra.html' %}#}
+                                </ul>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12 text-right">
+                                    <div class="btn-group">
+                                        <button type="button" class="btn btn-success btn-lg btn-save"
+                                                id="btn-save-filter"
+                                                style="display: none;"><i
+                                                class="fa fa-check-circle"></i>&nbsp;&nbsp;Save Filter
+                                        </button>
+
+
+                                        {#                    <button type="button" class="btn btn-success btn-lg" id="btn-update-filter"#}
+                                        {#                            style="display: none;"><i#}
+                                        {#                            class="fa fa-check-circle"></i>&nbsp;&nbsp;Update Filter#}
+                                        {#                    </button>#}
+                                        {#                    <button type="button" class="btn btn-success btn-lg" id="trav">#}
+                                        {#                               <i class="fa fa-check-circle"></i>&nbsp;&nbsp;Update Filter#}
+                                        {#                    </button>#}
+                                        {#                    <button type="button" class="btn btn-success btn-lg" id="btn-filter-attendee">#}
+                                        {#                               <i class="fa fa-check-circle"></i>&nbsp;&nbsp;Update Filter#}
+                                        {#                    </button>#}
+                                        {##}
+                                        <button type="button" class="btn btn-success btn-lg btn-save"
+                                                id="btn-update-quick-filter"
+                                                style="display: none;"><i
+                                                class="fa fa-check-circle"></i>&nbsp;&nbsp;Update Quick Filter
+                                        </button>
+
+                                        <button type="button" class="btn btn-success btn-lg btn-save"
+                                                id="btn-update-quick-filter-name-required"
+                                                style="display: none;"><i
+                                                class="fa fa-check-circle"></i>&nbsp;&nbsp;Update Item Filter
+                                        </button>
+
+
+                                        <button type="button" class="btn btn-success btn-lg btn-save"
+                                                id="btn-update-filter"
+                                                style="display: none;"><i
+                                                class="fa fa-check-circle"></i>&nbsp;&nbsp;Update Filter
+                                        </button>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                        <div id="filter-nested-html" style="display: none;">
+                            <li class="list-group-item filter-nested-rule filter-rule">
+                                <div class="form-group filter-nested-rule-form-group">
+                                    <div class="btn-group btn-group-xs">
+                                        <button type="button" class="btn btn-add-rule"><span
+                                                class="icon fa fa-plus"></span></button>
+                                        <button type="button" class="btn btn-delete-nested-rule"><span
+                                                class="icon fa fa-minus"></span></button>
+                                    </div>
+                                    <select class="form-control any-or-all">
+                                        <option value="1">Any</option>
+                                        <option value="2">All</option>
+                                    </select>
+                                    of the following are true
+                                </div>
+                                <button class="btn float-right btn-add-nested-rule" data-toggle="tooltip"
+                                        data-placement="bottom" title=""
+                                        data-original-title="Rules can be nested inside other rules to convey a more complex logical structure">
+                                    <span class="icon fa fa-plus"></span> &nbsp;Nested Filter
+                                </button>
+                                <ul class="list-group filter-rule-list filter-list">
+                                </ul>
+                            </li>
+                        </div>
+
+
+                        <div id="filter-li-html" style="display: none;">
+                            <li class="list-group-item filter-rule f-row">
+                                <div class="form-group">
+                                    <div class="btn-group btn-group-xs">
+                                        <button type="button" class="btn btn-add-rule"><span
+                                                class="icon fa fa-plus"></span></button>
+                                        <button type="button" class="btn btn-delete-rule"><span
+                                                class="icon fa fa-minus"></span></button>
+                                    </div>
+
+                                    <!-- rules (first column) -->
+                                    <select class="form-control rule">
+                                        {% include 'filter/all_rules/rules.html' %}
+                                    </select>
+                                    <!-- end rules (first column) -->
+
+                                    <!-- second column -->
+                                    <select class="form-control second second-1">
+                                        {% include 'filter/all_rules/second_1.html' %}
+                                    </select>
+
+                                    <select class="form-control second second-2" style="display:none;">
+                                        {% include 'filter/all_rules/second_1.html' %}
+                                    </select>
+
+
+                                    {#                    <select class="form-control second second-2" style="display: none;">#}
+                                    {#                        <option value="1">is</option>#}
+                                    {#                        <option value="2">is not</option>#}
+                                    {#                    </select>#}
+
+
+                                    <select class="form-control second second-3" style="display: none;">
+                                        {% include 'filter/all_rules/second_3.html' %}
+                                    </select>
+
+
+                                    <select class="form-control second second-4" style="display: none;">
+                                        {% include 'filter/all_rules/second_3.html' %}
+                                    </select>
+
+
+                                    {#                    <select class="form-control second second-5" style="display: none;">#}
+                                    {#                        <option value="1">is</option>#}
+                                    {#                        <option value="2">is not</option>#}
+                                    {#                    </select>#}
+                                    {##}
+
+                                    <select class="form-control second second-6" style="display: none;">
+                                        {% include 'filter/all_rules/second_6.html' %}
+                                    </select>
+
+                                    <select class="form-control second second-7 filter-question-selector-1 question-dropdown"
+                                            style="display: none; width: 200px;">
+                                        {% include 'filter/all_rules/second_7.html' %}
+                                    </select>
+
+                                    <select class="form-control second second-8" style="display: none;">
+                                        {% include 'filter/all_rules/second_8.html' %}
+                                    </select>
+
+                                    <select class="form-control second second-9" style="display: none;">
+                                        {% include 'filter/all_rules/second_9.html' %}
+                                    </select>
+
+                                    <select class="form-control second second-10" style="display: none;">
+                                        {% include 'filter/all_rules/second_10.html' %}
+                                    </select>
+
+                                    <select class="form-control second second-11" style="display: none;">
+                                        {% include 'filter/all_rules/second_11.html' %}
+                                    </select>
+
+                                    <select class="form-control second second-12" style="display: none;">
+                                        {% include 'filter/all_rules/second_12.html' %}
+                                    </select>
+
+                                    <select class="form-control second second-13" style="display: none;">
+                                        {% include 'filter/all_rules/second_13.html' %}
+                                    </select>
+
+                                    <select class="form-control second second-14" style="display: none;">
+                                        {% include 'filter/all_rules/second_14.html' %}
+                                    </select>
+
+                                    <select class="form-control second second-15" style="display: none;">
+                                        {% include 'filter/all_rules/second_15.html' %}
+                                    </select>
+
+                                    <select class="form-control second second-16" style="display:none;">
+                                        {% include 'filter/all_rules/second_16.html' %}
+                                    </select>
+
+                                    <select class="form-control second second-17" style="display:none;">
+                                        {% include 'filter/all_rules/second_17.html' %}
+                                    </select>
+                                    <select class="form-control second second-18" style="display:none;">
+                                        {% include 'filter/all_rules/second_18.html' %}
+                                    </select>
+
+                                    <!-- end second column -->
+
+                                    <!-- third column -->
+                                    <div class="form-group third t-1">
+                                        <div class="input-group date filter-datepicker">
+                                            <input type="text" class="form-control"><span
+                                                class="input-group-addon"><i
+                                                class="fa fa-calendar"></i></span>
+                                        </div>
+                                    </div>
+
+
+                                    <div class="form-group  third t-2" style="display: none;">
+                                        <input type="number" min="1" value="1"
+                                               class="form-control filter-numberpicker">
+                                        <select class="form-control">
+                                            <option value="1">days</option>
+                                            <option value="2">weeks</option>
+                                            <option value="3">months</option>
+                                        </select>
+                                    </div>
+
+
+                                    <div class="form-group test third t-3" style="display: none;">
+                                        <div class="input-daterange input-group filter-datepicker-range">
+                                            <input type="text" class="input-sm form-control" name="start"
+                                                   placeholder="Start date">
+                                            <span class="input-group-addon">and</span>
+                                            <input type="text" class="input-sm form-control" name="end"
+                                                   placeholder="End date">
+                                        </div>
+                                    </div>
+
+
+                                    {#                    <select class="form-control third third-2" style="display: none">#}
+                                    {#                        <option value="1" selected>Registered</option>#}
+                                    {#                        <option value="2">Pending</option>#}
+                                    {#                        <option value="3">Canceled</option>#}
+                                    {#                    </select>#}
+
+
+                                    <select class="form-control third third-3" style="display: none">
+                                        {% include 'filter/all_rules/third_3.html' %}
+                                    </select>
+
+
+                                    <select class="form-control third third-4" style="display: none">
+                                        {% include 'filter/all_rules/third_4.html' %}
+                                    </select>
+
+
+                                    {#                    <select class="form-control third third-5" style="display: none">#}
+                                    {#                        <option value="1">not invoiced or paid</option>#}
+                                    {#                        <option value="2">invoiced - payment pending</option>#}
+                                    {#                        <option value="3">payment received</option>#}
+                                    {#                        <option value="4">canceled</option>#}
+                                    {#                    </select>#}
+
+
+                                    <select class="form-control filter-session-selector third third-6"
+                                            style="display: none">
+                                        {% include 'filter/all_rules/third_6.html' %}
+                                    </select>
+
+                                    <select class="form-control filter-language-selector third third-7"
+                                            style="display: none">
+                                        {% include 'filter/all_rules/third_7.html' %}
+                                    </select>
+
+                                    <!-- for group registration start -->
+                                    <select class="form-control third third-8" style="display: none">
+                                        {% include 'filter/all_rules/third_8.html' %}
+                                    </select>
+
+                                    <select class="form-control third third-9" style="display: none">
+                                        {% include 'filter/all_rules/third_9.html' %}
+                                    </select>
+                                    <select class="form-control third third-17" style="display: none">
+                                        {% include 'filter/all_rules/third_17.html' %}
+                                    </select>
+                                    <div class="form-group third value-for-group-registration"
+                                         style="display: none">
+                                        <input type="number" min="0" value="" class="form-control answer-text">
+                                    </div>
+                                    <!-- for group registration end -->
+
+                                    <!-- question third column start -->
+
+                                    <select class="form-control third condition-1" style="display: none">
+                                        {% include 'filter/all_rules/condition_1.html' %}
+                                    </select>
+
+                                    {% for question_group in question_groups %}
+                                        {% for question in question_group.questions %}
+                                            {% if question.type != 'text' and question.type != 'textarea' %}
+                                                <select name=""
+                                                        class="form-control option-select qid-{{ question.id }}"
+                                                        id="option-select-{{ question.id }}"
+                                                        style="display: none;">
+                                                    {% for option in question.options %}
+                                                        <option value="{{ option.id }}">
+                                                            {{ option.option }}
+                                                        </option>
+                                                    {% endfor %}
+                                                </select>
+                                            {% endif %}
+                                        {% endfor %}
+                                    {% endfor %}
+
+                                    <select class="form-control third condition-2" style="display: none">
+                                        {% include 'filter/all_rules/condition_2.html' %}
+                                    </select>
+
+                                    <select class="form-control third condition-3" style="display: none">
+                                        {% include 'filter/all_rules/condition_3.html' %}
+                                    </select>
+
+                                    <select class="form-control third condition-4" style="display: none">
+                                        {% include 'filter/all_rules/third_9.html' %}
+                                    </select>
+                                    <select class="form-control third condition-5" style="display: none">
+                                        {% include 'filter/all_rules/condition_5.html' %}
+                                    </select>
+                                    <select class="form-control third condition-6" style="display: none">
+                                        {% include 'filter/all_rules/condition_6.html' %}
+                                    </select>
+                                    <select class="form-control third condition-7" style="display: none">
+                                        {% include 'filter/all_rules/condition_7.html' %}
+                                    </select>
+                                    <select class="form-control third condition-8" style="display: none">
+                                        {% include 'filter/all_rules/condition_8.html' %}
+                                    </select>
+                                    <select class="form-control third condition-9" style="display: none">
+                                        {% include 'filter/all_rules/condition_9.html' %}
+                                    </select>
+                                    <select class="form-control third condition-10" style="display: none">
+                                            {% include 'filter/all_rules/condition_10.html' %}
+                                    </select>
+                                    <select class="form-control third condition-11" style="display: none">
+                                            {% include 'filter/all_rules/condition_11.html' %}
+                                    </select>
+
+                                    <div class="form-group third answer-text-container"
+                                         style="display: none">
+                                        <input type="text" value="" class="form-control answer-text">
+                                    </div>
+                                    <div class="form-group third answer-number-container"
+                                         style="display: none">
+                                        <input type="number" min="0" value="" class="form-control answer-text">
+                                    </div>
+                                    <div class="form-group third answer-number-within-container"
+                                         style="display: none">
+                                        <div class="input-group filter-number-range">
+                                            <input type="number" min="0" value=""
+                                                   class="input-sm form-control answer-text" name="lowest">
+                                            <span class="input-group-addon">and</span>
+                                            <input type="number" min="0" value=""
+                                                   class="input-sm form-control answer-text" name="highest">
+                                        </div>
+                                    </div>
+                                    <div class="form-group  third matched-unmatched" style="display: none;">
+
+                                        <select class="form-control">
+                                            <option value="1">Matched</option>
+                                            <option value="2">Not matched</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group  third hotel-group" style="display: none;">
+                                        <select class="form-control">
+                                            {% include 'filter/all_rules/third_hotel_groups.html' %}
+                                        </select>
+                                    </div>
+                                    <div class="form-group  third country-group" style="display: none; width: 200px;">
+                                        <input type="text" class="form-control country-select" style="width: 200px;"> </input>
+                                    </div>
+                                    <div class="form-group third date-div" style="display: none">
+                                        <div class="form-group forth tt-1">
+                                            <div class="input-group date filter-datepicker">
+                                                <input type="text" class="form-control"><span
+                                                    class="input-group-addon"><i
+                                                    class="fa fa-calendar"></i></span>
+                                            </div>
+                                        </div>
+
+
+                                        <div class="form-group  forth tt-2" style="display: none;">
+                                            <input type="number" min="1" value="1"
+                                                   class="form-control filter-numberpicker">
+                                            <select class="form-control">
+                                                <option value="1">days</option>
+                                                <option value="2">weeks</option>
+                                                <option value="3">months</option>
+                                            </select>
+                                        </div>
+
+
+                                        <div class="form-group test forth tt-3" style="display: none;">
+                                            <div class="input-daterange input-group filter-datepicker-range">
+                                                <input type="text" class="input-sm form-control"
+                                                       name="start"
+                                                       placeholder="Start date">
+                                                <span class="input-group-addon">and</span>
+                                                <input type="text" class="input-sm form-control" name="end"
+                                                       placeholder="End date">
+                                            </div>
+                                        </div>
+
+                                         <div class="form-group forth tt-4" style="display: none;">
+                                                <input type="text" class="input-sm form-control filter-timepicker">
+                                        </div>
+                                         <div class="form-group  forth tt-5" style="display: none;">
+                                            <input type="number" min="1" value="1"
+                                                   class="form-control filter-numberpicker">
+                                            <select class="form-control">
+                                                <option value="1">minutes</option>
+                                                <option value="2">hours</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group test forth tt-6" style="display: none;">
+
+                                                <input type="text" class="input-sm form-control filter-timepicker-range-from">
+                                                and
+                                                <input type="text" class="input-sm form-control filter-timepicker-range-to">
+                                        </div>
+                                    </div>
+                                    <select class="form-control forth forth-16" style="display: none">
+                                        {% include 'filter/all_rules/forth_16.html' %}
+                                    </select>
+                                    <div class="form-group forth page-input-div" style="display: none">
+                                        <input type="number" min="0" class="form-control"><span> times</span>
+                                    </div>
+                                </div>
+
+                                <!-- question third column end -->
+                                <!-- end third column -->
+                            </li>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- / .modal-content -->
+    </div>
+    <!-- / .modal-dialog -->
+</div>

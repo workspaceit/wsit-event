@@ -1,0 +1,116 @@
+{% extends "layout/main.html" %}
+{% block content %}
+    <div id="content-wrapper">
+
+        Your Changes are following. It must be approved by another admin.
+    {% for item in items %}
+        <br><h3>Attendee Id : {{ item.Attendee }}</h3>
+        {% if item.data.questions %}
+            <div class="panel-body tab-content">
+            <div class="tab-pane fade in active">
+                <br>
+                <div id="filters">
+                    <div class="table-light">
+
+                        <div class="table-header">
+                            <div class="table-caption">
+                                Questions
+                            </div>
+                        </div>
+                        <table class="table table-bordered">
+                            <thead>
+                            <tr>
+                                <td>Question Name</td>
+                                <td>Existing Answer</td>
+                                <td>New Answer</td>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for question in item.data.questions %}
+                                <tr>
+                                    <td>{{ question.name }}</td>
+                                    <td>{{ question.old_data }}</td>
+                                    <td>{{ question.new_data }}</td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+        {% if item.data.sessions %}
+            <div class="panel-body tab-content">
+            <div class="tab-pane fade in active">
+                <br>
+                <div id="filters">
+                    <div class="table-light">
+                        <div class="table-header" >
+                            <div class="table-caption">
+                                Sessions
+                            </div>
+                        </div>
+                        <table class="table table-bordered">
+                            <thead>
+                            <tr>
+                                <td>Session Name</td>
+                                <td>Existing Status</td>
+                                <td>New Status</td>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for session in item.data.sessions %}
+                                <tr>
+                                    <td>{{ session.name }}</td>
+                                    <td>{{ session.old_data }}</td>
+                                    <td>{{ session.new_data }}</td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        {% endif %}
+        {% if item.data.travels %}
+            <div class="panel-body tab-content">
+            <div class="tab-pane fade in active">
+                <br>
+                <div id="filters">
+                    <div class="table-light">
+                        <div class="table-header">
+                            <div class="table-caption">
+                                Travels
+                            </div>
+                        </div>
+                        <table class="table table-bordered">
+                            <thead>
+                            <tr>
+                                <td>Travel Name</td>
+                                <td>Existing Status</td>
+                                <td>New Status</td>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for travel in item.data.travels %}
+                                <tr>
+                                    <td>{{ travel.name }}</td>
+                                    <td>{{ travel.old_data }}</td>
+                                    <td>{{ travel.new_data }}</td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+    {% endfor %}
+    </div>
+
+{% endblock %}

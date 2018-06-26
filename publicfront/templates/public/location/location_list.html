@@ -1,0 +1,62 @@
+{% for group in locationsGroups %}
+    <div class="row gutters">
+        <div class="col span_12">
+            <h3 class="color3">{{ group.name }}</h3>
+        </div>
+    </div>
+    {% for location in group.location %}
+        <div class="row gutters">
+            <div class="col span_6">
+                <div class="panel session">
+                    <h4><a href="{% url 'publicLocations' event_url=request.session.event_url %}{{ location.id }}">{{ location.name }}</a></h4>
+
+                    <div class="content">
+                        <table class="tableNoLines">
+                            {% if location.address %}
+                                <tr>
+                                    <td><i class="fa fa-lg fa-map-marker color1"></i>
+                                    </td>
+                                    <td><strong>Address</strong>
+                                    </td>
+                                    <td>
+                                        {{ location.address }}<br/>
+
+                                    </td>
+                                </tr>
+                            {% endif %}
+                            {% if location.contact_web %}
+                                <tr>
+                                    <td><i class="fa fa-lg fa-globe color1"></i>
+                                    </td>
+                                    <td><strong>Website</strong>
+                                    </td>
+                                    <td><a target="_blank"
+                                           href="{{ location.contact_web }}">{{ location.contact_web }}</a>
+                                    </td>
+                                </tr>
+                            {% endif %}
+                            {% if location.latitude or location.map_highlight %}
+                                <tr>
+                                    <td><i class="fa fa-lg fa-map color1"></i>
+                                    </td>
+                                    <td><strong>Google Maps</strong>
+                                    </td>
+                                    <td>{% if location.map_highlight %}
+                                        <a target="_blank"
+                                           href="https://www.google.se/maps/place/{{ location.map_highlight }}">Click
+                                            Here</a>
+                                    {% else %}
+                                        <a target="_blank"
+                                           href="http://maps.google.se/maps?z=12&t=m&q=loc:{{ location.latitude }}+{{ location.longitude }}">Click
+                                            Here</a>
+                                    {% endif %}
+                                    </td>
+                                </tr>
+                            {% endif %}
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+{% endfor %}

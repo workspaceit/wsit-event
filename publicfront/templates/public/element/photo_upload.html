@@ -1,0 +1,37 @@
+<div class="form-plugin element form-plugin-photo-upload box" {% if data_user_id %}id="page-{{ page_id }}-box-{{ box_id }}-u-{{ data_user_id }}" data-uid="{{ data_user_id }}"{% else %}id="page-{{ page_id }}-box-{{ box_id }}"{% endif %} data-id="{{ element_id }}"
+     data-name="photo-upload" data-photo-group-id="{{ photo_group.id }}" data-photo-group-name="{{ photo_group.name }}">
+    <div class="form-plugin-intro">
+        {{ message|safe }}
+    </div>
+    <div class="form-question">
+{#        <button class="form-plugin-button form-plugin-photo-upload-file-select-button">{{ language.langkey.photo_upload_photo_choose }}<input type="file" name="pic"#}
+{#                                                                                                 accept="image/*"></button>#}
+        <label class="form-plugin-button form-plugin-photo-upload-file-select-button">{{ language.langkey.photo_upload_photo_choose }}<input type="file" name="pic"
+                                                                                                 accept="image/*"></label>
+        <div class="selected-file" style="display: none;"><span
+                class="file-name-label">{{ language.langkey.photo_upload_filename }}</span> <span
+                class="file-fake-path"></span>
+        </div>
+    </div>
+    {% if comment == 'True' %}
+        <div class="form-question">
+            <label class="form-question-label form-plugin-photo-upload-comment-label">{{ language.langkey.photo_upload_comment_label }}</label>
+            <textarea name="comment" class="form-plugin-photo-upload-comment-textarea" placeholder="{{ language.langkey.photo_upload_comment_placeholder }}"></textarea>
+
+        </div>
+    {% endif %}
+    <button class="form-plugin-button upload-image form-plugin-photo-upload-button">{{ language.langkey.photo_upload_button }}</button>
+    <div class="error-validating">{{ language.langkey.photo_upload_notification_error_general }}</div>
+</div>
+
+{#<style>#}
+{#    .form-plugin-photo-upload-file-select-button input {#}
+{#        position: absolute;#}
+{#        top: 0;#}
+{#        left: 0;#}
+{#        margin: 0;#}
+{#        opacity: 0;#}
+{#        filter: alpha(opacity=0);#}
+{#        z-index: -1;#}
+{#    }#}
+{#</style>#}

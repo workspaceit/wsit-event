@@ -1,0 +1,43 @@
+<table class="form-plugin-table lines">
+                <thead>
+                <tr>
+                    {% if show_counting_column %}<th data-th-checker="not-question" class="attendee-list-counting-header">{{ show_counting_column_header }}</th>{% endif %}
+                    {% for column_name in column_names %}
+                        <th>{{ column_name }}</th>
+                    {% endfor %}
+                </tr>
+                </thead>
+                <tbody>
+                {% for attendee_data in attendee_datas %}
+                    <tr>
+                        {% if show_counting_column %}<td class="attendee-list-counting-col">{{ forloop.counter }}</td>{% endif %}
+                        {% for att in attendee_data.general_ques %}
+                            <td class="{{ att.question }}">{{ att.answer|safe }}</td>
+                        {% endfor %}
+                        {% for att in attendee_data.attr %}
+                            <td class="{{ att.question }}">{{ att.answer|safe }}</td>
+                        {% endfor %}
+                        {% for att in attendee_data.session_ans %}
+                            <td class="{{ att.question }}">{{ att.answer|safe }}</td>
+                        {% endfor %}
+                        {% for att in attendee_data.hotel_ans %}
+                            <td class="{{ att.question }}">{{ att.answer|safe }}</td>
+                        {% endfor %}
+                    </tr>
+                {% endfor %}
+
+                </tbody>
+            </table>
+            {% if pagination %}
+                <div class="pagination">
+                    {% if prev_btn_visible %}
+                    <a href="javascript:void(0)" class="pagination-item" data-value="{{ current_page_num|add:"-1" }}">Prev</a>
+                    {% endif %}
+                    {% for item in pages %}
+                        <a href="javascript:void(0)" class="pagination-item" data-value="{{ item }}" {% if item == current_page_num %} style="color:red" {%endif %}>{{ item }}</a>
+                    {% endfor %}
+                    {% if next_btn_visible %}
+                    <a href="javascript:void(0)" class="pagination-item" data-value="{{ current_page_num|add:"1" }}">Next</a>
+                    {% endif %}
+                </div>
+            {% endif %}

@@ -1,0 +1,9 @@
+<ul id="language-select">
+    <li><a href="javascript:void(0);" class="current {{ current_language.preset_class }}" data-id="{{ current_language.id }}">{{ current_language.preset_name }}</a>
+        <ul>
+            {% for language in languages %}
+            <li><a href="javascript:void(0);" class="{{ language.preset_class }}" data-id="{{ language.id }}">{{ language.preset_name }}</a></li>
+            </li>
+            {% endfor %}
+        </ul>
+</ul>

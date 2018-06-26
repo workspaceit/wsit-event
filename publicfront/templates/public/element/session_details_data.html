@@ -1,0 +1,144 @@
+{% load i18n %}
+{% load thousand_filter %}
+<table class="form-plugin-table form-plugin-session-list-table">
+    <tbody>
+    {% if start_time == 'True' or start_date == 'True' or end_time == 'True' or end_date == 'True' %}
+        <tr class="time-and-date">
+            <td><span class="session-time-and-date-icon"></span>
+            </td>
+            <td>{% if start_time == 'True' or  start_date == 'True' %}
+                <label class="form-plugin-label time-date-start">{{ session_details_language.langkey.sessiondetails_txt_starts }}: </label>
+                {% if start_time == 'True' %}
+                    <span class="time start">{% language session_details_language.lang_preset.language_code %}
+                        {{ session.start |date:session_details_language.lang_preset.time_format }}{% endlanguage %}</span>
+                {% endif %}
+                {% if start_date == 'True' %}
+                    <span class="date start">{% language session_details_language.lang_preset.language_code %}
+                        {{ session.start |date:session_details_language.lang_preset.date_format }}{% endlanguage %}</span>
+                {% endif %}<br/>{% endif %}
+                {% if end_time == 'True' or end_date == 'True' %}
+                    <label class="form-plugin-label time-date-end">{{ session_details_language.langkey.sessiondetails_txt_ends }}: </label>
+                    {% if end_time == 'True' %}
+                        <span class="time end">{% language session_details_language.lang_preset.language_code %}
+                            {{ session.end |date:session_details_language.lang_preset.time_format }}{% endlanguage %}</span>
+                    {% endif %}
+                    {% if end_date == 'True' %}
+                        <span class="date end">{% language session_details_language.lang_preset.language_code %}
+                            {{ session.end |date:session_details_language.lang_preset.date_format }}{% endlanguage %}</span>
+                    {% endif %}
+                {% endif %}
+            </td>
+        </tr>
+    {% endif %}
+    {% if rvsp_date == 'True' %}
+        <tr class="rsvp-deadline">
+            <td><span class="session-rsvp-deadline-icon"></span>
+            </td>
+            <td><label
+                    class="form-plugin-label">{{ session_details_language.langkey.sessiondetails_txt_rsvp }}: </label><span
+                    class="date">{% language session_details_language.lang_preset.language_code %}
+                {{ session.reg_between_end |date:session_details_language.lang_preset.date_format }}{% endlanguage %}</span>
+            </td>
+        </tr>
+    {% endif %}
+    {% if cost == 'True' %}
+        <tr class="cost">
+            <td><span class="session-cost-icon"></span>
+            </td>
+            <td><label
+                    class="form-plugin-label">{{ session_details_language.langkey.sessiondetails_txt_session_cost }}</label>
+                <span class="session-cost">
+                    {% if including_vat == 'True' %}
+                        {{ session.cost_included_vat | floatformat:"-2" | format_thousands }} {{ economy_currency_txt }}
+                        <span class="vat">
+                        {{ session.lang_vat_included }}
+                        </span>
+                    {% else %}
+                        {{ session.cost|floatformat:"-2"| format_thousands }} {{ economy_currency_txt }}
+                        <span class="vat">
+                        {{ session.lang_vat_excluded }}
+                        </span>
+                    {% endif %}
+            </span>
+            </td>
+        </tr>
+    {% endif %}
+    {% if speaker == 'True' %}
+
+        {% if session.speakers %}
+            <tr class="speaker">
+                <td><span class="session-speaker-icon"></span>
+                </td>
+                <td><label
+                        class="form-plugin-label">{{ session_details_language.langkey.sessiondetails_txt_speakers }}: </label>
+                    {% for speaker in  session.speakers %}
+{#                        {% if not forloop.first %}, {% endif %}#}
+                        {% if speaker_link == 'True' %}
+                            <a class="attendee-details"
+                               target="_blank" data-page-id="{{ page_id }}" data-box-id="{{ box_id }}"
+                               data-attendee-id="{{ speaker.id }}">{{ speaker.firstname }} {{ speaker.lastname }}</a>
+                            {% if not forloop.last %}, {% endif %}
+                        {% else %}
+                            {{ speaker.firstname }}
+                            {{ speaker.lastname }}{% if not forloop.last %}, {% endif %}
+                        {% endif %}
+                    {% endfor %}
+                </td>
+            </tr>
+        {% endif %}
+    {% endif %}
+    {% if tags == 'True' %}
+        {% if session.taglist %}
+            <tr class="tags">
+                <td><span class="session-tags-icon"></span>
+                </td>
+                <td>
+                    <label class="form-plugin-label">{{ session_details_language.langkey.sessiondetails_txt_tags }}:</label>
+
+                    <div class="form-plugin-tags-list">
+                        {% for tag in session.taglist %}
+                            <div class="form-plugin-tag">{{ tag }}
+                            </div>
+                        {% endfor %}
+                    </div>
+                </td>
+            </tr>
+        {% endif %}
+    {% endif %}
+    {% if group_appear == 'True' %}
+        <tr class="session-group">
+            <td><span class="session-group-icon"></span>
+            </td>
+            <td><label
+                    class="form-plugin-label">{{ session_details_language.langkey.sessiondetails_txt_session_group }}: </label>{{ session.group.name|safe }}
+            </td>
+        </tr>
+    {% endif %}
+    {% if session_option != 'do-not-show' %}
+        <tr class="seats-available">
+            <td><span class="session-seats-available-icon"></span>
+            </td>
+            <td><label
+                    class="form-plugin-label">{{ session_details_language.langkey.sessiondetails_txt_seat_availability }}: </label><span
+                    class="available-seats">{{ session.availability }}</span>
+            </td>
+        </tr>
+    {% endif %}
+    {% if location == 'True' %}
+        <tr class="location">
+            <td><span class="session-location-icon"></span>
+            </td>
+            <td><label
+                    class="form-plugin-label">{{ session_details_language.langkey.sessiondetails_txt_location }}: </label>
+                {% if location_link == 'True' %}
+                    <a class="location-details"
+                       target="_blank" data-page-id="{{ page_id }}" data-box-id="{{ box_id }}"
+                       data-location-id="{{ session.location.id }}">{{ session.location.name|safe }}</a>
+                {% else %}
+                    {{ session.location.name|safe }}
+                {% endif %}
+            </td>
+        </tr>
+    {% endif %}
+    </tbody>
+</table>

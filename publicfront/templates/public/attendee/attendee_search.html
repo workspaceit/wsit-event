@@ -1,0 +1,124 @@
+{% extends "public/layout/layout.html" %}
+{% block content %}
+    <div class="wrapper">
+        <div class="container padding mainContent">
+
+
+            <!-- CONTENT GOES HERE -->
+
+            <h1>ATTENDEES</h1>
+
+            <div class="row gutters half">
+                <div class="col span_6">
+                    <div class="formQuestion">
+                        <div class="searchBox">
+                            <i class="fa fa-search searchIcon"></i><input type="text" class="search">
+                        </div>
+                    </div>
+                </div>
+                <div class="col span_6">
+                    <div class="formQuestion">
+                        <div class="searchBox">
+                            <i class="fa fa-chevron-down sortIcon"></i>
+                            {% csrf_token %}
+                            <select class="sort" id="sort_type">
+                                <option value="lastname" selected>Sort by last name</option>
+                                <option value="firstname">Sort by first name</option>
+                                <option value="office">Sort by office</option>
+                            </select>
+
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="row gutters">
+                <div class="col span_12 allendee_result">
+
+                </div>
+            </div>
+
+        </div>
+        <!-- mainContent -->
+    </div><!--wrapper-->
+    <script>
+        $(document).ready(
+                function () {
+                    var csrf_token = $('input[name=csrfmiddlewaretoken]').val();
+
+                    $.ajax(
+                            {
+                                type: "Post",
+                                url: base_url + '/attendee-search/',
+                                data: {
+                                    sort_key: "lastname",
+                                    csrfmiddlewaretoken: csrf_token
+                                },
+                                success: function (response) {
+                                    $('.allendee_result').html(response);
+                                }
+                            }
+                    );
+                    $('#sort_type').change(
+                            function () {
+                                var sort_type = $(this).val();
+                                var key = $('.search').val();
+                                $.ajax(
+                                        {
+                                            type: "Post",
+                                            url: base_url + '/attendee-search/',
+                                            data: {
+                                                sort_key: sort_type,
+                                                key: key,
+                                                csrfmiddlewaretoken: csrf_token
+                                            },
+                                            success: function (response) {
+
+                                                $('.allendee_result').html(response);
+                                            }
+                                        }
+                                );
+                            }
+                    );
+                    $('.search').keyup(
+                            function () {
+                                var sort_type = $('#sort_type :selected').val();
+                                var key = $(this).val();
+                                if (key.length >= 2) {
+                                    $.ajax(
+                                            {
+                                                type: "Post",
+                                                url: base_url + '/attendee-search/',
+                                                data: {
+                                                    sort_key: sort_type,
+                                                    key: key,
+                                                    csrfmiddlewaretoken: csrf_token
+                                                },
+                                                success: function (response) {
+
+                                                    $('.allendee_result').html(response);
+                                                }
+                                            }
+                                    );
+                                }
+                                if (key.length == 0) {
+                                    $.ajax(
+                                            {
+                                                type: "Post",
+                                                url: base_url + '/attendee-search/',
+                                                data: {
+                                                    sort_key: "lastname",
+                                                    csrfmiddlewaretoken: csrf_token
+                                                },
+                                                success: function (response) {
+                                                    $('.allendee_result').html(response);
+                                                }
+                                            }
+                                    );
+                                }
+                            }
+                    );
+                }
+        );
+    </script>
+{% endblock %}

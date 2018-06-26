@@ -1,0 +1,95 @@
+{% load i18n %}
+<table class="form-plugin-table form-plugin-attendee-list-table confirmation-table confirmation-table-questions">
+    <thead>
+    <tr>
+        <th class="column-question">
+            {{ language.langkey.th_question_name }}
+        </th>
+        <th class="column-answer">
+            {{ language.langkey.th_question_answer }}
+        </th>
+    </tr>
+    </thead>
+    <tbody>
+    {% if "registration-date" in question_rules.data_title %}
+        <tr>
+            <td class="column-question">
+                {{ language.langkey.th_question_registration_date }}
+            </td>
+            <td class="column-answer">
+                {% language language.lang_preset.language_code %}
+                    {% if 'timedate' in question_rules %}
+                        {{ questionAnswer.registration_date |date:question_rules.timedate }}
+                    {% else %}
+                        {{ questionAnswer.registration_date |date:language.lang_preset.datetime_format }}
+                    {% endif %}
+                {% endlanguage %}
+            </td>
+        </tr>
+    {% endif %}
+    {% if "last-update-date" in question_rules.data_title %}
+        <tr>
+            <td class="column-question">
+                {{ language.langkey.th_question_last_update_date }}
+            </td>
+            <td class="column-answer">
+                {% language language.lang_preset.language_code %}
+                    {% if 'timedate' in question_rules %}
+                        {{ questionAnswer.last_update_date |date:question_rules.timedate }}
+                    {% else %}
+                        {{ questionAnswer.last_update_date |date:language.lang_preset.datetime_format }}
+                    {% endif %}
+                {% endlanguage %}
+            </td>
+        </tr>
+    {% endif %}
+    {% if "attendee-group" in question_rules.data_title %}
+        {% if questionAnswer.attendee_groups %}
+            <tr>
+                <td class="column-question">
+                    {{ language.langkey.th_question_attendee_groups }}
+                </td>
+                <td class="column-answer">
+                    {{ questionAnswer.attendee_groups }}
+                </td>
+            </tr>
+        {% endif %}
+    {% endif %}
+    {% if "tags" in question_rules.data_title %}
+        {% if questionAnswer.tags %}
+            <tr>
+                <td class="column-question">
+                    {{ language.langkey.th_question_tags }}
+                </td>
+                <td class="column-answer">
+                    {{ questionAnswer.tags }}
+                </td>
+            </tr>
+        {% endif %}
+    {% endif %}
+
+    {% for answer in  questionAnswer.answers %}
+        <tr>
+            <td class="column-question">
+                {{ answer.question.title }}
+            </td>
+            <td class="column-answer">
+                {% if answer.question.type == "textarea" %}
+                    <p>{{ answer.value | safe }}</p>
+                {% elif answer.question.type == 'date' %}
+                    {{ answer.value | date:language.lang_preset.date_format }}
+                {% elif answer.question.type == 'time' %}
+                    {{ answer.value | date:language.lang_preset.time_format }}
+                {% elif answer.question.type == 'date_range' %}
+                    {{ answer.value1 | date:language.lang_preset.date_format }} - {{ answer.value2 | date:language.lang_preset.date_format }}
+                {% elif answer.question.type == 'time_range' %}
+                    {{ answer.value1 | date:language.lang_preset.time_format }} - {{ answer.value2 | date:language.lang_preset.time_format }}
+                {% else %}
+                    {{ answer.value | safe }}
+                {% endif %}
+            </td>
+        </tr>
+    {% endfor %}
+
+    </tbody>
+</table>

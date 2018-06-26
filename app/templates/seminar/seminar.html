@@ -1,0 +1,589 @@
+{% extends "layout/main.html" %}
+{% block content %}
+    {% load staticfiles %}
+    {% include 'layout/editor_header.html' %}
+    {#    <script type="text/javascript" src="//code.jquery.com/ui/1.11.3/jquery-ui.min.js"></script>#}
+    {#    <script src="{% static 'assets/markdown/markdown-it.js' %}"></script>#}
+    {#    <script src="{% static 'assets/markdown/to-markdown.js' %}"></script>#}
+    {#    <script src="{% static 'assets/markdown/markdown-it-footnote.js' %}"></script>#}
+    {#    <script src="{% static 'assets/markdown/highlight.pack.js' %}"></script>#}
+    {#    <script src="{% static 'assets/markdown/emojify.js' %}"></script>#}
+    {#    <script src="{% static 'assets/markdown/codemirror/lib/codemirror.js' %}"></script>#}
+    {#    <script src="{% static 'assets/markdown/codemirror/overlay.js' %}"></script>#}
+    {#    <script src="{% static 'assets/markdown/codemirror/xml/xml.js' %}"></script>#}
+    {#    <script src="{% static 'assets/markdown/codemirror/markdown/markdown.js' %}"></script>#}
+    {#    <script src="{% static 'assets/markdown/codemirror/gfm/gfm.js' %}"></script>#}
+    {#    <script src="{% static 'assets/markdown/codemirror/javascript/javascript.js' %}"></script>#}
+    {#    <script src="{% static 'assets/markdown/codemirror/css/css.js' %}"></script>#}
+    {#    <script src="{% static 'assets/markdown/codemirror/htmlmixed/htmlmixed.js' %}"></script>#}
+    {#    <script src="{% static 'assets/markdown/codemirror/lib/util/continuelist.js' %}"></script>#}
+    {#    <script src="{% static 'assets/markdown/rawinflate.js' %}"></script>#}
+    {#    <script src="{% static 'assets/markdown/rawdeflate.js' %}"></script>#}
+    {##}
+    {#    <link href="{% static 'assets/markdown/base16-light.css' %}" media="all" rel="stylesheet">#}
+    {#    <link href="{% static 'assets/markdown/codemirror/lib/codemirror.css' %}" media="all" rel="stylesheet">#}
+    {#    <link href="{% static 'assets/markdown/default.css' %}" media="all" rel="stylesheet">#}
+
+
+    {#    <script src="{% static 'assets/javascripts/respond.min.js' %}"></script>#}
+    {##}
+    {#    <link href="{% static 'assets/stylesheets/kendo/kendo.common.min.css' %}" rel="stylesheet" type="text/css"/>#}
+    {#    <link href="{% static 'assets/stylesheets/kendo/kendo.default.min.css' %}" rel="stylesheet" type="text/css"/>#}
+    {##}
+    {#    <script src="{% static 'assets/javascripts/kendo/kendo.all.min.js' %}"></script>#}
+    {##}
+    {#    <script src="//cdn.jsdelivr.net/clipboard.js/1.5.8/clipboard.min.js"></script>#}
+
+    {#    <style>#}
+    {#        .CodeMirror.cm-s-default {#}
+    {#            height: 0px !important;#}
+    {#        }#}
+    {##}
+    {#        .CodeMirror {#}
+    {#            height: 118px !important;#}
+    {#            border: 1px solid !important;#}
+    {#            border-color: #c2c2c2 !important;#}
+    {#        }#}
+    {#    </style>#}
+    <div id="content-wrapper">
+        <div class="panel colourable">
+            <div class="panel-heading">
+            <span class="panel-title"><i class="fa fa-lg fa-calendar"></i></i>
+                &nbsp;&nbsp;&nbsp;<strong>Sessions</strong></span>
+                {#                <span style="float:right"><img style="display:none" height="25px"#}
+                {#                                               src="{% static 'public/images/712.GIF' %}" id="loader" alt=""/>#}
+                {#                    </span>#}
+            </div>
+            <!-- / .panel-heading -->
+            {% csrf_token %}
+            <div class="panel-body tab-content">
+                <div class="tab-pane fade in active">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            {% if request.session.admin_permission.content_permission.session_permission and request.session.admin_permission.content_permission.session_permission.access_level == 'write' or request.session.event_auth_user.type == 'super_admin' %}
+                                <button type="button" id="btn-add-session" class="btn btn-primary btn-lg"
+                                        data-toggle="modal"
+                                        data-target=""><i class="fa fa-plus-circle"></i>&nbsp;&nbsp;Add a
+                                    Session
+                                </button>
+                                <a href="{% url 'session-report' %}" id="download-session-report"
+                                   class="btn btn-primary btn-lg"><i class="fa fa-file-excel-o"></i>&nbsp;&nbsp;Download
+                                    Report</a>
+
+                                {#                                <a href="{% url 'export-session-settings' %}" id="export-session"#}
+                                {#                                   class="btn btn-success btn-lg">Export Session</a>#}
+
+                                <button type="button" id="btn-add-session-filter" class="btn btn-primary btn-lg"
+                                        data-toggle="modal"
+                                        data-target=""><i class="fa fa-plus-circle"></i>&nbsp;&nbsp; Apply Filter for
+                                    Session Action
+                                </button>
+
+                            {% endif %}
+                        </div>
+                    </div>
+                    <br>
+                    <label>Visible Columns:</label>
+
+                    <div class="form-group show-columns">
+                        <select name="columns" class="selectpicker datatable-column-control" multiple
+                                data-live-search="true"
+                                data-live-search-placeholder="Search"
+                                data-actions-box="false">
+
+                            <option class="selected_column" value="0" disabled selected>ID</option>
+                            <option class="selected_column" value="1" disabled selected>Name</option>
+                            <option class="selected_column" value="2" {% if 2 in columns %} selected {% endif %}>
+                                Attending
+                            </option>
+                            <option class="selected_column" value="3" {% if 3 in columns %} selected {% endif %}>Max
+                            </option>
+                            <option class="selected_column" value="4" {% if 4 in columns %} selected {% endif %}>
+                                Percentage
+                            </option>
+                            <option class="selected_column" value="5" {% if 5 in columns %} selected {% endif %}>In
+                                Queue
+                            </option>
+                            <option class="selected_column" value="6" {% if 6 in columns %} selected {% endif %}>
+                                Pending
+                            </option>
+                            <option class="selected_column" value="7" {% if 7 in columns %} selected {% endif %}>Not
+                                Attending
+                            </option>
+                            <option class="selected_column" value="8" {% if 8 in columns %} selected {% endif %}>Cost
+                            </option>
+                            <option class="selected_column" value="9" {% if 9 in columns %} selected {% endif %}>VAT
+                            </option>
+                            <option class="selected_column" value="10" {% if 10 in columns %} selected {% endif %}>
+                                Average Rating
+                            </option>
+                            <option class="selected_column" value="11" {% if 11 in columns %} selected {% endif %}>
+                                Rating Received
+                            </option>
+
+
+                        </select>
+                    </div>
+                    <div>
+                        <label>Search:</label>
+                        <input type="text" name="search_key_seminar" class="form-control input-sm"
+                               id="search_key_seminar" style="display: inline-block; width:25%"/>
+                    </div>
+                    <br/>
+                    <div id="sessions">
+                        <div class="table-light">
+
+                            {% for group in session_groups %}
+
+                                <div class="table-header" id="seminar_group_{{ group.id }}">
+                                    <div class="table-caption">
+                                        {{ group.name|safe }}
+                                    </div>
+                                </div>
+                                <table class="table table-bordered sortable seminar-table seminar-table-{{ group.id }}">
+                                    <thead>
+                                    <tr>
+                                        {#                                        <th><input type="checkbox" class="selecctall" group-id="{{ group.id }}">All</th>#}
+                                        <th>ID</th>
+                                        <th>Name</th>
+                                        <th>Attending</th>
+                                        <th>Max</th>
+                                        <th>Percentage</th>
+                                        <th>In Queue</th>
+                                        <th>Pending</th>
+                                        <th>Not Attending</th>
+                                        <th>Cost</th>
+                                        <th>VAT</th>
+                                        <th>Average Rating</th>
+                                        <th>Rating Received</th>
+                                        <th>Lists</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% for session in group.sessions %}
+                                        <tr>
+                                            {#                                            <td><input type="checkbox" name="sessions_for_export" class="allselect_{{ group.id }}" value="{{ session.id }}"></td>#}
+                                            <td>{{ session.id }}</td>
+                                            <td>{{ session.name }}</td>
+                                            <td>{{ session.attending }}</td>
+                                            {% if session.max_attendees != 0 %}
+                                                <td>{{ session.max_attendees }}</td>
+                                            {% else %}
+                                                <td>&#8734;</td>
+                                            {% endif %}
+
+                                            <td>{{ session.percentage }}</td>
+                                            <td id="session-queue-count-{{ session.id }}">{{ session.in_queue }}</td>
+                                            <td>{{ session.pending }}</td>
+                                            <td>{{ session.not_attending }}</td>
+                                            <td>{{ session.cost }}</td>
+                                            {% if session.vat %}
+                                                <td>{{ session.vat }}%
+                                                    {% else %}
+                                                <td>N/A</td>
+                                            {% endif %}
+                                            {% if session.no_of_attendees_evaluating %}
+                                                <td>{{ session.average_rating }}</td>
+                                            {% else %}
+                                                <td>N/A</td>
+                                            {% endif %}
+                                            {% if session.no_of_attendees_evaluating %}
+                                                <td>{{ session.no_of_attendees_evaluating }}</td>
+                                            {% else %}
+                                                <td>N/A</td>
+                                            {% endif %}
+                                            {% if request.session.admin_permission.content_permission.session_permission and request.session.admin_permission.content_permission.session_permission.access_level == 'write' or request.session.event_auth_user.type == 'super_admin' %}
+                                                <td>
+                                                    <button class="btn btn-xs btn-edit-attending"
+                                                            data-id="{{ session.id }}"
+                                                            data-toggle="tooltip" data-placement="top" title=""
+                                                            data-original-title="Participating"><i
+                                                            class="dropdown-icon fa fa-group"></i></button>
+                                                    <button class="btn btn-xs btn-edit-queue" data-id="{{ session.id }}"
+                                                            data-toggle="tooltip" data-placement="top" title=""
+                                                            data-original-title="Edit Queue"><i
+                                                            class="dropdown-icon fa fa-users"></i></button>
+                                                    <button class="btn btn-xs btn-edit-deciding"
+                                                            data-id="{{ session.id }}"
+                                                            data-toggle="tooltip" data-placement="top" title=""
+                                                            data-original-title="Pending"><i
+                                                            class="dropdown-icon fa fa-user-secret"></i></button>
+                                                    <button class="btn btn-xs btn-edit-session-checkpoint"
+                                                            data-id="{{ session.id }}"
+                                                            data-toggle="tooltip" data-placement="top" title=""
+                                                            data-original-title="Checkpoint"><i
+                                                            class="dropdown-icon fa fa-users"></i></button>
+                                                </td>
+                                                <td>
+                                                    <button class="btn btn-xs btn-edit-session"
+                                                            data-id="{{ session.id }}"
+                                                            data-toggle="tooltip" data-placement="top" title=""
+                                                            data-original-title="Edit"><i
+                                                            class="dropdown-icon fa fa-cog"></i>
+                                                    </button>
+                                                    <button class="btn btn-xs btn-duplicate-session"
+                                                            data-id="{{ session.id }}" data-toggle="tooltip"
+                                                            data-placement="top"
+                                                            title=""
+                                                            data-original-title="Duplicate"><i
+                                                            class="dropdown-icon fa fa-files-o"></i>
+                                                    </button>
+                                                    <button class="btn btn-xs btn-danger btn-delete-session"
+                                                            data-id="{{ session.id }}" data-toggle="tooltip"
+                                                            data-placement="top"
+                                                            title="" data-original-title="Delete"><i
+                                                            class="dropdown-icon fa fa-times-circle"></i></button>
+                                                    <a href="{% url 'exportSession' %}{{ session.id }}">
+
+                                                        <button class="btn btn-xs btn-success btn-export-filter"
+                                                                data-original-title="Export"><i
+                                                                class="dropdown-icon fa fa-file-excel-o"></i></button>
+
+                                                    </a>
+
+                                                </td>
+                                            {% else %}
+                                                <td></td>
+                                                <td style="text-align: center;">
+                                                    <button class="btn btn-xs btn-view-session"
+                                                            data-id="{{ session.id }}"
+                                                            data-toggle="tooltip" data-placement="top" title=""
+                                                            data-original-title="View"><i
+                                                            class="dropdown-icon fa fa-search-plus"></i>
+                                                    </button>
+                                                </td>
+                                            {% endif %}
+                                        </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                            {% endfor %}
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        {% if request.session.admin_permission.content_permission.session_permission and request.session.admin_permission.content_permission.session_permission.access_level == 'write' or request.session.event_auth_user.type == 'super_admin' %}
+            {% include 'seminar/add_seminar.html' %}
+            {% include 'seminar/add_filter.html' %}
+            <div id="seminars-edit-attending" class="modal fade" tabindex="-1" role="dialog" style="display: none;">
+            </div>
+            <div id="seminars-edit-cue" class="modal fade" tabindex="-1" role="dialog" style="display: none;">
+            </div>
+            <div id="seminars-edit-deciding" class="modal fade" tabindex="-1" role="dialog" style="display: none;">
+            </div>
+        {% else %}
+            {% include 'seminar/view_seminar.html' %}
+        {% endif %}
+        {#        {% include 'seminar/edit_seminar_queue.html' %}#}
+
+        <!-- MODAL - EDIT SEMINAR CUE -->
+        <!-- / #content-wrapper -->
+    </div>
+    <img src="{% static 'public/images/712.GIF' %}" class="loader" alt=""/>
+    <script>
+
+        {#        $(document).ready(function (){#}
+        {##}
+        {#            $('.selecctall').click(function (event) {  //on click#}
+        {#                group = $(this).attr("group-id");#}
+        {#                clog(group);#}
+        {#                if (this.checked) { // check select status#}
+        {#                    $('.allselect_'+group).each(function () { //loop through each checkbox#}
+        {#                        this.checked = true;  //select all checkboxes with class "checkbox1"#}
+        {#                    });#}
+        {#                } else {#}
+        {#                    $('.allselect_'+group).each(function () { //loop through each checkbox#}
+        {#                        this.checked = false; //deselect all checkboxes with class "checkbox1"#}
+        {#                    });#}
+        {#                }#}
+        {#            });#}
+        {##}
+        {#            $("#export_session_form").on("submit",function(){#}
+        {#                $('<input>').attr({#}
+        {#                    type: 'hidden',#}
+        {#                    name: 'sessions'#}
+        {#                }).appendTo('#export_session_form');#}
+        {##}
+        {#                var data=[];#}
+        {##}
+        {#                $("input[name=sessions_for_export]:checked").each(function(){#}
+        {#                     var new_attribue=$(this).val();#}
+        {#                     data.push(new_attribue)#}
+        {#                });#}
+        {#                $("input[name=sessions]").val(data);#}
+        {##}
+        {##}
+        {#            });#}
+        {##}
+        {##}
+        {#        });#}
+        var visible = {{  visible_columns }};
+        function loadDataTable() {
+            $('.seminar-table').dataTable({
+                "paging": false,
+                "ordering": false,
+                "info": false,
+                "searching": false,
+                "autoWidth": false,
+                "columnDefs": [
+                    {"visible": true, "targets": visible},
+                    {"visible": false, "targets": ['_all']}
+                ]
+            });
+            $('.table-header').closest('.clearfix').hide();
+        }
+        $(document).ready(function () {
+            loadDataTable();
+
+
+            $('.datatable-column-control').on('change', function () {
+                clog("loaded");
+                var predefinedColumns = [0, 1, 12, 13];
+                var selectedColumns = $(this).val();
+
+                var columns = predefinedColumns.concat(selectedColumns);
+                columns = columns.filter(function (v, i, a) {
+                    return a.indexOf(v) == i
+                });
+                var index = columns.indexOf("999");
+                if (index >= 0) {
+                    columns.splice(index, 1);
+                }
+                var table = $('.seminar-table').DataTable();
+                table.columns().visible(false, false);
+                table.columns(columns).visible(true, true);
+                table.columns.adjust().draw(false);
+                var visible_columns = columns.map(function (x) {
+                    return parseInt(x, 10);
+                });
+                clog(visible_columns)
+                visible = visible_columns;
+
+                var csrf_token = $('input[name=csrfmiddlewaretoken]').val();
+                $.ajax({
+                    url: base_url + '/admin/sessions/visible-columns/',
+                    type: "POST",
+                    data: {
+                        visible_columns: JSON.stringify(visible_columns),
+                        csrfmiddlewaretoken: csrf_token
+                    },
+                    success: function (response) {
+                        {#                        if (response.success) {#}
+                        {#                            $.growl.notice({message: response.message});#}
+                        {#                            setTimeout(function () {#}
+                        {#                                window.location = ''#}
+                        {#                            }, 500);#}
+                        {#                        }#}
+                        {#                        else {#}
+                        {#                            $.growl.error({message: response.message});#}
+                        {#                        }#}
+                    }
+                });
+            });
+        });
+    </script>
+
+    {#    <script type="text/javascript">#}
+    {#        var editor;#}
+    {#        $(function () {#}
+    {#            // photo upload and display start#}
+    {##}
+    {##}
+    {#            // photo upload and display end#}
+    {##}
+    {#            editor = CodeMirror.fromTextArea(document.getElementById('description'), {#}
+    {#                mode: 'gfm',#}
+    {#                lineNumbers: false,#}
+    {#                matchBrackets: true,#}
+    {#                lineWrapping: true,#}
+    {#                theme: 'base16-light',#}
+    {#                extraKeys: {"Enter": "newlineAndIndentContinueMarkdownList"},#}
+    {#            });#}
+    {#            editor.on('change', update);#}
+    {##}
+    {#            $('body').on('click', '#btn-description-preview', function () {#}
+    {#                clog(editor.getValue());#}
+    {#                clog($('#description_out').html());#}
+    {#                var input = $("<textarea>")#}
+    {#                        .css('display', 'none')#}
+    {#                        .attr("name", "content").val($('#description_out').html());#}
+    {#                clog(input);#}
+    {#                var csrfToken = $('input[name=csrfmiddlewaretoken]').val();#}
+    {#                var csrf = $("<input>")#}
+    {#                        .css('display', 'none')#}
+    {#                        .attr("name", "csrfmiddlewaretoken").val(csrfToken);#}
+    {#                $('#description-preview-form').append($(input));#}
+    {#                $('#description-preview-form').append($(csrf));#}
+    {#                $('#description-preview-form').submit();#}
+    {#                clog($('#description-preview-form'));#}
+    {##}
+    {#            });#}
+    {#        });#}
+    {##}
+    {##}
+    {#        var URL = window.URL || window.webkitURL || window.mozURL || window.msURL;#}
+    {#        navigator.saveBlob = navigator.saveBlob || navigator.msSaveBlob || navigator.mozSaveBlob || navigator.webkitSaveBlob;#}
+    {#        window.saveAs = window.saveAs || window.webkitSaveAs || window.mozSaveAs || window.msSaveAs;#}
+    {##}
+    {#        // Because highlight.js is a bit awkward at times#}
+    {#        var languageOverrides = {#}
+    {#            js: 'javascript',#}
+    {#            html: 'xml'#}
+    {#        };#}
+    {##}
+    {#        emojify.setConfig({img_dir: 'emoji'});#}
+    {##}
+    {#        var md = markdownit({#}
+    {#            html: true,#}
+    {#            highlight: function (description, lang) {#}
+    {#                if (languageOverrides[lang]) lang = languageOverrides[lang];#}
+    {#                if (lang && hljs.getLanguage(lang)) {#}
+    {#                    try {#}
+    {#                        return hljs.highlight(lang, description).value;#}
+    {#                    } catch (e) {#}
+    {#                    }#}
+    {#                }#}
+    {#                return '';#}
+    {#            }#}
+    {#        })#}
+    {#                .use(markdownitFootnote);#}
+    {##}
+    {##}
+    {#        var hashto;#}
+    {##}
+    {#        function update(e) {#}
+    {#            if (e != undefined) {#}
+    {#                setOutput(e.getValue());#}
+    {#            }#}
+    {##}
+    {#            clearTimeout(hashto);#}
+    {#            hashto = setTimeout(updateHash, 1000);#}
+    {#        }#}
+    {##}
+    {#        function setOutput(val) {#}
+    {#            val = val.replace(/<equation>((.*?\n)*?.*?)<\/equation>/ig, function (a, b) {#}
+    {#                return '<img src="http://latex.codecogs.com/png.latex?' + encodeURIComponent(b) + '" />';#}
+    {#            });#}
+    {##}
+    {#            var out = document.getElementById('description_out');#}
+    {#            var old = out.cloneNode(true);#}
+    {#            out.innerHTML = md.render(val);#}
+    {#            emojify.run(out);#}
+    {##}
+    {#            var allold = old.getElementsByTagName("*");#}
+    {#            if (allold === undefined) return;#}
+    {##}
+    {#            var allnew = out.getElementsByTagName("*");#}
+    {#            if (allnew === undefined) return;#}
+    {##}
+    {#            for (var i = 0, max = Math.min(allold.length, allnew.length); i < max; i++) {#}
+    {#                if (!allold[i].isEqualNode(allnew[i])) {#}
+    {#                    out.scrollTop = allnew[i].offsetTop;#}
+    {#                    return;#}
+    {#                }#}
+    {#            }#}
+    {#        }#}
+    {##}
+    {##}
+    {#        document.addEventListener('drop', function (e) {#}
+    {#            e.preventDefault();#}
+    {#            e.stopPropagation();#}
+    {##}
+    {#            var reader = new FileReader();#}
+    {#            reader.onload = function (e) {#}
+    {#                editor.setValue(e.target.result);#}
+    {#            };#}
+    {##}
+    {#            reader.readAsText(e.dataTransfer.files[0]);#}
+    {#        }, false);#}
+    {##}
+    {##}
+    {#        function saveAsMarkdown() {#}
+    {#            save(editor.getValue(), "untitled.md");#}
+    {#        }#}
+    {##}
+    {#        function saveAsHtml() {#}
+    {#            save(document.getElementById('description_out').innerHTML, "untitled.html");#}
+    {#        }#}
+    {##}
+    {#        function save(description, name) {#}
+    {#            var blob = new Blob([description], {type: 'text/plain'});#}
+    {#            if (window.saveAs) {#}
+    {#                window.saveAs(blob, name);#}
+    {#            } else if (navigator.saveBlob) {#}
+    {#                navigator.saveBlob(blob, name);#}
+    {#            } else {#}
+    {#                url = URL.createObjectURL(blob);#}
+    {#                var link = document.createElement("a");#}
+    {#                link.setAttribute("href", url);#}
+    {#                link.setAttribute("download", name);#}
+    {#                var event = document.createEvent('MouseEvents');#}
+    {#                event.initMouseEvent('click', true, true, window, 1, 0, 0, 0, 0, false, false, false, false, 0, null);#}
+    {#                link.dispatchEvent(event);#}
+    {#            }#}
+    {#        }#}
+    {##}
+    {##}
+    {#        var menuVisible = false;#}
+    {#        var menu = document.getElementById('menu');#}
+    {##}
+    {#        function showMenu() {#}
+    {#            menuVisible = true;#}
+    {#            menu.style.display = 'block';#}
+    {#        }#}
+    {##}
+    {#        function hideMenu() {#}
+    {#            menuVisible = false;#}
+    {#            menu.style.display = 'none';#}
+    {#        }#}
+    {##}
+    {#        document.addEventListener('keydown', function (e) {#}
+    {#            if (e.keyCode == 83 && (e.ctrlKey || e.metaKey)) {#}
+    {#                e.shiftKey ? showMenu() : saveAsMarkdown();#}
+    {##}
+    {#                e.preventDefault();#}
+    {#                return false;#}
+    {#            }#}
+    {##}
+    {#            if (e.keyCode === 27 && menuVisible) {#}
+    {#                hideMenu();#}
+    {##}
+    {#                e.preventDefault();#}
+    {#                return false;#}
+    {#            }#}
+    {#        });#}
+    {##}
+    {##}
+    {#        function updateHash() {#}
+    {#        }#}
+    {##}
+    {#        if (window.location.hash) {#}
+    {#            var h = window.location.hash.replace(/^#/, '');#}
+    {#            if (h.slice(0, 5) == 'view:') {#}
+    {#                setOutput(decodeURIComponent(escape(RawDeflate.inflate(atob(h.slice(5))))));#}
+    {#                document.body.className = 'view';#}
+    {#            } else {#}
+    {#                editor.setValue(#}
+    {#                        decodeURIComponent(escape(#}
+    {#                                RawDeflate.inflate(#}
+    {#                                        atob(#}
+    {#                                                h#}
+    {#                                        )#}
+    {#                                )#}
+    {#                        ))#}
+    {#                );#}
+    {#                update(editor);#}
+    {#                editor.focus();#}
+    {#            }#}
+    {#        } else if (editor != undefined) {#}
+    {#            update(editor);#}
+    {#            editor.focus();#}
+    {#        }#}
+    {##}
+    {##}
+    {#    </script>#}
+    {% include 'layout/editor_footer.html' %}
+{% endblock %}

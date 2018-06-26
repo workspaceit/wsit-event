@@ -1,0 +1,65 @@
+{% load i18n %}
+<div class="form-plugin element form-plugin-next-up box"
+     {% if data_user_id %}id="page-{{ page_id }}-box-{{ box_id }}-u-{{ data_user_id }}" data-uid="{{ data_user_id }}"
+     {% else %}id="page-{{ page_id }}-box-{{ box_id }}"{% endif %} data-id="{{ element_id }}"
+     data-name="next-up">
+    <div class="form-plugin-intro">
+        {{ message|safe }}
+    </div>
+    <div class="form-plugin-list">
+        {% if nextUpSessions %}
+            {% for session in nextUpSessions %}
+                <div class="form-plugin-item">
+                    <h3 class="form-plugin-title session-detail-title{% if session_link == 'True' %} session session-detail-link{% endif %}" data-box-id="{{ box_id }}" data-page-id="{{ page_id }}" data-id="{{ session.id }}">{{ session.title }}</h3>
+                    <table class="form-plugin-table">
+                        {% if start_time_appear == 'True' or start_date_appear == 'True' %}
+                            <tr class="time-and-date" title="Start time and date">
+                                <td><span class="next-up-time-and-date-icon"></span></td>
+                                <td>{% if start_time_appear == 'True' %}
+                                    <span class="time">{% language language.lang_preset.language_code %}
+                                        {{ session.start |date:language.lang_preset.time_format }}
+                                    {% endlanguage %}</span> {% endif %}
+                                    {% if start_date_appear == 'True' %}
+                                        <span class="date">{% language language.lang_preset.language_code %}
+                                            {{ session.start |date:language.lang_preset.date_format }}
+                                        {% endlanguage %}</span>{% endif %}</td>
+                            </tr>
+                        {% endif %}
+                        {% if location_appear == 'True' %}
+                            <tr class="location" title="Location">
+                                <td><span class="next-up-location-icon"></span></td>
+                                <td>{% if location_link_appear == 'True' %}<a href="
+                                        {% url 'get-location-details' event_url=request.session.event_url pk=session.location_id %}" class="location-details" data-location-id="{{ session.location_id }}" data-page-id="{{ page_id }}"
+                                       data-box-id="{{ box_id }}">{{ session.location }}</a>{% else %}
+                                    {{ session.location }}{% endif %}</td>
+                            </tr>
+                        {% endif %}
+                        {% if speaker_appear == 'True' %}
+                            {% if session.speakers %}
+                                <tr class="speaker" title="Speakers">
+                                    <td><span class="next-up-speaker-icon"></span></td>
+                                    <td>{% for speaker in session.speakers %}
+                                        {% if not forloop.first %}
+                                            ,
+                                        {% endif %}
+                                        {% if speaker_link_appear == 'True' %}<a href="
+                                                {% url 'get-attendee-details' event_url=request.session.event_url pk=speaker.id %}"
+                                                                                 class="attendee-details"
+                                                                                 data-page-id="{{ page_id }}"
+                                                                                 data-box-id="{{ box_id }}"
+                                                                                 data-attendee-id="{{ speaker.id }}">{{ speaker.firstname }} {{ speaker.lastname }}</a>
+                                            {% else %}{{ speaker.firstname }} {{ speaker.lastname }}{% endif %}
+                                    {% endfor %}</td>
+                                </tr>
+                            {% endif %}
+
+                        {% endif %}
+                    </table>
+                </div>
+            {% endfor %}
+        {% else %}
+            <div class="placeholder empty">{{ language.langkey.nextup_txt_empty }}</div>
+        {% endif %}
+    </div>
+</div>
+{#{% endif %}#}

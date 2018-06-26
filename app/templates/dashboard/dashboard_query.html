@@ -1,0 +1,40 @@
+{% if 'hitcountsql' == select_sql %} SELECT (date(visit_date)) AS `{{ time_format }}`, SUM(`cookie_page`.`visit_count`)
+    AS `count` FROM `cookie_page` INNER JOIN `page_contents` ON ( `cookie_page`.`page_id` = `page_contents`.`id` ) WHERE
+    ({% if page_id != "all" %}`cookie_page`.`page_id` = {{ page_id }} AND {% endif %} `page_contents`.`event_id` =
+    {{ event_id }} AND `cookie_page`.`visit_date` BETWEEN "{{ start_time|date:"Y-m-d" }}" AND "
+    {{ end_time|date:"Y-m-d" }}") GROUP BY ({{ time_format_sql }}(visit_date)) ORDER BY `{{ time_format }}` ASC
+{% elif 'uniquehitcountsql' == select_sql %} SELECT (date(visit_date)) AS `{{ time_format }}`,
+    COUNT(`cookie_page`.`id`) AS `count` FROM `cookie_page` INNER JOIN `page_contents` ON ( `cookie_page`.`page_id` =
+    `page_contents`.`id` ) WHERE ({% if page_id != "all" %}`cookie_page`.`page_id` = {{ page_id }} AND {% endif %}
+    `page_contents`.`event_id` = {{ event_id }} AND `cookie_page`.`visit_date` BETWEEN "{{ start_time|date:"Y-m-d" }}"
+    AND "{{ end_time|date:"Y-m-d" }}") GROUP BY ({{ time_format_sql }}(visit_date)) ORDER BY `{{ time_format }}` ASC
+{% elif 'regcountsql' == select_sql %}
+    SELECT (date( created )) AS `{{ time_format }}`, COUNT(`attendees`.`id`) AS `count` FROM `attendees` WHERE
+    (`attendees`.`event_id` = {{ event_id }} AND `attendees`.`created` BETWEEN "{{ start_time|date:"Y-m-d" }}" AND "
+    {{ end_time|date:"Y-m-d" }}") GROUP BY
+    ({{ time_format_sql }}( created )) ORDER BY `{{ time_format }}` ASC
+
+{% elif 'emailcountsql' == select_sql %}
+    SELECT (date( last_received )) AS `{{ time_format }}`, COUNT(`email_receivers`.`id`) AS `count` FROM
+    `email_receivers` INNER JOIN
+    `email_contents` ON ( `email_receivers`.`email_content_id` = `email_contents`.`id` ) INNER JOIN `email_templates` ON
+    ( `email_contents`.`template_id` = `email_templates`.`id` ) WHERE (`email_receivers`.`last_received` BETWEEN
+    "{{ start_time|date:"Y-m-d" }}" AND "{{ end_time|date:"Y-m-d" }}" AND `email_templates`.`event_id` = {{ event_id }})
+    GROUP BY ({{ time_format_sql }}( last_received ))
+    ORDER BY `{{ time_format }}` ASC
+
+{% elif 'smscountsql' == select_sql %}
+    SELECT (date( last_received )) AS `{{ time_format }}`, COUNT(`message_receivers`.`id`) AS `count` FROM
+    `message_receivers` INNER
+    JOIN `message_contents` ON ( `message_receivers`.`message_content_id` = `message_contents`.`id` ) WHERE
+    (`message_contents`.`event_id` = {{ event_id }} AND `message_receivers`.`last_received` BETWEEN "
+    {{ start_time|date:"Y-m-d" }}" AND "{{ end_time|date:"Y-m-d" }}") GROUP BY ({{ time_format_sql }}( last_received ))
+    ORDER BY `{{ time_format }}` ASC
+
+{% elif 'notificationcountsql' == select_sql %}
+    SELECT (date( created_at )) AS `{{ time_format }}`, COUNT(`notifications`.`id`) AS `count` FROM `notifications`
+    INNER JOIN
+    `attendees` ON ( `notifications`.`to_attendee_id` = `attendees`.`id` ) WHERE (`notifications`.`created_at` BETWEEN
+    "{{ start_time|date:"Y-m-d" }}" AND "{{ end_time|date:"Y-m-d" }}" AND `attendees`.`event_id` = {{ event_id }}) GROUP
+    BY ({{ time_format_sql }}( created_at )) ORDER BY `{{ time_format }}` ASC
+{% endif %}

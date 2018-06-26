@@ -1,0 +1,7 @@
+{% for group in session_groups %}
+<optgroup label="{{ group.name|safe }}">
+    {% for session in group.sessions %}
+        <option value="{{ session.id }}">{{ session.name|safe }}</option>
+    {% endfor %}
+</optgroup>
+{% endfor %}

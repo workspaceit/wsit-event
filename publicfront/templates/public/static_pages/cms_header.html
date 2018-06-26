@@ -1,0 +1,82 @@
+{% load staticfiles %}
+{#{% csrf_token %}#}
+{#<script src="https://code.jquery.com/jquery-3.1.1.min.js"#}
+{#        integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>#}
+{#<script src="{% static 'public/js/jquery-1.12.4.min.js' %}" type="text/javascript"></script>#}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.4/jquery.min.js" type="text/javascript"></script>
+{#<link href="https://fonts.googleapis.com/css?family=Lato|Merriweather" rel="stylesheet">#}
+{#<link href="https://cdnjs.cloudflare.com/ajax/libs/jquery-jgrowl/1.4.5/jquery.jgrowl.min.css" rel="stylesheet" type="text/css"/>#}
+<link href="{% static 'public/css/jquery.growl.css' %}" rel="stylesheet" type="text/css">
+{#<link href="{% static 'public/js/jquery_countdown/jquery.countdown.css' %}" rel="stylesheet" type="text/css">#}
+{#<link href="https://cdnjs.cloudflare.com/ajax/libs/jquery-countdown/2.0.2/jquery.countdown.min.css" rel="stylesheet" type="text/css">#}
+{#<script src="{% static 'public/js/jquery_countdown/jquery.plugin.js' %}" type="text/javascript"></script>#}
+{#<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-countdown/2.0.2/jquery.plugin.min.js" type="text/javascript"></script>#}
+{#<script src="{% static 'public/js/jquery_countdown/jquery.countdown.js' %}" type="text/javascript"></script>#}
+{#<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-countdown/2.0.2/jquery.countdown.min.js" type="text/javascript"></script>#}
+
+{#<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">#}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css">
+{#<script src="{% static 'public/js/jquery.ui.min.js' %}" type="text/javascript"></script>#}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js" type="text/javascript"></script>
+{#<script src="{% static 'public/js/moment.js' %}" type="text/javascript"></script>#}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.6/moment.min.js" type="text/javascript"></script>
+<script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js" type="text/javascript"></script>
+
+{#amsul datepicker timepicker css js#}
+
+{#<link rel="stylesheet" href="{% static 'public/css/amsul/default.css' %}">#}
+{#<link rel="stylesheet" href="{% static 'public/css/amsul/default.date.css' %}">#}
+{#<link rel="stylesheet" href="{% static 'public/css/amsul/default.time.css' %}">#}
+<link rel="stylesheet" href="{% static 'public/css/amsul/amsul_css_all.css' %}">
+
+{#<script src="{% static 'public/js/amsul/picker.js' %}"></script>#}
+{#<script src="{% static 'public/js/amsul/picker.date.js' %}"></script>#}
+{#<script src="{% static 'public/js/amsul/picker.time.js' %}"></script>#}
+{#<script src="{% static 'public/js/amsul/legacy.js' %}"></script>#}
+<script src="{% static 'public/js/amsul/amsul_all.min.js' %}"></script>
+{#<script src="{% static 'assets/javascripts/country-list.js' %}"></script>#}
+
+<style>
+    .loader {
+        display: none;
+        position: fixed;
+        margin: auto;
+        left: 0;
+        right: 0;
+        top: 0;
+        bottom: 0;
+    }
+
+    .daterange__picker {
+        position: relative;
+    }
+
+    .daterange__picker input {
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        opacity: 0;
+        -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+        filter: alpha(opacity=0);
+        pointer-events: none;
+    }
+
+    .clickable-text {
+        display: inline-block;
+        border-bottom: 2px dotted #ccc;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        cursor: pointer;
+        padding: 0 2px;
+        color: #000;
+    }
+
+    .clickable-text:hover {
+        color: #00f;
+        background: #f5f5f5;
+        border-bottom-color: #00f;
+    }
+
+</style>

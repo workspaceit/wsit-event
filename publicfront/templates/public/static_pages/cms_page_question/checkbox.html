@@ -1,0 +1,25 @@
+{% if opt.option in values %}
+    <div class="checkbox-wrapper">
+        <input class="given-answer" type="checkbox"
+               data-filter-id="{{ question.id }}"
+               name="attendee-question-{{ question.id }}" value="{{ opt.option }}"
+               id="attendee-question-{{ question.id }}-{{ counter }}" checked>
+        <label for="attendee-question-{{ question.id }}-{{ counter }}" class="checkbox-label">{{ opt.option }}</label>
+    </div>
+{% elif opt.default_value %}
+    <div class="checkbox-wrapper">
+        <input class="given-answer" type="checkbox"
+               data-filter-id="{{ question.id }}"
+               name="attendee-question-{{ question.id }}" value="{{ opt.option }}"
+               id="attendee-question-{{ question.id }}-{{ counter }}" checked>
+        <label for="attendee-question-{{ question.id }}-{{ counter }}" class="checkbox-label">{{ opt.option }}</label>
+    </div>
+{% else %}
+    <div class="checkbox-wrapper">
+    <input class="given-answer" type="checkbox"
+           data-filter-id="{{ question.id }}"
+           name="attendee-question-{{ question.id }}" value="{{ opt.option }}"
+           id="attendee-question-{{ question.id }}-{{ counter }}">
+    <label for="attendee-question-{{ question.id }}-{{ counter }}" class="checkbox-label">{{ opt.option }}</label>
+    </div>
+{% endif %}

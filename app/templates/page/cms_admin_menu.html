@@ -1,0 +1,306 @@
+{% load staticfiles %}
+<section class="admin">
+    <div id="admin-toggle-wrapper">
+        <div id="admin-toggle-wrapper-titlebar">Admin</div>
+        <label> Language <br/>
+            <select id="admin-languages-toggle">
+                {% for preset in presets %}
+                    <option value="{{ preset.id }}" {% if preset.id == current_language.preset_id %}
+                            selected  {% endif %} >{{ preset.preset_name }}</option>
+                {% endfor %}
+            </select>
+        </label><br/>
+        <input type="checkbox" id="admin-editor-toggle" data-admin-menu="admin-editor"/> <label
+            for="admin-editor-toggle"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Editor</label><br/>
+
+        {% if static_page.url not in exclude_form_pages %}
+            <input type="checkbox" id="admin-questions-toggle" data-admin-menu="admin-questions"/> <label
+                for="admin-questions-toggle"><i class="fa fa-question-circle-o" aria-hidden="true"></i>
+            Questions</label><br/>
+            <input type="checkbox" id="admin-plugins-toggle" data-admin-menu="admin-plugins"/> <label
+                for="admin-plugins-toggle"><i class="fa fa-plug" aria-hidden="true"></i> Plugins</label><br/>
+        {% endif %}
+        <input type="checkbox" id="admin-columns-toggle" data-admin-menu="admin-columns"/> <label
+            for="admin-columns-toggle"><i class="fa fa-columns" aria-hidden="true"></i> Columns</label><br/>
+        <input type="checkbox" id="admin-file-repository-toggle" data-admin-menu="admin-file-repository"/> <label
+            for="admin-file-repository-toggle"><i class="fa fa-folder-open" aria-hidden="true"></i>&nbsp;File&nbsp;repository</label><br/>
+{#        <input type="checkbox"/> <label id="admin-save-cms">Save</label>#}
+
+    </div>
+
+    <!-- admin-code-editor menu -->
+
+    <div class="admin-menu admin-bottom-menu" id="admin-editor">
+        <div class="row inner-gutter">
+            <div class="col span-9" id="admin-editor-col-1">
+                <div id="in">
+                    <form action="#">
+                            <textarea id="code"
+                                      name="code_data"></textarea></form>
+                </div>
+                <div id="out" style="display: none;"></div>
+            </div>
+            <div class="col span-3" id="admin-editor-col-2">
+
+                <div class="admin-close-button-wrapper">
+                    <div class="admin-close-button"></div>
+                </div>
+
+                <fieldset>
+                    <legend>Add variable tag</legend>
+
+                    <div class="admin-menu-group no-margin">
+                        <div class="admin-search-wrapper">
+                            <input class="admin-search admin-tag-search" type="text"/>
+
+                            <div class="admin-clear-search"></div>
+                        </div>
+                    </div>
+
+                    <div class="admin-menu-group admin-menu-scrollable no-padding">
+                        <ul id="add-tag-treeview">
+                        </ul>
+                    </div>
+                </fieldset>
+            </div>
+        </div>
+    </div>
+
+    <!-- admin-questions menu -->
+
+    <div class="admin-menu admin-left-menu" id="admin-questions">
+        <div class="row">
+            <div class="col span-12">
+                <div class="admin-close-button-wrapper">
+                    <div class="admin-close-button"></div>
+                </div>
+                <fieldset>
+                    <legend>Add questions</legend>
+                    <div class="admin-menu-group no-margin">
+                        <div class="admin-search-wrapper">
+                            <input class="admin-search admin-question-search" type="text"/>
+
+                            <div class="admin-clear-search"></div>
+                        </div>
+                    </div>
+                    <div class="admin-menu-group admin-menu-scrollable no-padding">
+                        <ul id="admin-questions-treeview">
+                        </ul>
+                    </div>
+                </fieldset>
+            </div>
+        </div>
+    </div>
+
+    <!-- admin-plugins menu -->
+
+    <div class="admin-menu admin-left-menu" id="admin-plugins">
+        <div class="row">
+            <div class="col span-12">
+                <div class="admin-close-button-wrapper">
+                    <div class="admin-close-button"></div>
+                </div>
+                <fieldset>
+                    <legend>Add plugins</legend>
+                    <div class="admin-menu-group no-margin">
+                        <div class="admin-search-wrapper">
+                            <input class="admin-search admin-plugin-search" type="text"/>
+
+                            <div class="admin-clear-search"></div>
+                        </div>
+                    </div>
+                    <div class="admin-menu-group admin-menu-scrollable no-padding">
+                        <ul id="admin-add-plugins-treeview">
+                        </ul>
+                    </div>
+                </fieldset>
+            </div>
+        </div>
+    </div>
+
+    <!-- admin-columns menu -->
+
+    <div class="admin-bottom-menu admin-menu" id="admin-columns">
+        <div class="row">
+            <div class="col span-12">
+                <div class="admin-close-button-wrapper">
+                    <div class="admin-close-button"></div>
+                </div>
+                <fieldset>
+                    <legend>Add columns</legend>
+                    <div class="admin-menu-scrollable">
+                        <div class="admin-menu-group">
+                            <label>Predefined:</label><br/>
+                            <img class="admin-columns-add-predefined-col" alt="12" data-admin-columns-cols="12"
+                                 src="{% static 'assets/images/admin/col12.svg' %}">
+                            <img class="admin-columns-add-predefined-col" alt="6 + 6" data-admin-columns-cols="6+6"
+                                 src="{% static 'assets/images/admin/col6-6.svg' %}">
+                            <img class="admin-columns-add-predefined-col" alt="4 + 4 + 4"
+                                 data-admin-columns-cols="4+4+4"
+                                 src="{% static 'assets/images/admin/col4-4-4.svg' %}">
+                            <img class="admin-columns-add-predefined-col" alt="3 + 3 + 3 + 3"
+                                 data-admin-columns-cols="3+3+3+3"
+                                 src="{% static 'assets/images/admin/col3-3-3-3.svg' %}">
+                            <img class="admin-columns-add-predefined-col" alt="5 + 7" data-admin-columns-cols="5+7"
+                                 src="{% static 'assets/images/admin/col5-7.svg' %}">
+                            <img class="admin-columns-add-predefined-col" alt="7 + 5" data-admin-columns-cols="7+5"
+                                 src="{% static 'assets/images/admin/col7-5.svg' %}">
+                            <img class="admin-columns-add-predefined-col" alt="4 + 8" data-admin-columns-cols="4+8"
+                                 src="{% static 'assets/images/admin/col4-8.svg' %}">
+                            <img class="admin-columns-add-predefined-col" alt="8 + 4" data-admin-columns-cols="8+4"
+                                 src="{% static 'assets/images/admin/col8-4.svg' %}">
+                        </div>
+                        <div class="admin-menu-group">
+                            <label>Result:</label>
+
+                            <div id="admin-columns-preview">
+                                <div class="admin-columns-add-col" data-admin-columns-col-width="6">6<i
+                                        class="admin-columns-delete-current-col fa fa-trash"></i>
+                                </div>
+                                <div class="admin-columns-add-col" data-admin-columns-col-width="6">6<i
+                                        class="admin-columns-delete-current-col fa fa-trash"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="admin-menu-group">
+                            <label>Custom:</label><br/>
+                            <label>Add</label>
+                            <select id="admin-columns-add-col-value" class="admin-auto-width">
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                                <option value="5">5</option>
+                                <option value="6">6</option>
+                                <option value="7">7</option>
+                                <option value="8">8</option>
+                                <option value="9">9</option>
+                                <option value="10">10</option>
+                                <option value="11">11</option>
+                                <option value="12">12</option>
+                            </select>
+                            <label>column(s) to row</label>
+                            <input type="button" id="admin-columns-add-col-button" class="admin-auto-width"
+                                   value="Add"/>
+                        </div>
+                        <div class="admin-menu-group">
+                            <input type="checkbox" id="rowHasSection"/><label>Row Has Section</label>
+                        </div>
+                        <div class="admin-menu-group">
+                            <input type="button" id="admin-columns-add-col-to-page" value="Add to bottom of page"/>
+                        </div>
+                    </div>
+                </fieldset>
+            </div>
+        </div>
+    </div>
+
+    <!-- admin-file-repository menu -->
+
+    <div class="admin-top-menu admin-menu" id="admin-file-repository">
+        <div class="row inner-gutter">
+            <div class="col span-5" id="admin-file-repository-col-1">
+                <fieldset>
+                    <legend>File repository</legend>
+                    <div class="admin-menu-group">
+                        <a href="javascript:void(0);" id="admin-admin-file-repository-upload-file"
+                           class="admin-auto-width admin-button"><i
+                                class="fa fa-cloud-upload" aria-hidden="true"></i> Upload files</a>
+                        <a href="javascript:void(0);" id="admin-admin-file-repository-add-folder"
+                           class="admin-auto-width admin-button"><i
+                                class="fa fa-folder" aria-hidden="true"></i> Add folder</a>
+                        <a href="javascript:void(0);" id="admin-admin-file-repository-delete-selected-files"
+                           class="admin-auto-width admin-button"><i class="fa fa-trash" aria-hidden="true"></i>
+                            Delete
+                            selected</a>
+                    </div>
+                    <div class="admin-menu-group no-margin">
+                        <div class="admin-search-wrapper">
+                            <input class="admin-search admin-file-search" type="text"/>
+
+                            <div class="admin-clear-search"></div>
+                        </div>
+                    </div>
+                    <div class="admin-menu-group admin-menu-scrollable no-padding">
+                        <ul id="admin-file-repository-treeview">
+                        </ul>
+                    </div>
+                </fieldset>
+            </div>
+            <div class="col span-7" id="admin-file-repository-col-2">
+                <div class="admin-close-button-wrapper">
+                    <div class="admin-close-button"></div>
+                </div>
+                <fieldset>
+                    <legend>Preview</legend>
+                    <div class="show-image-file"></div>
+                </fieldset>
+            </div>
+        </div>
+    </div>
+
+    <!-- admin-element-settings -->
+
+    <div class="admin-left-menu admin-menu" id="admin-element-settings">
+        <div class="row">
+            <div class="col span-12">
+                <div class="admin-close-button-wrapper">
+                    <div class="admin-close-button"></div>
+                </div>
+                <fieldset data-box-id="">
+                    <legend>Element settings</legend>
+                    <div class="admin-menu-scrollable">
+                        <div class="admin-menu-group">
+                            <label>Add custom class</label>
+                            <select id="admin-element-settings-classes" multiple="multiple"
+                                    data-placeholder="Select or add class">
+                            </select>
+                        </div>
+                        <div class="admin-menu-group">
+
+                            <label>Choose prerequisite filter</label><span id="clear-filter" title="Clear Filter"
+                                                                           style="float:right;cursor: pointer;">x</span>
+
+
+                            <div class="admin-menu-group no-margin">
+                                <div class="admin-search-wrapper">
+                                    <input class="admin-search admin-filter-search" type="text"/>
+
+                                    <div class="admin-clear-search"></div>
+                                </div>
+                            </div>
+                            <div class="admin-menu-group ">
+                                <label>Apply when filter is</label>
+                                <div class="">
+                                    <select class="filter-action">
+                                        <option value="1" selected>True</option>
+                                        <option value="0">False</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="admin-menu-group admin-menu-scrollable no-padding">
+                                <ul id="add-filter-treeview">
+                                </ul>
+                            </div>
+                        </div>
+                        <button id="add-class-and-rule">Add</button>
+                    </div>
+                </fieldset>
+            </div>
+        </div>
+    </div>
+
+    <!-- admin-plugin-settings menu -->
+
+    <div class="admin-left-menu admin-menu" id="admin-plugin-settings">
+        <div class="row">
+            <div class="col span-12">
+                <div class="admin-close-button-wrapper">
+                    <div class="admin-close-button"></div>
+                </div>
+                <div class="scroll-wrapper">
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

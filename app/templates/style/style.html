@@ -1,0 +1,77 @@
+{% extends "layout/main.html" %}
+{% block content %}
+    {% load staticfiles %}
+    {#    code mirror#}
+    {#    <link rel="stylesheet" href="http://codemirror.net/lib/codemirror.css">#}
+    {#    <link rel="stylesheet" href="http://codemirror.net/addon/dialog/dialog.css">#}
+    {#    <link rel="stylesheet" href="http://codemirror.net/addon/search/matchesonscrollbar.css">#}
+    {#    <script src="http://codemirror.net/lib/codemirror.js"></script>#}
+    {#    <script src="http://codemirror.net/mode/xml/xml.js"></script>#}
+    {#    <script src="http://codemirror.net/addon/dialog/dialog.js"></script>#}
+    {#    <script src="http://codemirror.net/addon/search/searchcursor.js"></script>#}
+    {#    <script src="http://codemirror.net/addon/search/search.js"></script>#}
+
+
+{#    <link rel=stylesheet href="{% static 'assets/stylesheets/codemirror/docs.css' %}">#}
+    <link rel="stylesheet" href="{% static 'assets/stylesheets/codemirror/codemirror.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/stylesheets/codemirror/dialog.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/stylesheets/codemirror/matchesonscrollbar.css' %}">
+
+    <script src="{% static 'assets/javascripts/codemirror/codemirror.js' %}"></script>
+    <script src="{% static 'assets/javascripts/codemirror/sass.js' %}"></script>
+    <script src="{% static 'assets/javascripts/codemirror/active-line.js' %}"></script>
+    <script src="{% static 'assets/javascripts/codemirror/dialog.js' %}"></script>
+    <script src="{% static 'assets/javascripts/codemirror/searchcursor.js' %}"></script>
+    <script src="{% static 'assets/javascripts/codemirror/search.js' %}"></script>
+    <script src="{% static 'assets/javascripts/codemirror/annotatescrollbar.js' %}"></script>
+    <script src="{% static 'assets/javascripts/codemirror/matchesonscrollbar.js' %}"></script>
+    <script src="{% static 'assets/javascripts/codemirror/jump-to-line.js' %}"></script>
+    <script src="{% static 'assets/javascripts/codemirror/matchbrackets.js' %}"></script>
+    <script src="{% static 'assets/javascripts/codemirror/colorize.js' %}"></script>
+
+    {#    code mirror end#}
+    <style>.CodeMirror {
+        border: 1px solid #ddd;
+        font-size: 12px;
+        height: 500px
+    }</style>
+    <div id="content-wrapper">
+        <div class="panel colourable">
+            <div class="panel-heading">
+                <span class="panel-title"><i class="fa fa-lg fa-paint-brush"></i></i>&nbsp;&nbsp;&nbsp;<strong
+                        style="text-decoration:none">Style</strong></span>
+
+            </div>
+            {% csrf_token %}
+            <div class="panel-body tab-content">
+                <div class="tab-pane fade in active">
+
+                    {% if request.session.admin_permission.content_permission.css_permission and request.session.admin_permission.content_permission.css_permission.access_level == 'write' or request.session.event_auth_user.type == 'super_admin' %}
+                        <textarea id="code">{{ style.style }}</textarea>
+                        <div class="row">
+                            <button type="button" id="btn-save-style" class="btn btn-success btn-lg btn-save"
+                                    style="float:right;"><i
+                                    class="fa fa-check-circle"></i>&nbsp;&nbsp;Save
+                            </button>
+                        </div>
+                    {% else %}
+                        <textarea id="code_read" disabled
+                                  style="height: 500px; width: 100%;">{{ style.style }}</textarea>
+                    {% endif %}
+                    <br>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% if request.session.admin_permission.content_permission.css_permission and request.session.admin_permission.content_permission.css_permission.access_level == 'write' or request.session.event_auth_user.type == 'super_admin' %}
+        <script>
+            var editor = CodeMirror.fromTextArea(document.getElementById("code"), {
+                lineNumbers: true,
+                matchBrackets: true,
+                mode: "text/x-scss",
+                styleActiveLine: true,
+                indentWithTabs: true,
+            });
+        </script>
+    {% endif %}
+{% endblock %}

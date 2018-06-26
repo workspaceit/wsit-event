@@ -1,0 +1,27 @@
+*.*~
+.idea/*
+media/*
+.elasticbeanstalk/app_versions/
+## Elastic Beanstalk Files
+#.elasticbeanstalk/*
+#!.elasticbeanstalk/*.cfg.yml
+#!.elasticbeanstalk/*.global.yml
+
+# Elastic Beanstalk Files
+#.elasticbeanstalk/*
+#!.elasticbeanstalk/*.cfg.yml
+#!.elasticbeanstalk/*.global.yml
+*.pyc
+__pycache__
+local_settings.py
+attendeeList/
+HotelList/
+SessionExport/
+SpeakersExport/
+publicfront/static/userImages/
+sessionList/
+src/
+ratingList/
+pagePdf/
+
+

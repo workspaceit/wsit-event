@@ -1,0 +1,108 @@
+{% if type == 'if' %}
+    try {
+        if{% elif type == 'condition' %}{{ condition|safe }}{% elif type == 'pre-logic' %} {
+
+    {% elif type == 'logic' %}
+            $("#{{ logic|safe }}").show();
+    {% elif type == 'endif' %}
+
+        }else{
+            $("#{{ logic|safe }}").hide();
+        }
+    } catch (err) {
+        var logic_display=logic_dynamicaly_fill;
+        if(!logic_display){
+            $("#{{ logic|safe }}").show();
+        }else{
+            $("#{{ logic|safe }}").hide();
+        }
+    }
+{% endif %}
+{% if single_filter.field == '7' %}
+    {% if single_filter.type == 'text' or single_filter.type == 'textarea' %}
+        {% if single_filter.values.0 == '1' %}
+            realTimeDataArrayQuestion["{{ single_filter.condition }}{{duid}}"][0].toLowerCase().indexOf("{{ single_filter.values.1|safe }}")>=0
+        {% elif single_filter.values.0 == '2' %}
+            realTimeDataArrayQuestion["{{ single_filter.condition }}{{duid}}"][0].toLowerCase().indexOf("{{ single_filter.values.1|safe }}")==-1
+        {% elif single_filter.values.0 == '3' %}
+            realTimeDataArrayQuestion["{{ single_filter.condition }}{{duid}}"][0]=="{{ single_filter.values.1|safe }}"
+        {% elif single_filter.values.0 == '4' %}
+            realTimeDataArrayQuestion["{{ single_filter.condition }}{{duid}}"][0]!="{{ single_filter.values.1|safe }}"
+        {% elif single_filter.values.0 == '5' %}
+            realTimeDataArrayQuestion["{{ single_filter.condition }}{{duid}}"][0].startsWith("{{ single_filter.values.1|safe }}")
+        {% elif single_filter.values.0 == '6' %}
+            realTimeDataArrayQuestion["{{ single_filter.condition }}{{duid}}"][0].endsWith("{{ single_filter.values.1|safe }}")
+        {% elif single_filter.values.0 == '7' %}
+            realTimeDataArrayQuestion["{{ single_filter.condition }}{{duid}}"][0]==""
+        {% elif single_filter.values.0 == '8' %}
+            realTimeDataArrayQuestion["{{ single_filter.condition }}{{duid}}"][0]!=""
+        {% endif %} && ($('[data-id="{{ single_filter.condition }}"]{{ datauid|safe }}').length==0 || $('[data-id="{{ single_filter.condition }}"]{{ datauid|safe }}').is(':visible'))
+    {% else %}
+
+    {% if single_filter.values.0 == '1' %}
+        filter_is(realTimeDataArrayQuestion["{{ single_filter.condition }}{{duid}}"],"{{ single_filter.values.1|safe }}",logic_dynamicaly_fill)
+    {% elif single_filter.values.0 == '2' %}
+        filter_isNot(realTimeDataArrayQuestion["{{ single_filter.condition }}{{duid}}"],"{{ single_filter.values.1|safe }}",logic_dynamicaly_fill)
+    {% elif single_filter.values.0 == '3' %}
+        filter_isEmpty(realTimeDataArrayQuestion["{{ single_filter.condition }}{{duid}}"],"{{ single_filter.values.1|safe }}",logic_dynamicaly_fill)
+    {% elif single_filter.values.0 == '4' %}
+        filter_isNotEmpty(realTimeDataArrayQuestion["{{ single_filter.condition }}{{duid}}"],"{{ single_filter.values.1|safe }}",logic_dynamicaly_fill)
+    {% endif %} && ($('[data-id="{{ single_filter.condition }}"]{{ datauid|safe }}').length==0 || $('[data-id="{{ single_filter.condition }}"]{{ datauid|safe }}').is(':visible'))
+    {% endif %}
+{% endif %}
+{% if single_filter.field == '6' %}
+    {% if single_filter.condition == '1' %}
+        filterAttending(realTimeDataArraySession["{{ single_filter.values.0 }}{{duid}}"],true,logic_dynamicaly_fill)
+    {% elif single_filter.condition == '2' %}
+        filterNotAttending(realTimeDataArraySession["{{ single_filter.values.0 }}{{duid}}"],false,logic_dynamicaly_fill)
+    {% elif single_filter.condition == '3' %}
+        logic_dynamicaly_fill
+    {% elif single_filter.condition == '4' %}
+        logic_dynamicaly_fill
+    {% endif %}
+{% endif %}
+{% if single_filter.field == '1' %}
+    logic_dynamicaly_fill
+{% endif %}
+{% if single_filter.field == '2' %}
+    logic_dynamicaly_fill
+{% endif %}
+{% if single_filter.field == '3' %}
+    logic_dynamicaly_fill
+{% endif %}
+{% if single_filter.field == '4' %}
+    logic_dynamicaly_fill
+{% endif %}
+{% if single_filter.field == '8' %}
+    logic_dynamicaly_fill
+{% endif %}
+{% if single_filter.field == '9' %}
+    logic_dynamicaly_fill
+{% endif %}
+{% if single_filter.field == '10' %}
+    logic_dynamicaly_fill
+{% endif %}
+{% if single_filter.field == '11' %}
+    logic_dynamicaly_fill
+{% endif %}
+{% if single_filter.field == '12' %}
+    logic_dynamicaly_fill
+{% endif %}
+{% if single_filter.field == '13' %}
+    logic_dynamicaly_fill
+{% endif %}
+{% if single_filter.field == '14' %}
+    logic_dynamicaly_fill
+{% endif %}
+{% if single_filter.field == '15' %}
+    logic_dynamicaly_fill
+{% endif %}
+{% if single_filter.field == '16' %}
+    logic_dynamicaly_fill
+{% endif %}
+{% if single_filter.field == '17' %}
+    logic_dynamicaly_fill
+{% endif %}
+{% if single_filter.field == '18' %}
+    logic_dynamicaly_fill
+{% endif %}

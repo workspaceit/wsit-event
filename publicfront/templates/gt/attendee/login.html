@@ -1,0 +1,89 @@
+{% extends "gt/layout/layout.html" %}
+{% block content %}
+    {% csrf_token %}
+    <div class="wrapper headline color8" style="padding: 0; z-index: 2;">
+        <div id="bg1"></div>
+        <div class="wrapper" style="z-index: 2; overflow-x: visible;">
+
+            <h1 class="color1">Login</h1>
+        </div>
+    </div>
+
+
+    <div class="wrapper">
+        <div class="container padding mainContent">
+
+            <form id="initalForm">
+
+                <div class="row gutters">
+                    <div class="col span_6 formQuestion attendee " id="attendee3" data-id="136" data-req="1">
+                        <label for="attendee-email">E-postadress</label>
+                        <input type="text" id="attendee-email" class="given-answer"/>
+
+                        <div class="errorValidating">
+                            Fyll i din @se.gt.com e-postadress
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row gutters">
+                    <div class="col span_6 formQuestion attendee " id="attendee4" data-id="137" data-req="1">
+                        <label for="attendee-password">Password</label>
+                        <input type="password" id="attendee-password" class="given-answer"/>
+
+                        <div class="errorValidating">
+                            Fyll password
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row gutters">
+                    <div class="col span_12 attendee" id="attendee14">
+                        <input type="button" class="button color2 rounded" id="btn-login-attendee" value="Bekräfta"/>
+                    </div>
+                </div>
+
+            </form>
+        </div><!-- mainContent -->
+
+    </div><!--wrapper-->
+
+
+    <script>
+
+        $(document).ready(function () {
+
+            $("#btn-login-attendee").click(function () {
+                var data = {
+                    email: $('#attendee-email').val(),
+                    password: $('#attendee-password').val(),
+                    csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val()
+                };
+
+                if (!(data.email.trim().length > 0 && data.password.trim().length > 0)) {
+                    $.growl.error({message: "Fields are not filled."});
+                    return false;
+                }
+                $('#registration-loader').show();
+                $.ajax({
+                    url: base_url + '/signin/',
+                    type: "POST",
+                    data: data,
+                    success: function (result) {
+                        $('#registration-loader').hide();
+                        if (typeof result.key == 'undefined')
+                            $.growl.error({message: result.error});
+                        else {
+                            window.location.href = base_url;
+                        }
+                    }
+                });
+                return false;
+            });
+        });
+
+    </script>
+
+    {% load staticfiles %}
+    <img src="{% static 'gt/images/712.GIF' %}" class="loader" alt="" id="registration-loader"/>
+{% endblock %}

@@ -1,0 +1,19 @@
+{% for session in sessions_next_up %}
+    <li>
+        <h4>{{ session.title }}<span class="timeUntil">{% if session.difference > 0 %} in
+            {{ session.difference }} min {% else %} Now{% endif %}</span></h4>
+
+        <div class="content">
+            <p class="data time">{{ session.start|date:'H:i' }}
+                - {{ session.end|date:'H:i' }}</p>
+            <p class="data location">{{ session.location }}
+            </p>
+
+            {% for speaker in session.speakers %}
+                <p class="data presenter">
+                    {{ speaker.firstname }}{{ speaker.lastname }}</p>
+            {% endfor %}
+
+        </div>
+    </li>
+{% endfor %}

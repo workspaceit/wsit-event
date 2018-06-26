@@ -1,0 +1,2515 @@
+@charset "UTF-8";
+/*******************************************************/
+/***                                                 ***/
+/***   "BARELY THERE" theme by JOAKIM SVENSSON       ***/
+/***   ©2016 SpringConf AB, joakim@springconf.com    ***/
+/***                                                 ***/
+/*******************************************************/
+@import url(http://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css);
+@import url("https://fonts.googleapis.com/css?family=Lato|Miltonian|BioRhyme:800");
+/*
+$color1: #787163;
+$color2: #B6AC9A;
+$color3: #EF9F74;
+$color4: #DCB99B;
+$color5: #EDD0AF;
+$color6: #F2E7CA;
+$color7: #F5F9DB;
+$color8: #EAEBC7;
+$info: #B7E4D0;
+$success: #96DB8C;
+$warning: #F9FB88;
+$danger: #EF9F74;
+*/
+.quick-buttons {
+  position: fixed;
+  bottom: 0;
+  z-index: 995;
+  margin: 0 !important;
+  background: none !important; }
+  @media screen and (min-width: 769px) {
+    .quick-buttons {
+      display: none; } }
+  .quick-buttons .section {
+    max-width: 26em;
+    border-top: 2px solid rgba(255, 255, 255, 0.8);
+    border-left: 2px solid rgba(255, 255, 255, 0.8);
+    border-right: 2px solid rgba(73, 69, 63, 0.7);
+    border-top-left-radius: 0.75em !important;
+    border-top-right-radius: 0.75em !important;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+    overflow-x: hidden; }
+    @media screen and (max-width: 768px) {
+      .quick-buttons .section {
+        max-width: 414px; } }
+  .quick-buttons .quick-button-spacer {
+    margin: 0;
+    height: 5.4em;
+    width: 100%;
+    text-align: center;
+    background-color: rgba(255, 255, 255, 0.75);
+    padding-top: 0.5em;
+    background-image: url("../non-essential-images/noice.png"); }
+    .quick-buttons .quick-button-spacer .quick-button {
+      color: white;
+      margin: 0 auto;
+      text-align: center; }
+      .quick-buttons .quick-button-spacer .quick-button .quick-button-icon img {
+        width: 2.6em;
+        height: auto; }
+      .quick-buttons .quick-button-spacer .quick-button:hover {
+        cursor: pointer; }
+        .quick-buttons .quick-button-spacer .quick-button:hover img {
+          filter: brightness(105%); }
+        .quick-buttons .quick-button-spacer .quick-button:hover .quick-button-text {
+          background: white;
+          color: black;
+          box-shadow: none; }
+      .quick-buttons .quick-button-spacer .quick-button .quick-button-text {
+        margin-bottom: 0 !important;
+        background: rgba(0, 0, 0, 0.55);
+        display: inline-block;
+        padding: 0.125em 0.45em;
+        border-radius: 0.5em;
+        box-shadow: -1px -1px 0px rgba(0, 0, 0, 0.7), 1px 1px 0px rgba(255, 255, 255, 0.7);
+        margin-top: 0.1em; }
+
+@media screen and (min-width: 769px) {
+  .fixed-footer {
+    padding-bottom: 0; } }
+
+*, *:after, *:before {
+  box-sizing: border-box; }
+
+.add-outer-padding {
+  padding: 1.6em; }
+
+.add-inner-padding {
+  padding: 0.75em; }
+
+.add-outer-margin {
+  margin: 1.6em; }
+
+.add-inner-margin {
+  margin: 0.75em; }
+
+.no-margin {
+  margin: 0; }
+
+.no-padding-bottom {
+  padding-bottom: 0px !important; }
+
+.table-no-padding-top-left td {
+  padding-top: 0px !important;
+  padding-left: 0px !important; }
+
+.scroll-x {
+  overflow-x: auto; }
+
+.only-small-screens {
+  display: none; }
+  @media screen and (max-width: 768px) {
+    .only-small-screens {
+      display: inherit; } }
+
+.only-large-screens {
+  display: inherit; }
+  @media screen and (max-width: 768px) {
+    .only-large-screens {
+      display: none; } }
+
+.bg-none {
+  background: none !important; }
+
+.rounded-corners {
+  border-radius: 8px; }
+
+html {
+  min-height: 100%;
+  position: relative; }
+
+body {
+  min-height: 100%;
+  color: #6A6A6A;
+  font-size: 16px;
+  font-family: "Merriweather", serif;
+  font-weight: 300;
+  background: #E9E7D7;
+  margin: 0; }
+  @media screen and (max-width: 768px) {
+    body {
+      font-size: 10px; } }
+
+:selection {
+  background: #D8A479;
+  color: white; }
+
+:-moz-selection {
+  background: #D8A479;
+  color: white; }
+
+@media screen and (max-width: 1280px) {
+  .section {
+    border-radius: 0 !important; } }
+
+#dialoge {
+  height: 100%;
+  width: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  position: fixed;
+  z-index: 1005;
+  overflow-y: auto;
+  display: none;
+  top:0;}
+  #dialoge.visible {
+    display: block; }
+  #dialoge .close-dialouge {
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: 0.75em;
+    padding: 0.75em;
+    background: #B97979;
+    color: white;
+    cursor: pointer;
+    z-index: 1; }
+    #dialoge .close-dialouge:after {
+      display: inline-block;
+      content: "\f00d";
+      font-family: FontAwesome; }
+    #dialoge .close-dialouge:hover {
+      background: #a75757;
+      color: white; }
+  #dialoge .dialogue-content {
+    margin: 0 auto;
+    margin-top: 1.6em;
+    overflow: hidden;
+    box-shadow: 0px 15px 30px rgba(0, 0, 0, 0.5);
+    background: white;
+    position: relative; }
+    @media screen and (max-width: 768px) {
+      #dialoge .dialogue-content {
+        width: 100%;
+        margin: 0;
+        position: fixed;
+        overflow-y: auto;
+        max-height: 100%; }
+        #dialoge .dialogue-content .dialoge-menu {
+          position: fixed;
+          top: 0;
+          z-index: 1; }
+        #dialoge .dialogue-content .section {
+          margin-top: 2.75em; } }
+    @media screen and (min-width: 769px) {
+      #dialoge .dialogue-content {
+        max-width: 791.04px; } }
+    #dialoge .dialogue-content .dialoge-menu {
+      width: 100%;
+      margin-bottom: 0;
+      list-style: none;
+      padding: 0;
+      white-space: nowrap;
+      font-size: 0;
+      overflow-x: auto;
+      -webkit-touch-callout: none;
+      -webkit-user-select: none;
+      -khtml-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+      background: #674764;
+      margin-right: 2.5em !important; }
+      #dialoge .dialogue-content .dialoge-menu li {
+        display: inline-block;
+        font-size: 16px;
+        border-right: 2px solid #674764;
+        cursor: pointer; }
+        #dialoge .dialogue-content .dialoge-menu li a {
+          display: inline-block;
+          padding: 0.75em 1.125em;
+          color: white;
+          background: #7C5578; }
+          #dialoge .dialogue-content .dialoge-menu li a:hover {
+            background-color: #3f2c3d;
+            color: white; }
+        #dialoge .dialogue-content .dialoge-menu li:last-child {
+          margin-right: 2.5em; }
+        #dialoge .dialogue-content .dialoge-menu li.active a, #dialoge .dialogue-content .dialoge-menu li.active .dialoge-menu-close-button, #dialoge .dialogue-content .dialoge-menu li.active a:hover, #dialoge .dialogue-content .dialoge-menu li.active .dialoge-menu-close-button:hover {
+          background: white;
+          color: #6A6A6A; }
+          #dialoge .dialogue-content .dialoge-menu li.active a:after, #dialoge .dialogue-content .dialoge-menu li.active .dialoge-menu-close-button:after, #dialoge .dialogue-content .dialoge-menu li.active a:hover:after, #dialoge .dialogue-content .dialoge-menu li.active .dialoge-menu-close-button:hover:after {
+            color: #6A6A6A; }
+        #dialoge .dialogue-content .dialoge-menu li .dialoge-menu-close-button {
+          display: inline-block;
+          padding: 0.75em;
+          color: white;
+          background: #7C5578; }
+          #dialoge .dialogue-content .dialoge-menu li .dialoge-menu-close-button:hover {
+            background-color: #3f2c3d; }
+          #dialoge .dialogue-content .dialoge-menu li .dialoge-menu-close-button:after {
+            display: inline-block;
+            content: "\f00d";
+            font-family: FontAwesome; }
+          #dialoge .dialogue-content .dialoge-menu li .dialoge-menu-close-button:hover:after {
+            color: white; }
+    #dialoge .dialogue-content .section {
+      padding: 1.6em;
+      border-radius: 0;
+      margin-bottom: 0; }
+      #dialoge .dialogue-content .section *:last-child {
+        margin-bottom: 0; }
+
+.section {
+  background: white;
+  border-radius: 8px;
+  width: 100%;
+  max-width: 1280px;
+  margin: 0 auto 1.6em auto;
+  /*
+	ul {
+		list-style: none;
+		padding: 0;
+		margin: 0 0 $outer-padding 0;
+
+		li {
+			padding-left: 1.25em;
+			text-indent: -1.25em;
+
+		    &:before {
+			    content: "\25CF";
+				margin-right: 0.625em;
+		    }
+
+		    ul, ol {
+			    margin-bottom: 0;
+		    }
+		}
+	}
+
+	ul.square {
+		li {
+			&:before {
+			    content: "\25A0";
+		    }
+		}
+	}
+
+	ol {
+		list-style: none;
+		padding: 0;
+	  margin: 0 0 $outer-padding 0;
+	  counter-reset: item;
+
+		li {
+			padding-left: 1.25em;
+			text-indent: -1.25em;
+
+		    &:before {
+			    content: counter(item) ". ";
+				counter-increment: item;
+				margin-right: 0.625em;
+			    font-weight: bold;
+		    }
+
+		    ul, ol {
+			    margin-bottom: 0;
+		    }
+		}
+	}
+	*/ }
+  .section.fixed-header {
+    width: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    max-width: 100%;
+    margin-bottom: 1.6em;
+    border-radius: 0;
+    z-index: 996; }
+    .section.fixed-header .section {
+      margin-bottom: 0;
+      background: none; }
+  .section.full-width {
+    width: 100%;
+    max-width: 100%;
+    border-radius: 0; }
+    .section.full-width .section {
+      margin-bottom: 0;
+      background: none; }
+  .section.fixed-footer {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    height: auto;
+    margin: 0;
+    z-index: 995; }
+    .section.fixed-footer .section {
+      margin-bottom: 0;
+      background: none; }
+  .section section {
+    margin-bottom: 1.6em; }
+  .section h1, .section h2, .section h3, .section h4, .section h5, .section h6 {
+    font-family: "Lato", sans-serif;
+    font-weight: bold;
+    margin-top: 0; }
+  .section h1, .section h2 {
+    font-family: "BioRhyme", sans-serif !important;
+    font-weight: 800;
+    text-align: center;
+    display: block;
+    border-bottom: 6px double #E0E0E0;
+    line-height: 1em;
+    padding: 0.75em;
+    padding-top: 0.5em;
+    margin-bottom: 0.35em !important; }
+  .section h1 {
+    font-size: 4.2087269129em;
+    margin-bottom: 1em; }
+  .section h2 {
+    font-size: 3.1573345183em;
+    margin-bottom: 1em; }
+  .section h3 {
+    font-size: 2.368593037em;
+    margin-bottom: 1em; }
+  .section h4 {
+    font-size: 1.776889em;
+    margin-bottom: 1em; }
+  .section h5 {
+    font-size: 1.333em;
+    margin-bottom: 1em; }
+  .section h6 {
+    font-size: 1em;
+    margin-bottom: 1em; }
+  .section p {
+    margin-top: 0;
+    margin-bottom: 1.6em;
+    font-weight: 300;
+    line-height: 1.5; }
+  .section .font-size-xxs {
+    font-size: 9.6837519013px; }
+  .section .font-size-xs {
+    font-size: 11.2616293333px; }
+  .section .font-size-s {
+    font-size: 12.4453333333px; }
+  .section .font-size-l {
+    font-size: 19.5546666667px; }
+  .section .font-size-xl {
+    font-size: 20.7383706667px; }
+  .section .font-size-xxl {
+    font-size: 22.3162480987px; }
+  .section h1 {
+    font-size: raise(1.333, 5);
+    margin-bottom: 1em; }
+  .section h2 {
+    font-size: raise(1.333, 4);
+    margin-bottom: 1em; }
+  .section h3 {
+    font-size: raise(1.333, 3);
+    margin-bottom: 1em; }
+  .section h4 {
+    font-size: raise(1.333, 2);
+    margin-bottom: 1em; }
+  .section h5 {
+    font-size: raise(1.333, 1);
+    margin-bottom: 1em; }
+  .section h6 {
+    font-size: raise(1.333, 0);
+    margin-bottom: 1em; }
+  .section #mobile-menu-trigger {
+    display: none; }
+  @media screen and (min-width: 769px) {
+    .section ul.menu {
+      list-style: none;
+      padding: 0;
+      font-size: 0;
+      border: 2px solid #674764;
+      display: inline-block;
+      border-radius: 40px;
+      overflow: hidden;
+      white-space: nowrap;
+      text-align: left; }
+      .section ul.menu li {
+        display: inline-block; }
+        .section ul.menu li a {
+          background: linear-gradient(#7C5578, #493246);
+          color: white;
+          font-weight: bold;
+          font-size: 1rem;
+          padding: 0.75em 1.125em;
+          display: block;
+          border-right: 2px solid #674764; }
+          .section ul.menu li a.has-submenu:after {
+            content: "\f107";
+            margin-left: 0.75em;
+            font-family: FontAwesome; }
+        .section ul.menu li:hover > a, .section ul.menu li a.active {
+          text-decoration: none;
+          background: #3f2c3d;
+          color: white; }
+        .section ul.menu li:last-child a {
+          border-right: none; }
+        .section ul.menu li ul {
+          display: none;
+          position: absolute;
+          border: 2px solid #d4d4d4;
+          border-bottom-left-radius: 8px;
+          border-bottom-right-radius: 8px;
+          overflow: hidden;
+          padding: 0;
+          background-color: white; }
+          .section ul.menu li ul li {
+            display: block; }
+            .section ul.menu li ul li a {
+              background: white;
+              color: #6A6A6A;
+              width: 100%;
+              border: none;
+              padding: 0.75em 3.2em 0.75em 1.6em; }
+            .section ul.menu li ul li:hover > a, .section ul.menu li ul li a.active {
+              background-color: #5894a8;
+              color: white; }
+        .section ul.menu li:hover > ul {
+          display: block; } }
+  @media screen and (max-width: 768px) {
+    .section ul.menu {
+      display: none;
+      text-align: left; }
+    .section #mobile-menu-trigger-label {
+      -webkit-touch-callout: none;
+      -webkit-user-select: none;
+      -khtml-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none; }
+    .section #mobile-menu-trigger:checked + #mobile-menu-trigger-label + ul.menu {
+      transform: translate(0, 0);
+      transition: transform 0.25s ease-out; }
+    .section #mobile-menu-trigger + #mobile-menu-trigger-label + ul.menu {
+      transform: translate(100%, 0);
+      transition: transform 0.25s ease-in;
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: block;
+      overflow-y: auto;
+      overflow-x: hidden;
+      position: fixed;
+      top: 0;
+      right: 0;
+      height: 100%;
+      background: #7C5578;
+      width: 300px;
+      max-width: 100%;
+      z-index: 997; }
+      .section #mobile-menu-trigger + #mobile-menu-trigger-label + ul.menu:before {
+        content: "Main menu";
+        font-family: "Lato", sans-serif;
+        font-size: 1.5em;
+        height: 3.3333333333em;
+        line-height: 3.3333333333em;
+        display: block;
+        padding-left: 1.125em;
+        color: white; }
+      .section #mobile-menu-trigger + #mobile-menu-trigger-label + ul.menu li {
+        display: inline-block;
+        display: block; }
+        .section #mobile-menu-trigger + #mobile-menu-trigger-label + ul.menu li a {
+          background: #7C5578;
+          color: white;
+          padding: 0.75em 1.125em;
+          display: block;
+          text-decoration: none; }
+        .section #mobile-menu-trigger + #mobile-menu-trigger-label + ul.menu li:hover > a, .section #mobile-menu-trigger + #mobile-menu-trigger-label + ul.menu li a.active {
+          text-decoration: none;
+          background-color: #3f2c3d;
+          color: white; }
+        .section #mobile-menu-trigger + #mobile-menu-trigger-label + ul.menu li ul {
+          padding: 0; }
+          .section #mobile-menu-trigger + #mobile-menu-trigger-label + ul.menu li ul li a {
+            background: #674764;
+            color: white; }
+            .section #mobile-menu-trigger + #mobile-menu-trigger-label + ul.menu li ul li a:before {
+              content: "-";
+              padding-right: 1.125em; }
+          .section #mobile-menu-trigger + #mobile-menu-trigger-label + ul.menu li ul li:hover > a, .section #mobile-menu-trigger + #mobile-menu-trigger-label + ul.menu li ul li a.active {
+            text-decoration: none;
+            background-color: #352433;
+            color: white; }
+      .section #mobile-menu-trigger + #mobile-menu-trigger-label + ul.menu #mobile-menu-trigger {
+        display: none; }
+    .section #mobile-menu-trigger:checked + #mobile-menu-trigger-label {
+      background: white;
+      color: #7C5578;
+      transition: background 0.25s linear; }
+      .section #mobile-menu-trigger:checked + #mobile-menu-trigger-label:after {
+        content: "\f00d";
+        font-family: FontAwesome; }
+    .section #mobile-menu-trigger-label {
+      user-select: none;
+      background: #7C5578;
+      width: 3em;
+      height: 3em;
+      line-height: 3em;
+      background: #7C5578;
+      cursor: pointer;
+      color: white;
+      text-align: center;
+      display: inline-block;
+      position: fixed;
+      top: 1em;
+      right: 1em;
+      z-index: 998;
+      border-radius: 1.5em;
+      transition: background 0.25s linear; }
+      .section #mobile-menu-trigger-label:after {
+        content: "\f0c9";
+        height: 100%;
+        font-family: FontAwesome;
+        font-size: 1.5em; }
+      .section #mobile-menu-trigger-label:hover {
+        background: #674764; } }
+  .section a {
+    color: #7C5578;
+    text-decoration: none; }
+    .section a:hover {
+      text-decoration: underline; }
+  .section .label {
+    display: inline-block;
+    padding: 0.1875em 0.375em;
+    color: white;
+    background: #7C5578;
+    border-radius: 8px;
+    font-size: 0.9em; }
+  .section a.label {
+    color: white;
+    background: #7C5578;
+    font-weight: normal;
+    text-decoration: none;
+    cursor: pointer; }
+    .section a.label:hover {
+      color: white;
+      background: #674764; }
+  .section .button, .section button, .section .form-plugin .form-plugin-button, #dialoge .dialogue-content .dialoge-button-row .section .form-plugin button, .section .dialoge-button-row .form-plugin-button, .section #dialoge .dialogue-content .dialoge-button-row button, #dialoge .dialogue-content .section .dialoge-button-row button {
+    font-family: "Merriweather", serif;
+    color: white;
+    background: #7C5578;
+    display: inline-block;
+    font-size: 1em;
+    padding: 8px 12px;
+    border: 2px solid #674764; }
+    .section .button:hover, .section button:hover, .section .form-plugin .form-plugin-button:hover, #dialoge .dialogue-content .dialoge-button-row .section .form-plugin button:hover, .section .dialoge-button-row .form-plugin-button:hover, .section #dialoge .dialogue-content .dialoge-button-row button:hover, #dialoge .dialogue-content .section .dialoge-button-row button:hover {
+      color: white;
+      background: #674764;
+      border: 2px solid #52384f;
+      text-decoration: none;
+      cursor: pointer; }
+  .section .button.round, .section button.round, #dialoge .dialogue-content .dialoge-button-row .section .form-plugin button, .section #dialoge .dialogue-content .dialoge-button-row button, #dialoge .dialogue-content .section .dialoge-button-row button, .section .form-plugin .form-plugin-button, .section .dialoge-button-row .form-plugin-button {
+    border-radius: 2.8em; }
+  .section .button.rounded, .section button.rounded, .section .form-plugin .rounded.form-plugin-button, #dialoge .dialogue-content .dialoge-button-row .section .form-plugin button.rounded, .section .dialoge-button-row .rounded.form-plugin-button, .section #dialoge .dialogue-content .dialoge-button-row button.rounded, #dialoge .dialogue-content .section .dialoge-button-row button.rounded {
+    border-radius: 8px; }
+  .section .button.button-gradient, .section button.button-gradient, .section .form-plugin .button-gradient.form-plugin-button, #dialoge .dialogue-content .dialoge-button-row .section .form-plugin button.button-gradient, .section .dialoge-button-row .button-gradient.form-plugin-button, .section #dialoge .dialogue-content .dialoge-button-row button.button-gradient, #dialoge .dialogue-content .section .dialoge-button-row button.button-gradient {
+    color: white;
+    background: linear-gradient(#996b95 0%, #674764 100%);
+    border: 2px solid #674764; }
+    .section .button.button-gradient:hover, .section button.button-gradient:hover, .section .form-plugin .button-gradient.form-plugin-button:hover, #dialoge .dialogue-content .dialoge-button-row .section .form-plugin button.button-gradient:hover, .section .dialoge-button-row .button-gradient.form-plugin-button:hover, .section #dialoge .dialogue-content .dialoge-button-row button.button-gradient:hover, #dialoge .dialogue-content .section .dialoge-button-row button.button-gradient:hover {
+      color: white;
+      background: linear-gradient(#7C5578 0%, #52384f 100%);
+      border: 2px solid #52384f; }
+  .section .button.extra-small, .section button.extra-small, .section .form-plugin .extra-small.form-plugin-button, #dialoge .dialogue-content .dialoge-button-row .section .form-plugin button.extra-small, .section .dialoge-button-row .extra-small.form-plugin-button, .section #dialoge .dialogue-content .dialoge-button-row button.extra-small, #dialoge .dialogue-content .section .dialoge-button-row button.extra-small {
+    padding: 0.3em 0.45em;
+    font-size: 0.6em; }
+  .section .button.small, .section button.small, .section .form-plugin .small.form-plugin-button, #dialoge .dialogue-content .dialoge-button-row .section .form-plugin button.small, .section .dialoge-button-row .small.form-plugin-button, .section #dialoge .dialogue-content .dialoge-button-row button.small, #dialoge .dialogue-content .section .dialoge-button-row button.small {
+    padding: 0.4em 0.6em;
+    font-size: 0.8em; }
+  .section .button.large, .section button.large, .section .form-plugin .large.form-plugin-button, #dialoge .dialogue-content .dialoge-button-row .section .form-plugin button.large, .section .dialoge-button-row .large.form-plugin-button, .section #dialoge .dialogue-content .dialoge-button-row button.large, #dialoge .dialogue-content .section .dialoge-button-row button.large {
+    padding: 0.6em 0.9em;
+    font-size: 1.2em; }
+  .section .button.extra-large, .section button.extra-large, .section .form-plugin .extra-large.form-plugin-button, #dialoge .dialogue-content .dialoge-button-row .section .form-plugin button.extra-large, .section .dialoge-button-row .extra-large.form-plugin-button, .section #dialoge .dialogue-content .dialoge-button-row button.extra-large, #dialoge .dialogue-content .section .dialoge-button-row button.extra-large {
+    padding: 0.7em 1.05em;
+    font-size: 1.4em; }
+  .section hr {
+    border: 0;
+    height: 2px;
+    background: #E0E0E0;
+    margin-bottom: 1.6em; }
+  .section table {
+    border-spacing: 0;
+    border-collapse: collapse;
+    margin: 0 0 1.6em 0; }
+    .section table thead {
+      border-bottom: 2px solid #E0E0E0;
+      text-align: left; }
+    .section table th, .section table td {
+      padding: 0.5625em;
+      vertical-align: top;
+      text-align: left; }
+    .section table tfoot {
+      border-top: 2px solid #E0E0E0; }
+  .section table.lines th, .section table.lines tfoot td {
+    background: #7C5578;
+    color: white;
+    border: 2px solid #674764; }
+  .section table.lines td {
+    border: 2px solid #E0E0E0; }
+  .section table.polka-stripes th, .section table.polka-stripes tfoot td {
+    background: #7C5578;
+    color: white;
+    border: 2px solid #674764; }
+  .section table.polka-stripes tbody td:first-child {
+    border-left: 2px solid #674764; }
+  .section table.polka-stripes tbody td:last-child {
+    border-right: 2px solid #674764; }
+  .section table.polka-stripes tbody tr:last-child td {
+    border-bottom: 2px solid #674764; }
+  .section table.polka-stripes tbody tr:nth-child(even) td {
+    background: #d5c2d3;
+    color: #6A6A6A; }
+  .section fieldset {
+    border: 2px solid #E0E0E0;
+    border-radius: 8px;
+    margin-bottom: 1.6em; }
+    .section fieldset legend {
+      font-size: 1.1em;
+      font-weight: bold; }
+  .section .form-question {
+    margin-bottom: 1.6em; }
+  .section .form-question-label {
+    font-weight: bold;
+    display: inline-block;
+    padding-bottom: 0.8em; }
+    .section .form-question-label .form-question-label-description {
+      font-weight: normal;
+      font-style: italic;
+      display: block; }
+  .section input, .section select, .section textarea {
+    outline: none;
+    font-family: "Merriweather", serif; }
+  .section textarea {
+    height: 100px; }
+  .section input[type="text"]:not(.k-input):not(.form-plugin-search), .section textarea, .section .search , .section input[type="password"] {
+    width: 100%;
+    border: 2px solid #E0E0E0;
+    padding: 0.625em;
+    display: block;
+    font-size: 1em;
+    border-radius: 8px;
+    margin: 0; }
+    .section input[type="text"]:not(.k-input):not(.form-plugin-search):hover, .section textarea:hover, .section .search:hover, .section input[type="password"]:hover {
+      border-color: #bdafbc; }
+    .section input[type="text"]:not(.k-input):not(.form-plugin-search):focus, .section textarea:focus, .section .search:focus, .section input[type="password"]:focus {
+      border-color: #7C5578; }
+    .section input[type="text"]:not(.k-input):not(.form-plugin-search):disabled, .section textarea:disabled, .section .search:disabled, .section input[type="password"]:disabled {
+      background: #dcdcdc;
+      border: 2px solid #b7b7b7; }
+  .section select {
+    width: 100%; }
+  .section .switch-wrapper {
+    overflow: hidden;
+    margin: 0.8em 0; }
+    .section .switch-wrapper .switch {
+      position: relative;
+      display: inline-block;
+      float: left;
+      width: 4.5em;
+      height: 2.5em;
+      margin-right: 0.75em; }
+      .section .switch-wrapper .switch input {
+        display: none; }
+    .section .switch-wrapper .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: #dcdcdc;
+      -webkit-transition: background-color .4s, left .4s;
+      transition: background-color .4s, transform .4s; }
+      .section .switch-wrapper .slider:before {
+        position: absolute;
+        content: "";
+        height: 2em;
+        width: 2em;
+        left: 0.25em;
+        bottom: 0.25em;
+        background-color: white;
+        -webkit-transition: background-color .4s, left .4s;
+        transition: background-color .4s, transform .4s; }
+      .section .switch-wrapper .slider.round, .section .switch-wrapper .form-plugin .slider.form-plugin-button, .section .form-plugin .switch-wrapper .slider.form-plugin-button, #dialoge .dialogue-content .dialoge-button-row .section .switch-wrapper .form-plugin button.slider, #dialoge .dialogue-content .dialoge-button-row .section .form-plugin .switch-wrapper button.slider, .section .switch-wrapper .dialoge-button-row .slider.form-plugin-button, .section .dialoge-button-row .switch-wrapper .slider.form-plugin-button, .section .switch-wrapper #dialoge .dialogue-content .dialoge-button-row button.slider, .section #dialoge .dialogue-content .dialoge-button-row .switch-wrapper button.slider, #dialoge .dialogue-content .section .switch-wrapper .dialoge-button-row button.slider, #dialoge .dialogue-content .section .dialoge-button-row .switch-wrapper button.slider {
+        border-radius: 34px; }
+        .section .switch-wrapper .slider.round:before, .section .switch-wrapper .form-plugin .slider.form-plugin-button:before, .section .form-plugin .switch-wrapper .slider.form-plugin-button:before, #dialoge .dialogue-content .dialoge-button-row .section .switch-wrapper .form-plugin button.slider:before, #dialoge .dialogue-content .dialoge-button-row .section .form-plugin .switch-wrapper button.slider:before, .section .switch-wrapper .dialoge-button-row .slider.form-plugin-button:before, .section .dialoge-button-row .switch-wrapper .slider.form-plugin-button:before, .section .switch-wrapper #dialoge .dialogue-content .dialoge-button-row button.slider:before, .section #dialoge .dialogue-content .dialoge-button-row .switch-wrapper button.slider:before, #dialoge .dialogue-content .section .switch-wrapper .dialoge-button-row button.slider:before, #dialoge .dialogue-content .section .dialoge-button-row .switch-wrapper button.slider:before {
+          border-radius: 50%; }
+    .section .switch-wrapper input:checked + .slider {
+      background-color: #99B979; }
+    .section .switch-wrapper input:focus + .slider {
+      box-shadow: 0 0 1px #99B979; }
+    .section .switch-wrapper input:checked + .slider:before {
+      -webkit-transform: translateX(2em);
+      -ms-transform: translateX(2em);
+      transform: translateX(2em); }
+    .section .switch-wrapper .toggle-label {
+      font-size: 1.2em;
+      padding-top: 0.4em;
+      display: inline-block;
+      cursor: pointer; }
+  .section .checkbox-wrapper, .section .radio-wrapper {
+    margin-bottom: 0.8em; }
+  .section .error-validating {
+    display: none; }
+  .section .not-validated:not(.form-plugin-hotel-reservation) input[type="text"], .section .not-validated:not(.form-plugin-hotel-reservation) textarea, .section .not-validated:not(.form-plugin-hotel-reservation) input[type="password"] {
+    margin: 0;
+    border: 2px solid #B97979; }
+    .section .not-validated:not(.form-plugin-hotel-reservation) input[type="text"]:focus, .section .not-validated:not(.form-plugin-hotel-reservation) textarea:focus, .section .not-validated:not(.form-plugin-hotel-reservation) input[type="password"]:focus {
+      border: 2px solid #B97979; }
+  .section .not-validated:not(.form-plugin-hotel-reservation) .error-validating {
+    margin: 0 8px;
+    display: inline-block;
+    background: #B97979;
+    color: white;
+    padding: 0.75em;
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px; }
+  .section .not-validated:not(.form-plugin-hotel-reservation) .form-question-select, .section .not-validated:not(.form-plugin-hotel-reservation) .form-question-checkbox, .section .not-validated:not(.form-plugin-hotel-reservation) .form-question-radio {
+    border-radius: 8px; }
+  .section .not-validated:not(.form-plugin-hotel-reservation) .form-question-select {
+    border: 2px solid #B97979;
+    padding: 0.75em; }
+  .section .not-validated:not(.form-plugin-hotel-reservation) .form-question-checkbox, .section .not-validated:not(.form-plugin-hotel-reservation) .form-question-select, .section .not-validated:not(.form-plugin-hotel-reservation) .form-question-radio {
+    border: 2px solid #B97979;
+    padding: 0.75em; }
+    .section .not-validated:not(.form-plugin-hotel-reservation) .form-question-checkbox .checkbox-wrapper:last-child, .section .not-validated:not(.form-plugin-hotel-reservation) .form-question-checkbox .radio-wrapper:last-child, .section .not-validated:not(.form-plugin-hotel-reservation) .form-question-select .checkbox-wrapper:last-child, .section .not-validated:not(.form-plugin-hotel-reservation) .form-question-select .radio-wrapper:last-child, .section .not-validated:not(.form-plugin-hotel-reservation) .form-question-radio .checkbox-wrapper:last-child, .section .not-validated:not(.form-plugin-hotel-reservation) .form-question-radio .radio-wrapper:last-child {
+      margin-bottom: 0; }
+  .section .not-validated:not(.form-plugin-hotel-reservation) .form-plugin-item {
+    border-top: 2px solid #B97979 !important;
+    border-left: 2px solid #B97979 !important;
+    border-right: 2px solid #B97979 !important; }
+    .section .not-validated:not(.form-plugin-hotel-reservation) .form-plugin-item:last-child {
+      border-bottom: 2px solid #B97979 !important; }
+  .section .not-validated.form-plugin-hotel-reservation .error-validating {
+    margin: 0 8px;
+    display: inline-block;
+    background: #B97979;
+    color: white;
+    padding: 0.75em;
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px; }
+  .section .not-validated.form-plugin-hotel-reservation .form-plugin-item {
+    border-top: 2px solid #B97979 !important;
+    border-left: 2px solid #B97979 !important;
+    border-right: 2px solid #B97979 !important; }
+    .section .not-validated.form-plugin-hotel-reservation .form-plugin-item:last-of-type {
+      border-bottom: 2px solid #B97979 !important; }
+  .section .form-plugin a, .section .dialoge-button-row a {
+    color: #AE6686; }
+  .section .form-plugin .form-plugin-intro, .section .dialoge-button-row .form-plugin-intro {
+    margin-bottom: 0.75em; }
+    .section .form-plugin .form-plugin-intro:empty, .section .dialoge-button-row .form-plugin-intro:empty {
+      margin-bottom: 0; }
+  .section .form-plugin.checkbox-input-large input, .section .dialoge-button-row.checkbox-input-large input {
+    display: none; }
+    .section .form-plugin.checkbox-input-large input + label, .section .dialoge-button-row.checkbox-input-large input + label {
+      margin-top: 0.05em;
+      position: relative;
+      border: 4px solid #E0E0E0;
+      color: white;
+      height: 1em;
+      width: 1em;
+      border-radius: 4px;
+      display: inline-block;
+      color: rgba(121, 169, 185, 0);
+      font-size: 2em;
+      -webkit-transition: color .15s;
+      transition: color .15s;
+      cursor: pointer; }
+      .section .form-plugin.checkbox-input-large input + label:after, .section .dialoge-button-row.checkbox-input-large input + label:after {
+        font-family: FontAwesome;
+        content: "\f00c";
+        bottom: -0.125em;
+        left: -0.125em;
+        position: absolute;
+        font-size: 1.2em; }
+      .section .form-plugin.checkbox-input-large input + label:hover, .section .dialoge-button-row.checkbox-input-large input + label:hover {
+        -webkit-transition: color .15s;
+        transition: color .15s;
+        color: rgba(121, 169, 185, 0.5); }
+        .section .form-plugin.checkbox-input-large input + label:hover:after, .section .dialoge-button-row.checkbox-input-large input + label:hover:after {
+          font-family: FontAwesome;
+          content: "\f00c";
+          bottom: -0.125em;
+          left: -0.125em;
+          position: absolute;
+          font-size: 1.2em; }
+    .section .form-plugin.checkbox-input-large input:checked + label, .section .dialoge-button-row.checkbox-input-large input:checked + label {
+      -webkit-transition: color .15s;
+      transition: color .15s;
+      color: #79A9B9; }
+  .section .form-plugin.radiobutton-input-large input, .section .dialoge-button-row.radiobutton-input-large input {
+    display: none; }
+    .section .form-plugin.radiobutton-input-large input + label, .section .dialoge-button-row.radiobutton-input-large input + label {
+      margin-top: 0.05em;
+      position: relative;
+      border: 4px solid #E0E0E0;
+      color: white;
+      height: 1em;
+      width: 1em;
+      border-radius: 1em;
+      display: inline-block;
+      background: rgba(121, 169, 185, 0);
+      font-size: 2em;
+      cursor: pointer; }
+      .section .form-plugin.radiobutton-input-large input + label:before, .section .dialoge-button-row.radiobutton-input-large input + label:before {
+        width: 0.5em;
+        height: 0.5em;
+        border-radius: 0.25em;
+        background: rgba(255, 255, 255, 0);
+        content: "";
+        display: inline-block;
+        position: absolute;
+        top: 0.125em;
+        left: 0.125em;
+        -webkit-transition: background .15s;
+        transition: background .15s; }
+      .section .form-plugin.radiobutton-input-large input + label:hover:before, .section .dialoge-button-row.radiobutton-input-large input + label:hover:before {
+        width: 0.5em;
+        height: 0.5em;
+        border-radius: 0.25em;
+        background: rgba(121, 169, 185, 0.5);
+        content: "";
+        display: inline-block;
+        position: absolute;
+        top: 0.125em;
+        left: 0.125em;
+        -webkit-transition: background .15s;
+        transition: background .15s; }
+    .section .form-plugin.radiobutton-input-large input:checked + label:before, .section .dialoge-button-row.radiobutton-input-large input:checked + label:before {
+      width: 0.5em;
+      height: 0.5em;
+      border-radius: 0.25em;
+      background: #79A9B9;
+      display: inline-block;
+      position: absolute;
+      top: 0.125em;
+      left: 0.125em;
+      content: "";
+      -webkit-transition: background .2s;
+      transition: background .2s; }
+  .section .form-plugin .form-plugin-list, .section .dialoge-button-row .form-plugin-list {
+    overflow: hidden;
+    box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px; }
+  .section .form-plugin .form-plugin-item, .section .dialoge-button-row .form-plugin-item {
+    color: #6A6A6A;
+    padding: 0.75em;
+    border-top: 2px solid #E0E0E0;
+    border-left: 2px solid #E0E0E0;
+    border-right: 2px solid #E0E0E0;
+    background: white;
+    overflow: hidden; }
+    .section .form-plugin .form-plugin-item:first-child, .section .dialoge-button-row .form-plugin-item:first-child {
+      border-top-left-radius: 8px;
+      border-top-right-radius: 8px; }
+    .section .form-plugin .form-plugin-item:last-child, .section .dialoge-button-row .form-plugin-item:last-child {
+      border-bottom: 2px solid #E0E0E0;
+      border-bottom-left-radius: 8px;
+      border-bottom-right-radius: 8px; }
+    .section .form-plugin .form-plugin-item *:last-child, .section .dialoge-button-row .form-plugin-item *:last-child {
+      margin-bottom: 0; }
+  .section .form-plugin .form-plugin-title, .section .dialoge-button-row .form-plugin-title {
+    margin: 0;
+    padding: 0;
+    font-weight: bold; }
+  .section .form-plugin .form-plugin-title-date, .section .dialoge-button-row .form-plugin-title-date {
+    font-size: 1em;
+    font-weight: normal;
+    font-style: italic;
+    margin-bottom: 0.1875em; }
+  .section .form-plugin .form-plugin-scroll-wrapper, .section .dialoge-button-row .form-plugin-scroll-wrapper {
+    width: 100%;
+    overflow-x: auto; }
+  .section .form-plugin .form-plugin-text, .section .dialoge-button-row .form-plugin-text {
+    line-height: 150%;
+    font-size: 1.15em; }
+  .section .form-plugin .form-plugin-table, .section .dialoge-button-row .form-plugin-table {
+    width: 100%; }
+    .section .form-plugin .form-plugin-table th, .section .dialoge-button-row .form-plugin-table th {
+      white-space: nowrap; }
+    .section .form-plugin .form-plugin-table th, .section .form-plugin .form-plugin-table tfoot td, .section .dialoge-button-row .form-plugin-table th, .section .dialoge-button-row .form-plugin-table tfoot td {
+      background: #AE6686;
+      color: white;
+      border: 2px solid #964f6f; }
+    .section .form-plugin .form-plugin-table .time, .section .dialoge-button-row .form-plugin-table .time {
+      font-weight: bold; }
+  .section .form-plugin .form-plugin-tags-list, .section .dialoge-button-row .form-plugin-tags-list {
+    display: inline-block; }
+    .section .form-plugin .form-plugin-tags-list .form-plugin-tag, .section .form-plugin.form-plugin-session-scheduler .form-plugin-tags-list .session .form-plugin-tag, .section .form-plugin.form-plugin-session-scheduler .session .form-plugin-tags-list .form-plugin-tag, .section .form-plugin .form-plugin-tags-list .dialoge-button-row.form-plugin-session-scheduler .session .form-plugin-tag, .section .dialoge-button-row.form-plugin-session-scheduler .session .form-plugin .form-plugin-tags-list .form-plugin-tag, .section .dialoge-button-row .form-plugin-tags-list .form-plugin-tag, .section .dialoge-button-row .form-plugin-tags-list .form-plugin.form-plugin-session-scheduler .session .form-plugin-tag, .section .form-plugin.form-plugin-session-scheduler .session .dialoge-button-row .form-plugin-tags-list .form-plugin-tag, .section .dialoge-button-row.form-plugin-session-scheduler .form-plugin-tags-list .session .form-plugin-tag, .section .dialoge-button-row.form-plugin-session-scheduler .session .form-plugin-tags-list .form-plugin-tag {
+      font-size: 0.8em;
+      display: inline-block;
+      color: #6A6A6A;
+      background: #EBE0A2;
+      border-radius: 4px;
+      padding: 0.25em 0.375em; }
+  .section .form-plugin .form-plugin-button, .section .form-plugin #dialoge .dialogue-content .dialoge-button-row button, #dialoge .dialogue-content .dialoge-button-row .section .form-plugin button, .section .dialoge-button-row .form-plugin-button, .section #dialoge .dialogue-content .dialoge-button-row button, #dialoge .dialogue-content .section .dialoge-button-row button {
+    margin-top: 0.75em;
+    color: white;
+    background: #79A9B9;
+    border: 2px solid #5793a7; }
+    .section .form-plugin .form-plugin-button:hover, .section .form-plugin #dialoge .dialogue-content .dialoge-button-row button:hover, #dialoge .dialogue-content .dialoge-button-row .section .form-plugin button:hover, .section .dialoge-button-row .form-plugin-button:hover, .section #dialoge .dialogue-content .dialoge-button-row button:hover, #dialoge .dialogue-content .section .dialoge-button-row button:hover {
+      color: white;
+      background: #5793a7;
+      border: 2px solid #457585; }
+    .section .form-plugin .form-plugin-button.top, .section .form-plugin #dialoge .dialogue-content .dialoge-button-row button.top, #dialoge .dialogue-content .dialoge-button-row .section .form-plugin button.top, .section .dialoge-button-row .form-plugin-button.top, .section #dialoge .dialogue-content .dialoge-button-row button.top, #dialoge .dialogue-content .section .dialoge-button-row button.top {
+      margin-top: 0;
+      margin-bottom: 0.75em; }
+    .section .form-plugin .form-plugin-button.close-button:before, .section .form-plugin #dialoge .dialogue-content .dialoge-button-row button.close-button:before, #dialoge .dialogue-content .dialoge-button-row .section .form-plugin button.close-button:before, .section .dialoge-button-row .form-plugin-button.close-button:before, .section #dialoge .dialogue-content .dialoge-button-row button.close-button:before, #dialoge .dialogue-content .section .dialoge-button-row button.close-button:before {
+      content: "?";
+      font-family: FontAwesome;
+      margin-right: 0.75em; }
+  .section .form-plugin .form-plugin-search-label, .section .dialoge-button-row .form-plugin-search-label {
+    position: relative; }
+    .section .form-plugin .form-plugin-search-label:before, .section .dialoge-button-row .form-plugin-search-label:before {
+      position: absolute;
+      top: 0;
+      left: 0;
+      content: "?";
+      font-size: 1.3em;
+      font-family: FontAwesome;
+      padding: 0.75em;
+      color: #AE6686; }
+  .section .form-plugin .form-plugin-search-wrapper, .section .dialoge-button-row .form-plugin-search-wrapper {
+    position: relative; }
+    .section .form-plugin .form-plugin-search-wrapper .form-plugin-search, .section .dialoge-button-row .form-plugin-search-wrapper .form-plugin-search {
+      width: 100%;
+      border: 2px solid #E0E0E0;
+      padding: 0.625em 0.625em 0.625em 1.25em;
+      display: block;
+      font-size: 1em;
+      border-radius: 1.625em;
+      margin: 0 0 0.75em 0 !important; }
+      .section .form-plugin .form-plugin-search-wrapper .form-plugin-search:hover, .section .dialoge-button-row .form-plugin-search-wrapper .form-plugin-search:hover {
+        border-color: #bdafbc; }
+      .section .form-plugin .form-plugin-search-wrapper .form-plugin-search:focus, .section .dialoge-button-row .form-plugin-search-wrapper .form-plugin-search:focus {
+        border-color: #7C5578; }
+      .section .form-plugin .form-plugin-search-wrapper .form-plugin-search:disabled, .section .dialoge-button-row .form-plugin-search-wrapper .form-plugin-search:disabled {
+        background: #dcdcdc;
+        border: 2px solid #b7b7b7; }
+    .section .form-plugin .form-plugin-search-wrapper .form-plugin-clear-search, .section .dialoge-button-row .form-plugin-search-wrapper .form-plugin-clear-search {
+      display: none; }
+    .section .form-plugin .form-plugin-search-wrapper .form-plugin-search:focus + .form-plugin-clear-search, .section .form-plugin .form-plugin-search-wrapper .form-plugin-search:hover + .form-plugin-clear-search, .section .form-plugin .form-plugin-search-wrapper .form-plugin-clear-search:hover, .section .dialoge-button-row .form-plugin-search-wrapper .form-plugin-search:focus + .form-plugin-clear-search, .section .dialoge-button-row .form-plugin-search-wrapper .form-plugin-search:hover + .form-plugin-clear-search, .section .dialoge-button-row .form-plugin-search-wrapper .form-plugin-clear-search:hover {
+      display: block;
+      position: absolute;
+      top: 0.75em;
+      right: 0.75em;
+      font-size: 16px;
+      cursor: pointer;
+      color: #B7B0A9; }
+      .section .form-plugin .form-plugin-search-wrapper .form-plugin-search:focus + .form-plugin-clear-search:after, .section .form-plugin .form-plugin-search-wrapper .form-plugin-search:hover + .form-plugin-clear-search:after, .section .form-plugin .form-plugin-search-wrapper .form-plugin-clear-search:hover:after, .section .dialoge-button-row .form-plugin-search-wrapper .form-plugin-search:focus + .form-plugin-clear-search:after, .section .dialoge-button-row .form-plugin-search-wrapper .form-plugin-search:hover + .form-plugin-clear-search:after, .section .dialoge-button-row .form-plugin-search-wrapper .form-plugin-clear-search:hover:after {
+        line-height: 16px;
+        content: "\f057";
+        font-family: FontAwesome; }
+      .section .form-plugin .form-plugin-search-wrapper .form-plugin-search:focus + .form-plugin-clear-search:hover, .section .form-plugin .form-plugin-search-wrapper .form-plugin-search:hover + .form-plugin-clear-search:hover, .section .form-plugin .form-plugin-search-wrapper .form-plugin-clear-search:hover:hover, .section .dialoge-button-row .form-plugin-search-wrapper .form-plugin-search:focus + .form-plugin-clear-search:hover, .section .dialoge-button-row .form-plugin-search-wrapper .form-plugin-search:hover + .form-plugin-clear-search:hover, .section .dialoge-button-row .form-plugin-search-wrapper .form-plugin-clear-search:hover:hover {
+        color: #7e746a; }
+  .section .form-plugin .form-plugin-label, .section .dialoge-button-row .form-plugin-label {
+    font-weight: bold; }
+  .section .form-plugin.form-plugin-attendee-list table th, .section .dialoge-button-row.form-plugin-attendee-list table th {
+    white-space: nowrap;
+    padding-right: 1em;
+    cursor: pointer; }
+    .section .form-plugin.form-plugin-attendee-list table th:after, .section .dialoge-button-row.form-plugin-attendee-list table th:after {
+      content: "\f0dc";
+      font-family: FontAwesome;
+      margin-left: 0.75em; }
+    .section .form-plugin.form-plugin-attendee-list table th.desc:after, .section .dialoge-button-row.form-plugin-attendee-list table th.desc:after {
+      content: "\f0dd";
+      font-family: FontAwesome;
+      margin-left: 0.75em; }
+    .section .form-plugin.form-plugin-attendee-list table th.asc:after, .section .dialoge-button-row.form-plugin-attendee-list table th.asc:after {
+      content: "\f0de";
+      font-family: FontAwesome;
+      margin-left: 0.75em; }
+  .section .form-plugin.form-plugin-evaluations .evaluation-send-button-button:before, .section .dialoge-button-row.form-plugin-evaluations .evaluation-send-button-button:before {
+    content: "?";
+    font-family: FontAwesome;
+    margin-right: 0.75em; }
+  .section .form-plugin.form-plugin-evaluations .star-evaluation-group, .section .dialoge-button-row.form-plugin-evaluations .star-evaluation-group {
+    white-space: nowrap;
+    font-size: 0;
+    unicode-bidi: bidi-override;
+    direction: rtl;
+    font-family: FontAwesome; }
+    .section .form-plugin.form-plugin-evaluations .star-evaluation-group *, .section .dialoge-button-row.form-plugin-evaluations .star-evaluation-group * {
+      font-size: 1.875rem; }
+    .section .form-plugin.form-plugin-evaluations .star-evaluation-group > input, .section .dialoge-button-row.form-plugin-evaluations .star-evaluation-group > input {
+      display: none; }
+      .section .form-plugin.form-plugin-evaluations .star-evaluation-group > input + label, .section .dialoge-button-row.form-plugin-evaluations .star-evaluation-group > input + label {
+        display: inline-block;
+        overflow: hidden;
+        text-indent: 9999px;
+        width: 1.2em;
+        white-space: nowrap;
+        cursor: pointer; }
+        .section .form-plugin.form-plugin-evaluations .star-evaluation-group > input + label:before, .section .dialoge-button-row.form-plugin-evaluations .star-evaluation-group > input + label:before {
+          display: inline-block;
+          text-indent: -9999px;
+          content: "?";
+          color: #dcdcdc; }
+      .section .form-plugin.form-plugin-evaluations .star-evaluation-group > input:checked ~ label:before, .section .form-plugin.form-plugin-evaluations .star-evaluation-group > input + label:hover ~ label:before, .section .form-plugin.form-plugin-evaluations .star-evaluation-group > input + label:hover:before, .section .dialoge-button-row.form-plugin-evaluations .star-evaluation-group > input:checked ~ label:before, .section .dialoge-button-row.form-plugin-evaluations .star-evaluation-group > input + label:hover ~ label:before, .section .dialoge-button-row.form-plugin-evaluations .star-evaluation-group > input + label:hover:before {
+        content: "?";
+        color: #EBE0A2;
+        text-shadow: 0 0 1px #EBE0A2; }
+    .section .form-plugin.form-plugin-evaluations .star-evaluation-group > .star-evaluation-clear + label, .section .dialoge-button-row.form-plugin-evaluations .star-evaluation-group > .star-evaluation-clear + label {
+      text-indent: -9999px;
+      width: 0.5em;
+      margin-left: -0.5em; }
+    .section .form-plugin.form-plugin-evaluations .star-evaluation-group > .star-evaluation-clear + label:before, .section .dialoge-button-row.form-plugin-evaluations .star-evaluation-group > .star-evaluation-clear + label:before {
+      width: 0.5em; }
+    .section .form-plugin.form-plugin-evaluations .star-evaluation-group:hover > input + label:before, .section .dialoge-button-row.form-plugin-evaluations .star-evaluation-group:hover > input + label:before {
+      content: "?";
+      color: #dcdcdc;
+      text-shadow: none; }
+    .section .form-plugin.form-plugin-evaluations .star-evaluation-group:hover > input + label:hover ~ label:before, .section .form-plugin.form-plugin-evaluations .star-evaluation-group:hover > input + label:hover:before, .section .dialoge-button-row.form-plugin-evaluations .star-evaluation-group:hover > input + label:hover ~ label:before, .section .dialoge-button-row.form-plugin-evaluations .star-evaluation-group:hover > input + label:hover:before {
+      content: "?";
+      color: #EBE0A2;
+      text-shadow: 0 0 1px #EBE0A2; }
+  .section .form-plugin.form-plugin-messages .messages-hide, .section .dialoge-button-row.form-plugin-messages .messages-hide {
+    cursor: pointer; }
+    .section .form-plugin.form-plugin-messages .messages-hide:before, .section .dialoge-button-row.form-plugin-messages .messages-hide:before {
+      content: "?";
+      font-family: FontAwesome;
+      margin: 0 0 0.75em 0.75em;
+      float: right;
+      font-size: 1.3em;
+      color: #B7B0A9; }
+    .section .form-plugin.form-plugin-messages .messages-hide:hover:before, .section .dialoge-button-row.form-plugin-messages .messages-hide:hover:before {
+      color: #7e746a; }
+  .section .form-plugin.form-plugin-messages .messages-read-archived-messages:before, .section .dialoge-button-row.form-plugin-messages .messages-read-archived-messages:before {
+    content: "?";
+    font-family: FontAwesome;
+    margin-right: 0.75em; }
+  .section .form-plugin.form-plugin-messages .messages-mark-all-button:before, .section .dialoge-button-row.form-plugin-messages .messages-mark-all-button:before {
+    content: "?";
+    font-family: FontAwesome;
+    margin-right: 0.75em; }
+  .section .form-plugin.form-plugin-next-up .next-up-time-and-date-icon:before, .section .dialoge-button-row.form-plugin-next-up .next-up-time-and-date-icon:before {
+    content: "?";
+    font-family: FontAwesome;
+    color: #B7B0A9; }
+  .section .form-plugin.form-plugin-next-up .next-up-location-icon:before, .section .dialoge-button-row.form-plugin-next-up .next-up-location-icon:before {
+    content: "?";
+    font-family: FontAwesome;
+    color: #B7B0A9; }
+  .section .form-plugin.form-plugin-next-up .next-up-speaker-icon:before, .section .dialoge-button-row.form-plugin-next-up .next-up-speaker-icon:before {
+    content: "?";
+    font-family: FontAwesome;
+    color: #B7B0A9; }
+  .section .form-plugin.form-plugin-location-list .location-list-map-icon:before, .section .dialoge-button-row.form-plugin-location-list .location-list-map-icon:before {
+    content: "?";
+    font-family: FontAwesome;
+    color: #B7B0A9; }
+  .section .form-plugin.form-plugin-location-list .location-list-address-icon:before, .section .dialoge-button-row.form-plugin-location-list .location-list-address-icon:before {
+    content: "?";
+    font-family: FontAwesome;
+    color: #B7B0A9; }
+  .section .form-plugin.form-plugin-location-list .location-list-speaker-icon:before, .section .dialoge-button-row.form-plugin-location-list .location-list-speaker-icon:before {
+    content: "?";
+    font-family: FontAwesome;
+    color: #B7B0A9; }
+  .section .form-plugin.form-plugin-attendee-list .attendee-list-download-spreadsheet-button:before, .section .dialoge-button-row.form-plugin-attendee-list .attendee-list-download-spreadsheet-button:before {
+    content: "\f1c3";
+    font-family: FontAwesome;
+    margin-right: 0.75em; }
+  .section .form-plugin .session-time-and-date-icon:before, .section .dialoge-button-row .session-time-and-date-icon:before {
+    content: "?";
+    font-family: FontAwesome;
+    color: #B7B0A9; }
+  .section .form-plugin .session-rsvp-deadline-icon:before, .section .dialoge-button-row .session-rsvp-deadline-icon:before {
+    content: "?";
+    font-family: FontAwesome;
+    color: #B7B0A9; }
+  .section .form-plugin .session-speaker-icon:before, .section .dialoge-button-row .session-speaker-icon:before {
+    content: "?";
+    font-family: FontAwesome;
+    color: #B7B0A9; }
+  .section .form-plugin .session-tags-icon:before, .section .dialoge-button-row .session-tags-icon:before {
+    content: "?";
+    font-family: FontAwesome;
+    color: #B7B0A9; }
+  .section .form-plugin .session-group-icon:before, .section .dialoge-button-row .session-group-icon:before {
+    content: "?";
+    font-family: FontAwesome;
+    color: #B7B0A9; }
+  .section .form-plugin .session-seats-available-icon:before, .section .dialoge-button-row .session-seats-available-icon:before {
+    content: "?";
+    font-family: FontAwesome;
+    color: #B7B0A9; }
+  .section .form-plugin .session-location-icon:before, .section .dialoge-button-row .session-location-icon:before {
+    content: "?";
+    font-family: FontAwesome;
+    color: #B7B0A9; }
+  .section .form-plugin.form-plugin-session-radio .form-plugin-title label, .section .dialoge-button-row.form-plugin-session-radio .form-plugin-title label {
+    cursor: pointer; }
+  .section .form-plugin.form-plugin-session-checkbox .form-plugin-title label, .section .dialoge-button-row.form-plugin-session-checkbox .form-plugin-title label {
+    cursor: pointer; }
+  .section .form-plugin.form-plugin-session-checkbox table td:first-child, .section .dialoge-button-row.form-plugin-session-checkbox table td:first-child {
+    width: 1%;
+    padding-left: 0;
+    text-align: center; }
+  .section .form-plugin.form-plugin-hotel-reservation .hotel-reservation-calendar, .section .form-plugin.form-plugin-hotel-reservation .hotel-room-buddy, .section .dialoge-button-row.form-plugin-hotel-reservation .hotel-reservation-calendar, .section .dialoge-button-row.form-plugin-hotel-reservation .hotel-room-buddy {
+    width: 100%; }
+  .section .form-plugin.form-plugin-hotel-reservation label, .section .dialoge-button-row.form-plugin-hotel-reservation label {
+    margin-right: 0.75em; }
+  .section .form-plugin.form-plugin-hotel-reservation .row, .section .dialoge-button-row.form-plugin-hotel-reservation .row {
+    margin-bottom: 0.75em; }
+  .section .form-plugin.form-plugin-hotel-reservation .row:last-child, .section .dialoge-button-row.form-plugin-hotel-reservation .row:last-child {
+    margin-bottom: 0; }
+  .section .form-plugin.form-plugin-hotel-reservation table.lines, .section .dialoge-button-row.form-plugin-hotel-reservation table.lines {
+    width: 100%; }
+    .section .form-plugin.form-plugin-hotel-reservation table.lines tr.sold-out, .section .dialoge-button-row.form-plugin-hotel-reservation table.lines tr.sold-out {
+      text-decoration: line-through; }
+      .section .form-plugin.form-plugin-hotel-reservation table.lines tr.sold-out input, .section .dialoge-button-row.form-plugin-hotel-reservation table.lines tr.sold-out input {
+        display: none; }
+    .section .form-plugin.form-plugin-hotel-reservation table.lines td, .section .form-plugin.form-plugin-hotel-reservation table.lines th, .section .dialoge-button-row.form-plugin-hotel-reservation table.lines td, .section .dialoge-button-row.form-plugin-hotel-reservation table.lines th {
+      border-left: none;
+      border-right: none; }
+    .section .form-plugin.form-plugin-hotel-reservation table.lines td:first-child, .section .dialoge-button-row.form-plugin-hotel-reservation table.lines td:first-child {
+      padding-left: 0;
+      text-align: center; }
+    .section .form-plugin.form-plugin-hotel-reservation table.lines td:first-child, .section .form-plugin.form-plugin-hotel-reservation table.lines th:first-child, .section .dialoge-button-row.form-plugin-hotel-reservation table.lines td:first-child, .section .dialoge-button-row.form-plugin-hotel-reservation table.lines th:first-child {
+      width: 1%;
+      padding-left: 0.75em;
+      border-left: 2px solid #E0E0E0; }
+    .section .form-plugin.form-plugin-hotel-reservation table.lines td:last-child, .section .form-plugin.form-plugin-hotel-reservation table.lines th:last-child, .section .dialoge-button-row.form-plugin-hotel-reservation table.lines td:last-child, .section .dialoge-button-row.form-plugin-hotel-reservation table.lines th:last-child {
+      border-right: 2px solid #E0E0E0; }
+  @media screen and (max-width: 768px) {
+    .section .form-plugin.form-plugin-hotel-reservation .hotel-reservation-calendar, .section .form-plugin.form-plugin-hotel-reservation .hotel-room-buddy, .section .dialoge-button-row.form-plugin-hotel-reservation .hotel-reservation-calendar, .section .dialoge-button-row.form-plugin-hotel-reservation .hotel-room-buddy {
+      float: right; }
+    .section .form-plugin.form-plugin-hotel-reservation .row:last-child, .section .dialoge-button-row.form-plugin-hotel-reservation .row:last-child {
+      margin-bottom: 0; }
+    .section .form-plugin.form-plugin-hotel-reservation .col, .section .dialoge-button-row.form-plugin-hotel-reservation .col {
+      margin-bottom: 0.75em; }
+      .section .form-plugin.form-plugin-hotel-reservation .col:last-child, .section .dialoge-button-row.form-plugin-hotel-reservation .col:last-child {
+        margin-bottom: 0; } }
+  .section .form-plugin.form-plugin-hotel-reservation .hotel-reservation-add-button:before, .section .dialoge-button-row.form-plugin-hotel-reservation .hotel-reservation-add-button:before {
+    content: "?";
+    font-family: FontAwesome;
+    margin-right: 0.75em; }
+  .section .form-plugin.form-plugin-hotel-reservation .hotel-reservation-remove-button:before, .section .dialoge-button-row.form-plugin-hotel-reservation .hotel-reservation-remove-button:before {
+    content: "?";
+    font-family: FontAwesome;
+    margin-right: 0.75em; }
+  .section .form-plugin.form-plugin-travel-reservation .form-plugin-table tbody td:first-child, .section .dialoge-button-row.form-plugin-travel-reservation .form-plugin-table tbody td:first-child {
+    width: 1%; }
+  .section .form-plugin.form-plugin-travel-reservation .form-plugin-table .outbound th, .section .form-plugin.form-plugin-travel-reservation .form-plugin-table .homebound th, .section .dialoge-button-row.form-plugin-travel-reservation .form-plugin-table .outbound th, .section .dialoge-button-row.form-plugin-travel-reservation .form-plugin-table .homebound th {
+    background: #c087a0;
+    color: white; }
+  .section .form-plugin.form-plugin-session-scheduler .session-subscribe-to-calendar-icon:before, .section .dialoge-button-row.form-plugin-session-scheduler .session-subscribe-to-calendar-icon:before {
+    content: "?";
+    font-family: FontAwesome;
+    margin-right: 0.75em; }
+  .section .form-plugin.form-plugin-session-scheduler .session-group-toggle-list .session-group-toggle-list-item, .section .dialoge-button-row.form-plugin-session-scheduler .session-group-toggle-list .session-group-toggle-list-item {
+    display: inline-block; }
+    .section .form-plugin.form-plugin-session-scheduler .session-group-toggle-list .session-group-toggle-list-item input, .section .dialoge-button-row.form-plugin-session-scheduler .session-group-toggle-list .session-group-toggle-list-item input {
+      display: none; }
+    .section .form-plugin.form-plugin-session-scheduler .session-group-toggle-list .session-group-toggle-list-item label, .section .dialoge-button-row.form-plugin-session-scheduler .session-group-toggle-list .session-group-toggle-list-item label {
+      cursor: pointer;
+      border: 2px solid #79A9B9;
+      color: #79A9B9;
+      padding: 0.5em;
+      display: inline-block;
+      border-radius: 8px;
+      margin-bottom: 0.375em; }
+    .section .form-plugin.form-plugin-session-scheduler .session-group-toggle-list .session-group-toggle-list-item input + label:before, .section .dialoge-button-row.form-plugin-session-scheduler .session-group-toggle-list .session-group-toggle-list-item input + label:before {
+      content: "\f070";
+      font-family: FontAwesome;
+      margin-right: 0.75em; }
+    .section .form-plugin.form-plugin-session-scheduler .session-group-toggle-list .session-group-toggle-list-item input:checked + label, .section .dialoge-button-row.form-plugin-session-scheduler .session-group-toggle-list .session-group-toggle-list-item input:checked + label {
+      color: white;
+      background: #79A9B9; }
+      .section .form-plugin.form-plugin-session-scheduler .session-group-toggle-list .session-group-toggle-list-item input:checked + label:before, .section .dialoge-button-row.form-plugin-session-scheduler .session-group-toggle-list .session-group-toggle-list-item input:checked + label:before {
+        content: "\f06e";
+        font-family: FontAwesome; }
+  .section .form-plugin.form-plugin-session-scheduler ul, .section .dialoge-button-row.form-plugin-session-scheduler ul {
+    list-style: none;
+    padding: 0;
+    margin: 0; }
+    .section .form-plugin.form-plugin-session-scheduler ul li, .section .dialoge-button-row.form-plugin-session-scheduler ul li {
+      padding-left: 0;
+      text-indent: 0; }
+      .section .form-plugin.form-plugin-session-scheduler ul li:before, .section .dialoge-button-row.form-plugin-session-scheduler ul li:before {
+        content: "";
+        margin-right: 0; }
+      .section .form-plugin.form-plugin-session-scheduler ul li ul, .section .form-plugin.form-plugin-session-scheduler ul li ol, .section .dialoge-button-row.form-plugin-session-scheduler ul li ul, .section .dialoge-button-row.form-plugin-session-scheduler ul li ol {
+        margin-bottom: 0; }
+  .section .form-plugin.form-plugin-session-scheduler .session, .section .dialoge-button-row.form-plugin-session-scheduler .session {
+    border-radius: 8px;
+    cursor: pointer;
+    background: white;
+    box-shadow: 0px 2px 0px #cccccc;
+    color: #6A6A6A; }
+    .section .form-plugin.form-plugin-session-scheduler .session .status:before, .section .dialoge-button-row.form-plugin-session-scheduler .session .status:before {
+      content: "?";
+      font-family: FontAwesome; }
+    .section .form-plugin.form-plugin-session-scheduler .session .session-title, .section .dialoge-button-row.form-plugin-session-scheduler .session .session-title {
+      padding: 0.375em;
+      font-weight: bold;
+      font-size: 1em;
+      color: #009FE2; }
+    .section .form-plugin.form-plugin-session-scheduler .session .session-section, .section .dialoge-button-row.form-plugin-session-scheduler .session .session-section {
+      padding: 0.375em;
+      font-size: 0.75em; }
+      .section .form-plugin.form-plugin-session-scheduler .session .session-section .session-section-item, .section .dialoge-button-row.form-plugin-session-scheduler .session .session-section .session-section-item {
+        display: inline-block;
+        margin-right: 0.375em; }
+        .section .form-plugin.form-plugin-session-scheduler .session .session-section .session-section-item *:before, .section .dialoge-button-row.form-plugin-session-scheduler .session .session-section .session-section-item *:before {
+          color: #6A6A6A; }
+        .section .form-plugin.form-plugin-session-scheduler .session .session-section .session-section-item a, .section .dialoge-button-row.form-plugin-session-scheduler .session .session-section .session-section-item a {
+          color: #6A6A6A;
+          text-decoration: underline; }
+    .section .form-plugin.form-plugin-session-scheduler .session .status, .section .dialoge-button-row.form-plugin-session-scheduler .session .status {
+      font-weight: 300;
+      white-space: nowrap;
+      font-size: 0.75em;
+      padding: 0 0.375em; }
+    .section .form-plugin.form-plugin-session-scheduler .session.full, .section .dialoge-button-row.form-plugin-session-scheduler .session.full {
+      background: #dcdcdc;
+      color: #6A6A6A;
+      box-shadow: 0px 2px 0px darkgray; }
+      .section .form-plugin.form-plugin-session-scheduler .session.full .status .queue-open, .section .dialoge-button-row.form-plugin-session-scheduler .session.full .status .queue-open {
+        font-size: 0.8em;
+        display: inline-block;
+        color: #6A6A6A;
+        background: #EBE0A2;
+        border-radius: 4px;
+        padding: 0.25em 0.375em; }
+      .section .form-plugin.form-plugin-session-scheduler .session.full .status:before, .section .dialoge-button-row.form-plugin-session-scheduler .session.full .status:before {
+        content: "?"; }
+      .section .form-plugin.form-plugin-session-scheduler .session.full .session-section, .section .form-plugin.form-plugin-session-scheduler .session.full .session-title, .section .dialoge-button-row.form-plugin-session-scheduler .session.full .session-section, .section .dialoge-button-row.form-plugin-session-scheduler .session.full .session-title {
+        color: #6A6A6A; }
+        .section .form-plugin.form-plugin-session-scheduler .session.full .session-section .session-section-item *:before, .section .form-plugin.form-plugin-session-scheduler .session.full .session-title .session-section-item *:before, .section .dialoge-button-row.form-plugin-session-scheduler .session.full .session-section .session-section-item *:before, .section .dialoge-button-row.form-plugin-session-scheduler .session.full .session-title .session-section-item *:before {
+          color: #6A6A6A; }
+        .section .form-plugin.form-plugin-session-scheduler .session.full .session-section .session-section-item a, .section .form-plugin.form-plugin-session-scheduler .session.full .session-title .session-section-item a, .section .dialoge-button-row.form-plugin-session-scheduler .session.full .session-section .session-section-item a, .section .dialoge-button-row.form-plugin-session-scheduler .session.full .session-title .session-section-item a {
+          color: #6A6A6A; }
+    .section .form-plugin.form-plugin-session-scheduler .session.full-queue-open, .section .dialoge-button-row.form-plugin-session-scheduler .session.full-queue-open {
+      background: #dcdcdc;
+      color: #6A6A6A;
+      box-shadow: 0px 2px 0px darkgray; }
+      .section .form-plugin.form-plugin-session-scheduler .session.full-queue-open .status .queue-open, .section .dialoge-button-row.form-plugin-session-scheduler .session.full-queue-open .status .queue-open {
+        font-size: 0.8em;
+        display: inline-block;
+        color: #6A6A6A;
+        background: #EBE0A2;
+        border-radius: 4px;
+        padding: 0.25em 0.375em; }
+      .section .form-plugin.form-plugin-session-scheduler .session.full-queue-open .status:before, .section .dialoge-button-row.form-plugin-session-scheduler .session.full-queue-open .status:before {
+        content: "?"; }
+      .section .form-plugin.form-plugin-session-scheduler .session.full-queue-open .session-section, .section .form-plugin.form-plugin-session-scheduler .session.full-queue-open .session-title, .section .dialoge-button-row.form-plugin-session-scheduler .session.full-queue-open .session-section, .section .dialoge-button-row.form-plugin-session-scheduler .session.full-queue-open .session-title {
+        color: #6A6A6A; }
+        .section .form-plugin.form-plugin-session-scheduler .session.full-queue-open .session-section .session-section-item *:before, .section .form-plugin.form-plugin-session-scheduler .session.full-queue-open .session-title .session-section-item *:before, .section .dialoge-button-row.form-plugin-session-scheduler .session.full-queue-open .session-section .session-section-item *:before, .section .dialoge-button-row.form-plugin-session-scheduler .session.full-queue-open .session-title .session-section-item *:before {
+          color: #6A6A6A; }
+        .section .form-plugin.form-plugin-session-scheduler .session.full-queue-open .session-section .session-section-item a, .section .form-plugin.form-plugin-session-scheduler .session.full-queue-open .session-title .session-section-item a, .section .dialoge-button-row.form-plugin-session-scheduler .session.full-queue-open .session-section .session-section-item a, .section .dialoge-button-row.form-plugin-session-scheduler .session.full-queue-open .session-title .session-section-item a {
+          color: #6A6A6A; }
+    .section .form-plugin.form-plugin-session-scheduler .session.attending, .section .dialoge-button-row.form-plugin-session-scheduler .session.attending {
+      background: #99B979;
+      color: white;
+      box-shadow: 0px 2px 0px #668646; }
+      .section .form-plugin.form-plugin-session-scheduler .session.attending .status:before, .section .dialoge-button-row.form-plugin-session-scheduler .session.attending .status:before {
+        content: "?"; }
+      .section .form-plugin.form-plugin-session-scheduler .session.attending .session-section, .section .form-plugin.form-plugin-session-scheduler .session.attending .session-title, .section .dialoge-button-row.form-plugin-session-scheduler .session.attending .session-section, .section .dialoge-button-row.form-plugin-session-scheduler .session.attending .session-title {
+        color: white; }
+        .section .form-plugin.form-plugin-session-scheduler .session.attending .session-section .session-section-item *:before, .section .form-plugin.form-plugin-session-scheduler .session.attending .session-title .session-section-item *:before, .section .dialoge-button-row.form-plugin-session-scheduler .session.attending .session-section .session-section-item *:before, .section .dialoge-button-row.form-plugin-session-scheduler .session.attending .session-title .session-section-item *:before {
+          color: white; }
+        .section .form-plugin.form-plugin-session-scheduler .session.attending .session-section .session-section-item a, .section .form-plugin.form-plugin-session-scheduler .session.attending .session-title .session-section-item a, .section .dialoge-button-row.form-plugin-session-scheduler .session.attending .session-section .session-section-item a, .section .dialoge-button-row.form-plugin-session-scheduler .session.attending .session-title .session-section-item a {
+          color: white; }
+    .section .form-plugin.form-plugin-session-scheduler .session.in-queue, .section .dialoge-button-row.form-plugin-session-scheduler .session.in-queue {
+      background: #EBE0A2;
+      color: #6A6A6A;
+      box-shadow: 0px 2px 0px #d9c44e; }
+      .section .form-plugin.form-plugin-session-scheduler .session.in-queue .status:before, .section .dialoge-button-row.form-plugin-session-scheduler .session.in-queue .status:before {
+        content: "?"; }
+      .section .form-plugin.form-plugin-session-scheduler .session.in-queue .session-section, .section .form-plugin.form-plugin-session-scheduler .session.in-queue .session-title, .section .dialoge-button-row.form-plugin-session-scheduler .session.in-queue .session-section, .section .dialoge-button-row.form-plugin-session-scheduler .session.in-queue .session-title {
+        color: #6A6A6A; }
+        .section .form-plugin.form-plugin-session-scheduler .session.in-queue .session-section .session-section-item *:before, .section .form-plugin.form-plugin-session-scheduler .session.in-queue .session-title .session-section-item *:before, .section .dialoge-button-row.form-plugin-session-scheduler .session.in-queue .session-section .session-section-item *:before, .section .dialoge-button-row.form-plugin-session-scheduler .session.in-queue .session-title .session-section-item *:before {
+          color: #6A6A6A; }
+        .section .form-plugin.form-plugin-session-scheduler .session.in-queue .session-section .session-section-item a, .section .form-plugin.form-plugin-session-scheduler .session.in-queue .session-title .session-section-item a, .section .dialoge-button-row.form-plugin-session-scheduler .session.in-queue .session-section .session-section-item a, .section .dialoge-button-row.form-plugin-session-scheduler .session.in-queue .session-title .session-section-item a {
+          color: #6A6A6A; }
+    .section .form-plugin.form-plugin-session-scheduler .session.rsvp-ended, .section .dialoge-button-row.form-plugin-session-scheduler .session.rsvp-ended {
+      background: #dcdcdc;
+      color: #6A6A6A;
+      box-shadow: 0px 2px 0px darkgray; }
+      .section .form-plugin.form-plugin-session-scheduler .session.rsvp-ended .status:before, .section .dialoge-button-row.form-plugin-session-scheduler .session.rsvp-ended .status:before {
+        content: "?"; }
+      .section .form-plugin.form-plugin-session-scheduler .session.rsvp-ended .session-section, .section .form-plugin.form-plugin-session-scheduler .session.rsvp-ended .session-title, .section .dialoge-button-row.form-plugin-session-scheduler .session.rsvp-ended .session-section, .section .dialoge-button-row.form-plugin-session-scheduler .session.rsvp-ended .session-title {
+        color: #6A6A6A; }
+        .section .form-plugin.form-plugin-session-scheduler .session.rsvp-ended .session-section .session-section-item *:before, .section .form-plugin.form-plugin-session-scheduler .session.rsvp-ended .session-title .session-section-item *:before, .section .dialoge-button-row.form-plugin-session-scheduler .session.rsvp-ended .session-section .session-section-item *:before, .section .dialoge-button-row.form-plugin-session-scheduler .session.rsvp-ended .session-title .session-section-item *:before {
+          color: #6A6A6A; }
+        .section .form-plugin.form-plugin-session-scheduler .session.rsvp-ended .session-section .session-section-item a, .section .form-plugin.form-plugin-session-scheduler .session.rsvp-ended .session-title .session-section-item a, .section .dialoge-button-row.form-plugin-session-scheduler .session.rsvp-ended .session-section .session-section-item a, .section .dialoge-button-row.form-plugin-session-scheduler .session.rsvp-ended .session-title .session-section-item a {
+          color: #6A6A6A; }
+    .section .form-plugin.form-plugin-session-scheduler .session.time-conflict, .section .dialoge-button-row.form-plugin-session-scheduler .session.time-conflict {
+      background: #dcdcdc;
+      color: #6A6A6A;
+      box-shadow: 0px 2px 0px darkgray; }
+      .section .form-plugin.form-plugin-session-scheduler .session.time-conflict .status:before, .section .dialoge-button-row.form-plugin-session-scheduler .session.time-conflict .status:before {
+        content: "?"; }
+      .section .form-plugin.form-plugin-session-scheduler .session.time-conflict .session-section, .section .form-plugin.form-plugin-session-scheduler .session.time-conflict .session-title, .section .dialoge-button-row.form-plugin-session-scheduler .session.time-conflict .session-section, .section .dialoge-button-row.form-plugin-session-scheduler .session.time-conflict .session-title {
+        color: #6A6A6A; }
+        .section .form-plugin.form-plugin-session-scheduler .session.time-conflict .session-section .session-section-item *:before, .section .form-plugin.form-plugin-session-scheduler .session.time-conflict .session-title .session-section-item *:before, .section .dialoge-button-row.form-plugin-session-scheduler .session.time-conflict .session-section .session-section-item *:before, .section .dialoge-button-row.form-plugin-session-scheduler .session.time-conflict .session-title .session-section-item *:before {
+          color: #6A6A6A; }
+        .section .form-plugin.form-plugin-session-scheduler .session.time-conflict .session-section .session-section-item a, .section .form-plugin.form-plugin-session-scheduler .session.time-conflict .session-title .session-section-item a, .section .dialoge-button-row.form-plugin-session-scheduler .session.time-conflict .session-section .session-section-item a, .section .dialoge-button-row.form-plugin-session-scheduler .session.time-conflict .session-title .session-section-item a {
+          color: #6A6A6A; }
+  .section .form-plugin.form-plugin-session-scheduler .session-details .session-description, .section .dialoge-button-row.form-plugin-session-scheduler .session-details .session-description {
+    margin: 0.8em 0; }
+  .section .form-plugin.form-plugin-session-scheduler .session-details .status.full:before, .section .dialoge-button-row.form-plugin-session-scheduler .session-details .status.full:before {
+    content: "?";
+    font-family: FontAwesome; }
+  .section .form-plugin.form-plugin-session-scheduler .session-details .status.rsvp-deadline:before, .section .dialoge-button-row.form-plugin-session-scheduler .session-details .status.rsvp-deadline:before {
+    content: "?";
+    font-family: FontAwesome; }
+  .section .form-plugin.form-plugin-session-scheduler .session-details .status.time-conflict:before, .section .dialoge-button-row.form-plugin-session-scheduler .session-details .status.time-conflict:before {
+    content: "?";
+    font-family: FontAwesome; }
+  .section .form-plugin.form-plugin-session-scheduler .session-details .session-detail-title, .section .dialoge-button-row.form-plugin-session-scheduler .session-details .session-detail-title {
+    margin-bottom: 0; }
+  .section .form-plugin.form-plugin-session-scheduler .session-details .switch-wrapper .switch, .section .dialoge-button-row.form-plugin-session-scheduler .session-details .switch-wrapper .switch {
+    position: relative;
+    display: inline-block;
+    float: left;
+    width: 4.5em;
+    height: 2.5em;
+    margin-right: 0.75em; }
+    .section .form-plugin.form-plugin-session-scheduler .session-details .switch-wrapper .switch input, .section .dialoge-button-row.form-plugin-session-scheduler .session-details .switch-wrapper .switch input {
+      display: none; }
+  .section .form-plugin.form-plugin-session-scheduler .session-details .switch-wrapper .disabled .slider, .section .dialoge-button-row.form-plugin-session-scheduler .session-details .switch-wrapper .disabled .slider {
+    cursor: not-allowed; }
+  .section .form-plugin.form-plugin-session-scheduler .session-details .switch-wrapper .attending input:checked + .slider, .section .dialoge-button-row.form-plugin-session-scheduler .session-details .switch-wrapper .attending input:checked + .slider {
+    background-color: #99B979; }
+  .section .form-plugin.form-plugin-session-scheduler .session-details .switch-wrapper .attending input:focus + .slider, .section .dialoge-button-row.form-plugin-session-scheduler .session-details .switch-wrapper .attending input:focus + .slider {
+    box-shadow: 0 0 1px #99B979; }
+  .section .form-plugin.form-plugin-session-scheduler .session-details .switch-wrapper .in-queue input:checked + .slider, .section .form-plugin.form-plugin-session-scheduler .session-details .switch-wrapper .full-queue-open input:checked + .slider, .section .dialoge-button-row.form-plugin-session-scheduler .session-details .switch-wrapper .in-queue input:checked + .slider, .section .dialoge-button-row.form-plugin-session-scheduler .session-details .switch-wrapper .full-queue-open input:checked + .slider {
+    background-color: #EBE0A2; }
+  .section .form-plugin.form-plugin-session-scheduler .session-details .switch-wrapper .in-queue input:focus + .slider, .section .form-plugin.form-plugin-session-scheduler .session-details .switch-wrapper .full-queue-open input:focus + .slider, .section .dialoge-button-row.form-plugin-session-scheduler .session-details .switch-wrapper .in-queue input:focus + .slider, .section .dialoge-button-row.form-plugin-session-scheduler .session-details .switch-wrapper .full-queue-open input:focus + .slider {
+    box-shadow: 0 0 1px #EBE0A2; }
+  .section .form-plugin.form-plugin-session-scheduler .session-details .switch-wrapper .disabled input:checked + .slider, .section .dialoge-button-row.form-plugin-session-scheduler .session-details .switch-wrapper .disabled input:checked + .slider {
+    background-color: #dcdcdc; }
+  .section .form-plugin.form-plugin-session-scheduler .session-details .switch-wrapper .disabled .slider:before, .section .dialoge-button-row.form-plugin-session-scheduler .session-details .switch-wrapper .disabled .slider:before {
+    background-color: #f4f4f4; }
+  .section .form-plugin.form-plugin-session-scheduler .session-details .switch-wrapper .disabled input:focus + .slider, .section .dialoge-button-row.form-plugin-session-scheduler .session-details .switch-wrapper .disabled input:focus + .slider {
+    box-shadow: 0 0 1px #dcdcdc; }
+  .section .form-plugin.form-plugin-session-scheduler .session-details .switch-wrapper .session-slider-label, .section .dialoge-button-row.form-plugin-session-scheduler .session-details .switch-wrapper .session-slider-label {
+    font-size: 1.5em;
+    padding-top: 0.25em;
+    display: inline-block;
+    cursor: pointer; }
+  .section .form-plugin.form-plugin-request-login .form-question, .section .dialoge-button-row.form-plugin-request-login .form-question {
+    margin-bottom: 0; }
+  .section .form-plugin.form-plugin-email-password-verification .email-password-verification-password-label, .section .dialoge-button-row.form-plugin-email-password-verification .email-password-verification-password-label {
+    margin-top: 0.5em; }
+  .section .form-plugin.form-plugin-email-password-verification .form-question:last-of-type, .section .dialoge-button-row.form-plugin-email-password-verification .form-question:last-of-type {
+    margin-bottom: 0; }
+  .section .bg-color1, .section #agenda .shared-agenda, #agenda .section .shared-agenda {
+    background: #7C5578;
+    color: white; }
+  .section .bg-gradient-color1 {
+    background: linear-gradient(#996b95 0%, #674764 100%);
+    color: white; }
+  .section .text-color1 {
+    color: #7C5578; }
+  .section label.bg-color1, .section #agenda label.shared-agenda, #agenda .section label.shared-agenda {
+    color: white;
+    background: #7C5578; }
+  .section a.label.bg-color1, .section #agenda a.label.shared-agenda, #agenda .section a.label.shared-agenda {
+    color: white;
+    background: #7C5578; }
+    .section a.label.bg-color1:hover, .section #agenda a.label.shared-agenda:hover, #agenda .section a.label.shared-agenda:hover {
+      color: white;
+      background: #674764; }
+  .section .button.button-color1, .section button.button-color1, .section .form-plugin .button-color1.form-plugin-button, #dialoge .dialogue-content .dialoge-button-row .section .form-plugin button.button-color1, .section .dialoge-button-row .button-color1.form-plugin-button, .section #dialoge .dialogue-content .dialoge-button-row button.button-color1, #dialoge .dialogue-content .section .dialoge-button-row button.button-color1 {
+    color: white;
+    background: #7C5578;
+    border: 2px solid #674764; }
+    .section .button.button-color1:hover, .section button.button-color1:hover, .section .form-plugin .button-color1.form-plugin-button:hover, #dialoge .dialogue-content .dialoge-button-row .section .form-plugin button.button-color1:hover, .section .dialoge-button-row .button-color1.form-plugin-button:hover, .section #dialoge .dialogue-content .dialoge-button-row button.button-color1:hover, #dialoge .dialogue-content .section .dialoge-button-row button.button-color1:hover {
+      color: white;
+      background: #674764;
+      border: 2px solid #52384f; }
+  .section .button.button-gradient-color1, .section button.button-gradient-color1, .section .form-plugin .button-gradient-color1.form-plugin-button, #dialoge .dialogue-content .dialoge-button-row .section .form-plugin button.button-gradient-color1, .section .dialoge-button-row .button-gradient-color1.form-plugin-button, .section #dialoge .dialogue-content .dialoge-button-row button.button-gradient-color1, #dialoge .dialogue-content .section .dialoge-button-row button.button-gradient-color1 {
+    color: white;
+    background: linear-gradient(#996b95 0%, #674764 100%);
+    border: 2px solid #674764; }
+    .section .button.button-gradient-color1:hover, .section button.button-gradient-color1:hover, .section .form-plugin .button-gradient-color1.form-plugin-button:hover, #dialoge .dialogue-content .dialoge-button-row .section .form-plugin button.button-gradient-color1:hover, .section .dialoge-button-row .button-gradient-color1.form-plugin-button:hover, .section #dialoge .dialogue-content .dialoge-button-row button.button-gradient-color1:hover, #dialoge .dialogue-content .section .dialoge-button-row button.button-gradient-color1:hover {
+      color: white;
+      background: linear-gradient(#7C5578 0%, #52384f 100%);
+      border: 2px solid #52384f; }
+  .section ul.list-color1 li:before, .section ol.list-color1 li:before {
+    color: #7C5578; }
+  .section table.table-color1 thead {
+    color: #7C5578;
+    border-bottom: 2px solid #7C5578; }
+  .section table.table-color1 tfoot {
+    border-top: 2px solid #7C5578; }
+  .section table.lines.table-color1 th, .section table.lines.table-color1 tfoot td {
+    background: #7C5578;
+    color: white;
+    border: 2px solid #674764; }
+  .section table.lines.table-color1 td {
+    border: 2px solid #E0E0E0; }
+  .section table.polka-stripes.table-color1 th, .section table.polka-stripes.table-color1 tfoot td {
+    background: #7C5578;
+    color: white;
+    border: 2px solid #674764; }
+  .section table.polka-stripes.table-color1 tbody td:first-child {
+    border-left: 2px solid #674764; }
+  .section table.polka-stripes.table-color1 tbody td:last-child {
+    border-right: 2px solid #674764; }
+  .section table.polka-stripes.table-color1 tbody tr:last-child td {
+    border-bottom: 2px solid #674764; }
+  .section table.polka-stripes.table-color1 tbody tr:nth-child(even) td {
+    background: #d5c2d3;
+    color: #6A6A6A; }
+  .section fieldset.fieldset-color1 {
+    border: 2px solid #7C5578; }
+  .section .bg-color2 {
+    background: #AE6686;
+    color: white; }
+  .section .bg-gradient-color2 {
+    background: linear-gradient(#bc809b 0%, #964f6f 100%);
+    color: white; }
+  .section .text-color2 {
+    color: #AE6686; }
+  .section label.bg-color2 {
+    color: white;
+    background: #AE6686; }
+  .section a.label.bg-color2 {
+    color: white;
+    background: #AE6686; }
+    .section a.label.bg-color2:hover {
+      color: white;
+      background: #964f6f; }
+  .section .button.button-color2, .section button.button-color2, .section .form-plugin .button-color2.form-plugin-button, #dialoge .dialogue-content .dialoge-button-row .section .form-plugin button.button-color2, .section .dialoge-button-row .button-color2.form-plugin-button, .section #dialoge .dialogue-content .dialoge-button-row button.button-color2, #dialoge .dialogue-content .section .dialoge-button-row button.button-color2 {
+    color: white;
+    background: #AE6686;
+    border: 2px solid #964f6f; }
+    .section .button.button-color2:hover, .section button.button-color2:hover, .section .form-plugin .button-color2.form-plugin-button:hover, #dialoge .dialogue-content .dialoge-button-row .section .form-plugin button.button-color2:hover, .section .dialoge-button-row .button-color2.form-plugin-button:hover, .section #dialoge .dialogue-content .dialoge-button-row button.button-color2:hover, #dialoge .dialogue-content .section .dialoge-button-row button.button-color2:hover {
+      color: white;
+      background: #964f6f;
+      border: 2px solid #773f58; }
+  .section .button.button-gradient-color2, .section button.button-gradient-color2, .section .form-plugin .button-gradient-color2.form-plugin-button, #dialoge .dialogue-content .dialoge-button-row .section .form-plugin button.button-gradient-color2, .section .dialoge-button-row .button-gradient-color2.form-plugin-button, .section #dialoge .dialogue-content .dialoge-button-row button.button-gradient-color2, #dialoge .dialogue-content .section .dialoge-button-row button.button-gradient-color2 {
+    color: white;
+    background: linear-gradient(#bc809b 0%, #964f6f 100%);
+    border: 2px solid #964f6f; }
+    .section .button.button-gradient-color2:hover, .section button.button-gradient-color2:hover, .section .form-plugin .button-gradient-color2.form-plugin-button:hover, #dialoge .dialogue-content .dialoge-button-row .section .form-plugin button.button-gradient-color2:hover, .section .dialoge-button-row .button-gradient-color2.form-plugin-button:hover, .section #dialoge .dialogue-content .dialoge-button-row button.button-gradient-color2:hover, #dialoge .dialogue-content .section .dialoge-button-row button.button-gradient-color2:hover {
+      color: white;
+      background: linear-gradient(#AE6686 0%, #773f58 100%);
+      border: 2px solid #773f58; }
+  .section ul.list-color2 li:before, .section ol.list-color2 li:before {
+    color: #AE6686; }
+  .section table.table-color2 thead {
+    color: #AE6686;
+    border-bottom: 2px solid #AE6686; }
+  .section table.table-color2 tfoot {
+    border-top: 2px solid #AE6686; }
+  .section table.lines.table-color2 th, .section table.lines.table-color2 tfoot td {
+    background: #AE6686;
+    color: white;
+    border: 2px solid #964f6f; }
+  .section table.lines.table-color2 td {
+    border: 2px solid #E0E0E0; }
+  .section table.polka-stripes.table-color2 th, .section table.polka-stripes.table-color2 tfoot td {
+    background: #AE6686;
+    color: white;
+    border: 2px solid #964f6f; }
+  .section table.polka-stripes.table-color2 tbody td:first-child {
+    border-left: 2px solid #964f6f; }
+  .section table.polka-stripes.table-color2 tbody td:last-child {
+    border-right: 2px solid #964f6f; }
+  .section table.polka-stripes.table-color2 tbody tr:last-child td {
+    border-bottom: 2px solid #964f6f; }
+  .section table.polka-stripes.table-color2 tbody tr:nth-child(even) td {
+    background: #e3cbd6;
+    color: #6A6A6A; }
+  .section fieldset.fieldset-color2 {
+    border: 2px solid #AE6686; }
+  .section .bg-color3 {
+    background: #D8A479;
+    color: #6A6A6A; }
+  .section .bg-gradient-color3 {
+    background: linear-gradient(#dfb390 0%, #cb864d 100%);
+    color: #6A6A6A; }
+  .section .text-color3 {
+    color: #D8A479; }
+  .section label.bg-color3 {
+    color: #6A6A6A;
+    background: #D8A479; }
+  .section a.label.bg-color3 {
+    color: #6A6A6A;
+    background: #D8A479; }
+    .section a.label.bg-color3:hover {
+      color: white;
+      background: #cb864d; }
+  .section .button.button-color3, .section button.button-color3, .section .form-plugin .button-color3.form-plugin-button, #dialoge .dialogue-content .dialoge-button-row .section .form-plugin button.button-color3, .section .dialoge-button-row .button-color3.form-plugin-button, .section #dialoge .dialogue-content .dialoge-button-row button.button-color3, #dialoge .dialogue-content .section .dialoge-button-row button.button-color3 {
+    color: #6A6A6A;
+    background: #D8A479;
+    border: 2px solid #cb864d; }
+    .section .button.button-color3:hover, .section button.button-color3:hover, .section .form-plugin .button-color3.form-plugin-button:hover, #dialoge .dialogue-content .dialoge-button-row .section .form-plugin button.button-color3:hover, .section .dialoge-button-row .button-color3.form-plugin-button:hover, .section #dialoge .dialogue-content .dialoge-button-row button.button-color3:hover, #dialoge .dialogue-content .section .dialoge-button-row button.button-color3:hover {
+      color: white;
+      background: #cb864d;
+      border: 2px solid #ac6932; }
+  .section .button.button-gradient-color3, .section button.button-gradient-color3, .section .form-plugin .button-gradient-color3.form-plugin-button, #dialoge .dialogue-content .dialoge-button-row .section .form-plugin button.button-gradient-color3, .section .dialoge-button-row .button-gradient-color3.form-plugin-button, .section #dialoge .dialogue-content .dialoge-button-row button.button-gradient-color3, #dialoge .dialogue-content .section .dialoge-button-row button.button-gradient-color3 {
+    color: #6A6A6A;
+    background: linear-gradient(#dfb390 0%, #cb864d 100%);
+    border: 2px solid #cb864d; }
+    .section .button.button-gradient-color3:hover, .section button.button-gradient-color3:hover, .section .form-plugin .button-gradient-color3.form-plugin-button:hover, #dialoge .dialogue-content .dialoge-button-row .section .form-plugin button.button-gradient-color3:hover, .section .dialoge-button-row .button-gradient-color3.form-plugin-button:hover, .section #dialoge .dialogue-content .dialoge-button-row button.button-gradient-color3:hover, #dialoge .dialogue-content .section .dialoge-button-row button.button-gradient-color3:hover {
+      color: white;
+      background: linear-gradient(#D8A479 0%, #ac6932 100%);
+      border: 2px solid #ac6932; }
+  .section ul.list-color3 li:before, .section ol.list-color3 li:before {
+    color: #D8A479; }
+  .section table.table-color3 thead {
+    color: #D8A479;
+    border-bottom: 2px solid #D8A479; }
+  .section table.table-color3 tfoot {
+    border-top: 2px solid #D8A479; }
+  .section table.lines.table-color3 th, .section table.lines.table-color3 tfoot td {
+    background: #D8A479;
+    color: #6A6A6A;
+    border: 2px solid #cb864d; }
+  .section table.lines.table-color3 td {
+    border: 2px solid #E0E0E0; }
+  .section table.polka-stripes.table-color3 th, .section table.polka-stripes.table-color3 tfoot td {
+    background: #D8A479;
+    color: #6A6A6A;
+    border: 2px solid #cb864d; }
+  .section table.polka-stripes.table-color3 tbody td:first-child {
+    border-left: 2px solid #cb864d; }
+  .section table.polka-stripes.table-color3 tbody td:last-child {
+    border-right: 2px solid #cb864d; }
+  .section table.polka-stripes.table-color3 tbody tr:last-child td {
+    border-bottom: 2px solid #cb864d; }
+  .section table.polka-stripes.table-color3 tbody tr:nth-child(even) td {
+    background: #f2e0d1;
+    color: #6A6A6A; }
+  .section fieldset.fieldset-color3 {
+    border: 2px solid #D8A479; }
+  .section .bg-color4 {
+    background: #EBE0A2;
+    color: #6A6A6A; }
+  .section .bg-gradient-color4 {
+    background: linear-gradient(#eee5b2 0%, #dfcd6a 100%);
+    color: #6A6A6A; }
+  .section .text-color4 {
+    color: #EBE0A2; }
+  .section label.bg-color4 {
+    color: #6A6A6A;
+    background: #EBE0A2; }
+  .section a.label.bg-color4 {
+    color: #6A6A6A;
+    background: #EBE0A2; }
+    .section a.label.bg-color4:hover {
+      color: white;
+      background: #dfcd6a; }
+  .section .button.button-color4, .section button.button-color4, .section .form-plugin .button-color4.form-plugin-button, #dialoge .dialogue-content .dialoge-button-row .section .form-plugin button.button-color4, .section .dialoge-button-row .button-color4.form-plugin-button, .section #dialoge .dialogue-content .dialoge-button-row button.button-color4, #dialoge .dialogue-content .section .dialoge-button-row button.button-color4 {
+    color: #6A6A6A;
+    background: #EBE0A2;
+    border: 2px solid #dfcd6a; }
+    .section .button.button-color4:hover, .section button.button-color4:hover, .section .form-plugin .button-color4.form-plugin-button:hover, #dialoge .dialogue-content .dialoge-button-row .section .form-plugin button.button-color4:hover, .section .dialoge-button-row .button-color4.form-plugin-button:hover, .section #dialoge .dialogue-content .dialoge-button-row button.button-color4:hover, #dialoge .dialogue-content .section .dialoge-button-row button.button-color4:hover {
+      color: white;
+      background: #dfcd6a;
+      border: 2px solid #d3bb33; }
+  .section .button.button-gradient-color4, .section button.button-gradient-color4, .section .form-plugin .button-gradient-color4.form-plugin-button, #dialoge .dialogue-content .dialoge-button-row .section .form-plugin button.button-gradient-color4, .section .dialoge-button-row .button-gradient-color4.form-plugin-button, .section #dialoge .dialogue-content .dialoge-button-row button.button-gradient-color4, #dialoge .dialogue-content .section .dialoge-button-row button.button-gradient-color4 {
+    color: #6A6A6A;
+    background: linear-gradient(#eee5b2 0%, #dfcd6a 100%);
+    border: 2px solid #dfcd6a; }
+    .section .button.button-gradient-color4:hover, .section button.button-gradient-color4:hover, .section .form-plugin .button-gradient-color4.form-plugin-button:hover, #dialoge .dialogue-content .dialoge-button-row .section .form-plugin button.button-gradient-color4:hover, .section .dialoge-button-row .button-gradient-color4.form-plugin-button:hover, .section #dialoge .dialogue-content .dialoge-button-row button.button-gradient-color4:hover, #dialoge .dialogue-content .section .dialoge-button-row button.button-gradient-color4:hover {
+      color: white;
+      background: linear-gradient(#EBE0A2 0%, #d3bb33 100%);
+      border: 2px solid #d3bb33; }
+  .section ul.list-color4 li:before, .section ol.list-color4 li:before {
+    color: #EBE0A2; }
+  .section table.table-color4 thead {
+    color: #EBE0A2;
+    border-bottom: 2px solid #EBE0A2; }
+  .section table.table-color4 tfoot {
+    border-top: 2px solid #EBE0A2; }
+  .section table.lines.table-color4 th, .section table.lines.table-color4 tfoot td {
+    background: #EBE0A2;
+    color: #6A6A6A;
+    border: 2px solid #dfcd6a; }
+  .section table.lines.table-color4 td {
+    border: 2px solid #E0E0E0; }
+  .section table.polka-stripes.table-color4 th, .section table.polka-stripes.table-color4 tfoot td {
+    background: #EBE0A2;
+    color: #6A6A6A;
+    border: 2px solid #dfcd6a; }
+  .section table.polka-stripes.table-color4 tbody td:first-child {
+    border-left: 2px solid #dfcd6a; }
+  .section table.polka-stripes.table-color4 tbody td:last-child {
+    border-right: 2px solid #dfcd6a; }
+  .section table.polka-stripes.table-color4 tbody tr:last-child td {
+    border-bottom: 2px solid #dfcd6a; }
+  .section table.polka-stripes.table-color4 tbody tr:nth-child(even) td {
+    background: #f8f4df;
+    color: #6A6A6A; }
+  .section fieldset.fieldset-color4 {
+    border: 2px solid #EBE0A2; }
+  .section .bg-color5 {
+    background: #B7B0A9;
+    color: #6A6A6A; }
+  .section .bg-gradient-color5 {
+    background: linear-gradient(#c3bdb8 0%, #9c9288 100%);
+    color: #6A6A6A; }
+  .section .text-color5 {
+    color: #B7B0A9; }
+  .section label.bg-color5 {
+    color: #6A6A6A;
+    background: #B7B0A9; }
+  .section a.label.bg-color5 {
+    color: #6A6A6A;
+    background: #B7B0A9; }
+    .section a.label.bg-color5:hover {
+      color: white;
+      background: #9c9288; }
+  .section .button.button-color5, .section button.button-color5, .section .form-plugin .button-color5.form-plugin-button, #dialoge .dialogue-content .dialoge-button-row .section .form-plugin button.button-color5, .section .dialoge-button-row .button-color5.form-plugin-button, .section #dialoge .dialogue-content .dialoge-button-row button.button-color5, #dialoge .dialogue-content .section .dialoge-button-row button.button-color5 {
+    color: #6A6A6A;
+    background: #B7B0A9;
+    border: 2px solid #9c9288; }
+    .section .button.button-color5:hover, .section button.button-color5:hover, .section .form-plugin .button-color5.form-plugin-button:hover, #dialoge .dialogue-content .dialoge-button-row .section .form-plugin button.button-color5:hover, .section .dialoge-button-row .button-color5.form-plugin-button:hover, .section #dialoge .dialogue-content .dialoge-button-row button.button-color5:hover, #dialoge .dialogue-content .section .dialoge-button-row button.button-color5:hover {
+      color: white;
+      background: #9c9288;
+      border: 2px solid #7e746a; }
+  .section .button.button-gradient-color5, .section button.button-gradient-color5, .section .form-plugin .button-gradient-color5.form-plugin-button, #dialoge .dialogue-content .dialoge-button-row .section .form-plugin button.button-gradient-color5, .section .dialoge-button-row .button-gradient-color5.form-plugin-button, .section #dialoge .dialogue-content .dialoge-button-row button.button-gradient-color5, #dialoge .dialogue-content .section .dialoge-button-row button.button-gradient-color5 {
+    color: #6A6A6A;
+    background: linear-gradient(#c3bdb8 0%, #9c9288 100%);
+    border: 2px solid #9c9288; }
+    .section .button.button-gradient-color5:hover, .section button.button-gradient-color5:hover, .section .form-plugin .button-gradient-color5.form-plugin-button:hover, #dialoge .dialogue-content .dialoge-button-row .section .form-plugin button.button-gradient-color5:hover, .section .dialoge-button-row .button-gradient-color5.form-plugin-button:hover, .section #dialoge .dialogue-content .dialoge-button-row button.button-gradient-color5:hover, #dialoge .dialogue-content .section .dialoge-button-row button.button-gradient-color5:hover {
+      color: white;
+      background: linear-gradient(#B7B0A9 0%, #7e746a 100%);
+      border: 2px solid #7e746a; }
+  .section ul.list-color5 li:before, .section ol.list-color5 li:before {
+    color: #B7B0A9; }
+  .section table.table-color5 thead {
+    color: #B7B0A9;
+    border-bottom: 2px solid #B7B0A9; }
+  .section table.table-color5 tfoot {
+    border-top: 2px solid #B7B0A9; }
+  .section table.lines.table-color5 th, .section table.lines.table-color5 tfoot td {
+    background: #B7B0A9;
+    color: #6A6A6A;
+    border: 2px solid #9c9288; }
+  .section table.lines.table-color5 td {
+    border: 2px solid #E0E0E0; }
+  .section table.polka-stripes.table-color5 th, .section table.polka-stripes.table-color5 tfoot td {
+    background: #B7B0A9;
+    color: #6A6A6A;
+    border: 2px solid #9c9288; }
+  .section table.polka-stripes.table-color5 tbody td:first-child {
+    border-left: 2px solid #9c9288; }
+  .section table.polka-stripes.table-color5 tbody td:last-child {
+    border-right: 2px solid #9c9288; }
+  .section table.polka-stripes.table-color5 tbody tr:last-child td {
+    border-bottom: 2px solid #9c9288; }
+  .section table.polka-stripes.table-color5 tbody tr:nth-child(even) td {
+    background: #e7e4e2;
+    color: #6A6A6A; }
+  .section fieldset.fieldset-color5 {
+    border: 2px solid #B7B0A9; }
+  .section .bg-color6 {
+    background: #E9E7D7;
+    color: #6A6A6A; }
+  .section .bg-gradient-color6 {
+    background: linear-gradient(#edebde 0%, #cecaa6 100%);
+    color: #6A6A6A; }
+  .section .text-color6 {
+    color: #E9E7D7; }
+  .section label.bg-color6 {
+    color: #6A6A6A;
+    background: #E9E7D7; }
+  .section a.label.bg-color6 {
+    color: #6A6A6A;
+    background: #E9E7D7; }
+    .section a.label.bg-color6:hover {
+      color: #6A6A6A;
+      background: #cecaa6; }
+  .section .button.button-color6, .section button.button-color6, .section .form-plugin .button-color6.form-plugin-button, #dialoge .dialogue-content .dialoge-button-row .section .form-plugin button.button-color6, .section .dialoge-button-row .button-color6.form-plugin-button, .section #dialoge .dialogue-content .dialoge-button-row button.button-color6, #dialoge .dialogue-content .section .dialoge-button-row button.button-color6 {
+    color: #6A6A6A;
+    background: #E9E7D7;
+    border: 2px solid #cecaa6; }
+    .section .button.button-color6:hover, .section button.button-color6:hover, .section .form-plugin .button-color6.form-plugin-button:hover, #dialoge .dialogue-content .dialoge-button-row .section .form-plugin button.button-color6:hover, .section .dialoge-button-row .button-color6.form-plugin-button:hover, .section #dialoge .dialogue-content .dialoge-button-row button.button-color6:hover, #dialoge .dialogue-content .section .dialoge-button-row button.button-color6:hover {
+      color: #6A6A6A;
+      background: #cecaa6;
+      border: 2px solid #b3ac75; }
+  .section .button.button-gradient-color6, .section button.button-gradient-color6, .section .form-plugin .button-gradient-color6.form-plugin-button, #dialoge .dialogue-content .dialoge-button-row .section .form-plugin button.button-gradient-color6, .section .dialoge-button-row .button-gradient-color6.form-plugin-button, .section #dialoge .dialogue-content .dialoge-button-row button.button-gradient-color6, #dialoge .dialogue-content .section .dialoge-button-row button.button-gradient-color6 {
+    color: #6A6A6A;
+    background: linear-gradient(#edebde 0%, #cecaa6 100%);
+    border: 2px solid #cecaa6; }
+    .section .button.button-gradient-color6:hover, .section button.button-gradient-color6:hover, .section .form-plugin .button-gradient-color6.form-plugin-button:hover, #dialoge .dialogue-content .dialoge-button-row .section .form-plugin button.button-gradient-color6:hover, .section .dialoge-button-row .button-gradient-color6.form-plugin-button:hover, .section #dialoge .dialogue-content .dialoge-button-row button.button-gradient-color6:hover, #dialoge .dialogue-content .section .dialoge-button-row button.button-gradient-color6:hover {
+      color: white;
+      background: linear-gradient(#E9E7D7 0%, #b3ac75 100%);
+      border: 2px solid #b3ac75; }
+  .section ul.list-color6 li:before, .section ol.list-color6 li:before {
+    color: #E9E7D7; }
+  .section table.table-color6 thead {
+    color: #E9E7D7;
+    border-bottom: 2px solid #E9E7D7; }
+  .section table.table-color6 tfoot {
+    border-top: 2px solid #E9E7D7; }
+  .section table.lines.table-color6 th, .section table.lines.table-color6 tfoot td {
+    background: #E9E7D7;
+    color: #6A6A6A;
+    border: 2px solid #cecaa6; }
+  .section table.lines.table-color6 td {
+    border: 2px solid #E0E0E0; }
+  .section table.polka-stripes.table-color6 th, .section table.polka-stripes.table-color6 tfoot td {
+    background: #E9E7D7;
+    color: #6A6A6A;
+    border: 2px solid #cecaa6; }
+  .section table.polka-stripes.table-color6 tbody td:first-child {
+    border-left: 2px solid #cecaa6; }
+  .section table.polka-stripes.table-color6 tbody td:last-child {
+    border-right: 2px solid #cecaa6; }
+  .section table.polka-stripes.table-color6 tbody tr:last-child td {
+    border-bottom: 2px solid #cecaa6; }
+  .section table.polka-stripes.table-color6 tbody tr:nth-child(even) td {
+    background: #f8f7f1;
+    color: #6A6A6A; }
+  .section fieldset.fieldset-color6 {
+    border: 2px solid #E9E7D7; }
+  .section .bg-color7 {
+    background: #F8FAF4;
+    color: #6A6A6A; }
+  .section .bg-gradient-color7 {
+    background: linear-gradient(#f9fbf6 0%, #d3e0ba 100%);
+    color: #6A6A6A; }
+  .section .text-color7 {
+    color: #F8FAF4; }
+  .section label.bg-color7 {
+    color: #6A6A6A;
+    background: #F8FAF4; }
+  .section a.label.bg-color7 {
+    color: #6A6A6A;
+    background: #F8FAF4; }
+    .section a.label.bg-color7:hover {
+      color: #6A6A6A;
+      background: #d3e0ba; }
+  .section .button.button-color7, .section button.button-color7, .section .form-plugin .button-color7.form-plugin-button, #dialoge .dialogue-content .dialoge-button-row .section .form-plugin button.button-color7, .section .dialoge-button-row .button-color7.form-plugin-button, .section #dialoge .dialogue-content .dialoge-button-row button.button-color7, #dialoge .dialogue-content .section .dialoge-button-row button.button-color7 {
+    color: #6A6A6A;
+    background: #F8FAF4;
+    border: 2px solid #d3e0ba; }
+    .section .button.button-color7:hover, .section button.button-color7:hover, .section .form-plugin .button-color7.form-plugin-button:hover, #dialoge .dialogue-content .dialoge-button-row .section .form-plugin button.button-color7:hover, .section .dialoge-button-row .button-color7.form-plugin-button:hover, .section #dialoge .dialogue-content .dialoge-button-row button.button-color7:hover, #dialoge .dialogue-content .section .dialoge-button-row button.button-color7:hover {
+      color: #6A6A6A;
+      background: #d3e0ba;
+      border: 2px solid #afc681; }
+  .section .button.button-gradient-color7, .section button.button-gradient-color7, .section .form-plugin .button-gradient-color7.form-plugin-button, #dialoge .dialogue-content .dialoge-button-row .section .form-plugin button.button-gradient-color7, .section .dialoge-button-row .button-gradient-color7.form-plugin-button, .section #dialoge .dialogue-content .dialoge-button-row button.button-gradient-color7, #dialoge .dialogue-content .section .dialoge-button-row button.button-gradient-color7 {
+    color: #6A6A6A;
+    background: linear-gradient(#f9fbf6 0%, #d3e0ba 100%);
+    border: 2px solid #d3e0ba; }
+    .section .button.button-gradient-color7:hover, .section button.button-gradient-color7:hover, .section .form-plugin .button-gradient-color7.form-plugin-button:hover, #dialoge .dialogue-content .dialoge-button-row .section .form-plugin button.button-gradient-color7:hover, .section .dialoge-button-row .button-gradient-color7.form-plugin-button:hover, .section #dialoge .dialogue-content .dialoge-button-row button.button-gradient-color7:hover, #dialoge .dialogue-content .section .dialoge-button-row button.button-gradient-color7:hover {
+      color: white;
+      background: linear-gradient(#F8FAF4 0%, #afc681 100%);
+      border: 2px solid #afc681; }
+  .section ul.list-color7 li:before, .section ol.list-color7 li:before {
+    color: #F8FAF4; }
+  .section table.table-color7 thead {
+    color: #F8FAF4;
+    border-bottom: 2px solid #F8FAF4; }
+  .section table.table-color7 tfoot {
+    border-top: 2px solid #F8FAF4; }
+  .section table.lines.table-color7 th, .section table.lines.table-color7 tfoot td {
+    background: #F8FAF4;
+    color: #6A6A6A;
+    border: 2px solid #d3e0ba; }
+  .section table.lines.table-color7 td {
+    border: 2px solid #E0E0E0; }
+  .section table.polka-stripes.table-color7 th, .section table.polka-stripes.table-color7 tfoot td {
+    background: #F8FAF4;
+    color: #6A6A6A;
+    border: 2px solid #d3e0ba; }
+  .section table.polka-stripes.table-color7 tbody td:first-child {
+    border-left: 2px solid #d3e0ba; }
+  .section table.polka-stripes.table-color7 tbody td:last-child {
+    border-right: 2px solid #d3e0ba; }
+  .section table.polka-stripes.table-color7 tbody tr:last-child td {
+    border-bottom: 2px solid #d3e0ba; }
+  .section table.polka-stripes.table-color7 tbody tr:nth-child(even) td {
+    background: #fdfdfb;
+    color: #6A6A6A; }
+  .section fieldset.fieldset-color7 {
+    border: 2px solid #F8FAF4; }
+  .section .bg-color8 {
+    background: #948B82;
+    color: white; }
+  .section .bg-gradient-color8 {
+    background: linear-gradient(#a69f97 0%, #7c736a 100%);
+    color: white; }
+  .section .text-color8 {
+    color: #948B82; }
+  .section label.bg-color8 {
+    color: white;
+    background: #948B82; }
+  .section a.label.bg-color8 {
+    color: white;
+    background: #948B82; }
+    .section a.label.bg-color8:hover {
+      color: white;
+      background: #7c736a; }
+  .section .button.button-color8, .section button.button-color8, .section .form-plugin .button-color8.form-plugin-button, #dialoge .dialogue-content .dialoge-button-row .section .form-plugin button.button-color8, .section .dialoge-button-row .button-color8.form-plugin-button, .section #dialoge .dialogue-content .dialoge-button-row button.button-color8, #dialoge .dialogue-content .section .dialoge-button-row button.button-color8 {
+    color: white;
+    background: #948B82;
+    border: 2px solid #7c736a; }
+    .section .button.button-color8:hover, .section button.button-color8:hover, .section .form-plugin .button-color8.form-plugin-button:hover, #dialoge .dialogue-content .dialoge-button-row .section .form-plugin button.button-color8:hover, .section .dialoge-button-row .button-color8.form-plugin-button:hover, .section #dialoge .dialogue-content .dialoge-button-row button.button-color8:hover, #dialoge .dialogue-content .section .dialoge-button-row button.button-color8:hover {
+      color: white;
+      background: #7c736a;
+      border: 2px solid #635c55; }
+  .section .button.button-gradient-color8, .section button.button-gradient-color8, .section .form-plugin .button-gradient-color8.form-plugin-button, #dialoge .dialogue-content .dialoge-button-row .section .form-plugin button.button-gradient-color8, .section .dialoge-button-row .button-gradient-color8.form-plugin-button, .section #dialoge .dialogue-content .dialoge-button-row button.button-gradient-color8, #dialoge .dialogue-content .section .dialoge-button-row button.button-gradient-color8 {
+    color: white;
+    background: linear-gradient(#a69f97 0%, #7c736a 100%);
+    border: 2px solid #7c736a; }
+    .section .button.button-gradient-color8:hover, .section button.button-gradient-color8:hover, .section .form-plugin .button-gradient-color8.form-plugin-button:hover, #dialoge .dialogue-content .dialoge-button-row .section .form-plugin button.button-gradient-color8:hover, .section .dialoge-button-row .button-gradient-color8.form-plugin-button:hover, .section #dialoge .dialogue-content .dialoge-button-row button.button-gradient-color8:hover, #dialoge .dialogue-content .section .dialoge-button-row button.button-gradient-color8:hover {
+      color: white;
+      background: linear-gradient(#948B82 0%, #635c55 100%);
+      border: 2px solid #635c55; }
+  .section ul.list-color8 li:before, .section ol.list-color8 li:before {
+    color: #948B82; }
+  .section table.table-color8 thead {
+    color: #948B82;
+    border-bottom: 2px solid #948B82; }
+  .section table.table-color8 tfoot {
+    border-top: 2px solid #948B82; }
+  .section table.lines.table-color8 th, .section table.lines.table-color8 tfoot td {
+    background: #948B82;
+    color: white;
+    border: 2px solid #7c736a; }
+  .section table.lines.table-color8 td {
+    border: 2px solid #E0E0E0; }
+  .section table.polka-stripes.table-color8 th, .section table.polka-stripes.table-color8 tfoot td {
+    background: #948B82;
+    color: white;
+    border: 2px solid #7c736a; }
+  .section table.polka-stripes.table-color8 tbody td:first-child {
+    border-left: 2px solid #7c736a; }
+  .section table.polka-stripes.table-color8 tbody td:last-child {
+    border-right: 2px solid #7c736a; }
+  .section table.polka-stripes.table-color8 tbody tr:last-child td {
+    border-bottom: 2px solid #7c736a; }
+  .section table.polka-stripes.table-color8 tbody tr:nth-child(even) td {
+    background: #dbd8d5;
+    color: #6A6A6A; }
+  .section fieldset.fieldset-color8 {
+    border: 2px solid #948B82; }
+  .section .bg-info {
+    background: #79A9B9;
+    color: white; }
+  .section .bg-gradient-info {
+    background: linear-gradient(#90b8c5 0%, #5793a7 100%);
+    color: white; }
+  .section .text-info {
+    color: #79A9B9; }
+  .section label.bg-info {
+    color: white;
+    background: #79A9B9; }
+  .section a.label.bg-info {
+    color: white;
+    background: #79A9B9; }
+    .section a.label.bg-info:hover {
+      color: white;
+      background: #5793a7; }
+  .section .button.button-info, .section button.button-info, .section .form-plugin .button-info.form-plugin-button, #dialoge .dialogue-content .dialoge-button-row .section .form-plugin button.button-info, .section .dialoge-button-row .button-info.form-plugin-button, .section #dialoge .dialogue-content .dialoge-button-row button.button-info, #dialoge .dialogue-content .section .dialoge-button-row button.button-info {
+    color: white;
+    background: #79A9B9;
+    border: 2px solid #5793a7; }
+    .section .button.button-info:hover, .section button.button-info:hover, .section .form-plugin .button-info.form-plugin-button:hover, #dialoge .dialogue-content .dialoge-button-row .section .form-plugin button.button-info:hover, .section .dialoge-button-row .button-info.form-plugin-button:hover, .section #dialoge .dialogue-content .dialoge-button-row button.button-info:hover, #dialoge .dialogue-content .section .dialoge-button-row button.button-info:hover {
+      color: white;
+      background: #5793a7;
+      border: 2px solid #457585; }
+  .section .button.button-gradient-info, .section button.button-gradient-info, #dialoge .dialogue-content .dialoge-button-row .section .form-plugin button, .section #dialoge .dialogue-content .dialoge-button-row button, #dialoge .dialogue-content .section .dialoge-button-row button, .section .form-plugin .form-plugin-button, .section .dialoge-button-row .form-plugin-button {
+    color: white;
+    background: linear-gradient(#90b8c5 0%, #5793a7 100%);
+    border: 2px solid #5793a7; }
+    .section .button.button-gradient-info:hover, .section button.button-gradient-info:hover, #dialoge .dialogue-content .dialoge-button-row .section .form-plugin button:hover, .section #dialoge .dialogue-content .dialoge-button-row button:hover, #dialoge .dialogue-content .section .dialoge-button-row button:hover, .section .form-plugin .form-plugin-button:hover, .section .dialoge-button-row .form-plugin-button:hover {
+      color: white;
+      background: linear-gradient(#79A9B9 0%, #457585 100%);
+      border: 2px solid #457585; }
+  .section ul.list-info li:before, .section ol.list-info li:before {
+    color: #79A9B9; }
+  .section table.table-info thead {
+    color: #79A9B9;
+    border-bottom: 2px solid #79A9B9; }
+  .section table.table-info tfoot {
+    border-top: 2px solid #79A9B9; }
+  .section table.lines.table-info th, .section table.lines.table-info tfoot td {
+    background: #79A9B9;
+    color: white;
+    border: 2px solid #5793a7; }
+  .section table.lines.table-info td {
+    border: 2px solid #E0E0E0; }
+  .section table.polka-stripes.table-info th, .section table.polka-stripes.table-info tfoot td {
+    background: #79A9B9;
+    color: white;
+    border: 2px solid #5793a7; }
+  .section table.polka-stripes.table-info tbody td:first-child {
+    border-left: 2px solid #5793a7; }
+  .section table.polka-stripes.table-info tbody td:last-child {
+    border-right: 2px solid #5793a7; }
+  .section table.polka-stripes.table-info tbody tr:last-child td {
+    border-bottom: 2px solid #5793a7; }
+  .section table.polka-stripes.table-info tbody tr:nth-child(even) td {
+    background: #d1e2e7;
+    color: #6A6A6A; }
+  .section fieldset.fieldset-info {
+    border: 2px solid #79A9B9; }
+  .section .bg-success {
+    background: #99B979;
+    color: white; }
+  .section .bg-gradient-success {
+    background: linear-gradient(#aac590 0%, #7fa757 100%);
+    color: white; }
+  .section .text-success {
+    color: #99B979; }
+  .section label.bg-success {
+    color: white;
+    background: #99B979; }
+  .section a.label.bg-success {
+    color: white;
+    background: #99B979; }
+    .section a.label.bg-success:hover {
+      color: white;
+      background: #7fa757; }
+  .section .button.button-success, .section button.button-success, .section .form-plugin .button-success.form-plugin-button, #dialoge .dialogue-content .dialoge-button-row .section .form-plugin button.button-success, .section .dialoge-button-row .button-success.form-plugin-button, .section #dialoge .dialogue-content .dialoge-button-row button.button-success, #dialoge .dialogue-content .section .dialoge-button-row button.button-success {
+    color: white;
+    background: #99B979;
+    border: 2px solid #7fa757; }
+    .section .button.button-success:hover, .section button.button-success:hover, .section .form-plugin .button-success.form-plugin-button:hover, #dialoge .dialogue-content .dialoge-button-row .section .form-plugin button.button-success:hover, .section .dialoge-button-row .button-success.form-plugin-button:hover, .section #dialoge .dialogue-content .dialoge-button-row button.button-success:hover, #dialoge .dialogue-content .section .dialoge-button-row button.button-success:hover {
+      color: white;
+      background: #7fa757;
+      border: 2px solid #658545; }
+  .section .button.button-gradient-success, .section button.button-gradient-success, .section .form-plugin .button-gradient-success.form-plugin-button, #dialoge .dialogue-content .dialoge-button-row .section .form-plugin button.button-gradient-success, .section .dialoge-button-row .button-gradient-success.form-plugin-button, .section #dialoge .dialogue-content .dialoge-button-row button.button-gradient-success, #dialoge .dialogue-content .section .dialoge-button-row button.button-gradient-success {
+    color: white;
+    background: linear-gradient(#aac590 0%, #7fa757 100%);
+    border: 2px solid #7fa757; }
+    .section .button.button-gradient-success:hover, .section button.button-gradient-success:hover, .section .form-plugin .button-gradient-success.form-plugin-button:hover, #dialoge .dialogue-content .dialoge-button-row .section .form-plugin button.button-gradient-success:hover, .section .dialoge-button-row .button-gradient-success.form-plugin-button:hover, .section #dialoge .dialogue-content .dialoge-button-row button.button-gradient-success:hover, #dialoge .dialogue-content .section .dialoge-button-row button.button-gradient-success:hover {
+      color: white;
+      background: linear-gradient(#99B979 0%, #658545 100%);
+      border: 2px solid #658545; }
+  .section ul.list-success li:before, .section ol.list-success li:before {
+    color: #99B979; }
+  .section table.table-success thead {
+    color: #99B979;
+    border-bottom: 2px solid #99B979; }
+  .section table.table-success tfoot {
+    border-top: 2px solid #99B979; }
+  .section table.lines.table-success th, .section table.lines.table-success tfoot td {
+    background: #99B979;
+    color: white;
+    border: 2px solid #7fa757; }
+  .section table.lines.table-success td {
+    border: 2px solid #E0E0E0; }
+  .section table.polka-stripes.table-success th, .section table.polka-stripes.table-success tfoot td {
+    background: #99B979;
+    color: white;
+    border: 2px solid #7fa757; }
+  .section table.polka-stripes.table-success tbody td:first-child {
+    border-left: 2px solid #7fa757; }
+  .section table.polka-stripes.table-success tbody td:last-child {
+    border-right: 2px solid #7fa757; }
+  .section table.polka-stripes.table-success tbody tr:last-child td {
+    border-bottom: 2px solid #7fa757; }
+  .section table.polka-stripes.table-success tbody tr:nth-child(even) td {
+    background: #dce7d1;
+    color: #6A6A6A; }
+  .section fieldset.fieldset-success {
+    border: 2px solid #99B979; }
+  .section .bg-warning {
+    background: #EBE0A2;
+    color: #6A6A6A; }
+  .section .bg-gradient-warning {
+    background: linear-gradient(#eee5b2 0%, #dfcd6a 100%);
+    color: #6A6A6A; }
+  .section .text-warning {
+    color: #EBE0A2; }
+  .section label.bg-warning {
+    color: #6A6A6A;
+    background: #EBE0A2; }
+  .section a.label.bg-warning {
+    color: #6A6A6A;
+    background: #EBE0A2; }
+    .section a.label.bg-warning:hover {
+      color: white;
+      background: #dfcd6a; }
+  .section .button.button-warning, .section button.button-warning, .section .form-plugin .button-warning.form-plugin-button, #dialoge .dialogue-content .dialoge-button-row .section .form-plugin button.button-warning, .section .dialoge-button-row .button-warning.form-plugin-button, .section #dialoge .dialogue-content .dialoge-button-row button.button-warning, #dialoge .dialogue-content .section .dialoge-button-row button.button-warning {
+    color: #6A6A6A;
+    background: #EBE0A2;
+    border: 2px solid #dfcd6a; }
+    .section .button.button-warning:hover, .section button.button-warning:hover, .section .form-plugin .button-warning.form-plugin-button:hover, #dialoge .dialogue-content .dialoge-button-row .section .form-plugin button.button-warning:hover, .section .dialoge-button-row .button-warning.form-plugin-button:hover, .section #dialoge .dialogue-content .dialoge-button-row button.button-warning:hover, #dialoge .dialogue-content .section .dialoge-button-row button.button-warning:hover {
+      color: white;
+      background: #dfcd6a;
+      border: 2px solid #d3bb33; }
+  .section .button.button-gradient-warning, .section button.button-gradient-warning, .section .form-plugin .button-gradient-warning.form-plugin-button, #dialoge .dialogue-content .dialoge-button-row .section .form-plugin button.button-gradient-warning, .section .dialoge-button-row .button-gradient-warning.form-plugin-button, .section #dialoge .dialogue-content .dialoge-button-row button.button-gradient-warning, #dialoge .dialogue-content .section .dialoge-button-row button.button-gradient-warning {
+    color: #6A6A6A;
+    background: linear-gradient(#eee5b2 0%, #dfcd6a 100%);
+    border: 2px solid #dfcd6a; }
+    .section .button.button-gradient-warning:hover, .section button.button-gradient-warning:hover, .section .form-plugin .button-gradient-warning.form-plugin-button:hover, #dialoge .dialogue-content .dialoge-button-row .section .form-plugin button.button-gradient-warning:hover, .section .dialoge-button-row .button-gradient-warning.form-plugin-button:hover, .section #dialoge .dialogue-content .dialoge-button-row button.button-gradient-warning:hover, #dialoge .dialogue-content .section .dialoge-button-row button.button-gradient-warning:hover {
+      color: white;
+      background: linear-gradient(#EBE0A2 0%, #d3bb33 100%);
+      border: 2px solid #d3bb33; }
+  .section ul.list-warning li:before, .section ol.list-warning li:before {
+    color: #EBE0A2; }
+  .section table.table-warning thead {
+    color: #EBE0A2;
+    border-bottom: 2px solid #EBE0A2; }
+  .section table.table-warning tfoot {
+    border-top: 2px solid #EBE0A2; }
+  .section table.lines.table-warning th, .section table.lines.table-warning tfoot td {
+    background: #EBE0A2;
+    color: #6A6A6A;
+    border: 2px solid #dfcd6a; }
+  .section table.lines.table-warning td {
+    border: 2px solid #E0E0E0; }
+  .section table.polka-stripes.table-warning th, .section table.polka-stripes.table-warning tfoot td {
+    background: #EBE0A2;
+    color: #6A6A6A;
+    border: 2px solid #dfcd6a; }
+  .section table.polka-stripes.table-warning tbody td:first-child {
+    border-left: 2px solid #dfcd6a; }
+  .section table.polka-stripes.table-warning tbody td:last-child {
+    border-right: 2px solid #dfcd6a; }
+  .section table.polka-stripes.table-warning tbody tr:last-child td {
+    border-bottom: 2px solid #dfcd6a; }
+  .section table.polka-stripes.table-warning tbody tr:nth-child(even) td {
+    background: #f8f4df;
+    color: #6A6A6A; }
+  .section fieldset.fieldset-warning {
+    border: 2px solid #EBE0A2; }
+  .section .bg-danger {
+    background: #B97979;
+    color: white; }
+  .section .bg-gradient-danger {
+    background: linear-gradient(#c59090 0%, #a75757 100%);
+    color: white; }
+  .section .text-danger {
+    color: #B97979; }
+  .section label.bg-danger {
+    color: white;
+    background: #B97979; }
+  .section a.label.bg-danger {
+    color: white;
+    background: #B97979; }
+    .section a.label.bg-danger:hover {
+      color: white;
+      background: #a75757; }
+  .section .button.button-danger, .section button.button-danger, .section .form-plugin .button-danger.form-plugin-button, #dialoge .dialogue-content .dialoge-button-row .section .form-plugin button.button-danger, .section .dialoge-button-row .button-danger.form-plugin-button, .section #dialoge .dialogue-content .dialoge-button-row button.button-danger, #dialoge .dialogue-content .section .dialoge-button-row button.button-danger {
+    color: white;
+    background: #B97979;
+    border: 2px solid #a75757; }
+    .section .button.button-danger:hover, .section button.button-danger:hover, .section .form-plugin .button-danger.form-plugin-button:hover, #dialoge .dialogue-content .dialoge-button-row .section .form-plugin button.button-danger:hover, .section .dialoge-button-row .button-danger.form-plugin-button:hover, .section #dialoge .dialogue-content .dialoge-button-row button.button-danger:hover, #dialoge .dialogue-content .section .dialoge-button-row button.button-danger:hover {
+      color: white;
+      background: #a75757;
+      border: 2px solid #854545; }
+  .section .button.button-gradient-danger, .section button.button-gradient-danger, .section .form-plugin .button-gradient-danger.form-plugin-button, #dialoge .dialogue-content .dialoge-button-row .section .form-plugin button.button-gradient-danger, .section .dialoge-button-row .button-gradient-danger.form-plugin-button, .section #dialoge .dialogue-content .dialoge-button-row button.button-gradient-danger, #dialoge .dialogue-content .section .dialoge-button-row button.button-gradient-danger {
+    color: white;
+    background: linear-gradient(#c59090 0%, #a75757 100%);
+    border: 2px solid #a75757; }
+    .section .button.button-gradient-danger:hover, .section button.button-gradient-danger:hover, .section .form-plugin .button-gradient-danger.form-plugin-button:hover, #dialoge .dialogue-content .dialoge-button-row .section .form-plugin button.button-gradient-danger:hover, .section .dialoge-button-row .button-gradient-danger.form-plugin-button:hover, .section #dialoge .dialogue-content .dialoge-button-row button.button-gradient-danger:hover, #dialoge .dialogue-content .section .dialoge-button-row button.button-gradient-danger:hover {
+      color: white;
+      background: linear-gradient(#B97979 0%, #854545 100%);
+      border: 2px solid #854545; }
+  .section ul.list-danger li:before, .section ol.list-danger li:before {
+    color: #B97979; }
+  .section table.table-danger thead {
+    color: #B97979;
+    border-bottom: 2px solid #B97979; }
+  .section table.table-danger tfoot {
+    border-top: 2px solid #B97979; }
+  .section table.lines.table-danger th, .section table.lines.table-danger tfoot td {
+    background: #B97979;
+    color: white;
+    border: 2px solid #a75757; }
+  .section table.lines.table-danger td {
+    border: 2px solid #E0E0E0; }
+  .section table.polka-stripes.table-danger th, .section table.polka-stripes.table-danger tfoot td {
+    background: #B97979;
+    color: white;
+    border: 2px solid #a75757; }
+  .section table.polka-stripes.table-danger tbody td:first-child {
+    border-left: 2px solid #a75757; }
+  .section table.polka-stripes.table-danger tbody td:last-child {
+    border-right: 2px solid #a75757; }
+  .section table.polka-stripes.table-danger tbody tr:last-child td {
+    border-bottom: 2px solid #a75757; }
+  .section table.polka-stripes.table-danger tbody tr:nth-child(even) td {
+    background: #e7d1d1;
+    color: #6A6A6A; }
+  .section fieldset.fieldset-danger {
+    border: 2px solid #B97979; }
+
+.bg-color1, #agenda .shared-agenda {
+  background: #7C5578;
+  color: white; }
+
+.bg-gradient-color1 {
+  background: linear-gradient(#996b95 0%, #674764 100%);
+  color: white; }
+
+.bg-color2 {
+  background: #AE6686;
+  color: white; }
+
+.bg-gradient-color2 {
+  background: linear-gradient(#bc809b 0%, #964f6f 100%);
+  color: white; }
+
+.bg-color3 {
+  background: #D8A479;
+  color: #6A6A6A; }
+
+.bg-gradient-color3 {
+  background: linear-gradient(#dfb390 0%, #cb864d 100%);
+  color: #6A6A6A; }
+
+.bg-color4 {
+  background: #EBE0A2;
+  color: #6A6A6A; }
+
+.bg-gradient-color4 {
+  background: linear-gradient(#eee5b2 0%, #dfcd6a 100%);
+  color: #6A6A6A; }
+
+.bg-color5 {
+  background: #B7B0A9;
+  color: #6A6A6A; }
+
+.bg-gradient-color5 {
+  background: linear-gradient(#c3bdb8 0%, #9c9288 100%);
+  color: #6A6A6A; }
+
+.bg-color6 {
+  background: #E9E7D7;
+  color: #6A6A6A; }
+
+.bg-gradient-color6 {
+  background: linear-gradient(#edebde 0%, #cecaa6 100%);
+  color: #6A6A6A; }
+
+.bg-color7 {
+  background: #F8FAF4;
+  color: #6A6A6A; }
+
+.bg-gradient-color7 {
+  background: linear-gradient(#f9fbf6 0%, #d3e0ba 100%);
+  color: #6A6A6A; }
+
+.bg-color8 {
+  background: #948B82;
+  color: white; }
+
+.bg-gradient-color8 {
+  background: linear-gradient(#a69f97 0%, #7c736a 100%);
+  color: white; }
+
+.bg-info {
+  background: #79A9B9;
+  color: white; }
+
+.bg-gradient-info {
+  background: linear-gradient(#90b8c5 0%, #5793a7 100%);
+  color: white; }
+
+.bg-success {
+  background: #99B979;
+  color: white; }
+
+.bg-gradient-success {
+  background: linear-gradient(#aac590 0%, #7fa757 100%);
+  color: white; }
+
+.bg-warning {
+  background: #EBE0A2;
+  color: #6A6A6A; }
+
+.bg-gradient-warning {
+  background: linear-gradient(#eee5b2 0%, #dfcd6a 100%);
+  color: #6A6A6A; }
+
+.bg-danger {
+  background: #B97979;
+  color: white; }
+
+.bg-gradient-danger {
+  background: linear-gradient(#c59090 0%, #a75757 100%);
+  color: white; }
+
+.row.outer-gutter {
+  padding: 1.5em; }
+  .row.outer-gutter .col:last-child *:last-child {
+    margin-bottom: 0; }
+  @media screen and (min-width: 769px) {
+    .row.outer-gutter .col *:last-child {
+      margin-bottom: 0; } }
+
+.row:after {
+  content: "";
+  display: table;
+  clear: both; }
+
+.col {
+  float: left; }
+  .col.align-right {
+    text-align: right; }
+  .col.align-center {
+    text-align: center; }
+
+.row.inner-gutter {
+  margin-left: -1.5em; }
+
+.row.inner-gutter .col {
+  padding-left: 1.5em; }
+
+.element {
+  margin-bottom: 1.6em; }
+
+.col.span-1 {
+  width: 8.3333333333%; }
+
+.col.span-2 {
+  width: 16.6666666667%; }
+
+.col.span-3 {
+  width: 25%; }
+
+.col.span-4 {
+  width: 33.3333333333%; }
+
+.col.span-5 {
+  width: 41.6666666667%; }
+
+.col.span-6 {
+  width: 50%; }
+
+.col.span-7 {
+  width: 58.3333333333%; }
+
+.col.span-8 {
+  width: 66.6666666667%; }
+
+.col.span-9 {
+  width: 75%; }
+
+.col.span-10 {
+  width: 83.3333333333%; }
+
+.col.span-11 {
+  width: 91.6666666667%; }
+
+.col.span-12 {
+  width: 100%; }
+
+@media screen and (max-width: 768px) {
+  .element {
+    margin-bottom: 1.6em; }
+  .row:not(.unbreakable) > .col[class*='span-'] {
+    width: 100%; }
+  .row.mobile-2-col .col[class*='span-'] {
+    width: 50%; }
+  .row.mobile-3-col .col[class*='span-'] {
+    width: 33.3333333333%; }
+  .row.mobile-4-col .col[class*='span-'] {
+    width: 25%; } }
+
+input, select, textarea {
+  outline: none; }
+
+.page-area .element {
+  background: white;
+  border: 2px solid #E0E0E0;
+  border-top: 6px double #E0E0E0;
+  text-align: center;
+  box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.1); }
+  .page-area .element h3 {
+    padding: 0.75em;
+    margin: 0;
+    margin-top: -0.2em;
+    font-size: 2em;
+    padding-bottom: 0; }
+  .page-area .element p {
+    padding: 0.75em; }
+  .page-area .element img {
+    margin-top: -2em;
+    width: 4em;
+    padding-bottom: 0; }
+  .page-area .element a.full-width {
+    display: block;
+    margin: 0.75em; }
+
+#index {
+  background-image: url("../non-essential-images/start-bg.jpg");
+  background-size: cover;
+  background-position: center bottom;
+  background-attachment: fixed; }
+
+#hotel-img-1 {
+  background-image: url("../non-essential-images/Clarion-Hotel-Stockholm-Single-room.jpg");
+  background-size: cover;
+  background-position: center bottom; }
+
+#hotel-img-2 {
+  background-image: url("../non-essential-images/Clarion-Hotel-Stockholm-Double-room.jpg");
+  background-size: cover;
+  background-position: center bottom; }
+
+#hotel-img-3 {
+  background-image: url("../non-essential-images/Haymarket-By-Scandic-Single-room.jpg");
+  background-size: cover;
+  background-position: center bottom; }
+
+.element.equal-height2 {
+  position: relative;
+  padding-bottom: 1em !important; }
+  .element.equal-height2 p {
+    position: relative; }
+
+.same-position {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  border-radius: 0 !important; }
+
+#agenda {
+  min-width: 800px; }
+  #agenda td {
+    width: 22.5%; }
+    #agenda td:first-child {
+      width: 10.0%; }
+    #agenda td .label {
+      margin-top: 0.375em; }
+  #agenda tbody tr {
+    border-bottom: 2px solid #E0E0E0; }
+
+.bg-palette {
+  font-size: 0; }
+
+h2.element-document-headline {
+  background: SlateGray;
+  color: white;
+  padding: 0.5rem;
+  font-weight: normal;
+  text-transform: uppercase; }
+
+h3.element-document-headline {
+  background: #e3e7ea;
+  padding: 0.5rem;
+  font-weight: normal; }
+
+.background-colors > .demo, .background-gradients > .demo {
+  width: 200px;
+  height: 200px;
+  padding: 10px;
+  display: inline-block;
+  text-align: center;
+  overflow: hidden; }
+
+.module {
+  border: 1px solid silver;
+  padding: 0.5rem; }
+
+#elements .session {
+  margin-bottom: 1em; }
+
+#elements .session-details {
+  border: 1px solid silver;
+  margin-bottom: 1em;
+  padding: 0 1em; }
+
+.form-plugin-item > .session-table > tbody > tr > td:first-child {
+  border-right: 2px dotted #E0E0E0;
+  padding-right: 0.75em; }
+
+.menu-bar {
+  list-style: none;
+  padding: 0;
+  font-size: 0;
+  border: 2px solid #674764;
+  display: inline-block;
+  border-radius: 30px;
+  overflow: hidden; }
+  .menu-bar li {
+    display: inline-block; }
+    .menu-bar li a {
+      font-weight: bold;
+      font-size: 1rem;
+      padding: 0.75em 1.125em;
+      display: block;
+      border-right: 2px solid #674764;
+      background: #7C5578;
+      color: white; }
+    .menu-bar li:hover > a, .menu-bar li a.active {
+      text-decoration: none;
+      background: #3f2c3d;
+      color: white; }
+    .menu-bar li:last-child a {
+      border-right: none; }
+
+.form-plugin-location-list .form-plugin-table {
+  width: auto !important; }
+
+.form-plugin-location-list .form-plugin-description .img {
+  width: 40%;
+  height: 18em;
+  margin-left: 1em;
+  margin-bottom: 1em;
+  float: right;
+  background-size: cover;
+  background-position: center; }
+  .form-plugin-location-list .form-plugin-description .img.oaxen {
+    background-image: url("../non-essential-images/oaxen.jpeg"); }
+  .form-plugin-location-list .form-plugin-description .img.omakase {
+    background-image: url("../non-essential-images/omakase.jpg"); }
+
+.contact-details {
+  border: 2px solid #d7e2bf;
+  box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.1);
+  margin-bottom: 0; }
+
+.payment-method i {
+  width: 1em; }
+
+#welcome {
+  background: url("../non-essential-images/start-bg.jpg");
+  background-size: cover;
+  background-position: center -17em; }
+
+.welcome {
+  background: 0;
+  width: 100%; }
+  .welcome p span {
+    color: black;
+    font-size: 1.5em;
+    font-weight: bold;
+    text-shadow: 1px 1px 0px white;
+    margin-bottom: 0.75em;
+    display: inline-block; }
+  .welcome p a {
+    font-weight: bold;
+    font-size: 2em !important; }
+  .welcome .headline-wrapper {
+    text-align: center;
+    width: 100%; }
+  .welcome h1, .welcome h2 {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding: 0.25em 0.5em;
+    background: rgba(0, 0, 0, 0.65);
+    color: white;
+    display: inline-block;
+    border-radius: 0.125em;
+    text-align: center; }
+  .welcome h1 {
+    -ms-transform: rotate(-3deg);
+    -webkit-transform: rotate(-3deg);
+    transform: rotate(-3deg);
+    font-size: 8em;
+    margin-bottom: 0; }
+  .welcome h2 {
+    margin-top: -1em;
+    -ms-transform: rotate(3deg);
+    -webkit-transform: rotate(3deg);
+    transform: rotate(3deg);
+    background: #AE6686;
+    font-size: 4.2em;
+    margin-right: -2em; }

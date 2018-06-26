@@ -1,0 +1,331 @@
+<div id="main-menu" role="navigation">
+    <div id="main-menu-inner">
+        <ul class="navigation">
+            <li>
+                <a href="{% url 'index' %}"><i class="menu-icon fa fa-tachometer"></i><span
+                        class="mm-text">Dashboard</span></a>
+            </li>
+            {% if request.session.event_auth_user.type == 'super_admin' or request.session.admin_permission.content_permission.attendee_permission %}
+                <li>
+                    <a href="{% url 'attendee' %}"><i class="menu-icon fa fa-user"></i><span
+                            class="mm-text">Attendee</span></a>
+                </li>
+            {% endif %}
+            {% if request.session.event_auth_user.type == 'super_admin' or request.session.admin_permission.content_permission.deleted_attendee_permission %}
+                <li>
+                    <a href="{% url 'deleted-attendees' %}"><i class="menu-icon fa fa-trash-o"></i><span
+                            class="mm-text">Deleted Attendee</span></a>
+                </li>
+            {% endif %}
+
+            <li class="mm-dropdown">
+                <a href="#"><i class="menu-icon fa fa-pencil-square-o"></i><span class="mm-text">Content</span></a>
+                <ul>
+                    {% if request.session.event_auth_user.type == 'super_admin' or request.session.admin_permission.content_permission.page_permission %}
+                        <li>
+                            <a tabindex="-1" href="{% url 'pages' %}"><i class="menu-icon fa fa-file-o"></i><span
+                                    class="mm-text">Pages</span></a>
+                        </li>
+                    {% endif %}
+                    {% if request.session.event_auth_user.type == 'super_admin' or request.session.admin_permission.content_permission.menu_permission %}
+                        <li>
+                            <a tabindex="-1" href="{% url 'menus' %}"><i class="menu-icon fa fa-bars"></i><span
+                                    class="mm-text">Menus</span></a>
+                        </li>
+                    {% endif %}
+                    {% if request.session.event_auth_user.type == 'super_admin' or request.session.admin_permission.content_permission.question_permission %}
+                        <li>
+                            <a tabindex="-1" href="{% url 'questions' %}"><i
+                                    class="menu-icon fa fa-question"></i><span
+                                    class="mm-text">Questions</span></a>
+                        </li>
+                    {% endif %}
+                    {% if request.session.event_auth_user.type == 'super_admin' or request.session.admin_permission.content_permission.session_permission %}
+                        <li>
+                            <a tabindex="-1" href="{% url 'sessions' %}"><i class="menu-icon fa fa-calendar"></i><span
+                                    class="mm-text">Sessions</span></a>
+                        </li>
+                    {% endif %}
+                    {% if request.session.event_auth_user.type == 'super_admin' or request.session.admin_permission.content_permission.travel_permission %}
+                        <li>
+                            <a tabindex="-1" href="{% url 'travels' %}"><i class="menu-icon fa fa-plane"></i><span
+                                    class="mm-text">Travels</span></a>
+                        </li>
+                    {% endif %}
+                    {% if request.session.event_auth_user.type == 'super_admin' or request.session.admin_permission.content_permission.location_permission %}
+                        <li>
+                            <a tabindex="-1" href="{% url 'locations' %}"><i
+                                    class="menu-icon fa fa-map-marker"></i><span
+                                    class="mm-text">Locations</span></a>
+                        </li>
+                    {% endif %}
+                    {% if request.session.event_auth_user.type == 'super_admin' or request.session.admin_permission.content_permission.hotel_permission %}
+                        <li>
+                            <a tabindex="-1" href="{% url 'hotels' %}"><i class="menu-icon fa fa-bed fa-lg"></i><span
+                                    class="mm-text">Hotels</span></a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </li>
+            {% if request.session.event_auth_user.type == 'super_admin' or request.session.admin_permission.content_permission.template_permission or request.session.admin_permission.content_permission.css_permission or request.session.admin_permission.content_permission.file_browser_permission %}
+                <li class="mm-dropdown">
+                    <a href="#"><i class="menu-icon fa fa-crop"></i><span class="mm-text">Design</span></a>
+                    <ul>
+                        {% if request.session.event_auth_user.type == 'super_admin' or request.session.admin_permission.content_permission.template_permission %}
+                            <li>
+                                <a tabindex="-1" href="{% url 'templates' %}"><i
+                                        class="menu-icon fa fa-file-o"></i><span
+                                        class="mm-text">Templates</span></a>
+                            </li>
+                        {% endif %}
+                        {% if request.session.event_auth_user.type == 'super_admin' or request.session.admin_permission.content_permission.css_permission %}
+                            <li>
+                                <a tabindex="-1" href="{% url 'styles' %}"><i
+                                        class="menu-icon fa fa-paint-brush"></i><span
+                                        class="mm-text">CSS</span></a>
+                            </li>
+                        {% endif %}
+                        {% if request.session.event_auth_user.type == 'super_admin' or request.session.admin_permission.content_permission.file_browser_permission %}
+                            <li>
+                                <a tabindex="-1" href="{% url 'files' %}"><i class="menu-icon fa fa-files-o"></i><span
+                                        class="mm-text">File Browser</span></a>
+                            </li>
+                        {% endif %}
+                    </ul>
+                </li>
+            {% endif %}
+            {% if request.session.event_auth_user.type == 'super_admin' or request.session.admin_permission.content_permission.message_permission %}
+                <li class="mm-dropdown">
+                    <a href="#"><i class="menu-icon fa fa-comment"></i><span class="mm-text">Messages</span></a>
+                    <ul>
+                        <li>
+                            <a tabindex="-1" href="{% url 'emails' %}"><i
+                                    class="menu-icon fa fa-envelope-o"></i><span
+                                    class="mm-text">Emails</span></a>
+                        </li>
+                        <li>
+                            <a tabindex="-1" href="{% url 'messages' %}"><i
+                                    class="menu-icon fa fa-comment"></i><span
+                                    class="mm-text">Messages</span></a>
+                        </li>
+                    </ul>
+                </li>
+            {% endif %}
+            {% if request.session.event_auth_user.type == 'super_admin' or request.session.admin_permission.content_permission.filter_permission %}
+                <li>
+                    <a href="{% url 'filters' %}"><i class="menu-icon fa fa-filter"></i><span
+                            class="mm-text">Filters</span></a>
+                </li>
+            {% endif %}
+            {% if request.session.event_auth_user.type == 'super_admin' or request.session.admin_permission.content_permission.checkpoints_permission %}
+                <li>
+                    <a href="{% url 'checkpoint' %}"><i class="menu-icon fa fa-qrcode"></i><span
+                            class="mm-text">Checkpoints</span></a>
+                </li>
+            {% endif %}
+            {% if request.session.event_auth_user.type == 'super_admin' or request.session.admin_permission.content_permission.economy_permission %}
+                <li class="mm-dropdown">
+                    <a href="#"><i class="menu-icon fa fa-money"></i><span
+                            class="mm-text">Economy</span></a>
+                    <ul>
+                        <li>
+                            <a tabindex="-1" href="{% url 'economy-overview' %}">
+                                <i class="menu-icon fa fa-columns" aria-hidden="true"></i>
+                                <span class="mm-text">Overview</span></a>
+                        </li>
+                        <li>
+                            <a tabindex="-1" href="{% url 'economy-rebate-view' %}">
+                                <i class="menu-icon fa fa-money" aria-hidden="true"></i>
+                                <span class="mm-text">Rebate</span></a>
+                        </li>
+                        <li>
+                            <a tabindex="-1" href="{% url 'economy-payment-settings' %}">
+                                <i class="menu-icon fa fa-credit-card" aria-hidden="true"></i>
+                                <span class="mm-text">DIBS Integration</span></a>
+                        </li>
+                        <li>
+                            <a tabindex="-1" href="{% url 'economy-export-all-pdf-view' %}">
+                                <i class="menu-icon fa fa-file-excel-o" aria-hidden="true"></i>
+                                <span class="mm-text">Export</span></a>
+                        </li>
+                    </ul>
+                </li>
+            {% endif %}
+            {% if request.session.event_auth_user.type == 'super_admin' or request.session.admin_permission.content_permission.photo_reel_permission %}
+                <li class="mm-dropdown">
+                    <a href="#"><i class="menu-icon fa fa-camera"></i><span class="mm-text">Photo reel</span></a>
+                    <ul>
+                        <li>
+                            <a tabindex="-1" href="{% url 'photoAdminRequested' %}"><i
+                                    class="menu-icon fa fa-picture-o"></i><span
+                                    class="mm-text">New photos</span></a>
+                        </li>
+                        <li>
+                            <a tabindex="-1" href="{% url 'photoAdminAllowed' %}"><i
+                                    class="menu-icon fa fa-eye"></i><span
+                                    class="mm-text">Visible photos</span></a>
+                        </li>
+                        <li>
+                            <a tabindex="-1" href="{% url 'photoAdminDenied' %}"><i
+                                    class="menu-icon fa fa-eye-slash"></i><span class="mm-text">Denied photos</span></a>
+                        </li>
+                        <li>
+                            <a tabindex="-1" href="{% url 'photoAdminAll' %}"><i
+                                    class="menu-icon fa fa-picture-o"></i><span
+                                    class="mm-text">All photos</span></a>
+                        </li>
+                        <li>
+                            <a tabindex="-1" href="{% url 'download-photo-reel' %}"><i
+                                    class="menu-icon fa fa-download"></i><span
+                                    class="mm-text">Download all photos</span></a>
+                        </li>
+                    </ul>
+                </li>
+            {% endif %}
+
+            {% if request.session.event_auth_user.type == 'super_admin' or request.session.admin_permission.content_permission.export_filter_permission %}
+                <li class="mm-dropdown">
+                    <a href="#"><i class="menu-icon fa fa-file-excel-o"></i><span
+                            class="mm-text">Export / Import</span></a>
+                    <ul>
+                        <li>
+                            <a tabindex="-1" href="{% url 'exportFilters' %}">
+                                <i class="menu-icon fa fa-file-excel-o" aria-hidden="true"></i>
+                                <span class="mm-text">Export list </span></a>
+                        </li>
+                        <li>
+                            <a tabindex="-1" href="{% url 'exported_files_list' %}" data-target="#export-ratings">
+                                <i class="menu-icon fa fa-download" aria-hidden="true"></i>
+                                <span class="mm-text">Download exported lists</span></a>
+                        </li>
+
+                        {#                        <li>#}
+                        {#                            <a tabindex="-1" href="#" data-toggle="modal" data-target="#export-attendee"><span#}
+                        {#                                    class="mm-text">Attendee Export</span></a>#}
+                        {#                        </li>#}
+                        {#                                        <li>#}
+                        {#                                            <a tabindex="-1" href="#" data-toggle="modal" data-target="#export-hotel"><span#}
+                        {#                                                    class="mm-text">Hotel Export</span></a>#}
+                        {#                                        </li>#}
+                        {#                                        <li>#}
+                        {#                                            <a tabindex="-1" href="#" data-toggle="modal" data-target="#export-all"><span#}
+                        {#                                                    class="mm-text">All Export</span></a>#}
+                        {#                                        </li>#}
+                        {% if request.session.admin_permission.content_permission.export_filter_permission and request.session.admin_permission.content_permission.export_filter_permission.access_level == 'write' or request.session.event_auth_user.type == 'super_admin' %}
+
+                            <li>
+                                <a tabindex="-1" href="#" id="import-sidebar-menu">
+                                    <i class="menu-icon fa fa-upload" aria-hidden="true"></i>
+                                    <span class="mm-text">Import</span></a>
+                            </li>
+                            <li>
+                                <a tabindex="-1" href="{% url 'import-list' %}">
+                                    <i class="menu-icon fa fa-check-circle" aria-hidden="true"></i>
+                                    <span class="mm-text">Import awaiting approval</span></a>
+                            </li>
+                            <li class="mm-dropdown">
+                                <a href="#">
+                                    <i class="menu-icon fa fa-cubes" aria-hidden="true"></i>
+                                    <span class="mm-text">Miscellaneous</span></a>
+                                <ul>
+
+                                    <li>
+                                        <a tabindex="-1" href="#" data-toggle="modal" data-target="#import-hotel-modal">
+                                            <i class="menu-icon fa fa-bed fa-lg"></i>
+                                            <span class="mm-text">Import hotel</span></a>
+                                    </li>
+                                    <li>
+                                        <a tabindex="-1" href="#" data-toggle="modal"
+                                           data-target="#import-session-modal">
+                                            <i class="menu-icon fa fa-calendar"></i>
+                                            <span class="mm-text">Import session</span></a>
+                                    </li>
+                                    {#                                    <li>#}
+                                    {#                                        <a tabindex="-1" href="#" data-toggle="modal" data-target="#export-hotel"><span#}
+                                    {#                                                class="mm-text">Hotel Export</span></a>#}
+                                    {#                                    </li>#}
+                                    <li>
+                                        <a tabindex="-1" href="#" data-toggle="modal" data-target="#export-scan">
+                                            <i class="menu-icon fa fa-qrcode"></i>
+                                            <span class="mm-text">Export scan list</span></a>
+                                    </li>
+                                    <li>
+                                        <a tabindex="-1" href="#" data-toggle="modal"
+                                           data-target="#export-ratings">
+                                            <i class="menu-icon fa fa-star-half-o" aria-hidden="true"></i>
+                                            <span class="mm-text">Export ratings</span></a>
+                                    </li>
+                                </ul>
+                            </li>
+                        {% endif %}
+                        {#                <li>#}
+                        {#                    <a tabindex="-1" href="#" data-toggle="modal" data-target="#export-session"><span#}
+                        {#                            class="mm-text">Export Session</span></a>#}
+                        {#                </li>#}
+
+                        {#                        <li>#}
+                        {#                            <a tabindex="-1" href="#" data-toggle="modal" data-target="#export-ratings"><span#}
+                        {#                                    class="mm-text">Export Ratings</span></a>#}
+                        {#                        </li>#}
+
+
+                    </ul>
+                </li>
+            {% endif %}
+
+            {#            <li class="mm-dropdown">#}
+            {#                <a href="#"><i class="menu-icon fa fa-envelope"></i><span class="mm-text">Campaign</span></a>#}
+            {#                <ul>#}
+            {#                    <li>#}
+            {#                        <a tabindex="-1" href="locations.html"><span class="mm-text">Campaign</span></a>#}
+            {#                    </li>#}
+            {#                </ul>#}
+            {#            </li>#}
+            {% if request.session.event_auth_user.type == 'super_admin' or request.session.admin_permission.content_permission.setting_permission %}
+                <li>
+                    <a href="{% url 'settings' %}"><i class="menu-icon fa fa-cog"></i><span
+                            class="mm-text">Settings</span></a>
+                </li>
+            {% endif %}
+            {% if request.session.event_auth_user.type == 'super_admin' or request.session.admin_permission.content_permission.language_permission %}
+                <li class="mm-dropdown">
+                    <a href="#"><i class="menu-icon fa fa-language"></i><span
+                            class="mm-text">Language</span></a>
+                    <ul>
+
+                        <li>
+                            <a tabindex="-1" href="{% url 'plugin-language' %}">
+                                <i class="menu-icon fa fa-plug" aria-hidden="true"></i>
+                                <span class="mm-text">Plugin Language </span></a>
+                        </li>
+                        <li>
+                            <a tabindex="-1" href="{% url 'general-language' %}">
+                                <i class="menu-icon fa fa-language" aria-hidden="true"></i>
+                                <span class="mm-text">General Language</span></a>
+                        </li>
+                        <li>
+                            <a tabindex="-1" href="{% url 'date-time-language' %}">
+                                <i class="menu-icon fa fa-clock-o" aria-hidden="true"></i>
+                                <span class="mm-text">Date and time</span></a>
+                        </li>
+                    </ul>
+                </li>
+            {% endif %}
+            {% if request.session.event_auth_user.type == 'super_admin' %}
+                <li>
+                    <a href="{% url 'admin' %}"><i class="menu-icon fa fa-user"></i><span
+                            class="mm-text">Admins</span></a>
+                </li>
+                <li>
+                    <a href="{% url 'event' %}"><i class="menu-icon fa fa-calendar-o"></i><span
+                            class="mm-text">Events</span></a>
+                </li>
+            {% endif %}
+        </ul>
+{#        <! -- / .navigation -->#}
+        <!--<div class="menu-content">
+            <a href="pages-invoice.html" class="btn btn-primary btn-block btn-outline dark">Create Invoice</a>
+        </div>-->
+    </div>
+    <!-- / #main-menu-inner -->
+</div> <!-- / #main-menu -->

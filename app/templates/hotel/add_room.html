@@ -1,0 +1,140 @@
+<div id="hotel-details-add-room" class="modal fade" role="dialog" style="display: none;">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
+                <h4 class="modal-title">Add Hotel Room</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="form-group no-margin-hr">
+                            <label class="control-label">Room Description</label>
+                            <input type="text" name="room-name" class="form-control room-name"
+                                   placeholder="Room Description">
+                        </div>
+                    </div>
+                    <!-- col-sm-6 -->
+                    <div class="col-sm-6">
+                        <div class="form-group no-margin-hr">
+                            <label class="control-label">#Beds</label>
+                            <input min="1" type="number" name="bed-no" class="form-control bed-no">
+                        </div>
+                    </div>
+                    <!-- col-sm-6 -->
+                </div>
+                <!-- row -->
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="form-group no-margin-hr">
+                            <label class="control-label">Cost / night</label>
+                            <input type="number" min="0" name="room-cost" class="form-control room-cost" placeholder="">
+                        </div>
+                    </div>
+                    <!-- col-sm-6 -->
+                    <div class="col-sm-6">
+                        <div class="form-group no-margin-hr">
+                            <label class="control-label">VAT</label>
+                            <select class="form-control filter-question-selector room-vat">
+                                <option value=""></option>
+                                {% for group in paymentGroup %}
+                                    <option value="{{ group.name }}">{{ group.name|safe }}%</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group no-margin-hr">
+                            <input class="filter-question-selector-pay-whole-hotel-amount" {% if room.pay_whole_amount %} checked {% endif %} type="checkbox" id="room-add-pay-whole-hotel-amount">
+                            <label class="control-label" for="room-add-pay-whole-hotel-amount">Pay whole hotel amount</label>
+                        </div>
+                    </div>
+                    <!-- col-sm-6 -->
+                </div>
+                <!-- row -->
+                <div class="table-light">
+                    <div class="table-header">
+                        <div class="table-caption">
+                            Allotments
+                        </div>
+                    </div>
+                    <table class="table table-bordered" id="hotel-details-room-allotments">
+                        <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>No of Allotment</th>
+                            <th>Cost</th>
+                            <th>VAT%</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                    <div class="table-footer">
+                        <div class="row">
+                            <div class="col-md-2">
+                                <select class="form-control" id="allotment-type_new">
+                                    <option value="add">Add</option>
+                                    <option value="remove">Remove</option>
+                                </select>
+                            </div>
+                            <div class="col-md-2">
+                                <input type="number" name="room_amount" min="1" placeholder="#" class="form-control">
+                            </div>
+                            <div class="col-md-2 text-center" style="margin-top: 0.35em">
+                                room(s) per night between
+                            </div>
+                            <div class="col-md-4">
+                                <div class="input-daterange input-group hotel-details-add-room-datepicker-range">
+                                    <input type="text" class="form-control" name="start" placeholder="Start date">
+                                    <span class="input-group-addon">and</span>
+                                    <input type="text" class="form-control" name="end" placeholder="End date">
+                                </div>
+                            </div>
+                            <div class="col-md-2 text-right">
+                                <button type="button" id="add_allotment" class="btn btn-primary">Add / Remove</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    {#                        <div class="col-sm-6">#}
+                    {#                            <button type="button" class="btn btn-danger btn-lg" data-original-title="" title=""><i#}
+                    {#                                    class="fa fa-times-circle"></i>&nbsp;&nbsp;Delete#}
+                    {#                            </button>#}
+                    {#                        </div>#}
+                    <div class="col-sm-12 text-right">
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-lg" data-original-title="" title=""
+                                    data-dismiss="modal" aria-hidden="true"><i class="fa fa-ban"></i>&nbsp;&nbsp;Cancel
+                            </button>
+                            <button type="button" class="btn btn-success dropdown-toggle btn-lg addRoom btn-save"><i
+                                    class="fa fa-check-circle"></i>&nbsp;&nbsp;Save
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- / .modal-content -->
+    </div>
+    <!-- / .modal-dialog -->
+</div>
+<script>
+    $(document).ready(function () {
+        $('#hotel-details-room-allotments').dataTable({
+            "order": [[0, "asc"]],
+            "searching": false,
+            "bPaginate": false,
+            "bLengthChange": false,
+            "bFilter": true,
+            "bInfo": false,
+            "bAutoWidth": false,
+            "columnDefs": [{
+                "targets": [1,2,3],
+                "orderable": false
+            }]
+
+        });
+    })
+</script>

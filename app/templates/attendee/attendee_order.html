@@ -1,0 +1,272 @@
+{% load thousand_filter %}
+{% if orders %}
+    <div class="">
+        <h3>Order Table</h3>
+        {% for order in orders %}
+            {% if not order.is_group_total %}
+                <div class="panel pnl-{{ order.order.id }}">
+                    <div class="panel-heading col-sm-12">
+                    <span class="col-sm-3 "><b>Order No</b>:
+                        <span class="label label-primary">{{ order.order.order_number }}</span> <br/></span>
+                        {% if order_table_type == 'attendee-order' %}
+                            <span class="col-sm-3"><b>Status</b>:
+                                <select class="order-status-edit-dropdown" data-id="{{ order.order.order_number }}"
+                                        data-live-search="true"
+                                        data-live-search-placeholder="Search"
+                                        {% if request.session.admin_permission.content_permission.economy_permission and request.session.admin_permission.content_permission.economy_permission.access_level != 'write' and request.session.event_auth_user.type != 'super_admin' %}
+                                        disabled {% endif %}>
+                                    <option value="open" {% if order.order.status == 'open' %}
+                                            selected {% endif %}>open
+                                    </option>
+                                    <option value="pending" {% if order.order.status == 'pending' %}
+                                            selected {% endif %}>
+                                        pending
+                                    </option>
+                                    <option value="paid" {% if order.order.status == 'paid' %}
+                                            selected {% endif %}>paid
+                                    </option>
+                                    <option value="cancelled" {% if order.order.status == 'cancelled' %}
+                                            selected {% endif %}>
+                                        cancelled
+                                    </option>
+                                </select>
+                            </span>
+                        {% else %}
+                            <span class="col-sm-3"><b>Attendee: </b>{{ order.order.attendee.id }}</span>
+                        {% endif %}
+                        <span class="col-sm-3"><b>Due Date</b>: {{ order.order.due_date_datetype|date:date_format }}<br/></span>
+                        <span class="col-sm-3">
+                        {% if request.session.admin_permission.content_permission.economy_permission and request.session.admin_permission.content_permission.economy_permission.access_level == 'write' or request.session.event_auth_user.type == 'super_admin' %}
+                            <button data-order-number="{{ order.order.order_number }}"
+                                    data-order-id="{{ order.order.id }}"
+                                    data-attendee-id="{{ order.order.attendee.id }}"
+                                    class="btn btn-primary add-rebate-to-order"> Add Rebate
+                            </button>
+                        {% endif %}
+                    </span>
+                    </div>
+
+                    <div class="panel-body pnl-content">
+
+                        <table class="table table-bordered">
+                            <thead>
+                            <tr>
+                                <th>Order Number: <span class=""
+                                                        style="font-weight:normal;">{{ order.order.order_number }}</span>
+                                </th>
+                                <th>Cost excl. vat</th>
+                                <th>Rebate Amount</th>
+                                <th>Vat</th>
+                                <th>Vat %</th>
+                                <th>Cost Incl. Vat</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for order_item in order.order_items %}
+                                <tr>
+
+                                    {% if order_item.item_type == 'rebate' %}
+                                        <td>
+                                            {% if order.order.status != 'open' and order_item.rebate_is_deleted %}
+                                                <span class="text-muted">[removed]</span>
+                                                {% if order.order.status == 'pending' or order.order.status == 'paid' %}
+                                                    {% if not order_item.applied_on_open_order %}
+                                                        <span class="text-muted">[applied later]</span>
+                                                    {% endif %}
+                                                {% endif %}
+                                            {% else %}
+                                                {% if order.order.status != 'cancelled' %}
+                                                    <span>
+                                                    {% if request.session.admin_permission.content_permission.economy_permission and request.session.admin_permission.content_permission.economy_permission.access_level == 'write' or request.session.event_auth_user.type == 'super_admin' %}
+                                                        <button class="btn btn-danger btn-sm remove-rebate-from-order"
+                                                                data-order-id="{{ order_item.order.id }}"
+                                                                data-rebate-id="{{ order_item.item_id }}"
+                                                                data-rebate-for-item-id="{{ order_item.rebate_for_item_id }}"
+                                                                data-rebate-for-item-type="{{ order_item.rebate_for_item_type }}"
+                                                                data-attendee-id="{{ order.order.attendee.id }}">
+                                                            <i class="fa fa-minus"></i></button>
+                                                    {% endif %}
+                                                    </span> &nbsp;
+                                                    {% if order.order.status == 'pending' or order.order.status == 'paid' %}
+                                                        {% if not order_item.applied_on_open_order %}
+                                                            <span class="text-muted">[applied later]</span>
+                                                        {% endif %}
+                                                    {% endif %}
+                                                {% endif %}
+                                            {% endif %}
+                                            {{ order_item.item_name }}
+                                        </td>
+                                        <td></td>
+                                        <td>-{{ order_item.rebate_amount|floatformat:"-2"|format_thousands }}</td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                    {% else %}
+                                        <td>
+                                            {% if order.order.status != 'open' and order_item.rebate_is_deleted %}
+                                                <span class="text-muted">[removed]</span>
+                                            {% endif %}
+                                            {{ order_item.item_name }}
+                                        </td>
+                                        <td class="cost-exl-td">
+                                            {% if order_item.item_type == 'rebate' or order_item.item_type == 'adjustment' %}
+                                                {{ order_item.cost|floatformat:"-2"|format_thousands }}
+                                            {% else %}
+{#                                                <span class="cost_view_elm" style="cursor: pointer">{{ order_item.cost|floatformat:"-2"|format_thousands }}</span>#}
+{#                                                <span class="cost_change_elm" style="display: none;">#}
+{#                                                    <input class="cost_change_input" type="number" min="0" value="{{ order_item.cost|floatformat:"-2" }}"#}
+{#                                                    style="width: 60%; padding: 2px 4px;">#}
+{#                                                    &nbsp;#}
+{#                                                    <button data-cost="{{ order_item.cost|floatformat:"-2" }}" data-order-item="{{ order_item.id }}"#}
+{#                                                            class="item_cost_change_btn btn btn-primary btn-sm editable-submit"><i class="glyphicon glyphicon-ok"></i></button>#}
+{#                                                    <button class="item_cost_change_cancel_btn btn btn-default btn-sm editable-cancel"><i class="glyphicon glyphicon-remove"></i></button>#}
+{#                                                </span>#}
+                                                <a href="#" class="change-item-cost-show-id" data-order-item="{{ order_item.id }}" data-cost="{{ order_item.cost|floatformat:"-2" }}" data-type="number" data-min="1" data-value="{{ order_item.cost|floatformat:"-2" }}"></a>
+                                            {% endif %}
+                                        </td>
+                                        <td></td>
+                                        {% if order_item.item_type == 'adjustment' %}
+                                            <td></td>
+                                            <td></td>
+                                        {% else %}
+                                            <td>{{ order_item.vat_amount|floatformat:"-2"|format_thousands }}</td>
+                                            <td>{{ order_item.vat_rate|floatformat:"-2"|format_thousands }}%</td>
+                                        {% endif %}
+                                        <td>{{ order_item.total_cost|floatformat:"-2"|format_thousands }}</td>
+                                    {% endif %}
+                                </tr>
+                            {% endfor %}
+
+                            {% for credit_usage in order.credit_usages %}
+                                <tr>
+                                    <td>{{ credit_usage.name }}</td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td>-{{ credit_usage.cost|floatformat:"-2"|format_thousands }}</td>
+                                </tr>
+                            {% endfor %}
+
+                            <tr>
+                                <td>Grand Total</td>
+{#                                <td>{{ order.total_cost_exl_vat }}</td>#}
+{#                                <td>{{ order.total_rebate_amount }}</td>#}
+{#                                <td>{{ order.total_vat_amount }}</td>#}
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td>{{ order.total_cost_incl_vat|floatformat:"-2"|format_thousands }}</td>
+                            </tr>
+                            </tbody>
+                        </table>
+
+                        <table class="table table-bordered">
+                            <thead>
+                            <tr>
+                                <th>Vat</th>
+                                <th>Amount</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for vat in order.vats %}
+                                <tr>
+                                    <td>{{ vat.vat_rate }}</td>
+                                    <td>{{ vat.amount|floatformat:"-2"|format_thousands }}</td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+
+                    </div>
+                </div>
+            {% else %}
+                {% if not order.is_group_detail %}
+                <div class="panel pnl-{{ order.order_id }}">
+                    <div class="panel-heading col-sm-12">
+                    <span class="col-sm-3 "><b>Order No</b>:
+                        <span class="label label-primary">{{ order.order_number }}</span> <br/></span>
+                        <span class="col-sm-3"><b>Status</b>:
+                        <select class="order-status-edit-dropdown" data-id="{{ order.order_number }}"
+                                data-live-search="true"
+                                data-live-search-placeholder="Search"
+                                {% if request.session.admin_permission.content_permission.economy_permission and request.session.admin_permission.content_permission.economy_permission.access_level != 'write' and request.session.event_auth_user.type != 'super_admin' %}
+                                disabled {% endif %}>
+                            <option value="open" {% if order.order_status == 'open' %}
+                                    selected {% endif %}>open
+                            </option>
+                            <option value="pending" {% if order.order_status == 'pending' %} selected {% endif %}>
+                                pending
+                            </option>
+                            <option value="paid" {% if order.order_status == 'paid' %}
+                                    selected {% endif %}>paid
+                            </option>
+                            <option value="cancelled" {% if order.order_status == 'cancelled' %} selected {% endif %}>
+                                cancelled
+                            </option>
+                        </select>
+                    </span>
+                        <span class="col-sm-3"><b>Due Date</b>: {{ order.due_date_datetype|date:date_format }}<br/></span>
+                        <span class="col-sm-3">
+                        {% if request.session.admin_permission.content_permission.economy_permission and request.session.admin_permission.content_permission.economy_permission.access_level == 'write' or request.session.event_auth_user.type == 'super_admin' %}
+                            <button data-order-number="{{ order.order_number }}"
+                                    data-order-id="{{ order.order_id }}"
+                                    class="btn btn-primary add-rebate-to-order" disabled> Add Rebate
+                            </button>
+                        {% endif %}
+                    </span>
+                    </div>
+
+                    <div class="panel-body pnl-content">
+
+                        <table class="table table-bordered">
+                            <thead>
+                            <tr>
+                                <th>Order Number: <span class=""
+                                                        style="font-weight:normal;">{{ order.order_number }}</span>
+                                </th>
+                                <th>Cost excl. vat</th>
+                                <th>Rebate Amount</th>
+                                <th>Vat</th>
+                                <th>Cost Incl. Vat</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+
+                            {% for credit_usage in order.credit_usages %}
+                                <tr>
+                                    <td>{{ credit_usage.name }}</td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td>-{{ credit_usage.cost|floatformat:"-2"|format_thousands }}</td>
+                                </tr>
+                            {% endfor %}
+
+                            <tr>
+                                <td>Grand Total</td>
+                                <td>{{ order.group_total_cost_exl_vat|floatformat:"-2"|format_thousands }}</td>
+                                <td>{{ order.group_total_rebate_amount|floatformat:"-2"|format_thousands }}</td>
+                                <td>{{ order.group_total_vat_amount|floatformat:"-2"|format_thousands }}</td>
+                                <td>{{ order.group_total_cost_incl_vat|floatformat:"-2"|format_thousands }}</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                {% endif %}
+            {% endif %}
+        {% endfor %}
+    </div>
+{% endif %}
+
+
+
+<script>
+    $(function () {
+        $('.change-item-cost-show-id').editable({
+            type: 'number'
+        });
+    })
+</script>

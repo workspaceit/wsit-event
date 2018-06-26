@@ -1,0 +1,216 @@
+<div class="modal-dialog modal-lg">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
+            <h4 class="modal-title">Edit Queue</h4>
+        </div>
+        <div class="modal-body" style="overflow-x: auto;">
+{#            {% if attendee_queue %}#}
+{#                <div class="row">#}
+{#                    <div class="col-sm-2 text-right">#}
+{#                        <a href="{% url 'attendee' %}" target="_blank"#}
+{#                           onclick="if(!createTempSessionFilter('in-queue',{{ session.id }})){ return false; }"#}
+{#                           class="btn btn-lg btn-success" aria-hidden="true">&nbsp;&nbsp;Open in Attendee area</a>#}
+{#                    </div>#}
+{#                </div>#}
+{#            {% endif %}#}
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="table-light">
+                        <div class="table-header">
+                            <div class="table-caption">
+                                {{ session.name }}
+                            </div>
+                        </div>
+                        <table class="table table-bordered sortable ui-sortable" id="edit-session-queue"
+                               data-id="{{ session.id }}">
+                            <thead>
+                            <tr>
+                                <th><input type="checkbox" id="queue_all_check"></th>
+                                <th>#</th>
+                                <th>Started Queueing</th>
+                                {% for column in visible_columns_info %}
+                                    <th>{{ column }}</th>
+                                {% endfor %}
+                                <th>Delete</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for seminar_user in attendee_queue %}
+                                <tr class="userInfo" data-id="{{ seminar_user.attendee_id }}">
+                                    <td><input type="checkbox" class="moving_attendees_lists"
+                                               data-val="{{ seminar_user.id }}"></td>
+                                    <td>{{ forloop.counter }}</td>
+                                    <td>{% if seminar_user.created %}
+                                        {{ seminar_user.created|date:'H:i d-m-Y' }}{% endif %}</td>
+                                    {% for answer in seminar_user.question_answers %}
+                                        <td>{{ answer.answer }}</td>
+
+                                    {% endfor %}
+                                    <td>
+                                        <button class="btn btn-xs btn-danger" id="btn-remove-session-queue"
+                                                data-id={{ seminar_user.id }} data-toggle="tooltip"
+                                                data-placement="top" title="" data-original-title="Delete"><i
+                                                class="dropdown-icon fa fa-times-circle"></i></button>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+
+                <div class="row">
+                    {% if attendee_queue %}
+                        <div class="col-sm-2 text-right">
+                            <button type="button" class="btn btn-lg" id="btn-remove-queue" aria-hidden="true"><i
+                                    class="fa fa-ban"></i>&nbsp;&nbsp;Remove Queue
+                            </button>
+                        </div>
+
+                        <div class="col-sm-3 text-right">
+                            Move to
+                        </div>
+                        <div class="col-sm-4">
+                            <select class="form-control" id="moving_session">
+
+                                {% for group in session_groups %}
+                                    <optgroup label="{{ group.name|safe }}">
+                                        {% for ssn in group.sessions %}
+                                            {% if ssn.id != session.id %}
+                                                <option value="{{ ssn.id }}"
+                                                        data-seat-available="{{ ssn.available_seat }}">{{ ssn.name }}</option>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </optgroup>
+                                {% endfor %}
+
+
+                            </select>
+                        </div>
+                        <div class="col-sm-3">
+                            <button type="button" class="btn btn-lg btn-success" id="btn-move-queue" aria-hidden="true">
+                                <i
+                                        class="fa fa-exchange"></i>&nbsp;&nbsp;Move selected Queue
+                            </button>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        <!-- / .modal-content -->
+    </div>
+    <!-- / .modal-dialog -->
+</div>
+<!-- / .modal -->
+<!-- / Large modal -->
+<script>
+    $("#btn-move-queue").click(function () {
+        var semninar_user_list = [];
+        $(".moving_attendees_lists:checked").each(function () {
+            semninar_user_list.push($(this).attr('data-val'));
+        });
+        var selected_session = $("#moving_session").val();
+        var session_available_seat = $('option:selected', '#moving_session').attr('data-seat-available');
+        var $this = $(this);
+        if (session_available_seat < semninar_user_list.length) {
+
+            bootbox.confirm(session_available_seat.toString() + " seats are available for selected session. You have selected " + semninar_user_list.length.toString() + " attendees. Move first " + session_available_seat.toString() + " attendees?", function (result) {
+                if (result) {
+                    $('body .loader').show();
+                    $this.prop("disabled", true);
+                    $.ajax({
+                        url: base_url + '/admin/sessions/move-queue/',
+                        async: false,
+                        data: {
+                            semninar_user_list: JSON.stringify(semninar_user_list),
+                            session_id: selected_session,
+                            csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val()
+                        },
+                        type: "POST",
+                        success: function (result) {
+                            $("#seminars-edit-cue").modal('hide')
+                            $('body .loader').hide();
+                            $this.prop("disabled", false);
+                            if (result.errors) {
+                                $.growl.error({message: result.errors});
+                            } else {
+                                $.growl.notice({message: result.success});
+                                location.reload();
+                            }
+
+                        }
+                    });
+
+                }
+                else {
+                    return;
+                }
+            });
+
+        }
+        else {
+            $('body .loader').show();
+            $this.prop("disabled", true);
+
+            $.ajax({
+                url: base_url + '/admin/sessions/move-queue/',
+                async: false,
+                data: {
+                    semninar_user_list: JSON.stringify(semninar_user_list),
+                    session_id: selected_session,
+                    csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val()
+                },
+                type: "POST",
+                success: function (result) {
+                    $("#seminars-edit-cue").modal('hide')
+                    $('body .loader').hide();
+                    $this.prop("disabled", false);
+                    if (result.errors) {
+                        $.growl.error({message: result.errors});
+                    } else {
+                        $.growl.notice({message: result.success});
+                        location.reload();
+                    }
+                }
+            });
+
+
+        }
+
+    });
+
+
+    $('#queue_all_check').click(function (event) {  //on click
+        if (this.checked) { // check select status
+            $('.moving_attendees_lists').each(function () { //loop through each checkbox
+                this.checked = true;  //select all checkboxes with class "checkbox1"
+            });
+        } else {
+            $('.moving_attendees_lists').each(function () { //loop through each checkbox
+                this.checked = false; //deselect all checkboxes with class "checkbox1"
+            });
+        }
+    });
+
+
+    $('.moving_attendees_lists').click(function () {
+        check_all_selection();
+    });
+    function check_all_selection() {
+        var allChecked = true;
+        $('.moving_attendees_lists').each(function () {
+            if (!this.checked) {
+                allChecked = false;
+            }
+        });
+        if (allChecked) {
+            $('#queue_all_check').prop('checked', true);
+        } else {
+            $('#queue_all_check').prop('checked', false);
+        }
+    }
+
+
+</script>

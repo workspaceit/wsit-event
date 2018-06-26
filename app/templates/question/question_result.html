@@ -1,0 +1,54 @@
+<div class="table-light">
+    {% for group in questionGroup %}
+        <div class="table-header">
+            <div class="table-caption">
+                {{ group.name|safe }}
+            </div>
+        </div>
+        <table class="table table-bordered sortable showQuestions" id="showQuestions">
+            <thead>
+            <tr>
+                {#                            <th><input type="checkbox" class="flowcheckall" name="flowcheckall"></th>#}
+                <th>ID</th>
+                <th>Title</th>
+                <th>Type</th>
+                <th>Required</th>
+                <th>Edit</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for question in group.question %}
+                <tr>
+                    <td data-id="{{ question.id }}">{{ question.id }}</td>
+                    <td>{{ question.title }}</td>
+                    <td>{{ question.type }}</td>
+                    <td>{% if question.required == 1 %} Yes {% else %} No {% endif %}</td>
+                    {% if request.session.admin_permission.content_permission.question_permission and request.session.admin_permission.content_permission.question_permission.access_level == 'write' or request.session.event_auth_user.type == 'super_admin' %}
+                        <td>
+                            <button class="btn btn-xs questionInfo" data-id='{{ question.id }}' data-toggle="tooltip"
+                                    data-placement="top" title="" data-original-title="Edit"><i
+                                    class="dropdown-icon fa fa-cog"></i></button>
+                            <button class="btn btn-xs" data-toggle="tooltip" data-placement="top" title=""
+                                    data-original-title="Duplicate"><i class="dropdown-icon fa fa-files-o"></i>
+                            </button>
+                            <button class="btn btn-xs btn-danger deleteQuestion" data-id='{{ question.id }}'
+                                    data-toggle="tooltip" data-placement="top" title=""
+                                    data-original-title="Delete"><i
+                                    class="dropdown-icon fa fa-times-circle"></i></button>
+                        </td>
+                    {% else %}
+                        <td style="text-align: center;">
+                            <button class="btn btn-xs btn-view-questionInfo"
+                                    data-id='{{ question.id }}'
+                                    data-toggle="tooltip"
+                                    data-placement="top" title="" data-original-title="View"><i
+                                    class="dropdown-icon fa fa-search-plus"></i></button>
+                        </td>
+                    {% endif %}
+                </tr>
+            {% endfor %}
+
+            </tbody>
+        </table>
+    {% endfor %}
+</div>

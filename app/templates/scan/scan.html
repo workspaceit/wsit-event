@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="sv-se">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="shortcut icon" href="images/favicon.ico">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    {% load staticfiles %}
+    <script src="{% static 'assets/javascripts/moment.js' %}"></script>
+    <title>Testsida</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        input {
+            width: 100%;
+            padding: 0.5em;
+            font-size: 1.5em;
+            text-align: center;
+            font-family: sans-serif;
+        }
+
+        body {
+            font-family: sans-serif;
+            background-color: #f7f7f7;
+        }
+
+        td, th {
+            padding: 0.5em;
+            text-align: left;
+        }
+
+        .yes td {
+            color: white;
+            background: #6FA042;
+        }
+
+        .no td {
+            color: white;
+            background: #EB2D2D;
+        }
+
+        table {
+            width: 100%;
+            padding: 0;
+        }
+
+        table td {
+            border-bottom: 1px solid #f7f7f7;
+        }
+
+    </style>
+</head>
+<body>
+{% csrf_token %}
+<input type="text" id="read"/>
+<table id="list" style="border-spacing: 0px;" cellpadding="0" cellspacing="0">
+    <thead>
+    <tr>
+        <th>First Name
+        </th>
+        <th>Last name
+        </th>
+        <th>#
+        </th>
+        <th>Time
+        </th>
+    </tr>
+    </thead>
+    <tbody>
+
+    </tbody>
+</table>
+<script>
+    var csrf_token = $('input[name=csrfmiddlewaretoken]').val();
+    var attendees = [
+        {"uid": 01, "firstname": "Joakim", "lastname": "Svensson", "passed": 0},
+        {"uid": 02, "firstname": "Lina", "lastname": "Alveus", "passed": 0},
+        {"uid": 03, "firstname": "My", "lastname": "Nyander", "passed": 0},
+        {"uid": 04, "firstname": "Pia", "lastname": "Metzner", "passed": 0},
+        {"uid": 05, "firstname": "Jennifer", "lastname": "Westin", "passed": 0}
+    ];
+
+    $("#read").blur(function () {
+        setTimeout(function () {
+            $("#read").focus();
+        }, 0);
+    });
+
+    // Add leading zero to string
+    function pad(str, max) {
+        str = str.toString();
+        return str.length < max ? pad("0" + str, max) : str;
+    }
+
+    var dt = new Date();
+    var time = dt.getFullYear() + "-" + pad(dt.getMonth(), 2) + "-" + pad(dt.getDate(), 2) + " " + pad(dt.getHours(), 2) + ":" + pad(dt.getMinutes(), 2);
+    $(document).keypress(function (e) {
+        if (e.which == 13) {
+            var secret_id = $("#read").val();
+            clog(secret_id);
+            var data = {
+                uid: secret_id,
+                csrfmiddlewaretoken: csrf_token
+            };
+            $.ajax({
+                url: window.location.origin + '/admin/scan/',
+                type: "POST",
+                data: data,
+                success: function (response) {
+                    clog(response);
+                    if (response.exists) {
+                        var attendee = response.attendee;
+                        var firstName = attendee.firstname,
+                                lastName = attendee.lastname,
+                                passed = attendee.passed,
+                                time = moment(attendee.time).format('YYYY-MM-DD HH:mm:ss');
+                        $("#list tbody").prepend("<tr class='yes'><td>" + firstName + "</td><td>" + lastName + "</td><td>" + passed + "</td><td>" + time + "</td></tr>");
+                    }
+                    else{
+                        $("#list tbody").prepend("<tr class='no'><td colspan='3'>Not found ("+ secret_id +")</td><td>"+ moment(response.time).format('YYYY-MM-DD HH:mm:ss') +"</td></tr>");
+                    }
+                },
+                error: function (response) {
+                    console.error(response);
+                }
+            });
+            $("#read").val("");
+{#            var result = $.grep(attendees, function (e) {#}
+{#                return e.uid == $("#read").val()#}
+{#            });#}
+{#            if (result.length == 0) {#}
+{#                $("#list tbody").prepend("<tr class='no'><td colspan='4'>Not found</td></tr>")#}
+{#            } else if (result.length == 1) {#}
+{#                var firstname = ""#}
+{#                var lastname = ""#}
+{#                var passed = ""#}
+{#                $.each(result, function (index, val) {#}
+{#                    firstname = val.firstname#}
+{#                    lastname = val.lastname#}
+{#                    val.passed++#}
+{#                    passed = val.passed#}
+{#                });#}
+{##}
+{#                $("#list tbody").prepend("<tr class='yes'><td>" + firstname + "</td><td>" + lastname + "</td><td>" + passed + "</td><td>" + time + "</td></tr>");#}
+{#            } else {#}
+{#                alert("multiple entries")#}
+{#            }#}
+
+        }
+        while ($("#list tbody tr").length > 10) {
+            $("#list tbody tr:last-child").remove();
+        }
+    });
+</script>
+</body>
+</html>

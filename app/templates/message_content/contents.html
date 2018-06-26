@@ -1,0 +1,194 @@
+{% extends "layout/main.html" %}
+{% block content %}
+    <style>
+        .question-markdown, .general-markdown, .calendar-markdown {
+            min-height: 3em;
+            padding: 0.5em;
+            max-height: 15em;
+            overflow-y: auto;
+            cursor: pointer;
+        }
+
+        .custom-accordion {
+            background: #f5f5f5;
+            border: 1px solid #ddd;
+            border-radius: 2px;
+            cursor: pointer;
+            margin: 5px 0 0;
+            min-height: 0;
+            padding: 0 15px;
+            position: relative;
+            line-height: 36px;
+            font-size: 100%;
+        }
+
+        .custom-accordion:hover {
+            background: #f1f1f1;
+            color: #555;
+            text-decoration: none;
+        }
+    </style>
+    {% load staticfiles %}
+    {% csrf_token %}
+    <div id="content-wrapper">
+        <h2>Send Message</h2>
+        <div class="col-md-12">
+            <div class="col-md-6">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <label class="control-label">Message</label>
+                        <form id='message-preview-form' action="{% url 'messages-preview' %}" method="POST"
+                              target="_blank">{% csrf_token %}
+                            <textarea rows="10" id="message_content" name="message_content"
+                                      class="form-control">{{ message.content }}</textarea>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-4 text-right">
+                        <button type="button" class="btn btn-lg btn-save" id="btn-message-preview"
+                                style="float: left;margin-top: 10px;"><i
+                                class="fa fa-ban"></i>&nbsp;&nbsp;Preview
+                        </button>
+                    </div>
+                    <div class="col-sm-4 text-right">
+                        <button type="button" class="btn btn-lg btn-primary btn-save-message-content"
+                                id="btn-save-message-content"
+                                data-id="{{ message.id }}"
+                                style="float: left;margin-top: 10px;"><i
+                                class=""></i>&nbsp;&nbsp;Save
+                        </button>
+                    </div>
+                    <div class="col-sm-4 text-right">
+                        <button type="button" class="btn btn-lg btn-save btn-danger" id="bt-reset-message-content"
+                                style="float: left;margin-top: 10px;"><i
+                                class=""></i>&nbsp;&nbsp;Cancel
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="form-inline">
+                            <label class="form-control">Language:</label>
+                            <select class="form-control pull-right" style="width: 70%" id="message-preset">
+                                {% for preset in presets %}
+                                    <option value="{{ preset.id }}"
+                                            {% if preset.id == presetsEvent.preset_id %}
+                                            selected="selected"{% endif %}>{{ preset.preset_name }}({{ preset.id }})
+                                    </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="panel">
+                            <div class="panel-heading">
+                                <span class="panel-title">Elements</span>
+                            </div>
+
+                            <div class="panel-body">
+                                <div>
+                                    <div class="panel-body">
+                                        <div class="ui-accordion">
+                                            <div class="group">
+                                                <h3>General</h3>
+                                                <div>
+                                                    <ul>
+                                                        <li data-id="uid_link" class="general-markdown">UID Link</li>
+                                                        <li data-id="first_name" class="general-markdown">First Name
+                                                        </li>
+                                                        <li data-id="last_name" class="general-markdown">Last Name</li>
+                                                        <li data-id="email_address" class="general-markdown">Email
+                                                            Address
+                                                        </li>
+                                                        <li data-id="registration_date" class="general-markdown">
+                                                            Registration Date
+                                                        </li>
+                                                        <li data-id="updated_date" class="general-markdown">Last Updated
+                                                            Date
+                                                        </li>
+                                                        <li data-id="uid" class="general-markdown">UID</li>
+                                                        <li data-id="bid" class="general-markdown">BID</li>
+                                                        <li data-id="attendee_groups" class="general-markdown">Attendee
+                                                            Groups
+                                                        </li>
+                                                        <li data-id="tags" class="general-markdown">Tags</li>
+                                                        <li data-id="calendar" class="general-markdown">Calendar</li>
+                                                        {#                                                    <li data-id="registration_date" class="general-markdown">#}
+                                                        {#                                                        Registration date#}
+                                                        {#                                                    </li>#}
+                                                        {#                                                    <li data-id="updated_date" class="general-markdown">Last updated#}
+                                                        {#                                                    </li>#}
+                                                        {#                                                    <li data-id="attendee_groups" class="general-markdown">Attendee#}
+                                                        {#                                                        groups#}
+                                                        {#                                                    </li>#}
+                                                        {#                                                    <li data-id="tags" class="general-markdown">Tags</li>#}
+                                                        {#                                                    <li data-id="uid_link" class="general-markdown">UID Link</li>#}
+                                                        {#                                                    <li data-id="calendar" class="general-markdown">My Calendar</li>#}
+
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                <div class="panel-heading">
+                                    <a class="accordion-toggle note note-info" data-toggle="collapse"
+                                       data-parent="#accordion-example"
+                                       href="#collapseOne">
+                                        Questions
+                                    </a>
+                                </div>
+                                <div id="collapseOne" class="panel-collapse">
+                                    <div class="panel-body">
+                                        <div class="ui-accordion">
+                                            {% for group in questionGroup %}
+                                                <div class="group">
+                                                    <h3>{{ group.name|safe }}</h3>
+                                                    <div>
+                                                        <ul>
+                                                            {% for question in group.questions %}
+                                                                <li data-id="{{ question.id }}"
+                                                                    class="question-markdown">{{ question.title }}</li>
+                                                            {% endfor %}
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            {% endfor %}
+                                        </div>
+                                    </div>
+                                </div>
+
+                                {#                            <div class="">#}
+                                {#                                <div class="group">#}
+                                {#                                    <h3 class="calendar-markdown custom-accordion"> My Calendar</h3>#}
+                                {#                                </div>#}
+                                {#                            </div>#}
+                                {#                        #}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <img src="{% static 'public/images/712.GIF' %}" id="loader" alt=""/>
+    <style>
+        #loader {
+            display: none;
+            position: absolute;
+            margin: auto;
+            left: 0;
+            right: 0;
+            top: 0;
+            bottom: 0;
+        }
+    </style>
+    <script src="{% static 'assets/javascripts/message.js' %}"></script>
+    <script src="{% static 'assets/javascripts/rangy_text_input.js' %}"></script>
+    <script src="{% static 'assets/javascripts/message/message_content.js' %}"></script>
+{% endblock %}

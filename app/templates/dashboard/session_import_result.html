@@ -1,0 +1,32 @@
+{% extends "layout/main.html" %}
+{% block content %}
+<div id="content-wrapper">
+
+    {% for result in results %}
+        <ul>
+            <li>{{ result.sessionName }}</li>
+            {% if result.error %}
+             <ol>
+                {% for err in result.error %}
+
+                        <li>{{ err }}</li>
+
+                {% endfor %}
+             </ol>
+            {% endif %}
+            {% if result.success %}
+             <ul>
+
+                        <li>{{ result.success }}</li>
+
+             </ul>
+            {% endif %}
+
+        </ul>
+
+
+    {% endfor %}
+
+</div>
+
+{% endblock %}

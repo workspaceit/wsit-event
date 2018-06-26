@@ -1,0 +1,1764 @@
+{% extends "layout/main.html" %}
+{% block content %}
+    {% load staticfiles %}
+    {#    {% load i18n %}#}
+    {#    {% load staticfiles %}#}
+    {#    {% block extra_head %}#}
+    {#        <script src="{% static 'assets/javascripts/datatable.js' %}"></script>#}
+    {#        <script type="text/javascript">#}
+    {#            var QUESTION_LIST_JSON_URL = '{% url "questionList" %}';#}
+    {#            // translations for datatables#}
+    {##}
+    {#            var dt_language = {#}
+    {#                "emptyTable": "{% trans "No data available in table" %}",#}
+    {#                "info": "{% trans "Showing _START_ to _END_ of _TOTAL_ entries" %}",#}
+    {#                "infoEmpty": "{% trans "Showing 0 to 0 of 0 entries" %}",#}
+    {#                "infoFiltered": "{% trans "(filtered from _MAX_ total entries)" %}",#}
+    {#                "infoPostFix": "",#}
+    {#                "thousands": ",",#}
+    {#                "lengthMenu": "{% trans "Show _MENU_ entries" %}",#}
+    {#                "loadingRecords": "{% trans "Loading..." %}",#}
+    {#                "processing": "{% trans "Processing..." %}",#}
+    {#                "search": "{% trans "Search:" %}",#}
+    {#                "zeroRecords": "{% trans "No matching records found" %}",#}
+    {#                "paginate": {#}
+    {#                    "first": "{% trans "First" %}",#}
+    {#                    "last": "{% trans "Last" %}",#}
+    {#                    "next": "{% trans "Next" %}",#}
+    {#                    "previous": "{% trans "Previous" %}"#}
+    {#                },#}
+    {#                "aria": {#}
+    {#                    "sortAscending": "{% trans ": activate to sort column ascending" %}",#}
+    {#                    "sortDescending": "{% trans ": activate to sort column descending" %}"#}
+    {#                }#}
+    {#            }#}
+    {#        </script>#}
+    {#    {% endblock %}#}
+    <div id="content-wrapper">
+
+    <div class="panel colourable">
+        <div class="panel-heading">
+            <span class="panel-title"><i class="fa fa-lg fa-question"></i></i>
+                &nbsp;&nbsp;&nbsp;<strong>Questions</strong></span>
+            <span style="float:right"><img style="display:none" height="25px"
+                                           src="{% static 'public/images/712.GIF' %}" id="loader" alt=""/><input
+                    type="text" name="search_key_question" id="search_key_question"/></span>
+        </div>
+        <!-- / .panel-heading -->
+        <div class="panel-body tab-content">
+            <div class="row">
+                <div class="col-sm-6">
+                    {% if request.session.admin_permission.content_permission.question_permission and request.session.admin_permission.content_permission.question_permission.access_level == 'write' or request.session.event_auth_user.type == 'super_admin' %}
+                        <button type="button" class="btn btn-primary btn-lg" data-toggle="modal"
+                                data-target="#questions-add-type">
+                            <i class="fa fa-plus-circle"></i>&nbsp;&nbsp;Add a Question
+                        </button>
+                    {% endif %}
+                </div>
+                {#        <div class="col-sm-6 text-right">#}
+                {#            <div class="btn-group">#}
+                {#                <button type="button" class="btn btn-lg" data-original-title="" title="" data-dismiss="modal"#}
+                {#                        aria-hidden="true"><i#}
+                {#                        class="fa fa-ban"></i>&nbsp;&nbsp;Cancel#}
+                {#                </button>#}
+                {#                <button type="button" class="btn btn-success btn-lg"><i class="fa fa-check-circle"></i>&nbsp;&nbsp;Save#}
+                {#                </button>#}
+                {#            </div>#}
+                {#        </div>#}
+            </div>
+            <br>
+
+            <div class="tab-pane fade in active" id="hotels">
+                <div id="questions">
+                    <div class="table-light">
+                        {% for group in questionGroup %}
+                            <div class="table-header" id="questions_group_{{ group.id }}">
+                                <div class="table-caption">
+                                    {{ group.name|safe }}
+                                </div>
+                            </div>
+                            <table class="table table-bordered sortable showQuestions" id="showQuestions">
+                                <thead>
+                                <tr>
+                                    {#                            <th><input type="checkbox" class="flowcheckall" name="flowcheckall"></th>#}
+                                    <th>ID</th>
+                                    <th>Title</th>
+                                    <th>Type</th>
+                                    <th>Required</th>
+                                    <th>Edit</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for question in group.questions %}
+                                    <tr>
+                                        <td data-id="{{ question.id }}">{{ question.id }}</td>
+                                        <td>{{ question.title|safe }}</td>
+                                        <td>{{ question.type }}</td>
+                                        <td>{% if question.required == 1 %} Yes {% else %} No {% endif %}</td>
+                                        {% if request.session.admin_permission.content_permission.question_permission and request.session.admin_permission.content_permission.question_permission.access_level == 'write' or request.session.event_auth_user.type == 'super_admin' %}
+                                            <td>
+                                                <button class="btn btn-xs questionInfo" data-id='{{ question.id }}'
+                                                        data-toggle="tooltip"
+                                                        data-placement="top" title="" data-original-title="Edit"><i
+                                                        class="dropdown-icon fa fa-cog"></i></button>
+                                                <button class="btn btn-xs btn-duplicate-question" data-id="{{ question.id }}" data-toggle="tooltip" data-placement="top"
+                                                        title=""
+                                                        data-original-title="Duplicate"><i
+                                                        class="dropdown-icon fa fa-files-o"></i>
+                                                </button>
+                                                <button class="btn btn-xs btn-danger deleteQuestion"
+                                                        data-id='{{ question.id }}'
+                                                        data-toggle="tooltip" data-placement="top" title=""
+                                                        data-original-title="Delete"><i
+                                                        class="dropdown-icon fa fa-times-circle"></i></button>
+                                            </td>
+                                        {% else %}
+                                            <td style="text-align: center;">
+                                                <button class="btn btn-xs btn-view-questionInfo"
+                                                        data-id='{{ question.id }}'
+                                                        data-toggle="tooltip"
+                                                        data-placement="top" title="" data-original-title="View"><i
+                                                        class="dropdown-icon fa fa-search-plus"></i></button>
+                                            </td>
+                                        {% endif %}
+                                    </tr>
+                                {% endfor %}
+
+                                </tbody>
+                            </table>
+                        {% endfor %}
+                        {#                    <div class="table-header">#}
+                        {#                        <div class="table-caption">#}
+                        {#                            Food#}
+                        {#                        </div>#}
+                        {#                    </div>#}
+                        {#                    <table class="table table-bordered sortable showQuestions">#}
+                        {#                        <thead>#}
+                        {#                        <tr>#}
+                        {#                            <th>#</th>#}
+                        {#                            <th>Title</th>#}
+                        {#                            <th>Type</th>#}
+                        {#                            <th>Required</th>#}
+                        {#                            <th>Edit</th>#}
+                        {#                        </tr>#}
+                        {#                        </thead>#}
+                        {#                        <tbody>#}
+                        {#                        {% for question in questions_food %}#}
+                        {#                            <tr>#}
+                        {#                                <td data-id="{{ question.id }}">{{ forloop.counter }}</td>#}
+                        {#                                <td>{{ question.title }}</td>#}
+                        {#                                <td>{{ question.type }}</td>#}
+                        {#                                <td>{% if question.required == 1 %} Yes {% else %} {% endif %}</td>#}
+                        {#                                <td>#}
+                        {#                                    <button class="btn btn-xs questionInfo" data-id='{{ question.id }}' data-toggle="tooltip"#}
+                        {#                                            data-placement="top" title="" data-original-title="Edit"><i#}
+                        {#                                            class="dropdown-icon fa fa-cog"></i></button>#}
+                        {#                                    <button class="btn btn-xs" data-toggle="tooltip" data-placement="top" title=""#}
+                        {#                                            data-original-title="Duplicate"><i class="dropdown-icon fa fa-files-o"></i>#}
+                        {#                                    </button>#}
+                        {#                                    <button class="btn btn-xs btn-danger deleteQuestion" data-id='{{ question.id }}'#}
+                        {#                                            data-toggle="tooltip" data-placement="top" title=""#}
+                        {#                                            data-original-title="Delete"><i#}
+                        {#                                            class="dropdown-icon fa fa-times-circle"></i></button>#}
+                        {#                                </td>#}
+                        {#                            </tr>#}
+                        {#                        {% endfor %}#}
+                        {##}
+                        {#                        </tbody>#}
+                        {#                    </table>#}
+                    </div>
+                </div>
+
+
+            </div>
+
+
+        </div>
+
+    </div>
+    <!--TEMP BUTTONS-->
+    {#        <div class="btn-group">#}
+    {#            <button type="button" class="btn questionLabel" data-text="text" data-toggle="modal"#}
+    {#                    data-target="#questions-add">text#}
+    {#            </button>#}
+    {#            <button type="button" class="btn questionLabel" data-text="select" data-toggle="modal"#}
+    {#                    data-target="#questions-add">select#}
+    {#            </button>#}
+    {#            <button type="button" class="btn questionLabel" data-text="radio_button" data-toggle="modal"#}
+    {#                    data-target="#questions-add">radio-button#}
+    {#            </button>#}
+    {#            <button type="button" class="btn questionLabel" data-text="checkbox" data-toggle="modal"#}
+    {#                    data-target="#questions-add">checkbox#}
+    {#            </button>#}
+    {#            <button type="button" class="btn questionLabel" data-text="date" data-toggle="modal"#}
+    {#                    data-target="#questions-add">date#}
+    {#            </button>#}
+    {#            <button type="button" class="btn questionLabel" data-text="textarea" data-toggle="modal"#}
+    {#                    data-target="#questions-add">textarea#}
+    {#            </button>#}
+    {#            <button type="button" class="btn questionLabel" data-text="rate" data-toggle="modal"#}
+    {#                    data-target="#questions-add">rate#}
+    {#            </button>#}
+    {#            <button type="button" class="btn questionLabel" data-text="image_upload" data-toggle="modal"#}
+    {#                    data-target="#questions-add">image-upload#}
+    {#            </button>#}
+    {#            <button type="button" class="btn questionLabel" data-text="password" data-toggle="modal"#}
+    {#                    data-target="#questions-add">password#}
+    {#            </button>#}
+    {#        </div>#}
+    {% if request.session.admin_permission.content_permission.question_permission and request.session.admin_permission.content_permission.question_permission.access_level == 'write' or request.session.event_auth_user.type == 'super_admin' %}
+        {% include "question/add.html" %}
+        {% include "question/edit.html" %}
+    {% else %}
+        {% include "question/view.html" %}
+    {% endif %}
+
+    <!-- MODAL - TEXT -->
+    {#        <div id="questions-edit-text" class="modal fade" tabindex="-1" role="dialog" style="display: none;">#}
+    {#            <div class="modal-dialog modal-lg">#}
+    {#                <div class="modal-content">#}
+    {#                    <div class="modal-header">#}
+    {#                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>#}
+    {#                        <h4 class="modal-title">Edit Question</h4>#}
+    {#                    </div>#}
+    {#                    <div class="modal-body">#}
+    {#                        <div class="panel colourable">#}
+    {#                            <div class="panel-heading">#}
+    {#								<span class="panel-title"><i#}
+    {#                                        class="fa fa-font fa-lg"></i>&nbsp;&nbsp;&nbsp;<strong>Text</strong></span>#}
+    {#                                <ul class="nav nav-tabs nav-tabs">#}
+    {#                                    <li class="active">#}
+    {#                                        <a href="#basic-settings-text" data-toggle="tab"><span#}
+    {#                                                class="fa fa-cog fa-user"></span>&nbsp;&nbsp;Basic Settings</a>#}
+    {#                                    </li>#}
+    {#                                    <li class="">#}
+    {#                                        <a href="#advanced-settings-text" data-toggle="tab"><span#}
+    {#                                                class="fa fa-cogs fa-lg"></span>&nbsp;&nbsp;Advanced Settings</a>#}
+    {#                                    </li>#}
+    {#                                </ul>#}
+    {#                                <!-- / .nav -->#}
+    {#                            </div>#}
+    {#                            <!-- / .panel-heading -->#}
+    {#                            <div class="panel-body tab-content">#}
+    {#                                <div class="tab-pane fade in active" id="basic-settings-text">#}
+    {#                                    <div class="note note-info">#}
+    {#                                        <strong>Question ID:</strong> #Q423432#}
+    {#                                    </div>#}
+    {#                                    <div class="row">#}
+    {#                                        <div class="col-sm-6">#}
+    {#                                            <div class="form-group no-margin-hr">#}
+    {#                                                <label class="control-label">Label</label>#}
+    {#                                                <input type="text" name="label" class="form-control"#}
+    {#                                                       placeholder="Label">#}
+    {#                                            </div>#}
+    {#                                        </div>#}
+    {#                                        <!-- col-sm-6 -->#}
+    {#                                        <div class="col-sm-6">#}
+    {#                                            <div class="form-group no-margin-hr">#}
+    {#                                                <label class="control-label">Description</label>#}
+    {##}
+    {#                                                <div class="input-group">#}
+    {#													<span class="input-group-addon">#}
+    {#														<label class="px-single"><input type="checkbox" name="" value=""#}
+    {#                                                                                        class="px"><span#}
+    {#                                                                class="lbl"></span></label>#}
+    {#													</span>#}
+    {#                                                    <input type="text" class="form-control" placeholder="Description">#}
+    {#                                                </div>#}
+    {#                                            </div>#}
+    {#                                        </div>#}
+    {#                                        <!-- col-sm-6 -->#}
+    {#                                    </div>#}
+    {#                                    <!-- row -->#}
+    {#                                    <div class="row">#}
+    {#                                        <div class="col-sm-6">#}
+    {#                                            <div class="form-group no-margin-hr">#}
+    {#                                                <label class="control-label">Question Group</label>#}
+    {#                                                <select class="form-control">#}
+    {#                                                    <option value="">Information</option>#}
+    {#                                                    <option value="">Food</option>#}
+    {#                                                </select>#}
+    {#                                            </div>#}
+    {#                                        </div>#}
+    {#                                        <!-- col-sm-6 -->#}
+    {#                                        <div class="col-sm-6">#}
+    {#                                            <div class="form-group no-margin-hr">#}
+    {#                                                <div class="col-sm-4 no-margin-hr no-padding-hr">#}
+    {#                                                    <div class="form-group">#}
+    {#                                                        <label class="control-label">Min #characters</label>#}
+    {##}
+    {#                                                        <div class="input-group">#}
+    {#															<span class="input-group-addon">#}
+    {#																<label class="px-single"><input type="checkbox" name=""#}
+    {#                                                                                                value=""#}
+    {#                                                                                                class="px"><span#}
+    {#                                                                        class="lbl"></span></label>#}
+    {#															</span>#}
+    {#                                                            <input type="number" class="form-control">#}
+    {#                                                        </div>#}
+    {#                                                    </div>#}
+    {#                                                </div>#}
+    {#                                                <!-- col-sm-6 -->#}
+    {#                                                <div class="col-sm-1 no-margin-hr no-padding-hr ">#}
+    {#                                                </div>#}
+    {#                                                <div class="col-sm-4 no-margin-hr no-padding-hr">#}
+    {#                                                    <div class="form-group">#}
+    {#                                                        <label class="control-label">Max #characters</label>#}
+    {##}
+    {#                                                        <div class="input-group">#}
+    {#															<span class="input-group-addon">#}
+    {#																<label class="px-single"><input type="checkbox" name=""#}
+    {#                                                                                                value=""#}
+    {#                                                                                                class="px"><span#}
+    {#                                                                        class="lbl"></span></label>#}
+    {#															</span>#}
+    {#                                                            <input type="number" class="form-control">#}
+    {#                                                        </div>#}
+    {#                                                    </div>#}
+    {#                                                </div>#}
+    {#                                                <!-- col-sm-5 -->#}
+    {#                                            </div>#}
+    {#                                        </div>#}
+    {#                                        <!-- col-sm-6 -->#}
+    {#                                    </div>#}
+    {#                                    <!-- row -->#}
+    {#                                </div>#}
+    {#                                <div class="tab-pane fade" id="advanced-settings-text">#}
+    {#                                    <div class="row">#}
+    {#                                        <div class="col-sm-6">#}
+    {#                                            <div class="form-group no-margin-hr">#}
+    {#                                                <label class="control-label">Validate Regular Expression</label>#}
+    {##}
+    {#                                                <div class="input-group">#}
+    {#													<span class="input-group-addon">#}
+    {#														<label class="px-single"><input type="checkbox" name="" value=""#}
+    {#                                                                                        class="px"><span#}
+    {#                                                                class="lbl"></span></label>#}
+    {#													</span>#}
+    {#                                                    <input type="text" class="form-control" placeholder="/([A-Z])\w+/g">#}
+    {#                                                </div>#}
+    {#                                            </div>#}
+    {#                                        </div>#}
+    {#                                        <!-- col-sm-6 -->#}
+    {#                                        <div class="col-sm-6">#}
+    {#                                            <div class="form-group no-margin-hr">#}
+    {#                                                <label class="control-label">Add Classes to Question</label>#}
+    {#                                                <input class="add-classes form-control">#}
+    {#                                            </div>#}
+    {#                                        </div>#}
+    {#                                        <!-- col-sm-6 -->#}
+    {#                                    </div>#}
+    {#                                    <!-- row -->#}
+    {#                                    <div class="row padding-xs-vr">#}
+    {#                                        <div class="col-sm-12 form-inline">#}
+    {#                                            <label class="control-label">Use Filter to Decide Visibility</label>#}
+    {#                                        </div>#}
+    {#                                    </div>#}
+    {#                                    <div class="row">#}
+    {#                                        <div class="col-sm-12 form-inline">#}
+    {#                                            <input type="checkbox" class="form-control">#}
+    {#                                            <select class="form-control">#}
+    {#                                                <option value="">Show</option>#}
+    {#                                                <option value="">Hide</option>#}
+    {#                                            </select>#}
+    {#                                            this question while the filter#}
+    {#                                            <select class="form-control select-filter">#}
+    {#                                                <option></option>#}
+    {#                                                <optgroup label="Searches">#}
+    {#                                                    <option value="">View Late Arrivals</option>#}
+    {#                                                    <option value="">View All Missing Hotel</option>#}
+    {#                                                </optgroup>#}
+    {#                                                <optgroup label="Lists">#}
+    {#                                                    <option value="">All Attendees</option>#}
+    {#                                                    <option value="">Only Hotel Guests</option>#}
+    {#                                                    <option value="">Only Spanish Attendees</option>#}
+    {#                                                </optgroup>#}
+    {#                                                <optgroup label="Questions">#}
+    {#                                                    <option value="">If rated above 3</option>#}
+    {#                                                    <option value="">If birthday is before 1980</option>#}
+    {#                                                </optgroup>#}
+    {#                                            </select>#}
+    {#                                            is#}
+    {#                                            <select class="form-control">#}
+    {#                                                <option value="">true</option>#}
+    {#                                                <option value="">false</option>#}
+    {#                                            </select>#}
+    {#                                        </div>#}
+    {#                                    </div>#}
+    {#                                </div>#}
+    {#                            </div>#}
+    {#                        </div>#}
+    {#                        <div class="row">#}
+    {#                            <div class="col-sm-12 text-right">#}
+    {#                                <div class="btn-group">#}
+    {#                                    <button type="button" class="btn btn-lg" data-original-title="" title=""#}
+    {#                                            data-dismiss="modal" aria-hidden="true"><i#}
+    {#                                            class="fa fa-ban"></i>&nbsp;&nbsp;Cancel#}
+    {#                                    </button>#}
+    {#                                    <button type="button" class="btn btn-success btn-lg"><i#}
+    {#                                            class="fa fa-check-circle"></i>&nbsp;&nbsp;Save#}
+    {#                                    </button>#}
+    {#                                </div>#}
+    {#                            </div>#}
+    {#                        </div>#}
+    {#                    </div>#}
+    {#                </div>#}
+    {#                <!-- / .modal-content -->#}
+    {#            </div>#}
+    {#            <!-- / .modal-dialog -->#}
+    {#        </div>#}
+    {#        <!-- / .modal -->#}
+    {#        <!-- / Large modal -->#}
+    {##}
+    {#        <!-- MODAL - RADIOBUTTON -->#}
+    {#        <div id="questions-edit-radio-button" class="modal fade" tabindex="-1" role="dialog" style="display: none;">#}
+    {#            <div class="modal-dialog modal-lg">#}
+    {#                <div class="modal-content">#}
+    {#                    <div class="modal-header">#}
+    {#                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>#}
+    {#                        <h4 class="modal-title">Edit Question</h4>#}
+    {#                    </div>#}
+    {#                    <div class="modal-body">#}
+    {#                        <div class="panel colourable">#}
+    {#                            <div class="panel-heading">#}
+    {#								<span class="panel-title"><i#}
+    {#                                        class="fa fa-dot-circle-o fa-lg"></i>&nbsp;&nbsp;&nbsp;<strong>Radio#}
+    {#                                    Button</strong></span>#}
+    {#                                <ul class="nav nav-tabs nav-tabs">#}
+    {#                                    <li class="active">#}
+    {#                                        <a href="#basic-settings_radio-button" data-toggle="tab"><span#}
+    {#                                                class="fa fa-cog fa-user"></span>&nbsp;&nbsp;Basic Settings</a>#}
+    {#                                    </li>#}
+    {#                                    <li class="">#}
+    {#                                        <a href="#advanced-settings_radio-button" data-toggle="tab"><span#}
+    {#                                                class="fa fa-cogs fa-lg"></span>&nbsp;&nbsp;Advanced Settings</a>#}
+    {#                                    </li>#}
+    {#                                </ul>#}
+    {#                                <!-- / .nav -->#}
+    {#                            </div>#}
+    {#                            <!-- / .panel-heading -->#}
+    {#                            <div class="panel-body tab-content">#}
+    {#                                <div class="tab-pane fade in active" id="basic-settings_radio-button">#}
+    {#                                    <div class="note note-info">#}
+    {#                                        <strong>Question ID:</strong> #Q423432#}
+    {#                                    </div>#}
+    {#                                    <div class="row">#}
+    {#                                        <div class="col-sm-6">#}
+    {#                                            <div class="form-group no-margin-hr">#}
+    {#                                                <label class="control-label">Label</label>#}
+    {#                                                <input type="text" name="label" class="form-control"#}
+    {#                                                       placeholder="Label">#}
+    {#                                            </div>#}
+    {#                                        </div>#}
+    {#                                        <!-- col-sm-6 -->#}
+    {#                                        <div class="col-sm-6">#}
+    {#                                            <div class="form-group no-margin-hr">#}
+    {#                                                <label class="control-label">Description</label>#}
+    {##}
+    {#                                                <div class="input-group">#}
+    {#													<span class="input-group-addon">#}
+    {#														<label class="px-single"><input type="checkbox" name="" value=""#}
+    {#                                                                                        class="px"><span#}
+    {#                                                                class="lbl"></span></label>#}
+    {#													</span>#}
+    {#                                                    <input type="text" class="form-control" placeholder="Description">#}
+    {#                                                </div>#}
+    {#                                            </div>#}
+    {#                                        </div>#}
+    {#                                        <!-- col-sm-6 -->#}
+    {#                                    </div>#}
+    {#                                    <!-- row -->#}
+    {#                                    <div class="row">#}
+    {#                                        <div class="col-sm-6">#}
+    {#                                            <div class="form-group no-margin-hr">#}
+    {#                                                <label class="control-label">Question Group</label>#}
+    {#                                                <select class="form-control">#}
+    {#                                                    <option value="">Information</option>#}
+    {#                                                    <option value="">Food</option>#}
+    {#                                                </select>#}
+    {#                                            </div>#}
+    {#                                        </div>#}
+    {#                                        <!-- col-sm-6 -->#}
+    {#                                        <div class="col-sm-6">#}
+    {#                                            <div class="form-group">#}
+    {#                                                <label class="control-label">Required</label>#}
+    {##}
+    {#                                                <div class="checkbox">#}
+    {#                                                    <label>#}
+    {#                                                        <input type="checkbox" class="px"> <span class="lbl">Yes</span>#}
+    {#                                                    </label>#}
+    {#                                                </div>#}
+    {#                                            </div>#}
+    {#                                        </div>#}
+    {#                                        <!-- col-sm-6 -->#}
+    {#                                    </div>#}
+    {#                                    <!-- row -->#}
+    {#                                    <div class="row">#}
+    {#                                        <div class="col-sm-12">#}
+    {#                                            <div class="table-light">#}
+    {#                                                <div class="table-header">#}
+    {#                                                    <div class="table-caption">#}
+    {#                                                        Options#}
+    {#                                                    </div>#}
+    {#                                                </div>#}
+    {#                                                <script>#}
+    {#                                                    init.push(function () {#}
+    {##}
+    {#                                                        $('.edit-radio-button-label').editable({#}
+    {#                                                            type: 'text',#}
+    {#                                                            name: '',#}
+    {#                                                            title: 'Label'#}
+    {#                                                        });#}
+    {##}
+    {#                                                        $('.edit-radio-button-add-attendee-group').editable({#}
+    {#                                                            source: [#}
+    {#                                                                {value: 1, text: 'Participant'},#}
+    {#                                                                {value: 2, text: 'Speaker'},#}
+    {#                                                                {value: 3, text: 'Student'},#}
+    {#                                                                {value: 4, text: 'VIP'}#}
+    {#                                                            ]#}
+    {#                                                        });#}
+    {##}
+    {#                                                        $('.edit-radio-button-attendee-tags').editable({#}
+    {#                                                            select2: {#}
+    {#                                                                tags: ['Received Invitation', 'Registered Late', 'Early Birds'],#}
+    {#                                                                tokenSeparators: [","]#}
+    {#                                                            }#}
+    {#                                                        });#}
+    {#                                                    });#}
+    {#                                                </script>#}
+    {#                                                <table class="table table-bordered sortable">#}
+    {#                                                    <thead>#}
+    {#                                                    <tr>#}
+    {#                                                        <th>#</th>#}
+    {#                                                        <th>Title</th>#}
+    {#                                                        <th>Add Attendee Group</th>#}
+    {#                                                        <th>Add Tag</th>#}
+    {#                                                        <th>Edit</th>#}
+    {#                                                    </tr>#}
+    {#                                                    </thead>#}
+    {#                                                    <tbody>#}
+    {#                                                    <tr>#}
+    {#                                                        <td>1</td>#}
+    {#                                                        <td><a href="#" class="edit-radio-button-label" data-type="text"#}
+    {#                                                               data-pk="1"#}
+    {#                                                               data-title="title">Green</a></td>#}
+    {#                                                        <td><a href="#" class="edit-radio-button-add-attendee-group"#}
+    {#                                                               data-type="checklist"#}
+    {#                                                               data-value="2,3" data-title="Select Attendee Groups"></a>#}
+    {#                                                        </td>#}
+    {#                                                        <td><a href="#" class="edit-radio-button-attendee-tags"#}
+    {#                                                               data-type="select2"#}
+    {#                                                               data-pk="1" data-title="Enter tags">Registered Late,#}
+    {#                                                            Received Invitation</a>#}
+    {#                                                        </td>#}
+    {#                                                        <td>#}
+    {#                                                            <button class="btn btn-xs" data-toggle="tooltip"#}
+    {#                                                                    data-placement="top" title=""#}
+    {#                                                                    data-original-title="Duplicate"><i#}
+    {#                                                                    class="dropdown-icon fa fa-files-o"></i></button>#}
+    {#                                                            <button class="btn btn-xs btn-danger" data-toggle="tooltip"#}
+    {#                                                                    data-placement="top"#}
+    {#                                                                    title="" data-original-title="Delete"><i#}
+    {#                                                                    class="dropdown-icon fa fa-times-circle"></i>#}
+    {#                                                            </button>#}
+    {#                                                        </td>#}
+    {#                                                    </tr>#}
+    {#                                                    <tr>#}
+    {#                                                        <td>2</td>#}
+    {#                                                        <td><a href="#" class="edit-radio-button-label" data-type="text"#}
+    {#                                                               data-pk="1"#}
+    {#                                                               data-title="title">Blue</a></td>#}
+    {#                                                        <td><a href="#" class="edit-radio-button-add-attendee-group"#}
+    {#                                                               data-type="checklist"#}
+    {#                                                               data-value="2,3" data-title="Select Attendee Groups"></a>#}
+    {#                                                        </td>#}
+    {#                                                        <td><a href="#" class="edit-radio-button-attendee-tags"#}
+    {#                                                               data-type="select2"#}
+    {#                                                               data-pk="1" data-title="Enter tags">Registered Late,#}
+    {#                                                            Received Invitation</a>#}
+    {#                                                        </td>#}
+    {#                                                        <td>#}
+    {#                                                            <button class="btn btn-xs" data-toggle="tooltip"#}
+    {#                                                                    data-placement="top" title=""#}
+    {#                                                                    data-original-title="Duplicate"><i#}
+    {#                                                                    class="dropdown-icon fa fa-files-o"></i></button>#}
+    {#                                                            <button class="btn btn-xs btn-danger" data-toggle="tooltip"#}
+    {#                                                                    data-placement="top"#}
+    {#                                                                    title="" data-original-title="Delete"><i#}
+    {#                                                                    class="dropdown-icon fa fa-times-circle"></i>#}
+    {#                                                            </button>#}
+    {#                                                        </td>#}
+    {#                                                    </tr>#}
+    {#                                                    <tr>#}
+    {#                                                        <td>2</td>#}
+    {#                                                        <td><a href="#" class="edit-radio-button-label" data-type="text"#}
+    {#                                                               data-pk="1"#}
+    {#                                                               data-title="title">Red</a></td>#}
+    {#                                                        <td><a href="#" class="edit-radio-button-add-attendee-group"#}
+    {#                                                               data-type="checklist"#}
+    {#                                                               data-value="2,3" data-title="Select Attendee Groups"></a>#}
+    {#                                                        </td>#}
+    {#                                                        <td><a href="#" class="edit-radio-button-attendee-tags"#}
+    {#                                                               data-type="select2"#}
+    {#                                                               data-pk="1" data-title="Enter tags">Registered Late,#}
+    {#                                                            Received Invitation</a>#}
+    {#                                                        </td>#}
+    {#                                                        <td>#}
+    {#                                                            <button class="btn btn-xs" data-toggle="tooltip"#}
+    {#                                                                    data-placement="top" title=""#}
+    {#                                                                    data-original-title="Duplicate"><i#}
+    {#                                                                    class="dropdown-icon fa fa-files-o"></i></button>#}
+    {#                                                            <button class="btn btn-xs btn-danger" data-toggle="tooltip"#}
+    {#                                                                    data-placement="top"#}
+    {#                                                                    title="" data-original-title="Delete"><i#}
+    {#                                                                    class="dropdown-icon fa fa-times-circle"></i>#}
+    {#                                                            </button>#}
+    {#                                                        </td>#}
+    {#                                                    </tr>#}
+    {#                                                    </tbody>#}
+    {#                                                </table>#}
+    {#                                                <div class="table-footer text-right">#}
+    {#                                                    <div class="btn-group">#}
+    {#                                                        <button type="button" class="btn btn-primary"><span#}
+    {#                                                                class="icon fa fa-plus"></span>&nbsp;&nbsp;Add#}
+    {#                                                            New Option#}
+    {#                                                        </button>#}
+    {#                                                    </div>#}
+    {#                                                </div>#}
+    {#                                            </div>#}
+    {#                                        </div>#}
+    {#                                    </div>#}
+    {#                                </div>#}
+    {#                                <div class="tab-pane fade" id="advanced-settings_radio-button">#}
+    {#                                    <div class="row">#}
+    {#                                        <div class="col-sm-6">#}
+    {#                                            <div class="form-group no-margin-hr">#}
+    {#                                                <label class="control-label">Add Classes to Question</label>#}
+    {#                                                <input class="add-classes form-control">#}
+    {#                                            </div>#}
+    {#                                        </div>#}
+    {#                                        <!-- col-sm-6 -->#}
+    {#                                    </div>#}
+    {#                                    <!-- row -->#}
+    {#                                    <div class="row padding-xs-vr">#}
+    {#                                        <div class="col-sm-12 form-inline">#}
+    {#                                            <label class="control-label">Use Filter to Decide Visibility</label>#}
+    {#                                        </div>#}
+    {#                                    </div>#}
+    {#                                    <div class="row">#}
+    {##}
+    {#                                        <div class="col-sm-12 form-inline">#}
+    {#                                            <input type="checkbox" class="form-control">#}
+    {#                                            <select class="form-control">#}
+    {#                                                <option value="">Show</option>#}
+    {#                                                <option value="">Hide</option>#}
+    {#                                            </select>#}
+    {#                                            this question while the filter#}
+    {#                                            <select class="form-control select-filter">#}
+    {#                                                <option></option>#}
+    {#                                                <optgroup label="Searches">#}
+    {#                                                    <option value="">View Late Arrivals</option>#}
+    {#                                                    <option value="">View All Missing Hotel</option>#}
+    {#                                                </optgroup>#}
+    {#                                                <optgroup label="Lists">#}
+    {#                                                    <option value="">All Attendees</option>#}
+    {#                                                    <option value="">Only Hotel Guests</option>#}
+    {#                                                    <option value="">Only Spanish Attendees</option>#}
+    {#                                                </optgroup>#}
+    {#                                                <optgroup label="Questions">#}
+    {#                                                    <option value="">If rated above 3</option>#}
+    {#                                                    <option value="">If birthday is before 1980</option>#}
+    {#                                                </optgroup>#}
+    {#                                            </select>#}
+    {#                                            is#}
+    {#                                            <select class="form-control">#}
+    {#                                                <option value="">true</option>#}
+    {#                                                <option value="">false</option>#}
+    {#                                            </select>#}
+    {#                                        </div>#}
+    {#                                    </div>#}
+    {#                                </div>#}
+    {#                            </div>#}
+    {#                        </div>#}
+    {#                        <div class="row">#}
+    {#                            <div class="col-sm-12 text-right">#}
+    {#                                <div class="btn-group">#}
+    {#                                    <button type="button" class="btn btn-lg" data-original-title="" title=""#}
+    {#                                            data-dismiss="modal"#}
+    {#                                            aria-hidden="true"><i class="fa fa-ban"></i>&nbsp;&nbsp;Cancel#}
+    {#                                    </button>#}
+    {#                                    <button type="button" class="btn btn-success btn-lg"><i#}
+    {#                                            class="fa fa-check-circle"></i>&nbsp;&nbsp;Save#}
+    {#                                    </button>#}
+    {#                                </div>#}
+    {#                            </div>#}
+    {#                        </div>#}
+    {#                    </div>#}
+    {##}
+    {#                </div>#}
+    {#                <!-- / .modal-content -->#}
+    {#            </div>#}
+    {#            <!-- / .modal-dialog -->#}
+    {#        </div>#}
+    {#        <!-- / .modal -->#}
+    {#        <!-- / Large modal -->#}
+    {##}
+    {#        <!-- MODAL - CHECKBOX -->#}
+    {#        <div id="questions-edit-checkbox" class="modal fade" tabindex="-1" role="dialog" style="display: none;">#}
+    {#            <div class="modal-dialog modal-lg">#}
+    {#                <div class="modal-content">#}
+    {#                    <div class="modal-header">#}
+    {#                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>#}
+    {#                        <h4 class="modal-title">Edit Question</h4>#}
+    {#                    </div>#}
+    {#                    <div class="modal-body">#}
+    {#                        <div class="panel colourable">#}
+    {#                            <div class="panel-heading">#}
+    {#								<span class="panel-title"><i#}
+    {#                                        class="fa fa-check-square-o fa-lg"></i>&nbsp;&nbsp;&nbsp;<strong>Checkbox</strong></span>#}
+    {#                                <ul class="nav nav-tabs nav-tabs">#}
+    {#                                    <li class="active">#}
+    {#                                        <a href="#basic-settings_checkbox" data-toggle="tab"><span#}
+    {#                                                class="fa fa-cog fa-user"></span>&nbsp;&nbsp;Basic Settings</a>#}
+    {#                                    </li>#}
+    {#                                    <li class="">#}
+    {#                                        <a href="#advanced-settings_checkbox" data-toggle="tab"><span#}
+    {#                                                class="fa fa-cogs fa-lg"></span>&nbsp;&nbsp;Advanced Settings</a>#}
+    {#                                    </li>#}
+    {#                                </ul>#}
+    {#                                <!-- / .nav -->#}
+    {#                            </div>#}
+    {#                            <!-- / .panel-heading -->#}
+    {#                            <div class="panel-body tab-content">#}
+    {#                                <div class="tab-pane fade in active" id="basic-settings_checkbox">#}
+    {#                                    <div class="note note-info">#}
+    {#                                        <strong>Question ID:</strong> #Q423432#}
+    {#                                    </div>#}
+    {#                                    <div class="row">#}
+    {#                                        <div class="col-sm-6">#}
+    {#                                            <div class="form-group no-margin-hr">#}
+    {#                                                <label class="control-label">Label</label>#}
+    {#                                                <input type="text" name="label" class="form-control"#}
+    {#                                                       placeholder="Label">#}
+    {#                                            </div>#}
+    {#                                        </div>#}
+    {#                                        <!-- col-sm-6 -->#}
+    {#                                        <div class="col-sm-6">#}
+    {#                                            <div class="form-group no-margin-hr">#}
+    {#                                                <label class="control-label">Description</label>#}
+    {##}
+    {#                                                <div class="input-group">#}
+    {#													<span class="input-group-addon">#}
+    {#														<label class="px-single"><input type="checkbox" name="" value=""#}
+    {#                                                                                        class="px"><span#}
+    {#                                                                class="lbl"></span></label>#}
+    {#													</span>#}
+    {#                                                    <input type="text" class="form-control" placeholder="Description">#}
+    {#                                                </div>#}
+    {#                                            </div>#}
+    {#                                        </div>#}
+    {#                                        <!-- col-sm-6 -->#}
+    {#                                    </div>#}
+    {#                                    <!-- row -->#}
+    {#                                    <div class="row">#}
+    {#                                        <div class="col-sm-6">#}
+    {#                                            <div class="form-group no-margin-hr">#}
+    {#                                                <label class="control-label">Question Group</label>#}
+    {#                                                <select class="form-control">#}
+    {#                                                    <option value="">Information</option>#}
+    {#                                                    <option value="">Food</option>#}
+    {#                                                </select>#}
+    {#                                            </div>#}
+    {#                                        </div>#}
+    {#                                        <!-- col-sm-6 -->#}
+    {#                                        <div class="col-sm-6">#}
+    {#                                            <div class="form-group no-margin-hr">#}
+    {#                                                <div class="col-sm-4 no-margin-hr no-padding-hr">#}
+    {#                                                    <div class="form-group">#}
+    {#                                                        <label class="control-label">Min selected options</label>#}
+    {##}
+    {#                                                        <div class="input-group">#}
+    {#															<span class="input-group-addon">#}
+    {#																<label class="px-single"><input type="checkbox" name=""#}
+    {#                                                                                                value=""#}
+    {#                                                                                                class="px"><span#}
+    {#                                                                        class="lbl"></span></label>#}
+    {#															</span>#}
+    {#                                                            <input type="number" class="form-control">#}
+    {#                                                        </div>#}
+    {#                                                    </div>#}
+    {#                                                </div>#}
+    {#                                                <!-- col-sm-6 -->#}
+    {#                                                <div class="col-sm-1 no-margin-hr no-padding-hr ">#}
+    {#                                                </div>#}
+    {#                                                <div class="col-sm-4 no-margin-hr no-padding-hr">#}
+    {#                                                    <div class="form-group">#}
+    {#                                                        <label class="control-label">Max selected options</label>#}
+    {##}
+    {#                                                        <div class="input-group">#}
+    {#															<span class="input-group-addon">#}
+    {#																<label class="px-single"><input type="checkbox" name=""#}
+    {#                                                                                                value=""#}
+    {#                                                                                                class="px"><span#}
+    {#                                                                        class="lbl"></span></label>#}
+    {#															</span>#}
+    {#                                                            <input type="number" class="form-control">#}
+    {#                                                        </div>#}
+    {#                                                    </div>#}
+    {#                                                </div>#}
+    {#                                                <!-- col-sm-5 -->#}
+    {#                                            </div>#}
+    {#                                        </div>#}
+    {#                                        <!-- col-sm-6 -->#}
+    {#                                    </div>#}
+    {#                                    <!-- row -->#}
+    {#                                    <div class="row">#}
+    {#                                        <div class="col-sm-12">#}
+    {#                                            <div class="table-light">#}
+    {#                                                <div class="table-header">#}
+    {#                                                    <div class="table-caption">#}
+    {#                                                        Options#}
+    {#                                                    </div>#}
+    {#                                                </div>#}
+    {#                                                <script>#}
+    {#                                                    init.push(function () {#}
+    {##}
+    {#                                                        $('.edit-radio-button-label').editable({#}
+    {#                                                            type: 'text',#}
+    {#                                                            name: '',#}
+    {#                                                            title: 'Label'#}
+    {#                                                        });#}
+    {##}
+    {#                                                        $('.edit-radio-button-add-attendee-group').editable({#}
+    {#                                                            source: [#}
+    {#                                                                {value: 1, text: 'Participant'},#}
+    {#                                                                {value: 2, text: 'Speaker'},#}
+    {#                                                                {value: 3, text: 'Student'},#}
+    {#                                                                {value: 4, text: 'VIP'}#}
+    {#                                                            ]#}
+    {#                                                        });#}
+    {##}
+    {#                                                        $('.edit-radio-button-attendee-tags').editable({#}
+    {#                                                            select2: {#}
+    {#                                                                tags: ['Received Invitation', 'Registered Late', 'Early Birds'],#}
+    {#                                                                tokenSeparators: [","]#}
+    {#                                                            }#}
+    {#                                                        });#}
+    {#                                                    });#}
+    {#                                                </script>#}
+    {#                                                <table class="table table-bordered sortable">#}
+    {#                                                    <thead>#}
+    {#                                                    <tr>#}
+    {#                                                        <th>#</th>#}
+    {#                                                        <th>Title</th>#}
+    {#                                                        <th>Add Attendee Group</th>#}
+    {#                                                        <th>Add Tag</th>#}
+    {#                                                        <th>Edit</th>#}
+    {#                                                    </tr>#}
+    {#                                                    </thead>#}
+    {#                                                    <tbody>#}
+    {#                                                    <tr>#}
+    {#                                                        <td>1</td>#}
+    {#                                                        <td><a href="#" class="edit-radio-button-label" data-type="text"#}
+    {#                                                               data-pk="1"#}
+    {#                                                               data-title="title">Green</a></td>#}
+    {#                                                        <td><a href="#" class="edit-radio-button-add-attendee-group"#}
+    {#                                                               data-type="checklist"#}
+    {#                                                               data-value="2,3" data-title="Select Attendee Groups"></a>#}
+    {#                                                        </td>#}
+    {#                                                        <td><a href="#" class="edit-radio-button-attendee-tags"#}
+    {#                                                               data-type="select2" data-pk="1"#}
+    {#                                                               data-title="Enter tags">Registered Late, Received#}
+    {#                                                            Invitation</a></td>#}
+    {#                                                        <td>#}
+    {#                                                            <button class="btn btn-xs" data-toggle="tooltip"#}
+    {#                                                                    data-placement="top" title=""#}
+    {#                                                                    data-original-title="Duplicate"><i#}
+    {#                                                                    class="dropdown-icon fa fa-files-o"></i>#}
+    {#                                                            </button>#}
+    {#                                                            <button class="btn btn-xs btn-danger" data-toggle="tooltip"#}
+    {#                                                                    data-placement="top"#}
+    {#                                                                    title="" data-original-title="Delete"><i#}
+    {#                                                                    class="dropdown-icon fa fa-times-circle"></i>#}
+    {#                                                            </button>#}
+    {#                                                        </td>#}
+    {#                                                    </tr>#}
+    {#                                                    <tr>#}
+    {#                                                        <td>2</td>#}
+    {#                                                        <td><a href="#" class="edit-radio-button-label" data-type="text"#}
+    {#                                                               data-pk="1"#}
+    {#                                                               data-title="title">Blue</a></td>#}
+    {#                                                        <td><a href="#" class="edit-radio-button-add-attendee-group"#}
+    {#                                                               data-type="checklist"#}
+    {#                                                               data-value="2,3" data-title="Select Attendee Groups"></a>#}
+    {#                                                        </td>#}
+    {#                                                        <td><a href="#" class="edit-radio-button-attendee-tags"#}
+    {#                                                               data-type="select2" data-pk="1"#}
+    {#                                                               data-title="Enter tags">Registered Late, Received#}
+    {#                                                            Invitation</a></td>#}
+    {#                                                        <td>#}
+    {#                                                            <button class="btn btn-xs" data-toggle="tooltip"#}
+    {#                                                                    data-placement="top" title=""#}
+    {#                                                                    data-original-title="Duplicate"><i#}
+    {#                                                                    class="dropdown-icon fa fa-files-o"></i>#}
+    {#                                                            </button>#}
+    {#                                                            <button class="btn btn-xs btn-danger" data-toggle="tooltip"#}
+    {#                                                                    data-placement="top"#}
+    {#                                                                    title="" data-original-title="Delete"><i#}
+    {#                                                                    class="dropdown-icon fa fa-times-circle"></i>#}
+    {#                                                            </button>#}
+    {#                                                        </td>#}
+    {#                                                    </tr>#}
+    {#                                                    <tr>#}
+    {#                                                        <td>2</td>#}
+    {#                                                        <td><a href="#" class="edit-radio-button-label" data-type="text"#}
+    {#                                                               data-pk="1"#}
+    {#                                                               data-title="title">Red</a></td>#}
+    {#                                                        <td><a href="#" class="edit-radio-button-add-attendee-group"#}
+    {#                                                               data-type="checklist"#}
+    {#                                                               data-value="2,3" data-title="Select Attendee Groups"></a>#}
+    {#                                                        </td>#}
+    {#                                                        <td><a href="#" class="edit-radio-button-attendee-tags"#}
+    {#                                                               data-type="select2" data-pk="1"#}
+    {#                                                               data-title="Enter tags">Registered Late, Received#}
+    {#                                                            Invitation</a></td>#}
+    {#                                                        <td>#}
+    {#                                                            <button class="btn btn-xs" data-toggle="tooltip"#}
+    {#                                                                    data-placement="top" title=""#}
+    {#                                                                    data-original-title="Duplicate"><i#}
+    {#                                                                    class="dropdown-icon fa fa-files-o"></i>#}
+    {#                                                            </button>#}
+    {#                                                            <button class="btn btn-xs btn-danger" data-toggle="tooltip"#}
+    {#                                                                    data-placement="top"#}
+    {#                                                                    title="" data-original-title="Delete"><i#}
+    {#                                                                    class="dropdown-icon fa fa-times-circle"></i>#}
+    {#                                                            </button>#}
+    {#                                                        </td>#}
+    {#                                                    </tr>#}
+    {#                                                    </tbody>#}
+    {#                                                </table>#}
+    {#                                                <div class="table-footer text-right">#}
+    {#                                                    <div class="btn-group">#}
+    {#                                                        <button type="button" class="btn btn-primary"><span#}
+    {#                                                                class="icon fa fa-plus"></span>&nbsp;&nbsp;Add#}
+    {#                                                            New Option#}
+    {#                                                        </button>#}
+    {#                                                    </div>#}
+    {#                                                </div>#}
+    {#                                            </div>#}
+    {#                                        </div>#}
+    {#                                    </div>#}
+    {#                                </div>#}
+    {#                                <div class="tab-pane fade" id="advanced-settings_checkbox">#}
+    {#                                    <div class="row">#}
+    {#                                        <div class="col-sm-6">#}
+    {#                                            <div class="form-group no-margin-hr">#}
+    {#                                                <label class="control-label">Add Classes to Question</label>#}
+    {#                                                <input class="add-classes form-control">#}
+    {#                                            </div>#}
+    {#                                        </div>#}
+    {#                                        <!-- col-sm-6 -->#}
+    {#                                    </div>#}
+    {#                                    <!-- row -->#}
+    {#                                    <div class="row padding-xs-vr">#}
+    {#                                        <div class="col-sm-12 form-inline">#}
+    {#                                            <label class="control-label">Use Filter to Decide Visibility</label>#}
+    {#                                        </div>#}
+    {#                                    </div>#}
+    {#                                    <div class="row">#}
+    {##}
+    {#                                        <div class="col-sm-12 form-inline">#}
+    {#                                            <input type="checkbox" class="form-control">#}
+    {#                                            <select class="form-control">#}
+    {#                                                <option value="">Show</option>#}
+    {#                                                <option value="">Hide</option>#}
+    {#                                            </select>#}
+    {#                                            this question while the filter#}
+    {#                                            <select class="form-control select-filter">#}
+    {#                                                <option></option>#}
+    {#                                                <optgroup label="Searches">#}
+    {#                                                    <option value="">View Late Arrivals</option>#}
+    {#                                                    <option value="">View All Missing Hotel</option>#}
+    {#                                                </optgroup>#}
+    {#                                                <optgroup label="Lists">#}
+    {#                                                    <option value="">All Attendees</option>#}
+    {#                                                    <option value="">Only Hotel Guests</option>#}
+    {#                                                    <option value="">Only Spanish Attendees</option>#}
+    {#                                                </optgroup>#}
+    {#                                                <optgroup label="Questions">#}
+    {#                                                    <option value="">If rated above 3</option>#}
+    {#                                                    <option value="">If birthday is before 1980</option>#}
+    {#                                                </optgroup>#}
+    {#                                            </select>#}
+    {#                                            is#}
+    {#                                            <select class="form-control">#}
+    {#                                                <option value="">true</option>#}
+    {#                                                <option value="">false</option>#}
+    {#                                            </select>#}
+    {#                                        </div>#}
+    {#                                    </div>#}
+    {#                                </div>#}
+    {#                            </div>#}
+    {#                        </div>#}
+    {#                        <div class="row">#}
+    {#                            <div class="col-sm-12 text-right">#}
+    {#                                <div class="btn-group">#}
+    {#                                    <button type="button" class="btn btn-lg" data-original-title="" title=""#}
+    {#                                            data-dismiss="modal"#}
+    {#                                            aria-hidden="true"><i class="fa fa-ban"></i>&nbsp;&nbsp;Cancel#}
+    {#                                    </button>#}
+    {#                                    <button type="button" class="btn btn-success btn-lg"><i#}
+    {#                                            class="fa fa-check-circle"></i>&nbsp;&nbsp;Save#}
+    {#                                    </button>#}
+    {#                                </div>#}
+    {#                            </div>#}
+    {#                        </div>#}
+    {#                    </div>#}
+    {##}
+    {#                </div>#}
+    {#                <!-- / .modal-content -->#}
+    {#            </div>#}
+    {#            <!-- / .modal-dialog -->#}
+    {#        </div>#}
+    {#        <!-- / .modal -->#}
+    {#        <!-- / Large modal -->#}
+    {##}
+    {#        <!-- MODAL - DATE -->#}
+    {#        <div id="questions-edit-date" class="modal fade" tabindex="-1" role="dialog" style="display: none;">#}
+    {#            <div class="modal-dialog modal-lg">#}
+    {#                <div class="modal-content">#}
+    {#                    <div class="modal-header">#}
+    {#                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>#}
+    {#                        <h4 class="modal-title">Edit Question</h4>#}
+    {#                    </div>#}
+    {#                    <div class="modal-body">#}
+    {#                        <div class="panel colourable">#}
+    {#                            <div class="panel-heading">#}
+    {#                            <span class="panel-title"><i#}
+    {#                                    class="fa fa-calendar fa-lg"></i>&nbsp;&nbsp;&nbsp;<strong>Date</strong></span>#}
+    {#                                <ul class="nav nav-tabs nav-tabs">#}
+    {#                                    <li class="active">#}
+    {#                                        <a href="#basic-settings-date" data-toggle="tab"><span#}
+    {#                                                class="fa fa-cog fa-user"></span>&nbsp;&nbsp;Basic Settings</a>#}
+    {#                                    </li>#}
+    {#                                    <li class="">#}
+    {#                                        <a href="#advanced-settings-date" data-toggle="tab"><span#}
+    {#                                                class="fa fa-cogs fa-lg"></span>&nbsp;&nbsp;Advanced Settings</a>#}
+    {#                                    </li>#}
+    {#                                </ul>#}
+    {#                                <!-- / .nav -->#}
+    {#                            </div>#}
+    {#                            <!-- / .panel-heading -->#}
+    {#                            <div class="panel-body tab-content">#}
+    {#                                <div class="tab-pane fade in active" id="basic-settings-date">#}
+    {#                                    <div class="note note-info">#}
+    {#                                        <strong>Question ID:</strong> #Q423432#}
+    {#                                    </div>#}
+    {#                                    <div class="row">#}
+    {#                                        <div class="col-sm-6">#}
+    {#                                            <div class="form-group no-margin-hr">#}
+    {#                                                <label class="control-label">Label</label>#}
+    {#                                                <input type="text" name="label" class="form-control"#}
+    {#                                                       placeholder="Label">#}
+    {#                                            </div>#}
+    {#                                        </div>#}
+    {#                                        <!-- col-sm-6 -->#}
+    {#                                        <div class="col-sm-6">#}
+    {#                                            <div class="form-group no-margin-hr">#}
+    {#                                                <label class="control-label">Description</label>#}
+    {##}
+    {#                                                <div class="input-group">#}
+    {#													<span class="input-group-addon">#}
+    {#														<label class="px-single"><input type="checkbox" name="" value=""#}
+    {#                                                                                        class="px"><span#}
+    {#                                                                class="lbl"></span></label>#}
+    {#													</span>#}
+    {#                                                    <input type="text" class="form-control" placeholder="Description">#}
+    {#                                                </div>#}
+    {#                                            </div>#}
+    {#                                        </div>#}
+    {#                                        <!-- col-sm-6 -->#}
+    {#                                    </div>#}
+    {#                                    <!-- row -->#}
+    {#                                    <div class="row">#}
+    {#                                        <div class="col-sm-6">#}
+    {#                                            <div class="form-group no-margin-hr">#}
+    {#                                                <label class="control-label">Question Group</label>#}
+    {#                                                <select class="form-control">#}
+    {#                                                    <option value="">Information</option>#}
+    {#                                                    <option value="">Food</option>#}
+    {#                                                </select>#}
+    {#                                            </div>#}
+    {#                                        </div>#}
+    {#                                        <!-- col-sm-6 -->#}
+    {#                                        <div class="col-sm-6">#}
+    {#                                            <label class="control-label">Select dates between</label>#}
+    {##}
+    {#                                            <div class="input-daterange input-group datepicker-range">#}
+    {#                                                <input type="text" class="form-control" name="start"#}
+    {#                                                       placeholder="Start date">#}
+    {#                                                <span class="input-group-addon">and</span>#}
+    {#                                                <input type="text" class="form-control" name="end"#}
+    {#                                                       placeholder="End date">#}
+    {#                                            </div>#}
+    {#                                        </div>#}
+    {#                                    </div>#}
+    {#                                    <!-- row -->#}
+    {#                                </div>#}
+    {#                                <div class="tab-pane fade" id="advanced-settings-date">#}
+    {#                                    <div class="row">#}
+    {#                                        <div class="col-sm-6">#}
+    {#                                            <div class="form-group no-margin-hr">#}
+    {#                                                <label class="control-label">Add Classes to Question</label>#}
+    {#                                                <input class="add-classes form-control">#}
+    {#                                            </div>#}
+    {#                                        </div>#}
+    {#                                        <!-- col-sm-6 -->#}
+    {#                                    </div>#}
+    {#                                    <!-- row -->#}
+    {#                                    <div class="row padding-xs-vr">#}
+    {#                                        <div class="col-sm-12 form-inline">#}
+    {#                                            <label class="control-label">Use Filter to Decide Visibility</label>#}
+    {#                                        </div>#}
+    {#                                    </div>#}
+    {#                                    <div class="row">#}
+    {##}
+    {#                                        <div class="col-sm-12 form-inline">#}
+    {#                                            <input type="checkbox" class="form-control">#}
+    {#                                            <select class="form-control">#}
+    {#                                                <option value="">Show</option>#}
+    {#                                                <option value="">Hide</option>#}
+    {#                                            </select>#}
+    {#                                            this question while the filter#}
+    {#                                            <select class="form-control select-filter">#}
+    {#                                                <option></option>#}
+    {#                                                <optgroup label="Searches">#}
+    {#                                                    <option value="">View Late Arrivals</option>#}
+    {#                                                    <option value="">View All Missing Hotel</option>#}
+    {#                                                </optgroup>#}
+    {#                                                <optgroup label="Lists">#}
+    {#                                                    <option value="">All Attendees</option>#}
+    {#                                                    <option value="">Only Hotel Guests</option>#}
+    {#                                                    <option value="">Only Spanish Attendees</option>#}
+    {#                                                </optgroup>#}
+    {#                                                <optgroup label="Questions">#}
+    {#                                                    <option value="">If rated above 3</option>#}
+    {#                                                    <option value="">If birthday is before 1980</option>#}
+    {#                                                </optgroup>#}
+    {#                                            </select>#}
+    {#                                            is#}
+    {#                                            <select class="form-control">#}
+    {#                                                <option value="">true</option>#}
+    {#                                                <option value="">false</option>#}
+    {#                                            </select>#}
+    {#                                        </div>#}
+    {#                                    </div>#}
+    {#                                </div>#}
+    {#                            </div>#}
+    {#                        </div>#}
+    {#                        <div class="row">#}
+    {#                            <div class="col-sm-12 text-right">#}
+    {#                                <div class="btn-group">#}
+    {#                                    <button type="button" class="btn btn-lg" data-original-title="" title=""#}
+    {#                                            data-dismiss="modal" aria-hidden="true"><i#}
+    {#                                            class="fa fa-ban"></i>&nbsp;&nbsp;Cancel#}
+    {#                                    </button>#}
+    {#                                    <button type="button" class="btn btn-success btn-lg"><i#}
+    {#                                            class="fa fa-check-circle"></i>&nbsp;&nbsp;Save#}
+    {#                                    </button>#}
+    {#                                </div>#}
+    {#                            </div>#}
+    {#                        </div>#}
+    {#                    </div>#}
+    {#                </div>#}
+    {#                <!-- / .modal-content -->#}
+    {#            </div>#}
+    {#            <!-- / .modal-dialog -->#}
+    {#        </div>#}
+    {#        <!-- / .modal -->#}
+    {#        <!-- / Large modal -->#}
+    {##}
+    {#        <!-- MODAL - TEXTAREA -->#}
+    {#        <div id="questions-edit-textarea" class="modal fade" tabindex="-1" role="dialog" style="display: none;">#}
+    {#            <div class="modal-dialog modal-lg">#}
+    {#                <div class="modal-content">#}
+    {#                    <div class="modal-header">#}
+    {#                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>#}
+    {#                        <h4 class="modal-title">Edit Question</h4>#}
+    {#                    </div>#}
+    {#                    <div class="modal-body">#}
+    {#                        <div class="panel colourable">#}
+    {#                            <div class="panel-heading">#}
+    {#								<span class="panel-title"><i#}
+    {#                                        class="fa fa-align-justify fa-lg"></i>&nbsp;&nbsp;&nbsp;<strong>Textarea</strong></span>#}
+    {#                                <ul class="nav nav-tabs nav-tabs">#}
+    {#                                    <li class="active">#}
+    {#                                        <a href="#basic-settings-textarea" data-toggle="tab"><span#}
+    {#                                                class="fa fa-cog fa-user"></span>&nbsp;&nbsp;Basic Settings</a>#}
+    {#                                    </li>#}
+    {#                                    <li class="">#}
+    {#                                        <a href="#advanced-settings-textarea" data-toggle="tab"><span#}
+    {#                                                class="fa fa-cogs fa-lg"></span>&nbsp;&nbsp;Advanced Settings</a>#}
+    {#                                    </li>#}
+    {#                                </ul>#}
+    {#                                <!-- / .nav -->#}
+    {#                            </div>#}
+    {#                            <!-- / .panel-heading -->#}
+    {#                            <div class="panel-body tab-content">#}
+    {#                                <div class="tab-pane fade in active" id="basic-settings-textarea">#}
+    {#                                    <div class="note note-info">#}
+    {#                                        <strong>Question ID:</strong> #Q423432#}
+    {#                                    </div>#}
+    {#                                    <div class="row">#}
+    {#                                        <div class="col-sm-6">#}
+    {#                                            <div class="form-group no-margin-hr">#}
+    {#                                                <label class="control-label">Label</label>#}
+    {#                                                <input type="text" name="label" class="form-control"#}
+    {#                                                       placeholder="Label">#}
+    {#                                            </div>#}
+    {#                                        </div>#}
+    {#                                        <!-- col-sm-6 -->#}
+    {#                                        <div class="col-sm-6">#}
+    {#                                            <div class="form-group no-margin-hr">#}
+    {#                                                <label class="control-label">Description</label>#}
+    {##}
+    {#                                                <div class="input-group">#}
+    {#													<span class="input-group-addon">#}
+    {#														<label class="px-single"><input type="checkbox" name="" value=""#}
+    {#                                                                                        class="px"><span#}
+    {#                                                                class="lbl"></span></label>#}
+    {#													</span>#}
+    {#                                                    <input type="text" class="form-control" placeholder="Description">#}
+    {#                                                </div>#}
+    {#                                            </div>#}
+    {#                                        </div>#}
+    {#                                        <!-- col-sm-6 -->#}
+    {#                                    </div>#}
+    {#                                    <!-- row -->#}
+    {#                                    <div class="row">#}
+    {#                                        <div class="col-sm-6">#}
+    {#                                            <div class="form-group no-margin-hr">#}
+    {#                                                <label class="control-label">Question Group</label>#}
+    {#                                                <select class="form-control">#}
+    {#                                                    <option value="">Information</option>#}
+    {#                                                    <option value="">Food</option>#}
+    {#                                                </select>#}
+    {#                                            </div>#}
+    {#                                        </div>#}
+    {#                                        <!-- col-sm-6 -->#}
+    {#                                        <div class="col-sm-6">#}
+    {#                                            <div class="form-group no-margin-hr">#}
+    {#                                                <div class="col-sm-4 no-margin-hr no-padding-hr">#}
+    {#                                                    <div class="form-group">#}
+    {#                                                        <label class="control-label">Min #characters</label>#}
+    {##}
+    {#                                                        <div class="input-group">#}
+    {#															<span class="input-group-addon">#}
+    {#																<label class="px-single"><input type="checkbox" name=""#}
+    {#                                                                                                value=""#}
+    {#                                                                                                class="px"><span#}
+    {#                                                                        class="lbl"></span></label>#}
+    {#															</span>#}
+    {#                                                            <input type="number" class="form-control">#}
+    {#                                                        </div>#}
+    {#                                                    </div>#}
+    {#                                                </div>#}
+    {#                                                <!-- col-sm-6 -->#}
+    {#                                                <div class="col-sm-1 no-margin-hr no-padding-hr ">#}
+    {#                                                </div>#}
+    {#                                                <div class="col-sm-4 no-margin-hr no-padding-hr">#}
+    {#                                                    <div class="form-group">#}
+    {#                                                        <label class="control-label">Max #characters</label>#}
+    {##}
+    {#                                                        <div class="input-group">#}
+    {#															<span class="input-group-addon">#}
+    {#																<label class="px-single"><input type="checkbox" name=""#}
+    {#                                                                                                value=""#}
+    {#                                                                                                class="px"><span#}
+    {#                                                                        class="lbl"></span></label>#}
+    {#															</span>#}
+    {#                                                            <input type="number" class="form-control">#}
+    {#                                                        </div>#}
+    {#                                                    </div>#}
+    {#                                                </div>#}
+    {#                                                <!-- col-sm-5 -->#}
+    {#                                            </div>#}
+    {#                                        </div>#}
+    {#                                    </div>#}
+    {#                                    <!-- row -->#}
+    {#                                </div>#}
+    {#                                <div class="tab-pane fade" id="advanced-settings-textarea">#}
+    {#                                    <div class="row">#}
+    {#                                        <div class="col-sm-6">#}
+    {#                                            <div class="form-group no-margin-hr">#}
+    {#                                                <label class="control-label">Add Classes to Question</label>#}
+    {#                                                <input class="add-classes form-control">#}
+    {#                                            </div>#}
+    {#                                        </div>#}
+    {#                                        <!-- col-sm-6 -->#}
+    {#                                    </div>#}
+    {#                                    <!-- row -->#}
+    {#                                    <div class="row padding-xs-vr">#}
+    {#                                        <div class="col-sm-12 form-inline">#}
+    {#                                            <label class="control-label">Use Filter to Decide Visibility</label>#}
+    {#                                        </div>#}
+    {#                                    </div>#}
+    {#                                    <div class="row">#}
+    {##}
+    {#                                        <div class="col-sm-12 form-inline">#}
+    {#                                            <input type="checkbox" class="form-control">#}
+    {#                                            <select class="form-control">#}
+    {#                                                <option value="">Show</option>#}
+    {#                                                <option value="">Hide</option>#}
+    {#                                            </select>#}
+    {#                                            this question while the filter#}
+    {#                                            <select class="form-control select-filter">#}
+    {#                                                <option></option>#}
+    {#                                                <optgroup label="Searches">#}
+    {#                                                    <option value="">View Late Arrivals</option>#}
+    {#                                                    <option value="">View All Missing Hotel</option>#}
+    {#                                                </optgroup>#}
+    {#                                                <optgroup label="Lists">#}
+    {#                                                    <option value="">All Attendees</option>#}
+    {#                                                    <option value="">Only Hotel Guests</option>#}
+    {#                                                    <option value="">Only Spanish Attendees</option>#}
+    {#                                                </optgroup>#}
+    {#                                                <optgroup label="Questions">#}
+    {#                                                    <option value="">If rated above 3</option>#}
+    {#                                                    <option value="">If birthday is before 1980</option>#}
+    {#                                                </optgroup>#}
+    {#                                            </select>#}
+    {#                                            is#}
+    {#                                            <select class="form-control">#}
+    {#                                                <option value="">true</option>#}
+    {#                                                <option value="">false</option>#}
+    {#                                            </select>#}
+    {#                                        </div>#}
+    {#                                    </div>#}
+    {#                                </div>#}
+    {#                            </div>#}
+    {#                        </div>#}
+    {#                        <div class="row">#}
+    {#                            <div class="col-sm-12 text-right">#}
+    {#                                <div class="btn-group">#}
+    {#                                    <button type="button" class="btn btn-lg" data-original-title="" title=""#}
+    {#                                            data-dismiss="modal" aria-hidden="true"><i#}
+    {#                                            class="fa fa-ban"></i>&nbsp;&nbsp;Cancel#}
+    {#                                    </button>#}
+    {#                                    <button type="button" class="btn btn-success btn-lg"><i#}
+    {#                                            class="fa fa-check-circle"></i>&nbsp;&nbsp;Save#}
+    {#                                    </button>#}
+    {#                                </div>#}
+    {#                            </div>#}
+    {#                        </div>#}
+    {#                    </div>#}
+    {#                </div>#}
+    {#                <!-- / .modal-content -->#}
+    {#            </div>#}
+    {#            <!-- / .modal-dialog -->#}
+    {#        </div>#}
+    {#        <!-- / .modal -->#}
+    {#        <!-- / Large modal -->#}
+    {##}
+    {#        <!-- MODAL - RATE -->#}
+    {#        <div id="questions-edit-rate" class="modal fade" tabindex="-1" role="dialog" style="display: none;">#}
+    {#            <div class="modal-dialog modal-lg">#}
+    {#                <div class="modal-content">#}
+    {#                    <div class="modal-header">#}
+    {#                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>#}
+    {#                        <h4 class="modal-title">Edit Question</h4>#}
+    {#                    </div>#}
+    {#                    <div class="modal-body">#}
+    {#                        <div class="panel colourable">#}
+    {#                            <div class="panel-heading">#}
+    {#								<span class="panel-title"><i#}
+    {#                                        class="fa fa-pie-chart fa-lg"></i>&nbsp;&nbsp;&nbsp;<strong>Rate</strong></span>#}
+    {#                                <ul class="nav nav-tabs nav-tabs">#}
+    {#                                    <li class="active">#}
+    {#                                        <a href="#basic-settings-rate" data-toggle="tab"><span#}
+    {#                                                class="fa fa-cog fa-user"></span>&nbsp;&nbsp;Basic Settings</a>#}
+    {#                                    </li>#}
+    {#                                    <li class="">#}
+    {#                                        <a href="#advanced-settings-rate" data-toggle="tab"><span#}
+    {#                                                class="fa fa-cogs fa-lg"></span>&nbsp;&nbsp;Advanced Settings</a>#}
+    {#                                    </li>#}
+    {#                                </ul>#}
+    {#                                <!-- / .nav -->#}
+    {#                            </div>#}
+    {#                            <!-- / .panel-heading -->#}
+    {#                            <div class="panel-body tab-content">#}
+    {#                                <div class="tab-pane fade in active" id="basic-settings-rate">#}
+    {#                                    <div class="note note-info">#}
+    {#                                        <strong>Question ID:</strong> #Q423432#}
+    {#                                    </div>#}
+    {#                                    <div class="row">#}
+    {#                                        <div class="col-sm-6">#}
+    {#                                            <div class="form-group no-margin-hr">#}
+    {#                                                <label class="control-label">Label</label>#}
+    {#                                                <input type="text" name="label" class="form-control"#}
+    {#                                                       placeholder="Label">#}
+    {#                                            </div>#}
+    {#                                        </div>#}
+    {#                                        <!-- col-sm-6 -->#}
+    {#                                        <div class="col-sm-6">#}
+    {#                                            <div class="form-group no-margin-hr">#}
+    {#                                                <label class="control-label">Description</label>#}
+    {##}
+    {#                                                <div class="input-group">#}
+    {#													<span class="input-group-addon">#}
+    {#														<label class="px-single"><input type="checkbox" name="" value=""#}
+    {#                                                                                        class="px"><span#}
+    {#                                                                class="lbl"></span></label>#}
+    {#													</span>#}
+    {#                                                    <input type="text" class="form-control" placeholder="Description">#}
+    {#                                                </div>#}
+    {#                                            </div>#}
+    {#                                        </div>#}
+    {#                                        <!-- col-sm-6 -->#}
+    {#                                    </div>#}
+    {#                                    <!-- row -->#}
+    {#                                    <div class="row">#}
+    {#                                        <div class="col-sm-6">#}
+    {#                                            <div class="form-group no-margin-hr">#}
+    {#                                                <label class="control-label">Question Group</label>#}
+    {#                                                <select class="form-control">#}
+    {#                                                    <option value="">Information</option>#}
+    {#                                                    <option value="">Food</option>#}
+    {#                                                </select>#}
+    {#                                            </div>#}
+    {#                                        </div>#}
+    {#                                        <!-- col-sm-6 -->#}
+    {#                                        <div class="col-sm-6">#}
+    {#                                            <div class="form-group no-margin-hr">#}
+    {#                                                <div class="col-sm-4 no-margin-hr no-padding-hr">#}
+    {#                                                    <label class="control-label">Min rating</label>#}
+    {#                                                    <input type="number" class="form-control">#}
+    {#                                                </div>#}
+    {#                                                <!-- col-sm-6 -->#}
+    {#                                                <div class="col-sm-1 no-margin-hr no-padding-hr ">#}
+    {#                                                </div>#}
+    {#                                                <div class="col-sm-4 no-margin-hr no-padding-hr">#}
+    {#                                                    <label class="control-label">Max rating</label>#}
+    {#                                                    <input type="number" class="form-control">#}
+    {#                                                </div>#}
+    {#                                                <!-- col-sm-5 -->#}
+    {#                                            </div>#}
+    {#                                        </div>#}
+    {#                                    </div>#}
+    {#                                    <!-- row -->#}
+    {#                                </div>#}
+    {#                                <div class="tab-pane fade" id="advanced-settings-rate">#}
+    {#                                    <div class="row">#}
+    {#                                        <div class="col-sm-6">#}
+    {#                                            <div class="form-group no-margin-hr">#}
+    {#                                                <label class="control-label">Add Classes to Question</label>#}
+    {#                                                <input class="add-classes form-control">#}
+    {#                                            </div>#}
+    {#                                        </div>#}
+    {#                                        <!-- col-sm-6 -->#}
+    {#                                    </div>#}
+    {#                                    <!-- row -->#}
+    {#                                    <div class="row padding-xs-vr">#}
+    {#                                        <div class="col-sm-12 form-inline">#}
+    {#                                            <label class="control-label">Use Filter to Decide Visibility</label>#}
+    {#                                        </div>#}
+    {#                                    </div>#}
+    {#                                    <div class="row">#}
+    {##}
+    {#                                        <div class="col-sm-12 form-inline">#}
+    {#                                            <input type="checkbox" class="form-control">#}
+    {#                                            <select class="form-control">#}
+    {#                                                <option value="">Show</option>#}
+    {#                                                <option value="">Hide</option>#}
+    {#                                            </select>#}
+    {#                                            this question while the filter#}
+    {#                                            <select class="form-control select-filter">#}
+    {#                                                <option></option>#}
+    {#                                                <optgroup label="Searches">#}
+    {#                                                    <option value="">View Late Arrivals</option>#}
+    {#                                                    <option value="">View All Missing Hotel</option>#}
+    {#                                                </optgroup>#}
+    {#                                                <optgroup label="Lists">#}
+    {#                                                    <option value="">All Attendees</option>#}
+    {#                                                    <option value="">Only Hotel Guests</option>#}
+    {#                                                    <option value="">Only Spanish Attendees</option>#}
+    {#                                                </optgroup>#}
+    {#                                                <optgroup label="Questions">#}
+    {#                                                    <option value="">If rated above 3</option>#}
+    {#                                                    <option value="">If birthday is before 1980</option>#}
+    {#                                                </optgroup>#}
+    {#                                            </select>#}
+    {#                                            is#}
+    {#                                            <select class="form-control">#}
+    {#                                                <option value="">true</option>#}
+    {#                                                <option value="">false</option>#}
+    {#                                            </select>#}
+    {#                                        </div>#}
+    {#                                    </div>#}
+    {#                                </div>#}
+    {#                            </div>#}
+    {#                        </div>#}
+    {#                        <div class="row">#}
+    {#                            <div class="col-sm-12 text-right">#}
+    {#                                <div class="btn-group">#}
+    {#                                    <button type="button" class="btn btn-lg" data-original-title="" title=""#}
+    {#                                            data-dismiss="modal" aria-hidden="true"><i#}
+    {#                                            class="fa fa-ban"></i>&nbsp;&nbsp;Cancel#}
+    {#                                    </button>#}
+    {#                                    <button type="button" class="btn btn-success btn-lg"><i#}
+    {#                                            class="fa fa-check-circle"></i>&nbsp;&nbsp;Save#}
+    {#                                    </button>#}
+    {#                                </div>#}
+    {#                            </div>#}
+    {#                        </div>#}
+    {#                    </div>#}
+    {#                </div>#}
+    {#                <!-- / .modal-content -->#}
+    {#            </div>#}
+    {#            <!-- / .modal-dialog -->#}
+    {#        </div>#}
+    <!-- / .modal -->
+    <!-- / Large modal -->
+    <div id="questions-add-type" class="modal fade" tabindex="-1" role="dialog" style="display: none;">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
+                    <h4 class="modal-title">Add Question</h4>
+                </div>
+                <div class="modal-body">
+                    <p>Choose what type of question you want to add:</p>
+
+                    <div class="panel colourable">
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="form-group no-margin-hr">
+                                        <div class="radio">
+                                            <label>
+                                                <input type="radio" name="questionType" id="add_text" value="text"
+                                                       checked="" class="px">
+                                                <span class="lbl">Text</span>
+                                            </label>
+                                        </div>
+                                        <div class="radio">
+                                            <label>
+                                                <input type="radio" name="questionType" id="add_select"
+                                                       value="select"
+                                                       class="px">
+                                                <span class="lbl">Select</span>
+                                            </label>
+                                        </div>
+                                        <div class="radio">
+                                            <label>
+                                                <input type="radio" name="questionType" id="add_radio_button"
+                                                       value="radio_button" class="px">
+                                                <span class="lbl">Radio Button</span>
+                                            </label>
+                                        </div>
+                                        <div class="radio">
+                                            <label>
+                                                <input type="radio" name="questionType" id="add_checkbox"
+                                                       value="checkbox" class="px">
+                                                <span class="lbl">Checkbox</span>
+                                            </label>
+                                        </div>
+                                        <div class="radio">
+                                            <label>
+                                                <input type="radio" name="questionType" id="add_date" value="date"
+                                                       class="px">
+                                                <span class="lbl">Date</span>
+                                            </label>
+                                        </div>
+                                        <div class="radio">
+                                            <label>
+                                                <input type="radio" name="questionType" id="add_date_range" value="date_range"
+                                                       class="px">
+                                                <span class="lbl">Date Range</span>
+                                            </label>
+                                        </div>
+                                        <div class="radio">
+                                            <label>
+                                                <input type="radio" name="questionType" id="add_time" value="time"
+                                                       class="px">
+                                                <span class="lbl">Time</span>
+                                            </label>
+                                        </div>
+                                        <div class="radio">
+                                            <label>
+                                                <input type="radio" name="questionType" id="add_time_range" value="time_range"
+                                                       class="px">
+                                                <span class="lbl">Time Range</span>
+                                            </label>
+                                        </div>
+                                        <div class="radio">
+                                            <label>
+                                                <input type="radio" name="questionType" id="add_textarea"
+                                                       value="textarea" class="px">
+                                                <span class="lbl">Textarea</span>
+                                            </label>
+                                        </div>
+{#                                        <div class="radio">#}
+{#                                            <label>#}
+{#                                                <input type="radio" name="questionType" id="add_rate" value="rate"#}
+{#                                                       class="px">#}
+{#                                                <span class="lbl">Rate</span>#}
+{#                                            </label>#}
+{#                                        </div>#}
+                                        <div class="radio">
+                                            <label>
+                                                <input type="radio" name="questionType" id="add_image_upload"
+                                                       value="image_upload" class="px">
+                                                <span class="lbl">Image Upload</span>
+                                            </label>
+                                        </div>
+
+                                        <div class="radio">
+                                            <label>
+                                                <input type="radio" name="questionType" id="add_country"
+                                                       value="country" class="px">
+                                                <span class="lbl">Country</span>
+                                            </label>
+                                        </div>
+{#                                        <div class="radio" style="margin-bottom: 0;">#}
+{#                                            <label>#}
+{#                                                <input type="radio" name="questionType" id="add_password"#}
+{#                                                       value="password" class="px">#}
+{#                                                <span class="lbl">Password</span>#}
+{#                                            </label>#}
+{#                                        </div>#}
+                                    </div>
+                                    <!--form-group-->
+                                </div>
+                                <!--col-->
+                            </div>
+                            <!-- row -->
+                        </div>
+                        <!-- panel body -->
+                    </div>
+                    <!-- panel -->
+                    <div class="row">
+                        <div class="col-sm-12 text-right">
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-lg" data-original-title="" title=""data-dismiss="modal"
+                                    aria-hidden="true"><i
+                                        class="fa fa-ban"></i>&nbsp;&nbsp;Cancel
+                                </button>
+                                <button type="button" class="btn btn-success btn-lg addQuestionType"><i
+                                        class="fa fa-plus-circle"></i>&nbsp;&nbsp;Add
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <!--row-->
+                </div>
+            </div>
+            <!-- / .modal-content -->
+        </div>
+        <!-- / .modal-dialog -->
+    </div>
+    <!-- / .modal -->
+
+    </div> <!-- / #content-wrapper -->
+    <script>
+        $(document).ready(function () {
+            {#            $('.showQuestions').dataTable({#}
+            {#                "lengthMenu": [#}
+            {#                    [10, 25, 50, -1],#}
+            {#                    [10, 25, 50, "All"]#}
+            {#                ],#}
+            {#                "iDisplayLength": 10,#}
+            {#                "sDom": '<"dt_top" <"dt_left"f><"dt_right"l><"clear">>rt<"dt_bottom" <"dt_left"i><"dt_right"p><"clear">>',#}
+            {#                "scrollX": true,#}
+            {#                "order": [#}
+            {#                    [ 0, "asc" ]#}
+            {#                ],#}
+            {#                "columnDefs": [#}
+            {#                    { orderable: false, targets: 0 }#}
+            {#                ]#}
+            {#            });#}
+            {#            var dt_questable = $('#showQuestions').dataTable({#}
+            {#                "language": dt_language,#}
+            {#                "order": [#}
+            {#                    [ 1, "asc" ]#}
+            {#                ],#}
+            {#                "iDisplayLength": 1,#}
+            {#                "lengthMenu": [#}
+            {#                    [1, 10, 25, 50, 100, 200],#}
+            {#                    [1, 10, 25, 50, 100, 200]#}
+            {#                ],#}
+            {#                "sDom": '<"dt_top" <"dt_left"f><"dt_right"l><"clear">>rt<"dt_bottom" <"dt_left"i><"dt_right"p><"clear">>',#}
+            {#//        "createdRow": function ( row, data, index ) {#}
+            {#//            $(row).addClass('userInfo');#}
+            {#//            $(row).attr('data-id',data[0]);#}
+            {#//        },#}
+            {##}
+            {#                "columnDefs": [#}
+            {#                    {#}
+            {#                        "orderable": false,#}
+            {#                        "searchable": false,#}
+            {#                        "className": "",#}
+            {#                        "targets": 0,#}
+            {#                        'render': function (data, type, full, meta) {#}
+            {#                            return '<input type="checkbox">';#}
+            {#                        }#}
+            {#                    },#}
+            {#                    {#}
+            {#                        "orderable": true,#}
+            {#                        "searchable": false,#}
+            {#                        "className": "",#}
+            {#                        "targets": 3,#}
+            {#                        'render': function (data, type, full, meta) {#}
+            {#                            if(data == 1){#}
+            {#                                return "Yes";#}
+            {#                            }#}
+            {#                            return "No";#}
+            {#                        }#}
+            {##}
+            {#                    },#}
+            {#                    {#}
+            {#                        "orderable": false,#}
+            {#                        "searchable": false,#}
+            {#                        "className": "",#}
+            {#                        "targets": 4,#}
+            {#                        'render': function (data, type, full, meta) {#}
+            {#                            var buttonHtmls = '<button class="btn btn-xs questionInfo" data-id='+ data +' data-toggle="tooltip" data-placement="top" title="" data-original-title="Edit"><i class="dropdown-icon fa fa-cog"></i></button>' +#}
+            {#                                    '<button class="btn btn-xs" data-toggle="tooltip" data-placement="top" title="" data-original-title="Duplicate"><i class="dropdown-icon fa fa-files-o"></i></button>' +#}
+            {#                                    '<button class="btn btn-xs btn-danger deleteQuestion" data-id='+ data +' data-toggle="tooltip" data-placement="top" title="" data-original-title="Delete"><i class="dropdown-icon fa fa-times-circle"></i></button>';#}
+            {#                            return buttonHtmls;#}
+            {#                        }#}
+            {##}
+            {#                    }#}
+            {#                ],#}
+            {#                "fnDrawCallback": function (settings) {#}
+            {#                    //managing the "Select all" checkbox#}
+            {#                    // everytime the table is drawn, it checks if all the#}
+            {#                    //checkboxes are checked and if they are, then the select all#}
+            {#                    // checkbox in the table header is selected#}
+            {#                    var allChecked = true;#}
+            {#                    $('#showQuestions thead tr').each(function () {#}
+            {#                        $(this).find(':checkbox[name=flowcheckall]').each(function () {#}
+            {#                            if (!$(this).is(':checked')) {#}
+            {#                                allChecked = false;#}
+            {#                            }#}
+            {#                        });#}
+            {#                    });#}
+            {#                    var table = $('#showQuestions').DataTable();#}
+            {#                    $(':checkbox', table.rows().nodes()).prop('checked', allChecked);#}
+            {#                    //$('.datatable').prop('checked', true);#}
+            {#                },#}
+            {#                "searching": true,#}
+            {#                "processing": true,#}
+            {#                "serverSide": true,#}
+            {#                "stateSave": true,#}
+            {#                "ajax": QUESTION_LIST_JSON_URL#}
+            {#            });#}
+        });
+        $(".flowcheckall").click(function () {
+            var table = $('.showQuestions').DataTable();
+            $(':checkbox', table.rows().nodes()).prop('checked', this.checked);
+            //$('#filter-search-table tbody input[type="checkbox"]').prop('checked', this.checked);
+        });
+    </script>
+{% endblock %}

@@ -1,0 +1,202 @@
+{#  Old  #}
+{#<table class="sessionTable" cellpadding="0" cellspacing="0" style="border: none;">#}
+{#    <thead>#}
+{#    <tr>#}
+{#        <th style="padding: 5px;border-bottom: 1px solid #cccccc;text-align: left;">Session Name</th>#}
+{#        <th style="padding: 5px;border-bottom: 1px solid #cccccc;text-align: left;">Start Time / Date</th>#}
+{#        <th style="padding: 5px;border-bottom: 1px solid #cccccc;text-align: left;">End Time / Date</th>#}
+{#        <th style="padding: 5px;border-bottom: 1px solid #cccccc;text-align: left;">Status</th>#}
+{#    </tr>#}
+{#    </thead>#}
+{#    <tbody>#}
+{#    {% for session in sessions %}#}
+{#        <tr>#}
+{#            <td style="padding: 5px;border-bottom: 1px solid #cccccc;text-align: left;">{{ session.session.name }}</td>#}
+{#            <td style="padding: 5px;border-bottom: 1px solid #cccccc;text-align: left;">{{ session.session.start|date:'H:i Y-m-d' }}</td>#}
+{#            <td style="padding: 5px;border-bottom: 1px solid #cccccc;text-align: left;">{{ session.session.end|date:'H:i Y-m-d' }}</td>#}
+{#            <td style="padding: 5px;border-bottom: 1px solid #cccccc;text-align: left;">{{ session.status }}</td>#}
+{#        </tr>#}
+{#    {% endfor %}#}
+{#    </tbody>#}
+{#</table>#}
+
+{#   New  #}
+{% load i18n %}
+{% load thousand_filter %}
+{% if sessions %}
+    <table class="confirmation-table confirmation-table-sessions">
+        <thead>
+        <tr>
+            {% if "name" in session_rules.columns %}
+                <th class="column-session">
+                    {{ language.langkey.th_session_session_name }}
+                </th>
+            {% endif %}
+            {% if "group" in session_rules.columns %}
+                <th class="column-group">
+                    {{ language.langkey.th_session_session_group }}
+                </th>
+            {% endif %}
+            {% if "description" in session_rules.columns %}
+                <th class="column-description">
+                    {{ language.langkey.th_session_description }}
+                </th>
+            {% endif %}
+            {% if "start" in session_rules.columns %}
+                <th class="column-start">
+                    {{ language.langkey.th_session_start }}
+                </th>
+            {% endif %}
+            {% if "end" in session_rules.columns %}
+                <th class="column-ends">
+                    {{ language.langkey.th_session_end }}
+                </th>
+            {% endif %}
+            {% if "location" in session_rules.columns %}
+                <th class="column-location">
+                    {{ language.langkey.th_session_location }}
+                </th>
+            {% endif %}
+            {% if "speakers" in session_rules.columns %}
+                <th class="column-speakers">
+                    {{ language.langkey.th_session_speakers }}
+                </th>
+            {% endif %}
+            {% if "tags" in session_rules.columns %}
+                <th class="column-tags">
+                    {{ language.langkey.th_session_tags }}
+                </th>
+            {% endif %}
+            {% if "status" in session_rules.columns %}
+                <th class="column-status">
+                    {{ language.langkey.th_session_status }}
+                </th>
+            {% endif %}
+            {% if "vat" in session_rules.columns %}
+                <th class="column-status">
+                    {{ language.langkey.economy_txt_vat }}
+                </th>
+            {% endif %}
+            {% if "vat_percentage" in session_rules.columns %}
+                <th class="column-status">
+                    {{ language.langkey.economy_txt_vat }} %
+                </th>
+            {% endif %}
+            {% if "cost_excl_vat" in session_rules.columns %}
+                <th class="column-status">
+                    {{ language.langkey.economy_txt_cost_excl_vat }}
+                </th>
+            {% endif %}
+            {% if "cost_incl_vat" in session_rules.columns %}
+                <th class="column-status">
+                    {{ language.langkey.economy_txt_cost_incl_vat }}
+                </th>
+            {% endif %}
+            {% if "rebate" in session_rules.columns %}
+                <th class="column-status">
+                    {{ language.langkey.economy_txt_rebate_amount }}
+                </th>
+            {% endif %}
+        </tr>
+        </thead>
+        <tbody>
+        {% for session in sessions %}
+            <tr>
+
+                {% if "name" in session_rules.columns %}
+                    <td class="column-session">
+                        {{ session.name|safe }}
+                    </td>
+                {% endif %}
+                {% if "group" in session_rules.columns %}
+                    <td class="column-group">
+                        {{ session.group.name|safe }}
+                    </td>
+                {% endif %}
+                {% if "description" in session_rules.columns %}
+                    <td class="column-description">
+                        {{ session.description | safe }}
+                    </td>
+                {% endif %}
+                {% if "start" in session_rules.columns %}
+                    <td class="column-start">
+                        {% language language.lang_preset.language_code %}
+                            {% if 'timedate' in session_rules %}
+                                {{ session.start|date:session_rules.timedate }}
+                            {% else %}
+                                {{ session.start |date:language.lang_preset.datetime_format }}
+                            {% endif %}
+                        {% endlanguage %}
+                    </td>
+                {% endif %}
+                {% if "end" in session_rules.columns %}
+                    <td class="column-end">
+                        {% language language.lang_preset.language_code %}
+                            {% if 'timedate' in session_rules %}
+                                {{ session.end|date:session_rules.timedate }}
+                            {% else %}
+                                {{ session.end |date:language.lang_preset.datetime_format }}
+                            {% endif %}
+                        {% endlanguage %}
+                    </td>
+                {% endif %}
+                {% if "location" in session_rules.columns %}
+                    <td class="column-location">
+                        {{ session.location.name|safe }}
+                    </td>
+                {% endif %}
+                {% if "speakers" in session_rules.columns %}
+                    <td class="column-speakers">
+                        {% for speaker in session.speakers %}
+                            {{ speaker.speaker.firstname }} {{ speaker.speaker.lastname }}
+                            {% if not forloop.last %}
+                                {{ ", " }}
+                            {% endif %}
+                        {% endfor %}
+                    </td>
+                {% endif %}
+                {% if "tags" in session_rules.columns %}
+                    <td class="column-tags">
+                        {% for tag in session.tags %}
+                            {{ tag.tag.name }}
+                            {% if not forloop.last %}
+                                {{ ", " }}
+                            {% endif %}
+                        {% endfor %}
+                    </td>
+                {% endif %}
+                {% if "status" in session_rules.columns %}
+                    <td class="column-status">
+                        {{ session.status }}
+                    </td>
+                {% endif %}
+                {% if "vat" in session_rules.columns %}
+                    <td class="column-status">
+                        {{ session.get_vat_amount|floatformat:"-2"|format_thousands }} {{ language.langkey.economy_txt_currency }}
+                    </td>
+                {% endif %}
+                {% if "vat_percentage" in session_rules.columns %}
+                     <td class="column-status">
+                        {{ session.vat|floatformat:"-2"|format_thousands }}
+                    </td>
+                {% endif %}
+                {% if "cost_excl_vat" in session_rules.columns %}
+                    <td class="column-status">
+                        {{ session.cost|floatformat:"-2"|format_thousands }} {{ language.langkey.economy_txt_currency }}
+                    </td>
+                {% endif %}
+                {% if "cost_incl_vat" in session_rules.columns %}
+                    <td class="column-status">
+                        {{ session.cost_included_vat|floatformat:"-2"|format_thousands }} {{ language.langkey.economy_txt_currency }}
+                    </td>
+                {% endif %}
+                {% if "rebate" in session_rules.columns %}
+                    <td class="column-status">
+                        {{ session.rebate_amount|floatformat:"-2"|format_thousands }} {{ language.langkey.economy_txt_currency }}
+                    </td>
+                {% endif %}
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endif %}

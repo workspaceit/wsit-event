@@ -1,0 +1,239 @@
+<!-- MODAL - ADD SEMINAR -->
+{% load staticfiles %}
+
+
+{% csrf_token %}
+<div id="seminars-add-filter" class="modal fade" role="dialog" style="display: none;">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
+                <h4 class="modal-title">Apply filter</h4>
+            </div>
+            <div class="modal-body">
+                <div id="add-session-form">
+                    <input type="hidden" id="session-id"/>
+
+
+                    <div class="row">
+                        <div class="col-sm-6">
+
+                            <div class="form-group no-margin-hr">
+                                <label class="control-label">Action </label>
+                                <select class="form-control filter-question-selector" id="action" name="action"
+                                        data-id="">
+                                    <option value="attending">Attending</option>
+                                    <option value="not-attending">Not Attending</option>
+                                </select>
+
+                                </select>
+                            </div>
+
+                            <div class="form-group no-margin-hr">
+                                <label class="control-label">Filter </label>
+                                <select class="form-control session-filter-selector" id="filter" name="filter"
+                                        data-id="">
+                                    <option value="{{ quick_filter_id }}" class="quick-filter"> Quick Filter</option>
+                                    {% for group in filter_groups %}
+
+                                        <optgroup label="{{ group.name|safe }}">
+
+                                            {% for filter in group.filters %}
+                                                <option value="{{ filter.id }}">{{ filter.name }}</option>
+
+                                            {% endfor %}
+
+                                        </optgroup>
+                                    {% endfor %}
+                                    {#                                <optgroup label="Travel">#}
+                                    {#                                    {% for group in travel_groups %}#}
+                                    {#                                            <option value="{{ group.id }}">{{ group.name }}</option>#}
+                                    {#                                    {% endfor %}#}
+                                    {#                                </optgroup>#}
+                                </select>
+
+                                </select>
+                            </div>
+                            <div class="form-group no-margin-hr">
+                                <label class="control-label">Session </label>
+                                <select class="form-control filter-question-selector" id="session" name="session"
+                                        data-id="">
+                                    {% for group in session_groups %}
+
+                                        <optgroup label="{{ group.name|safe }}">
+
+                                            {% for session in group.sessions %}
+                                                <option value="{{ session.id }}">{{ session.name }}</option>
+
+                                            {% endfor %}
+
+                                        </optgroup>
+                                    {% endfor %}
+                                    {#                                <optgroup label="Travel">#}
+                                    {#                                    {% for group in travel_groups %}#}
+                                    {#                                            <option value="{{ group.id }}">{{ group.name }}</option>#}
+                                    {#                                    {% endfor %}#}
+                                    {#                                </optgroup>#}
+                                </select>
+
+                                </select>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="row">
+                        <div class="col-sm-12 text-right">
+                            <div class="btn-group">
+
+                                <button type="button" class="btn btn-lg" data-original-title="" title=""
+                                        data-dismiss="modal" aria-hidden="true"><i
+                                        class="fa fa-ban"></i>&nbsp;&nbsp;Cancel
+                                </button>
+                                <button type="button" id="btn-save-session-filter-action"
+                                        class="btn btn-success btn-lg btn-save"><i
+                                        class="fa fa-check-circle"></i>&nbsp;&nbsp;Save
+                                </button>
+                                {#                                <button type="button" id="btn-update-session" class="btn btn-success btn-lg btn-save"#}
+                                {#                                        style="display: none;"><i class="fa fa-check-circle"></i>&nbsp;&nbsp;Update#}
+                                {#                                </button>#}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- / .modal-content -->
+    </div>
+    <!-- / .modal-dialog -->
+</div>
+<!-- / .modal -->
+<!-- / Large modal -->
+
+<script>
+    $(document).ready(function () {
+
+        $('#filter').select2().on('select2-selecting', function (e) {
+            if (e.object.css == 'quick-filter') {
+                $.ajax({
+                    url: base_url + '/admin/filters/quick_filter_exists/',
+                    success: function (response) {
+                        if (response.status) {
+                            var modal_class = 'filters-add-filter';
+                            $('#quick-save-div').show();
+                            $('#filter-grp-div').hide();
+                            $('#preset-name-div').hide();
+                            showQuickFilterData(response.filter.id, modal_class);
+                        } else {
+                            $('#quick-save-div').show();
+                            $('#filter-grp-div').hide();
+                            $('#preset-name-div').hide();
+
+                            $('#btn-update-quick-filter').show();
+                            $('#btn-update-filter').hide();
+                            $('.any-or-all').val(1);
+                            $('#filters-add-filter').find('.modal-title').html('Quick Filter');
+                            $('#preset_filter_group').select2('val', '');
+
+                            $('.filter-panel-title').html("New Filter");
+                            $('#filters-add-filter').modal('show');
+                            $('#preset_name').attr('data-id', '');
+                            var rowCount = 0;
+                            $('.filter-list').html($('#filter-li-html').html());
+                            activeDatePicker();
+
+
+                        }
+                    }
+                });
+            }
+
+        });
+    });
+
+    function requiredFeildForSessionFilter(requiredFields) {
+        var message = '';
+        var valid = true;
+        for (var i = 0; i < requiredFields.length; i++) {
+            var Id = requiredFields[i].fieldId;
+            if ($('#' + Id).val() == '' || $('#' + Id).val() == null) {
+                message += "*" + requiredFields[i].message + " can't be blank" + "<br>";
+                valid = false;
+            }
+        }
+        if (!valid) {
+            $.growl.warning({message: message});
+        }
+        return valid;
+    }
+    $("#btn-save-session-filter-action").click(function () {
+        var action = $('#action').select2('val');
+
+
+        var filter = $('#filter').select2('val');
+        var session = $('#session').select2('val');
+        var requiredFields = [
+            {fieldId: 'action', message: 'Action '},
+            {fieldId: 'filter', message: 'Filter'},
+            {fieldId: 'session', message: 'Session'},
+        ];
+
+        if (!requiredFeildForSessionFilter(requiredFields)) {
+            return;
+        }
+
+        var csrf_token = $('input[name=csrfmiddlewaretoken]').val();
+        $.ajax({
+            url: base_url + '/admin/session/filter-status/',
+            type: "POST",
+            data: {
+                action: action,
+                filter: filter,
+                session: session,
+                csrfmiddlewaretoken: csrf_token
+            },
+            success: function (response) {
+                if (action == "attending") {
+                    var msg = "Session Capacity : " + response.session_capacity + ". Total attending attendee of the session " + response.total_attender + ". Total Attendees of the filter : " + response.total_attendees + " where " + response.already_attending + " are already Attending. ";
+                    msg += response.number_of_attending_user_has_clash + " attendees has time clash. After save " + response.attendee_to_be_qued + " attendees will be in queue.";
+                }
+                else {
+                    var msg = "Total Attending attendee of the filter : " + response.already_attending + " and Total already in queue :" + response.already_queue_user;
+                }
+
+                bootbox.confirm(msg, function (result) {
+                    if (result) {
+                        if (action == 'attending') {
+                            var url = base_url + '/admin/session/filter-attending/';
+                        } else if (action == "not-attending") {
+                            var url = base_url + '/admin/session/filter-not-attending/';
+                        }
+                        $.ajax({
+                            url: url,
+                            type: "POST",
+                            data: {
+                                action: action,
+                                filter: filter,
+                                session: session,
+                                csrfmiddlewaretoken: csrf_token
+                            },
+                            success: function (response2) {
+                                $.growl.notice({message: response2.msg});
+                                setTimeout(function () {
+                                    window.location = ''
+                                }, 500);
+                            }
+                        });
+                    }
+                });
+
+            }
+        });
+
+
+    });
+</script>
+
+

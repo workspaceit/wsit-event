@@ -1,0 +1,155 @@
+<div class="table-light">
+    <div class="table-header">
+        <div class="table-caption">
+            <i class="fa fa-chain-broken"></i>&nbsp;&nbsp;Unmatched / Conflicts
+        </div>
+    </div>
+    <table class="table table-bordered match-table-unmatched">
+        <thead>
+        <tr>
+            <th></th>
+            <th>Name</th>
+            <th>Requested Room Buddy</th>
+            <th>Check In</th>
+            <th>Check Out</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for booking in unmatched_bookings %}
+            {% if booking.buddies.all %}
+                {% for buddy in booking.buddies.all %}
+                    <tr class="userInfo" data-id="{{ booking.attendee.id }}">
+                        <td><input type="checkbox" class="match_checkbox"
+                                   data-id="{{ booking.id }}"></td>
+                        <td>{{ booking.attendee.firstname }} {{ booking.attendee.lastname }}</td>
+                        <td data-buddy="{{ buddy.buddy.id }}" class="buddyInfo">
+                            {% if buddy.exists == 1 %}
+                                {{ buddy.buddy.firstname }} {{ buddy.buddy.lastname }}
+                            {% else %}
+                                {{ buddy.email }}
+                            {% endif %}
+                        </td>
+                        <td>{{ booking.check_in }}</td>
+                        <td>{{ booking.check_out }}</td>
+                    </tr>
+                {% endfor %}
+            {% else %}
+                <tr class="userInfo" data-id="{{ booking.attendee.id }}">
+                    <td><input type="checkbox" class="match_checkbox" data-id="{{ booking.id }}">
+                    </td>
+                    <td>{{ booking.attendee.firstname }} {{ booking.attendee.lastname }}</td>
+                    <td></td>
+                    <td>{{ booking.check_in }}</td>
+                    <td>{{ booking.check_out }}</td>
+                </tr>
+            {% endif %}
+        {% endfor %}
+        </tbody>
+    </table>
+    <div class="row grid-gutter-margin-b">
+        <div class="col-sm-12 text-right">
+            <button type="button" class="btn btn-primary btn-pair-up" data-original-title=""
+                    title=""><i
+                    class="fa fa fa-chain"></i>&nbsp;&nbsp;Match Selected
+            </button>
+        </div>
+    </div>
+    <div class="table-header">
+        <div class="table-caption">
+            <i class="fa fa-chain"></i>&nbsp;&nbsp;Matches
+        </div>
+    </div>
+    <table class="table table-bordered match-table-matched">
+        <thead>
+        <tr>
+            <th></th>
+            <th>Name</th>
+            <th>Requested Room Buddy</th>
+            <th>Check In</th>
+            <th>Check Out</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for booking_list in matched_bookings %}
+            {% for booking in booking_list %}
+                {% if forloop.counter0 == 0 %}
+                    <tr class="match_first" data-booking-id="{{ booking.id }}">
+                        <td class="valign-middle" rowspan="{{ booking_list | length }}">
+                            <button class="btn btn-xs btn-break-up"><i class="fa fa-chain-broken"></i></button>
+                        </td>
+                        <td class="userInfo"
+                            data-id="{{ booking.attendee.id }}">{{ booking.attendee.firstname }} {{ booking.attendee.lastname }}</td>
+                        {% if booking.buddies.all %}
+                            <td>
+                                {% for buddy in booking.buddies.all %}
+
+                                    {% if buddy.exists == 1 %}
+                                        {{ buddy.buddy.firstname }} {{ buddy.buddy.lastname }}
+                                    {% else %}
+                                        {{ buddy.email }}
+                                    {% endif %}
+                                    {% if not forloop.last %}
+                                        ,
+                                    {% endif %}
+
+                                {% endfor %}
+                            </td>
+                        {% else %}
+                            <td></td>
+                        {% endif %}
+                        <td>{{ booking.check_in }}</td>
+                        <td>{{ booking.check_out }}</td>
+                    </tr>
+                {% elif forloop.last %}
+                    <tr class="match_last" data-booking-id="{{ booking.id }}">
+                        <td class="userInfo"
+                            data-id="{{ booking.attendee.id }}">{{ booking.attendee.firstname }} {{ booking.attendee.lastname }}</td>
+                        {% if booking.buddies.all %}
+                            <td>
+                                {% for buddy in booking.buddies.all %}
+
+                                    {% if buddy.exists == 1 %}
+                                        {{ buddy.buddy.firstname }} {{ buddy.buddy.lastname }}
+                                    {% else %}
+                                        {{ buddy.email }}
+                                    {% endif %}
+                                    {% if not forloop.last %}
+                                        ,
+                                    {% endif %}
+                                {% endfor %}
+                            </td>
+                        {% else %}
+                            <td></td>
+                        {% endif %}
+                        <td>{{ booking.check_in }}</td>
+                        <td>{{ booking.check_out }}</td>
+                    </tr>
+                {% else %}
+                    <tr class="" data-booking-id="{{ booking.id }}">
+                        <td class="userInfo"
+                            data-id="{{ booking.attendee.id }}">{{ booking.attendee.firstname }} {{ booking.attendee.lastname }}</td>
+                        {% if booking.buddies.all %}
+                            <td>
+                                {% for buddy in booking.buddies.all %}
+                                    {% if buddy.exists == 1 %}
+                                        {{ buddy.buddy.firstname }} {{ buddy.buddy.lastname }}
+                                    {% else %}
+                                        {{ buddy.name }}
+                                    {% endif %}
+                                    {% if not forloop.last %}
+                                        ,
+                                    {% endif %}
+                                {% endfor %}
+                            </td>
+                        {% else %}
+                            <td></td>
+                        {% endif %}
+                        <td>{{ booking.check_in }}</td>
+                        <td>{{ booking.check_out }}</td>
+                    </tr>
+                {% endif %}
+            {% endfor %}
+        {% endfor %}
+        </tbody>
+    </table>
+</div>

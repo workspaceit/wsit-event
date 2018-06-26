@@ -1,0 +1,278 @@
+{% extends "layout/main.html" %}
+{% block content %}
+    <style>
+        .question-markdown, .general-markdown, .calendar-markdown {
+            min-height: 3em;
+            padding: 0.5em;
+            max-height: 15em;
+            overflow-y: auto;
+            cursor: pointer;
+        }
+
+        .custom-accordion {
+            background: #f5f5f5;
+            border: 1px solid #ddd;
+            border-radius: 2px;
+            cursor: pointer;
+            margin: 5px 0 0;
+            min-height: 0;
+            padding: 0 15px;
+            position: relative;
+            line-height: 36px;
+            font-size: 100%;
+        }
+
+        .custom-accordion:hover {
+            background: #f1f1f1;
+            color: #555;
+            text-decoration: none;
+        }
+    </style>
+    {% load staticfiles %}
+    {% csrf_token %}
+    <div id="content-wrapper">
+        <h2>Send Message</h2>
+    </div>
+    <div class="col-md-12">
+        <div class="col-md-6">
+
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="form-group no-margin-hr">
+                        <label class="control-label">Filter Rules</label>
+                        <select class="form-control filter-rules-selector" id="filter">
+                             <option value="{{ quick_filter_id }}" class="quick-filter"> Quick Filter</option>
+                            {% for group in filterGroup %}
+                                <optgroup label="{{ group.name|safe }}">
+                                    {% for filter in group.filters %}
+                                        <option value="{{ filter.id }}">{{ filter.name }}</option>
+                                    {% endfor %}
+                                </optgroup>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <label class="control-label">Subject</label>
+                    <input type="text" name="name" id="message_subject" class="form-control"
+                           placeholder="Name">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <label class="control-label">Message</label>
+                    <form id='message-preview-form' action="{% url 'message-preview' %}" method="POST"
+                          target="_blank">{% csrf_token %}
+                        <textarea rows="5" id="session_message" name="session_message" class="form-control"></textarea>
+                    </form>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-12 text-right">
+                    <button type="button" class="btn btn-lg btn-save" id="bt-send-filter-message"
+                            style="float: left;margin-top: 10px;"><i class="fa fa-check" aria-hidden="true"></i>&nbsp;&nbsp;Send
+                        Message
+                    </button>
+
+                    <button type="button" class="btn btn-lg btn-save" id="btn-message-preview"
+                            style="float: left;margin-top: 10px;"><i
+                            class="fa fa-ban"></i>&nbsp;&nbsp;Preview
+                    </button>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="panel">
+                        <div class="panel-heading">
+                            <span class="panel-title">Elements</span>
+                        </div>
+
+                        <div class="panel-body">
+
+                            {#                            <div class="">#}
+                            {#                                <div class="group">#}
+                            {#                                    <h3 class="uid-link-markdown custom-accordion"> UID Link</h3>#}
+                            {#                                </div>#}
+                            {#                            </div>#}
+
+
+                            <div>
+                                <div class="panel-body">
+                                    <div class="ui-accordion">
+                                        <div class="group">
+                                            <h3>General</h3>
+                                            <div>
+                                                <ul>
+                                                    <li data-id="registration_date" class="general-markdown">
+                                                        Registration date
+                                                    </li>
+                                                    <li data-id="updated_date" class="general-markdown">Last updated
+                                                    </li>
+                                                    <li data-id="attendee_groups" class="general-markdown">Attendee
+                                                        groups
+                                                    </li>
+                                                    <li data-id="tags" class="general-markdown">Tags</li>
+                                                    <li data-id="uid_link" class="general-markdown">UID Link</li>
+                                                    <li data-id="calendar" class="general-markdown">My Calendar</li>
+
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <div class="panel-heading">
+                                <a class="accordion-toggle note note-info" data-toggle="collapse"
+                                   data-parent="#accordion-example"
+                                   href="#collapseOne">
+                                    Questions
+                                </a>
+                            </div>
+                            <div id="collapseOne" class="panel-collapse">
+                                <div class="panel-body">
+                                    <div class="ui-accordion">
+                                        {% for group in questionGroup %}
+                                            <div class="group">
+                                                <h3>{{ group.name|safe }}</h3>
+                                                <div>
+                                                    <ul>
+                                                        {% for question in group.questions %}
+                                                            <li data-id="{{ question.id }}"
+                                                                class="question-markdown">{{ question.title }}</li>
+                                                        {% endfor %}
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            </div>
+
+                            {#                            <div class="">#}
+                            {#                                <div class="group">#}
+                            {#                                    <h3 class="calendar-markdown custom-accordion"> My Calendar</h3>#}
+                            {#                                </div>#}
+                            {#                            </div>#}
+                            {#                        #}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <img src="{% static 'public/images/712.GIF' %}" id="loader" alt=""/>
+    <style>
+        #loader {
+            display: none;
+            position: absolute;
+            margin: auto;
+            left: 0;
+            right: 0;
+            top: 0;
+            bottom: 0;
+        }
+    </style>
+    <script src="{% static 'assets/javascripts/message.js' %}"></script>
+    <script src="{% static 'assets/javascripts/rangy_text_input.js' %}"></script>
+    <script>
+        $(function () {
+
+            $('#filter').select2().on('select2-selecting', function (e) {
+            if (e.object.css == 'quick-filter') {
+                $.ajax({
+                    url: base_url + '/admin/filters/quick_filter_exists/',
+                    success: function (response) {
+                        if (response.status) {
+                            var modal_class = 'filters-add-filter';
+                            $('#quick-save-div').show();
+                            $('#filter-grp-div').hide();
+                            $('#preset-name-div').hide();
+                            showQuickFilterData(response.filter.id, modal_class);
+                        } else {
+                            $('#quick-save-div').show();
+                            $('#filter-grp-div').hide();
+                            $('#preset-name-div').hide();
+
+                            $('#btn-update-quick-filter').show();
+                            $('#btn-update-filter').hide();
+                            $('.any-or-all').val(1);
+                            $('#filters-add-filter').find('.modal-title').html('Quick Filter');
+                            $('#preset_filter_group').select2('val', '');
+
+                            $('.filter-panel-title').html("New Filter");
+                            $('#filters-add-filter').modal('show');
+                            $('#preset_name').attr('data-id', '');
+                            var rowCount = 0;
+                            $('.filter-list').html($('#filter-li-html').html());
+                            activeDatePicker();
+
+
+                        }
+                    }
+                });
+            }
+
+        });
+
+
+            $(".ui-accordion").accordion({
+                animate: 100,
+                collapsible: true,
+                heightStyle: "content",
+                header: "> div > h3",
+                active: false
+            });
+            $(".panel-collapse").collapse("hide");
+            $(".accordion-toggle").addClass("collapsed");
+
+            var $textBox = $('#session_message');
+
+            function saveSelection() {
+                $textBox.data("lastSelection", $textBox.getSelection());
+            }
+
+            $textBox.focusout(saveSelection);
+
+            $textBox.bind("beforedeactivate", function () {
+                saveSelection();
+            });
+
+            $(".question-markdown").click(function () {
+                var selection = $textBox.data("lastSelection");
+                $textBox.focus();
+                if (selection != undefined) {
+                    $textBox.setSelection(selection.start, selection.end);
+                }
+                $textBox.replaceSelectedText("{qid:" + $(this).attr('data-id') + "}", "end");
+            });
+            $(".general-markdown").click(function () {
+                $textBox.replaceSelectedText("{" + $(this).attr('data-id') + "}", "end");
+            });
+            {#            $(".calendar-markdown").click(function () {#}
+            {#                $textBox.replaceSelectedText("{calendar}", "end");#}
+            {#            });#}
+            {#            $(".uid-link-markdown").click(function () {#}
+            {#                var url = base_url + "/" + $('.current-event').attr('data-url') + "/";#}
+            {#                $textBox.replaceSelectedText(url + "?uid={secret_key}", "end");#}
+            {#            });#}
+
+            $('body').on('click', '#btn-message-preview', function () {
+                var input = $("<textarea>")
+                        .css('display', 'none')
+                        .attr("name", "content").val($('#session_message').val());
+                $('#message-preview-form').append($(input));
+                $('#message-preview-form').submit();
+            });
+        });
+
+    </script>
+{% endblock %}

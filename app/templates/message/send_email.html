@@ -1,0 +1,933 @@
+{% extends "layout/main.html" %}
+{% block content %}
+    {% load staticfiles %}
+    <script type="text/javascript" src="//code.jquery.com/ui/1.11.3/jquery-ui.min.js"></script>
+    <script src="{% static 'assets/markdown/markdown-it.js' %}"></script>
+    <script src="{% static 'assets/markdown/to-markdown.js' %}"></script>
+    <script src="{% static 'assets/markdown/markdown-it-footnote.js' %}"></script>
+    <script src="{% static 'assets/markdown/highlight.pack.js' %}"></script>
+    <script src="{% static 'assets/markdown/emojify.js' %}"></script>
+    <script src="{% static 'assets/markdown/codemirror/lib/codemirror.js' %}"></script>
+    <script src="{% static 'assets/markdown/codemirror/overlay.js' %}"></script>
+    <script src="{% static 'assets/markdown/codemirror/xml/xml.js' %}"></script>
+    <script src="{% static 'assets/markdown/codemirror/markdown/markdown.js' %}"></script>
+    <script src="{% static 'assets/markdown/codemirror/gfm/gfm.js' %}"></script>
+    <script src="{% static 'assets/markdown/codemirror/javascript/javascript.js' %}"></script>
+    <script src="{% static 'assets/markdown/codemirror/css/css.js' %}"></script>
+    <script src="{% static 'assets/markdown/codemirror/htmlmixed/htmlmixed.js' %}"></script>
+    <script src="{% static 'assets/markdown/codemirror/lib/util/continuelist.js' %}"></script>
+    <script src="{% static 'assets/markdown/rawinflate.js' %}"></script>
+    <script src="{% static 'assets/markdown/rawdeflate.js' %}"></script>
+
+    <link href="{% static 'assets/markdown/base16-light.css' %}" media="all" rel="stylesheet">
+    <link href="{% static 'assets/markdown/codemirror/lib/codemirror.css' %}" media="all" rel="stylesheet">
+    <link href="{% static 'assets/markdown/default.css' %}" media="all" rel="stylesheet">
+
+
+    <script src="{% static 'assets/javascripts/respond.min.js' %}"></script>
+
+    <link href="{% static 'assets/stylesheets/kendo/kendo.common.min.css' %}" rel="stylesheet" type="text/css"/>
+    <link href="{% static 'assets/stylesheets/kendo/kendo.default.min.css' %}" rel="stylesheet" type="text/css"/>
+
+    <script src="{% static 'assets/javascripts/kendo/kendo.all.min.js' %}"></script>
+
+    <script src="//cdn.jsdelivr.net/clipboard.js/1.5.8/clipboard.min.js"></script>
+
+    <style>
+        .CodeMirror.cm-s-default {
+            height: 0px !important;
+        }
+
+        .question-markdown, .general-markdown, .session-markdown, .travel-markdown, .hotel-markdown, .calendar-markdown {
+            min-height: 3em;
+            padding: 0.5em;
+            max-height: 15em;
+            overflow-y: auto;
+            cursor: pointer;
+        }
+
+        .custom-accordion {
+            background: #f5f5f5;
+            border: 1px solid #ddd;
+            border-radius: 2px;
+            cursor: pointer;
+            margin: 5px 0 0;
+            min-height: 0;
+            padding: 0 15px;
+            position: relative;
+            line-height: 36px;
+            font-size: 100%;
+        }
+
+        .custom-accordion:hover {
+            background: #f1f1f1;
+            color: #555;
+            text-decoration: none;
+        }
+    </style>
+
+
+    {% csrf_token %}
+    <div id="content-wrapper">
+        <h2>Send Email</h2>
+    </div>
+    <div class="col-md-12">
+        <div class="col-md-6">
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="form-group no-margin-hr">
+                        <label class="control-label">Filter Rules</label>
+                        <select class="form-control filter-rules-selector" id="email-filter-id">
+                            {% for group in filterGroup %}
+                                <optgroup label="{{ group.name|safe }}">
+                                    {% for filter in group.filters %}
+                                        <option value="{{ filter.id }}">{{ filter.name }}</option>
+                                    {% endfor %}
+                                </optgroup>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="form-group no-margin-hr">
+                        <label class="control-label">Template</label>
+                        <select class="form-control filter-rules-selector" id="email-template-id">
+                            {% for template in emailTemplates %}
+                                <option value="{{ template.id }}"
+                                        {% if email_content %}{% if email_content.template_id == template.id %}selected
+                                        {% endif %}{% endif %}>{{ template.name }}</option>
+
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <label class="control-label">Subject</label>
+                    <input type="text" name="name" id="email-subject" class="form-control"
+                           value="{% if email_content %}{{ email_content.subject }}{% endif %}"
+                           placeholder="Subject">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <label class="control-label">Email Name</label>
+                    <input type="text" name="name" id="email-name" class="form-control"
+                           value="{% if email_content %}{{ email_content.name }}{% endif %}"
+                           placeholder="Email Name">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <label class="control-label">Content</label>
+
+                    <div id="in">
+                        <form id='preview-form' action="{% url 'email-preview' %}" method="POST"
+                              target="_blank">{% csrf_token %}<textarea id="code"
+                                                                        name="code_data">{% if email_content %}
+                            {{ email_content.content }}{% endif %}</textarea></form>
+                    </div>
+                    <div id="out" style="display: none;"></div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-4 text-right">
+                    <button type="button" class="btn btn-lg  btn-primary" id="bt-send-filter-email"
+                            style="float: left;margin-top: 10px;"><i
+                            class=""></i>&nbsp;&nbsp;Send Email
+                    </button>
+                </div>
+                <div class="col-sm-4 text-right">
+                    <button type="button" class="btn btn-lg btn-primary btn-save-emailtemplate"
+                            id="btn-save-emailtemplate"
+                            data-id="{% if email_content %}{{ email_content.id }}{% endif %}"
+                            style="float: left;margin-top: 10px;"><i
+                            class=""></i>&nbsp;&nbsp;Save
+                    </button>
+                </div>
+                <div class="col-sm-4 text-right">
+                    <button type="button" class="btn btn-lg btn-save btn-danger" id="bt-reset-email-content"
+                            style="float: left;margin-top: 10px;"><i
+                            class=""></i>&nbsp;&nbsp;Cancel
+                    </button>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12 text-right">
+                    <button type="button" class="btn btn-lg btn-save" id="btn-email-preview"
+                            style="float: left;margin-top: 10px;"><i
+                            class="fa fa-ban"></i>&nbsp;&nbsp;Preview
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="panel">
+                        <div class="panel-heading">
+                            <span class="panel-title">Elements</span>
+                        </div>
+
+                        <div class="panel-body">
+                            {#                            <div class="">#}
+                            {#                                <div class="group">#}
+                            {#                                    <h3 class="uid-link-markdown custom-accordion"> UID Link</h3>#}
+                            {#                                </div>#}
+                            {#                            </div>#}
+
+
+                            <div class="ui-accordion">
+                                <div class="group">
+                                    <h3>General</h3>
+                                    <div>
+                                        <ul>
+                                            <li data-id="uid_link" class="general-markdown">UID</li>
+                                            <li data-id="first_name" class="general-markdown">First Name</li>
+                                            <li data-id="last_name" class="general-markdown">Last Name</li>
+                                            <li data-id="email_address" class="general-markdown">Email Address</li>
+                                            <li data-id="registration_date" class="general-markdown">Registration Date
+                                            </li>
+                                            <li data-id="updated_date" class="general-markdown">Last Updated Date</li>
+                                            <li data-id="attendee_groups" class="general-markdown">Attendee Groups</li>
+                                            <li data-id="tags" class="general-markdown">Tags</li>
+                                            <li data-id="calendar" class="general-markdown">Calendar</li>
+
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <div class="">
+                                <div class="group">
+                                    <h3 class="question-markdown custom-accordion">Questions</h3>
+                                </div>
+                            </div>
+
+                            <div class="">
+                                <div class="group">
+                                    <h3 class="session-markdown custom-accordion">Sessions</h3>
+                                </div>
+                            </div>
+                            <div class="">
+                                <div class="group">
+                                    <h3 class="travel-markdown custom-accordion">Travels</h3>
+                                </div>
+
+
+                            </div>
+                            <div class="">
+                                <div class="group">
+                                    <h3 class="hotel-markdown custom-accordion">Hotels</h3>
+                                </div>
+
+
+                            </div>
+
+                            {#                            <div class="">#}
+                            {#                                <div class="group">#}
+                            {#                                    <h3 class="calendar-markdown custom-accordion"> My Calendar</h3>#}
+                            {#                                </div>#}
+                            {#                            </div>#}
+
+                            <div class="panel-heading">
+                                <a class="accordion-toggle note note-info template-images" data-toggle="collapse"
+                                   data-parent="#accordion-example"
+                                   href="#collapseImage">
+                                    Images
+                                </a>
+                            </div>
+                            <div id="collapseImage" class="panel-collapse">
+                                <div class="panel-body">
+                                    <div class="ui-accordion">
+
+                                        <div class="group">
+
+                                            <div>
+                                                <section class="module-content1">
+                                                    <form method="post" action="/kendo-ui/upload/submit">
+                                                        <div class="demo-section k-content">
+                                                            <input name="files" id="files" type="file"/>
+
+                                                            <p style="padding-top: 1em; text-align: right">
+                                                                <input type="submit" value="Submit"
+                                                                       class="k-button k-primary"/>
+                                                            </p>
+                                                        </div>
+                                                    </form>
+                                                </section>
+                                                <div id="email-content-uploaded-image"></div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+
+                            {#                            <div class="panel-heading">#}
+                            {#                                <a class="accordion-toggle note note-info" data-toggle="collapse"#}
+                            {#                                   data-parent="#accordion-example"#}
+                            {#                                   href="#collapseTwo">#}
+                            {#                                    Sessions#}
+                            {#                                </a>#}
+                            {#                            </div>#}
+                            {#                            <div id="collapseTwo" class="panel-collapse">#}
+                            {#                                <div class="panel-body">#}
+                            {#                                    <div class="ui-accordion">#}
+                            {#                                        {% for group in sessionGroup %}#}
+                            {#                                            <div class="group">#}
+                            {#                                                <h3>{{ group.name }}</h3>#}
+                            {##}
+                            {#                                                <div>#}
+                            {#                                                    <ul>#}
+                            {#                                                        {% for session in group.sessions %}#}
+                            {#                                                            <li data-id="{{ session.id }}"#}
+                            {#                                                                class="question-markdown">{{ session.name }}</li>#}
+                            {#                                                            <div class="panel-heading">#}
+                            {#                                                                <a class="accordion-toggle" data-toggle="collapse"#}
+                            {#                                                                   data-parent="#accordion-example"#}
+                            {#                                                                   href="#{{ session.id }}">#}
+                            {#                                                                    {{ session.name }}#}
+                            {#                                                                </a>#}
+                            {#                                                            </div>#}
+                            {#                                                            <div id="{{ session.id }}" class="panel-collapse in">#}
+                            {#                                                                <div class="panel-body">#}
+                            {#                                                                    <div id="ui-accordion">#}
+                            {##}
+                            {#                                                                        <div>#}
+                            {#                                                                            <ul>#}
+                            {#                                                                                <li data-id="{{ session.id }}"#}
+                            {#                                                                                    data-param="name"#}
+                            {#                                                                                    class="session-markdown">Name#}
+                            {#                                                                                </li>#}
+                            {#                                                                                <li data-id="{{ session.id }}"#}
+                            {#                                                                                    data-param="start_time"#}
+                            {#                                                                                    class="session-markdown">Start Time#}
+                            {#                                                                                </li>#}
+                            {#                                                                                <li data-id="{{ session.id }}"#}
+                            {#                                                                                    data-param="end_time"#}
+                            {#                                                                                    class="session-markdown">End Time#}
+                            {#                                                                                </li>#}
+                            {#                                                                            </ul>#}
+                            {#                                                                        </div>#}
+                            {##}
+                            {##}
+                            {#                                                                    </div>#}
+                            {#                                                                </div>#}
+                            {#                                                            </div>#}
+                            {#                                                        {% endfor %}#}
+                            {#                                                    </ul>#}
+                            {#                                                </div>#}
+                            {#                                            </div>#}
+                            {#                                        {% endfor %}#}
+                            {##}
+                            {#                                    </div>#}
+                            {#                                </div>#}
+                            {#                            </div>#}
+
+
+                            {#                            <div class="panel-heading">#}
+                            {#                                <a class="accordion-toggle note note-info" data-toggle="collapse"#}
+                            {#                                   data-parent="#accordion-example"#}
+                            {#                                   href="#collapseThree">#}
+                            {#                                    Travels#}
+                            {#                                </a>#}
+                            {#                            </div>#}
+                            {#                            <div id="collapseThree" class="panel-collapse">#}
+                            {#                                <div class="panel-body">#}
+                            {#                                    <div class="ui-accordion">#}
+                            {#                                        <div class="group">#}
+                            {#                                            <h3> Homebound Travel</h3>#}
+                            {##}
+                            {#                                            <div>#}
+                            {#                                                <ul>#}
+                            {#                                                    <li data-param="homebound_travel_name"#}
+                            {#                                                        class="travel-markdown">Name#}
+                            {#                                                    </li>#}
+                            {#                                                    <li data-param="homebound_travel_departure_time"#}
+                            {#                                                        class="travel-markdown">Departure Time#}
+                            {#                                                    </li>#}
+                            {#                                                    <li data-param="homebound_travel_arrival_time"#}
+                            {#                                                        class="travel-markdown">Arrival Time#}
+                            {#                                                    </li>#}
+                            {#                                                </ul>#}
+                            {#                                            </div>#}
+                            {#                                        </div>#}
+                            {#                                        <div class="group">#}
+                            {#                                            <h3> Outbound Travel</h3>#}
+                            {##}
+                            {#                                            <div>#}
+                            {#                                                <ul>#}
+                            {#                                                    <li data-param="outbound_travel_name"#}
+                            {#                                                        class="travel-markdown">Name#}
+                            {#                                                    </li>#}
+                            {#                                                    <li data-param="outbound_travel_departure_time"#}
+                            {#                                                        class="travel-markdown">Departure Time#}
+                            {#                                                    </li>#}
+                            {#                                                    <li data-param="outbound_travel_arrival_time"#}
+                            {#                                                        class="travel-markdown">Arrival Time#}
+                            {#                                                    </li>#}
+                            {#                                                </ul>#}
+                            {#                                            </div>#}
+                            {#                                        </div>#}
+                            {#                                    </div>#}
+                            {#                                </div>#}
+                            {#                            </div>#}
+
+                            {#                            <div class="panel-heading">#}
+                            {#                                <a class="accordion-toggle note note-info" data-toggle="collapse"#}
+                            {#                                   data-parent="#accordion-example"#}
+                            {#                                   href="#collapseFour">#}
+                            {#                                    Booking#}
+                            {#                                </a>#}
+                            {#                            </div>#}
+                            {#                            <div id="collapseFour" class="panel-collapse">#}
+                            {#                                <div class="panel-body">#}
+                            {#                                    <div class="ui-accordion">#}
+                            {#                                        <div class="group">#}
+                            {#                                            <h3 data-param="booking_hotel_name" class="booking-markdown"> Hotel Name</h3>#}
+                            {##}
+                            {#                                            <div>#}
+                            {#                                                <ul>#}
+                            {#                                                    <li data-param="booking_hotel_name" class="booking-markdown">Hotel#}
+                            {#                                                        Name#}
+                            {#                                                    </li>#}
+                            {#                                                    <li data-param="booking_check_in" class="booking-markdown">Check#}
+                            {#                                                        in#}
+                            {#                                                    </li>#}
+                            {#                                                    <li data-param="booking_check_out" class="booking-markdown">Check#}
+                            {#                                                        out#}
+                            {#                                                    </li>#}
+                            {#                                                    <li data-param="booking_room_buddy" class="booking-markdown">Room#}
+                            {#                                                        Buddy#}
+                            {#                                                    </li>#}
+                            {#                                                </ul>#}
+                            {#                                            </div>#}
+                            {#                                        </div>#}
+                            {##}
+                            {##}
+                            {#                                    </div>#}
+                            {#                                </div>#}
+                            {#                            </div>#}
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <img src="{% static 'public/images/712.GIF' %}" id="loader" alt=""/>
+    <style>
+        #loader {
+            display: none;
+            position: absolute;
+            margin: auto;
+            left: 0;
+            right: 0;
+            top: 0;
+            bottom: 0;
+        }
+
+        .uploaded_image {
+            width: 100px;
+            height: auto;
+        }
+    </style>
+    <script src="{% static 'assets/javascripts/message.js' %}"></script>
+    <script>
+        $(function () {
+            $(".ui-accordion").accordion({
+                animate: 100,
+                collapsible: true,
+                heightStyle: "content",
+                header: "> div > h3",
+                active: false
+            });
+            $(".panel-collapse").collapse("hide");
+            $(".accordion-toggle").addClass("collapsed");
+        });
+
+    </script>
+    <script type="text/javascript">
+        var editor;
+        $(function () {
+            // photo upload and display start
+            $("#files").kendoUpload({
+                async: {
+                    saveUrl: base_url + '/admin/upload-page-image/',
+                    {#                    removeUrl: "remove",#}
+                    autoUpload: true
+                },
+                upload: function (e) {
+                    e.data = {csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val()}
+                },
+
+                success: function (e) {
+                    if (e.response.success) {
+                        $.growl.notice({message: e.response.msg});
+                        $('#collapseImage').collapse('hide');
+                        $(".k-upload-files.k-reset").find("li").remove();
+                    } else {
+                        $.growl.error({message: e.response.msg});
+                    }
+                }
+
+
+            });
+            var $imageContainer = $('#email-content-uploaded-image');
+
+            $(document).on('click', '.template-images', function () {
+                retrieveImages();
+            });
+
+
+            function retrieveImages() {
+                $.ajax({
+                    url: base_url + '/admin/get-page-images/',
+                    type: "GET",
+                    success: showImages
+                });
+            }
+
+            function showImages(response) {
+                clog(response);
+                var images = response.data;
+                var imageHtml = '';
+                for (var i = 0; i < images.length; i++) {
+                    imageHtml += '<div class="image-item"><img src="' + images[i].url + '" class="uploaded_image"/>' +
+                            '<button class="btn-copy-url" data-clipboard-text="' + images[i].url + '">Copy URL</button>' +
+                            '</div>';
+                }
+                $imageContainer.html(imageHtml);
+                new Clipboard('.btn-copy-url');
+            }
+
+            // photo upload and display end
+
+            editor = CodeMirror.fromTextArea(document.getElementById('code'), {
+                mode: 'gfm',
+                lineNumbers: true,
+                matchBrackets: true,
+                lineWrapping: true,
+                theme: 'base16-light',
+                extraKeys: {"Enter": "newlineAndIndentContinueMarkdownList"},
+            });
+            editor.on('change', update);
+            {#            $(".accordion-toggle").accordion({#}
+            {#                active: false#}
+            {#            });#}
+            var code_content = $.trim($('#code').val());
+
+            if (code_content != '') {
+                editor.setValue(code_content);
+            }
+
+            $('body').on('click', '#btn-email-preview', function () {
+                {#                clog(editor.getValue());#}
+                {#                clog($('#out').html());#}
+                if ($('#email-template-id').val() != '' && $('#email-template-id').val() != null) {
+                    var input = $("<textarea>")
+                            .css('display', 'none')
+                            .attr("name", "content").val($('#out').html());
+                    $('#preview-form').append($(input));
+                    var template = $("<input>")
+                            .attr("type", "hidden")
+                            .attr("name", "template_id").val($('#email-template-id').val());
+                    $('#preview-form').append($(template));
+                    $('#preview-form').submit();
+                } else {
+                    $.growl.warning({message: "Pls select a template"});
+                }
+            });
+            $('body').on('click', '#bt-reset-email-content', function () {
+                bootbox.confirm("Are you sure you want to reset all content?", function (result) {
+                    if (result) {
+                        editor.setValue("");
+                        {#                        $('#email-filter-id').select2('val','');#}
+                        {#                        $('#email-subject').val('');#}
+                        {#                        $('#email-name').val('');#}
+                        {#                        $('#email-template-id').select2('val','');#}
+                    }
+                });
+
+            });
+
+            $(".question-markdown").click(function () {
+                editor.replaceSelection('{"questions":[{"id":"registration-date,last-update-date,attendee-group,tags,","group-id":"","columns":"questions,answer","sort-column":"order","date-time":"Y.M.d H:m"}]}', "end")
+            });
+            $(".session-markdown").click(function () {
+                editor.replaceSelection('{"sessions":[{"id":"","group-id":"","columns":"name,start,end", "sort-column":"start",  "status":"attending","time-date":"Y.M.d H:m"}]}', "end");
+            });
+            $(".travel-markdown").click(function () {
+                editor.replaceSelection('{"travels":[{"id":"","group-id":"","columns":"name, departure-city, departure-time-date, arrival-city, arrival-time-date","sort-column":"departure-date-time","date-time":"Y.M.d H:m"}]}', "end")
+            });
+            $(".hotel-markdown").click(function () {
+                editor.replaceSelection('{"hotels":[{"id":"","group-id":"","columns":"name, room-description, check-in, check-out","sort-column":"check-in","date":"Y.M.d"}]}', "end");
+            });
+
+            $(".general-markdown").click(function () {
+                editor.replaceSelection("{" + $(this).attr('data-id') + "}", "end");
+            });
+
+            {#            $(".calendar-markdown").click(function () {#}
+            {#                editor.replaceSelection("{calendar}", "end");#}
+            {#            });#}
+
+            $(".uid-link-markdown").click(function () {
+                var url = base_url + "/" + $('.current-event').attr('data-url') + "/";
+                editor.replaceSelection("<a href='" + url + "?uid={secret_key}'>UID Link</a>", "end");
+            });
+
+            //save
+
+            $('body').on('click', '#btn-save-emailtemplate', function () {
+                addOrUpdateEmailContent($(this));
+            });
+
+            $('body').on('click', '#bt-send-filter-email', function (e) {
+                e.preventDefault();
+                var $this = $(this);
+                var rule_id = $('#email-filter-id option:selected').val();
+                var subject = $('#email-subject').val();
+                var template_id = $('#email-template-id').val();
+                {#                var message = editor.getValue();#}
+                var message = $('#out').html();
+                var requiredFields = [
+                    {fieldId: 'email-subject', message: 'Email Subject'},
+                    {fieldId: 'email-template-id', message: 'Email Template'}
+                ];
+
+                if (!requiredEmailFieldValidator(requiredFields)) {
+                    return;
+                }
+                var data = {
+                    'rule_id': rule_id,
+                    'template_id': template_id,
+                    'message': message,
+                    'subject': subject,
+                    csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val()
+                }
+                clog(data);
+                {#                if (rule_id != '' && message != '' && subject != '') {#}
+                $('#loader').show();
+                $this.prop('disabled', true);
+                $.ajax({
+                    url: base_url + '/admin/get-message-recipients/',
+                    type: "POST",
+                    data: {
+                        'rule_id': rule_id,
+                        'csrfmiddlewaretoken': $('input[name=csrfmiddlewaretoken]').val()
+                    },
+                    success: function (response) {
+                        if (response.error) {
+                            $.growl.error({message: response.error});
+                        } else {
+                            var total_recipients = response.total_recipients;
+                            clog(total_recipients);
+                            bootbox.confirm("You’re about to send the email to " + total_recipients + " attendees. Are you sure?", function (result) {
+                                if (result) {
+                                    send_template_mail(data);
+                                } else {
+                                    $('#loader').hide();
+                                    $this.prop("disabled", false);
+                                }
+                            });
+                        }
+                    }
+                });
+            });
+
+
+        });
+        function requiredEmailFieldValidator(requiredFields) {
+            var message = '';
+            var valid = true;
+            for (var i = 0; i < requiredFields.length; i++) {
+                var Id = requiredFields[i].fieldId;
+                if ($('#' + Id).val() == '') {
+                    message += "*" + requiredFields[i].message + " can't be blank" + "<br>";
+                    valid = false;
+                }
+            }
+            if ($('#email-filter-id option:selected').val() == '' || $('#email-filter-id option:selected').val() == undefined) {
+                message += "* Filter Rule can't be blank" + "<br>";
+                valid = false;
+            }
+            if (!valid) {
+                $.growl.warning({message: message});
+            }
+            return valid;
+        }
+
+        function send_template_mail(data) {
+            $.ajax({
+                url: base_url + '/admin/emails/send-template-mail/',
+                type: "POST",
+                data: data,
+                success: function (result) {
+                    $('#loader').hide();
+                    $('#bt-send-filter-email').prop('disabled', false);
+                    if (result.error) {
+                        $.growl.error({message: result.error});
+                    } else {
+                        $.growl.notice({message: result.success});
+                        {#                        setTimeout(function () {#}
+                        {#//                            window.location.href = '';#}
+                        {#                        }, 3000);#}
+                    }
+                }
+            });
+        }
+
+        function requiredFieldValidator(requiredFields) {
+            var message = '';
+            var valid = true;
+            for (var i = 0; i < requiredFields.length; i++) {
+                var Id = requiredFields[i].fieldId;
+                if ($('#' + Id).val() == '' || $('#' + Id).val() == null) {
+                    message += "*" + requiredFields[i].message + " can't be blank" + "<br>";
+                    valid = false;
+                }
+            }
+            if ($('#out').html() == "") {
+                message += "*content can't be blank <br>";
+                valid = false;
+            }
+
+            if (!valid) {
+                $.growl.warning({message: message});
+            }
+            return valid;
+        }
+
+        function addOrUpdateEmailContent(button) {
+            clog(editor.getValue());
+
+            var subject = $.trim($('#email-subject').val()),
+                    name = $.trim($('#email-name').val()),
+                    template_id = $('#email-template-id').val(),
+                    content = editor.getValue(),
+                    csrfToken = $('input[name=csrfmiddlewaretoken]').val();
+
+            var requiredFields = [
+                {fieldId: 'email-subject', message: 'Subject'},
+                {fieldId: 'email-template-id', message: 'Template'},
+                {fieldId: 'email-name', message: 'Email Name'},
+
+            ];
+
+            var data = {
+                subject: subject,
+                name: name,
+                template_id: template_id,
+                content: content,
+                csrfmiddlewaretoken: csrfToken
+            };
+
+            if (!requiredFieldValidator(requiredFields)) {
+                return;
+            }
+            if ($.trim(button.attr('data-id')) != '') {
+                data['id'] = button.attr('data-id');
+            }
+
+            $.ajax({
+                url: base_url + '/admin/emails/',
+                type: 'POST',
+                data: data,
+                dataType: "json",
+                success: function (response) {
+
+                    if (response.success) {
+                        $.growl.notice({message: response.message});
+                        button.attr('data-id', response.email.id);
+
+                    }
+                    else {
+                        var errors = response.message;
+                        $.growl.warning({message: errors});
+                    }
+                },
+                error: function (e) {
+                    clog(e);
+                }
+            })
+            ;
+        }
+
+
+        var URL = window.URL || window.webkitURL || window.mozURL || window.msURL;
+        navigator.saveBlob = navigator.saveBlob || navigator.msSaveBlob || navigator.mozSaveBlob || navigator.webkitSaveBlob;
+        window.saveAs = window.saveAs || window.webkitSaveAs || window.mozSaveAs || window.msSaveAs;
+
+        // Because highlight.js is a bit awkward at times
+        var languageOverrides = {
+            js: 'javascript',
+            html: 'xml'
+        };
+
+        emojify.setConfig({img_dir: 'emoji'});
+
+        var md = markdownit({
+            html: true,
+            highlight: function (code, lang) {
+                if (languageOverrides[lang]) lang = languageOverrides[lang];
+                if (lang && hljs.getLanguage(lang)) {
+                    try {
+                        return hljs.highlight(lang, code).value;
+                    } catch (e) {
+                    }
+                }
+                return '';
+            }
+        })
+                .use(markdownitFootnote);
+
+
+        var hashto;
+
+        function update(e) {
+            if (e != undefined) {
+                setOutput(e.getValue());
+            }
+
+            clearTimeout(hashto);
+            hashto = setTimeout(updateHash, 1000);
+        }
+
+        function setOutput(val) {
+            val = val.replace(/<equation>((.*?\n)*?.*?)<\/equation>/ig, function (a, b) {
+                return '<img src="http://latex.codecogs.com/png.latex?' + encodeURIComponent(b) + '" />';
+            });
+
+            var out = document.getElementById('out');
+            var old = out.cloneNode(true);
+            out.innerHTML = md.render(val);
+            emojify.run(out);
+
+            var allold = old.getElementsByTagName("*");
+            if (allold === undefined) return;
+
+            var allnew = out.getElementsByTagName("*");
+            if (allnew === undefined) return;
+
+            for (var i = 0, max = Math.min(allold.length, allnew.length); i < max; i++) {
+                if (!allold[i].isEqualNode(allnew[i])) {
+                    out.scrollTop = allnew[i].offsetTop;
+                    return;
+                }
+            }
+        }
+
+
+        document.addEventListener('drop', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                editor.setValue(e.target.result);
+            };
+
+            reader.readAsText(e.dataTransfer.files[0]);
+        }, false);
+
+
+        function saveAsMarkdown() {
+            save(editor.getValue(), "untitled.md");
+        }
+
+        function saveAsHtml() {
+            save(document.getElementById('out').innerHTML, "untitled.html");
+        }
+
+        function save(code, name) {
+            var blob = new Blob([code], {type: 'text/plain'});
+            if (window.saveAs) {
+                window.saveAs(blob, name);
+            } else if (navigator.saveBlob) {
+                navigator.saveBlob(blob, name);
+            } else {
+                url = URL.createObjectURL(blob);
+                var link = document.createElement("a");
+                link.setAttribute("href", url);
+                link.setAttribute("download", name);
+                var event = document.createEvent('MouseEvents');
+                event.initMouseEvent('click', true, true, window, 1, 0, 0, 0, 0, false, false, false, false, 0, null);
+                link.dispatchEvent(event);
+            }
+        }
+
+
+        var menuVisible = false;
+        var menu = document.getElementById('menu');
+
+        function showMenu() {
+            menuVisible = true;
+            menu.style.display = 'block';
+        }
+
+        function hideMenu() {
+            menuVisible = false;
+            menu.style.display = 'none';
+        }
+
+        document.addEventListener('keydown', function (e) {
+            if (e.keyCode == 83 && (e.ctrlKey || e.metaKey)) {
+                e.shiftKey ? showMenu() : saveAsMarkdown();
+
+                e.preventDefault();
+                return false;
+            }
+
+            if (e.keyCode === 27 && menuVisible) {
+                hideMenu();
+
+                e.preventDefault();
+                return false;
+            }
+        });
+
+
+        function updateHash() {
+            {#            window.location.hash = btoa( // base64 so url-safe#}
+            {#                    RawDeflate.deflate( // gzip#}
+            {#                            unescape(encodeURIComponent( // convert to utf8#}
+            {#                                    editor.getValue()#}
+            {#                            ))#}
+            {#                    )#}
+            {#            );#}
+        }
+
+        if (window.location.hash) {
+            var h = window.location.hash.replace(/^#/, '');
+            if (h.slice(0, 5) == 'view:') {
+                setOutput(decodeURIComponent(escape(RawDeflate.inflate(atob(h.slice(5))))));
+                document.body.className = 'view';
+            } else {
+                editor.setValue(
+                        decodeURIComponent(escape(
+                                RawDeflate.inflate(
+                                        atob(
+                                                h
+                                        )
+                                )
+                        ))
+                );
+                update(editor);
+                editor.focus();
+            }
+        } else if (editor != undefined) {
+            update(editor);
+            editor.focus();
+        }
+
+
+    </script>
+{% endblock %}

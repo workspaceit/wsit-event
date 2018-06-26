@@ -1,0 +1,188 @@
+{% load i18n %}
+<div class="section">
+    <div class="form-plugin element form-plugin-session-scheduler">
+        <div class="session-details">
+            <h3 class="session-detail-title">Session title</h3>
+            {% if session.session_expire %}
+                <div class="status rsvp-deadline"> RSVP deadline passed</div>
+                <div class="switch-wrapper">
+                    <label class="switch disabled" id="attende-or-cancel-session">
+                        <input type="checkbox"
+                               id="{% if status == 'attending' %}session-description-rsvp-ended-not-attending{% else %}session-description-rsvp-ended-attending{% endif %}"
+                               disabled
+                                {% if status == 'attending' %} checked="checked" {% endif %}/>
+                        <div class="slider round"></div>
+                    </label>
+                    <label class="session-slider-label {% if status == 'attending' %}not-attending{% else %}attending{% endif %}"
+                           for="{% if status == 'attending' %}session-description-rsvp-ended-not-attending{% else %}session-description-rsvp-ended-attending{% endif %}">
+                        {{ status_text }}</label>
+                </div>
+            {% elif session.session_conflict %}
+                <div class="status time-conflict"> Time conflict</div>
+                <div class="switch-wrapper">
+                    <label class="switch disabled" id="attende-or-cancel-session">
+                        <input type="checkbox" id="session-description-time-conflict" disabled/>
+                        <div class="slider round"></div>
+                    </label>
+                    <label class="session-slider-label not-attending"
+                           for="session-description-time-conflict">{{ status_text }}</label>
+                </div>
+            {% elif status == 'attending' %}
+                <div class="switch-wrapper">
+                    <label class="switch {% if session.is_speaker %}disabled{% else %}attending{% endif %}"
+                           id="attende-or-cancel-session">
+                        <input type="checkbox" id="session-slider-attending" checked="checked"
+                               {% if session.is_speaker %}disabled{% endif %}>
+                        <div class="slider round"></div>
+                    </label>
+                    <label class="session-slider-label attending"
+                           for="session-slider-attending">{{ status_text }}</label>
+                </div>
+            {% elif status == 'in-queue' %}
+                <div class="status in-queue"> Full <em>- In queue</em></div>
+                <div class="switch-wrapper">
+                    <label class="switch in-queue" id="attende-or-cancel-session">
+                        <input type="checkbox" id="session-slider-in-queue" checked="checked">
+                        <div class="slider round"></div>
+                    </label>
+                    <label class="session-slider-label not-attending"
+                           for="session-slider-in-queue">{{ status_text }}</label>
+                </div>
+            {% elif status == 'not-attending' or status == 'not-answered' %}
+                {% if session.full %}
+                    <div class="status full-queue-open"> Full <em>- Queue {% if session.allow_attendees_queue %}
+                        open{% else %}close{% endif %}</em></div>
+                    <div class="switch-wrapper">
+                        <label id="attende-or-cancel-session"
+                               class="switch {% if session.allow_attendees_queue %}full-queue-open{% else %}disabled{% endif %}">
+                            <input type="checkbox" id="session-slider-full-queue-open"
+                                   {% if not session.allow_attendees_queue %}disabled{% endif %}>
+                            <div class="slider round"></div>
+                        </label>
+                        <label class="session-slider-label not-attending"
+                               for="session-slider-in-queue">{{ status_text }}</label>
+                    </div>
+                {% else %}
+                    <div class="switch-wrapper">
+                        <label class="switch not-attending" id="attende-or-cancel-session">
+                            <input type="checkbox" id="session-slider-not-attending">
+                            <div class="slider round"></div>
+                        </label>
+                        <label class="session-slider-label not-attending"
+                               for="session-slider-not-attending">{{ status_text }}</label>
+                    </div>
+                {% endif %}
+            {% else %}
+                <div class="switch-wrapper">
+                    <label class="switch not-attending" id="attende-or-cancel-session">
+                        <input type="checkbox" id="session-slider-not-attending">
+                        <div class="slider round"></div>
+                    </label>
+                    <label class="session-slider-label not-attending"
+                           for="session-slider-not-attending">{{ status_text }}
+                    </label>
+                </div>
+            {% endif %}
+            <div class="session-description">
+                {{ session.description|safe }}
+            </div>
+            <table class="form-plugin-table">
+                <tr class="time-and-date">
+                    <td><span class="session-time-and-date-icon"></span>
+                    </td>
+                    <td>
+                        <label class="form-plugin-label">{{ language.langkey.sessionradiobutton_txt_starts }}: </label>
+                        <span class="time start">{% language language.lang_preset.language_code %}
+                            {{ session.start |date:language.lang_preset.time_format }}{% endlanguage %}</span>
+                        <span class="date start">{% language language.lang_preset.language_code %}
+                            {{ session.start |date:language.lang_preset.date_format }}{% endlanguage %}</span>
+                        <br/>
+                        <label class="form-plugin-label">{{ language.langkey.sessionradiobutton_txt_ends }}: </label>
+                        <span class="time end">{% language language.lang_preset.language_code %}
+                            {{ session.end |date:language.lang_preset.time_format }}{% endlanguage %}</span>
+                        <span class="date end">{% language language.lang_preset.language_code %}
+                            {{ session.end |date:language.lang_preset.date_format }}{% endlanguage %}</span>
+                    </td>
+                </tr>
+                <tr class="rsvp-deadline">
+                    <td><span class="session-rsvp-deadline-icon"></span>
+                    </td>
+                    <td><label
+                            class="form-plugin-label">{{ language.langkey.sessionradiobutton_txt_rsvp }}: </label><span
+                            class="date">{% language language.lang_preset.language_code %}
+                        {{ session.reg_between_end |date:language.lang_preset.date_format }}{% endlanguage %}</span>
+                    </td>
+                </tr>
+                <tr class="speaker">
+                    <td><span class="session-speaker-icon"></span>
+                    </td>
+                    <td><label
+                            class="form-plugin-label">{{ language.langkey.sessionradiobutton_txt_speakers }}: </label>
+                        {% for speaker in  session.speakers %}
+                            <a href="{% url 'attendee-bio' event_url=request.session.event_url pk=speaker.speaker_id %}"
+                               target="_blank">{{ speaker.speaker.firstname }} {{ speaker.speaker.lastname }}</a>{% if not forloop.last %}, {% endif %}
+                        {% endfor %}
+                    </td>
+                </tr>
+                <tr class="tags">
+                    <td><span class="session-tags-icon"></span>
+                    </td>
+                    <td>
+                        <label class="form-plugin-label">{{ language.langkey.sessionradiobutton_txt_tags }}:</label>
+                        <div class="form-plugin-tags-list">
+                            {% for tag in session.tags %}
+                                <div class="form-plugin-tag">{{ tag.tag.name }}
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </td>
+                </tr>
+                <tr class="session-group">
+                    <td><span class="session-group-icon"></span>
+                    </td>
+                    <td><label
+                            class="form-plugin-label">{{ language.langkey.sessionradiobutton_txt_session_group }}: </label>{{ session.group.name|safe }}
+                    </td>
+                </tr>
+                <tr class="seats-available">
+                    <td><span class="session-seats-available-icon"></span>
+                    </td>
+                    <td><label
+                            class="form-plugin-label">{{ language.langkey.sessionradiobutton_txt_seat_availability }}: </label>{{ session.availability }}
+                    </td>
+                </tr>
+                <tr class="location">
+                    <td><span class="session-location-icon"></span>
+                    </td>
+                    <td><label
+                            class="form-plugin-label">{{ language.langkey.sessionradiobutton_txt_location }}: </label>
+                        <a href="
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                {% url 'publicLocations' event_url=request.session.event_url %}{{ session.location.id }}"
+                           target="_blank">{{ session.location.name }}</a>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>

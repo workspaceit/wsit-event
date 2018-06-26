@@ -1,0 +1,100 @@
+{#{% for notification in notifications %}#}
+{#    {% if notification.type == "session" %}#}
+{#        <li>#}
+{#            <h4>Session Conflict <span#}
+{#                    class="date">{{ notification.created_at|date:'Y-m-d H:i:s' }}</span>#}
+{#            </h4>#}
+{##}
+{#            <p>{{ notification.message | safe }}</p>#}
+{##}
+{#            {% if notification.type == "session" %}#}
+{##}
+{#                <p><a href="javascript:void(0)" class="label color2 click-notification"#}
+{#                      data-id="{{ notification.id }}">Yes</a>&nbsp;&nbsp;<a#}
+{#                        href="javascript:void(0)"#}
+{#                        class="label color3 click-notification"#}
+{#                        data-id="{{ notification.id }}">No</a>#}
+{#                </p>#}
+{#                <br/>#}
+{#                <p>If no answer is received within the next#}
+{#                    <span class="defaultCountdown time"#}
+{#                          data-id="{{ notification.expire_at|date:"Y-m-d-H-i-s" }}"></span> the seat is#}
+{#                    given to the#}
+{#                    next attendee in Queue.#}
+{#                </p>#}
+{#            {% endif %}#}
+{#        </li>#}
+{#    {% endif %}#}
+{#    {% if notification.type == "attendee" %}#}
+{#        <li>#}
+{#            <div class="dismiss delete_notification" data-id="{{ notification.id }}"></div>#}
+{#            <h4>{{ notification.sender_attendee.firstname }} <span class="date">{{ notification.created_at|date:"Y-m-d , H:i" }}</span>#}
+{#            </h4>#}
+{##}
+{#            <p>{{ notification.message | safe }}</p>#}
+{#        </li>#}
+{#    {% endif %}#}
+{#    {% if notification.type == "session_attend" %}#}
+{#        <li>#}
+{#            <div class="dismiss delete_notification" data-id="{{ notification.id }}"></div>#}
+{#            <h4>Session  <span#}
+{#                    class="date">{{ notification.created_at|date:"Y-m-d , H:i" }}</span></h4>#}
+{##}
+{#            <p>{{ notification.message | safe }}</p>#}
+{#        </li>#}
+{#    {% endif %}#}
+{#    {% if notification.type == "filter_message" %}#}
+{#        <li>#}
+{#            <div class="dismiss delete_notification" data-id="{{ notification.id }}"></div>#}
+{#            <h4>KingfoMarket Team <span#}
+{#                    class="date">{{ notification.created_at|date:"Y-m-d , H:i" }}</span></h4>#}
+{##}
+{#            <p>{{ notification.message | safe }}</p>#}
+{#        </li>#}
+{#    {% endif %}#}
+{#{% endfor %}#}
+{% load i18n %}
+{% for notification in notifications %}
+    <div class="form-plugin-item">
+        {% if notification.type == "session" %}
+            <div class="form-plugin-item-actions"></div>
+            <h3 class="form-plugin-title">{{ language.langkey.message_txt_session_conflict }}</h3>
+            <span class="form-plugin-title-date">{% language language.lang_preset.language_code %}
+                {{ notification.created_at |date:language.lang_preset.datetime_format }}
+            {% endlanguage %}</span>
+            <p>{{ notification.message | safe | linebreaks }}</p>
+            <p><a href="javascript:void(0)" class="label color2 click-notification"
+                  data-id="{{ notification.id }}">{{ language.langkey.messages_btn_session_conflict_yes }}</a>&nbsp;&nbsp;<a
+                    href="javascript:void(0)"
+                    class="label color3 click-notification"
+                    data-id="{{ notification.id }}">{{ language.langkey.messages_btn_session_conflict_no }}</a>
+            </p>
+            <br/>
+            <p>{{ language.langkey.pre_message_countdown }}
+                                                <span class="defaultCountdown time"
+                                                      data-id="{{ notification.expire_at|date:"Y-m-d-H-i-s" }}"></span>
+                {{ language.langkey.post_message_countdown }}
+            </p>
+        {% elif notification.type == "attendee" %}
+            {% if archive_messages == 'True' %}
+                <div class="messages-hide" data-id="{{ notification.id }}"></div>
+            {% endif %}
+            <div class="form-plugin-item-actions"></div>
+            <h3 class="form-plugin-title">{{ notification.sender_attendee.firstname }} {{ notification.sender_attendee.lastname }}</h3>
+            <span class="form-plugin-title-date">{% language language.lang_preset.language_code %}
+                {{ notification.created_at |date:language.lang_preset.datetime_format }}
+            {% endlanguage %}</span>
+            <p>{{ notification.message | safe | linebreaks }}</p>
+        {% else %}
+            {% if archive_messages == 'True' %}
+                <div class="messages-hide" data-id="{{ notification.id }}"></div>
+            {% endif %}
+            <div class="form-plugin-item-actions"></div>
+            <h3 class="form-plugin-title">{{ language.langkey.messages_txt_organizer }}</h3>
+            <span class="form-plugin-title-date">{% language language.lang_preset.language_code %}
+                {{ notification.created_at |date:language.lang_preset.datetime_format }}
+            {% endlanguage %}</span>
+            <p>{{ notification.message | safe | linebreaks }}</p>
+        {% endif %}
+    </div>
+{% endfor %}

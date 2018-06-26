@@ -1,0 +1,139 @@
+<div class="panel event panel-info" id="{{ event.id }}">
+    <div class="panel-heading">
+        <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion-example"
+           href="#collapseOne{{ event.id }}">
+            Permission : {{ event.name }}
+        </a>
+    </div>
+    <div id="collapseOne{{ event.id }}" class="panel-collapse in">
+        <div class="panel-body">
+
+            <div class="panel-group" id="accordion-example">
+                <div class="panel">
+                    <table class="table">
+                            <tr>
+                                <td>
+                                    Permission Item
+                                </td>
+                                <td>
+                                    <label class="checkbox-inline">
+                                        <input type="checkbox" id="permission-read-all" event-id="{{ event.id }}" class="permission-read-all{{ event.id }}"> <span class="lbl"><b>Read All</b></span>
+                                    </label>
+                                </td>
+                                <td>
+                                    <label class="checkbox-inline">
+                                        <input type="checkbox" id="permission-write-all" event-id="{{ event.id }}" class="permission-write-all{{ event.id }}"> <span class="lbl"><b>Write All</b></span>
+                                    </label>
+                                </td>
+                            </tr>
+                        {% for content in contents %}
+                            <tr id="{{ event.id }}" class="note note-info">
+                                <td><label class="checkbox-inline note-title">{{ content }}</label></td>
+
+                                <td>
+                                    <label class="checkbox-inline">
+                                        <input type="checkbox" name="{{ content }}"  class="content px permission-read-{{ event.id }}"
+                                               value="read"> <span
+                                            class="lbl">Read</span>
+                                    </label>
+                                </td>
+                                <td>
+                                    <label class="checkbox-inline">
+                                        <input type="checkbox" name="{{ content }}" class="content px permission-write-{{ event.id }}"
+                                               value="write"> <span
+                                            class="lbl">Write</span>
+                                    </label>
+                                </td>
+
+                            </tr>
+                        {% endfor %}
+                    </table>
+                    <br>
+
+                    <div class="panel-heading">
+                        <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion-example"
+                           href="#collapseOnegrp{{ event.id }}">
+                            Question Group
+                        </a>
+                    </div>
+                    <!-- / .panel-heading -->
+                    <div id="collapseOnegrp{{ event.id }}" class="panel-collapse in">
+                        <div class="panel-body">
+                            <table class="table">
+                                <tr>
+                                    <td>
+                                        Question Group Permission
+                                    </td>
+                                    <td>
+                                        <label class="checkbox-inline">
+                                            <input type="checkbox" id="group-permission-read-all" event-id="{{ event.id }}" class="group-permission-read-all{{ event.id }}"> <span class="lbl"><b>Read All</b></span>
+                                        </label>
+                                    </td>
+                                    <td>
+                                        <label class="checkbox-inline">
+                                            <input type="checkbox" id="group-permission-write-all" event-id="{{ event.id }}" class="group-permission-write-all{{ event.id }}"> <span class="lbl"><b>Write All</b></span>
+                                        </label>
+                                    </td>
+                                </tr>
+                                {% for group in question_groups %}
+                                    <tr id="{{ event.id }}" class="note note-success">
+                                        <td>
+                                            <label class="checkbox-inline note-title">{{ group.name|safe }}</label>
+                                        </td>
+
+                                        <td>
+                                            <label class="checkbox-inline">
+                                                <input type="checkbox" name="{{ group.id }}" class="qn_group px group-permission-read-{{ event.id }}"
+                                                       value="read"> <span
+                                                    class="lbl">Read</span>
+                                            </label>
+                                        </td>
+                                        <td>
+                                            <label class="checkbox-inline">
+                                                <input type="checkbox" name="{{ group.id }}" class="qn_group px group-permission-write-{{ event.id }}"
+                                                       value="write"> <span
+                                                    class="lbl">Write</span>
+                                            </label>
+                                        </td>
+
+
+                                    </tr>
+                                {% endfor %}
+                            </table>
+
+                        </div>
+                        <!-- / .panel-body -->
+                    </div>
+                    <!-- / .collapse -->
+                </div>
+
+            </div>
+            <!-- / .panel-group -->
+
+        </div>
+    </div>
+
+</div>
+{#<div id="{{ event.id }}" class="event">#}
+{#    <table>#}
+{#        <caption><b>{{ event.name }}</b></caption>#}
+{#        {% for content in contents %}#}
+{#            <tr id="{{ event.id }}">#}
+{#                <td>{{ content }}</td>#}
+{#                <td><input type="checkbox" name="{{ content }}" class="content" value="read">Read</td>#}
+{#                <td><input type="checkbox" name="{{ content }}" class="content" value="write">Write</td>#}
+{#            </tr>#}
+{#        {% endfor %}#}
+{#        <tr>#}
+{#            <td><b>Question Group</b></td>#}
+{#        </tr>#}
+{#        {% for group in question_groups %}#}
+{#            <tr id="{{ event.id }}">#}
+{#                <td>{{ group.name }}</td>#}
+{#                <td><input type="checkbox" name="{{ group.id }}" class="qn_group" value="read">Read</td>#}
+{#                <td><input type="checkbox" name="{{ group.id }}" class="qn_group" value="write">Write</td>#}
+{#            </tr>#}
+{#        {% endfor %}#}
+{#    </table>#}
+{#</div>#}
+

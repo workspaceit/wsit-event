@@ -1,0 +1,316 @@
+{% extends "layout/main.html" %}
+{% block content %}
+{% load staticfiles %}
+    <script src="{% static 'assets/javascripts/attendee_info.js' %}"></script>
+     <div id="content-wrapper">
+
+         <div class="body" id="search-edit-attende">
+             <div class="panel colourable">
+                 <div class="panel-heading">
+                     <h4 class="modal-title">Attendee Info</h4>
+            <span class="panel-title attendee-panel-title"><i class="fa fa-user fa-lg"></i>&nbsp;&nbsp;&nbsp;<strong>Carter
+                Camacho</strong></span>
+
+                 </div>
+                 <div class="panel-body tab-content">
+                     <ul class="nav nav-tabs nav-tabs">
+                         <li class="active">
+                             <a href="#edit-attendee-questions" data-toggle="tab"><span
+                                     class="fa fa-user fa-lg"></span>&nbsp;&nbsp;Questions</a>
+                         </li>
+                         {% if request.session.admin_permission.content_permission.assign_session_permission or request.session.event_auth_user.type == 'super_admin' %}
+                             <li class="">
+                                 <a href="#edit-attendee-sessions" data-toggle="tab"><span
+                                         class="fa fa-calendar fa-lg"></span>&nbsp;&nbsp;Sessions</a>
+                             </li>
+                         {% endif %}
+                         {% if request.session.admin_permission.content_permission.assign_travel_permission or request.session.event_auth_user.type == 'super_admin' %}
+                             <li class="">
+                                 <a href="#edit-attendee-travels" data-toggle="tab"><span
+                                         class="fa fa-plane fa-lg"></span>&nbsp;&nbsp;Travels</a>
+                             </li>
+                         {% endif %}
+                         {% if request.session.admin_permission.content_permission.assign_hotel_permission or request.session.event_auth_user.type == 'super_admin' %}
+                             <li class="">
+                                 <a href="#edit-attendee-hotels" data-toggle="tab"><span
+                                         class="fa fa-bed fa-lg"></span>&nbsp;&nbsp;Hotels</a>
+                             </li>
+                         {% endif %}
+                         <li class="">
+                             <a href="#edit-attendee-history" data-toggle="tab"><span
+                                     class="fa fa-history fa-lg"></span>&nbsp;&nbsp;History</a>
+                         </li>
+                     </ul>
+                     <div class="tab-pane fade in active" id="edit-attendee-questions">
+                         <div class="table-info">
+                             <table id="question-category-default"
+                                    class="table table-bordered table-striped attende-edit"
+                                    style="clear: both">
+                                 <tbody>
+                                 <thead>
+                                 <tr>
+                                     <td colspan="2">General</td>
+                                 </tr>
+                                 </thead>
+                                 <tr>
+                                     <td>Registration Date</td>
+                                     <td id="edit-registration-date"></td>
+                                 </tr>
+                                 <tr>
+                                     <td>Last Update Date</td>
+                                     <td id="edit-update-date"></td>
+                                 </tr>
+                                 <tr>
+                                     <td>User ID (internal)</td>
+                                     <td id="edit-user-id"></td>
+                                 </tr>
+                                 <tr>
+                                     <td>User ID (external)
+                                         {% if request.session.event_auth_user.event_id == 11 %}
+                                             <a target="_blank" data-href="{% url 'welcome' %}" href="" id="login-uid">Log in as User</a>
+                                         {% endif %}
+                                         {% if request.session.event_auth_user.event_id == 10 %}
+                                             <a target="_blank" data-href="{% url 'gt-welcome' %}" href="" id="login-uid">Log in as User</a>
+                                         {% endif %}
+                                     </td>
+                                     <td id="edit-external-user-id"></td>
+                                 </tr>
+                                 <tr>
+                                     <td>Password</td>
+                                     <td><a href="#" id="edit-attendee-question-password" data-type="text"
+                                            data-pk="1"
+                                            data-title="Password">changed password</a></td>
+                                 <tr>
+                                     <td>Attendee Groups</td>
+                                     <td class="attendee-group-id"><a href="#"
+                                                                      id="edit-attendee-question-attendee-groups"
+                                                                      data-type="checklist" data-value=""
+                                                                      data-title="Select Attendee Groups"></a></td>
+                                 </tr>
+                                 <tr>
+                                     <td>Attendee Tags</td>
+                                     <td><a href="#" class="attendee-question-attendee-tags" data-type="select2"
+                                            data-pk="1"
+                                            data-title="Enter tags">Registered Late, Received Invitation</a></td>
+                                 </tr>
+                                 </tbody>
+                             </table>
+                         </div>
+
+                         {#    <div class="table-info">#}
+                         {#        <table id="question-category-contact-details" class="table table-bordered table-striped attende-edit"#}
+                         {#               style="clear: both">#}
+                         {#            <tbody>#}
+                         {#            <thead>#}
+                         {#            <tr>#}
+                         {#                <td colspan="2">Contact Details</td>#}
+                         {#            </tr>#}
+                         {#            </thead>#}
+                         {#            <tr>#}
+                         {#                <td>First Name</td>#}
+                         {#                <td><a href="#" id="edit-attendee-question-first-name" data-type="text" data-pk="1"#}
+                         {#                       data-title="First Name"></a></td>#}
+                         {#            </tr>#}
+                         {#            <tr>#}
+                         {#                <td>Last Name</td>#}
+                         {#                <td><a href="#" id="edit-attendee-question-last-name" data-type="text" data-pk="1"#}
+                         {#                       data-title="Last Name"></a></td>#}
+                         {#            </tr>#}
+                         {#            <tr>#}
+                         {#                <td>Company</td>#}
+                         {#                <td><a href="#" id="edit-attendee-question-company" data-type="text" data-pk="1"#}
+                         {#                       data-title="Compay"></a></td>#}
+                         {#            </tr>#}
+                         {#            <tr>#}
+                         {#                <td>Email</td>#}
+                         {#                <td><a href="#" id="edit-attendee-question-email" data-type="text" data-pk="1" data-title="Email"></a>#}
+                         {#                </td>#}
+                         {#            </tr>#}
+                         {#            <tr>#}
+                         {#                <td>Phone Number</td>#}
+                         {#                <td><a href="#" id="edit-attendee-question-phone-number" data-type="text" data-pk="1"#}
+                         {#                       data-title="Phone Number"></a></td>#}
+                         {#            </tr>#}
+                         {#            </tbody>#}
+                         {#        </table>#}
+                         {#    </div>#}
+
+                         {% for group in questionGroup %}
+                             <div class="table-info">
+                                 <table id="question-category-information"
+                                        class="table table-bordered table-striped attende-edit"
+                                        style="clear: both">
+                                     <thead>
+                                     <tr>
+                                         <td colspan="2">{{ group.name|safe }}</td>
+                                     </tr>
+                                     </thead>
+                                     <tbody class="attendee-group-{{ group.id }}-allQuestions">
+                                     {#            <tr>#}
+                                     {#                <td>Have you ever visited this event before?</td>#}
+                                     {#                <td><a href="#" id="add-attendee-question-information1" data-type="select" data-pk="1"#}
+                                     {#                       data-value="" data-title="Have you ever visited ths event before?"></a></td>#}
+                                     {#            </tr>#}
+                                     {#            <tr>#}
+                                     {#                <td>On a scale from 1 - 5, how would you rate your colleagues?</td>#}
+                                     {#                <td><a href="#" id="add-attendee-question-information2" data-type="text"#}
+                                     {#                       data-title="On a scale from 1 - 5, how would you rate your colleagues?"></a></td>#}
+                                     {#            </tr>#}
+                                     {#            <tr>#}
+                                     {#                <td>Ask us a question</td>#}
+                                     {#                <td><a href="#" id="add-attendee-question-information3" data-type="textarea"#}
+                                     {#                       data-title="Ask us a question"></a></td>#}
+                                     {#            </tr>#}
+                                     </tbody>
+                                 </table>
+                             </div>
+                         {% endfor %}
+
+                         {#    <div class="table-info">#}
+                         {#        <table id="question-category-uploads" class="table table-bordered table-striped attende-edit"#}
+                         {#               style="clear: both">#}
+                         {#            <tbody>#}
+                         {#            <thead>#}
+                         {#            <tr>#}
+                         {#                <td colspan="2">Uploads</td>#}
+                         {#            </tr>#}
+                         {#            </thead>#}
+                         {#            <tr>#}
+                         {#                <td>Profile Image</td>#}
+                         {#                <td><a href="" target="_blank">Link</a></td>#}
+                         {#            </tr>#}
+                         {#            </tbody>#}
+                         {#        </table>#}
+                         {#    </div>#}
+
+                     </div>
+                     <div class="tab-pane fade set-attendee-sessions" id="edit-attendee-sessions">
+                         <div class="table-info">
+                             <table class="table table-bordered table-striped attendee-edit-sessions"
+                                    style="clear: both">
+                                 <thead>
+                                 <tr>
+                                     <td></td>
+                                     <td>Session</td>
+                                     <td>Start</td>
+                                     <td>End</td>
+                                     <td>Status</td>
+                                     <td>Added</td>
+                                     {#                <td>Cost</td>#}
+                                     {#                <td>Rebate</td>#}
+                                     {#                <td>Total</td>#}
+                                     {#                <td>VAT</td>#}
+                                     {#                <td>Total incl. VAT</td>#}
+                                 </tr>
+                                 </thead>
+                                 <tbody class="attendee-sessions">
+                                 {#            <tfoot>#}
+                                 {#            <tr class="total">#}
+                                 {#                <td></td>#}
+                                 {#                <td>TOTAL</td>#}
+                                 {#                <td></td>#}
+                                 {#                <td>$310</td>#}
+                                 {#                <td>$50</td>#}
+                                 {#                <td>$260</td>#}
+                                 {#                <td>25%</td>#}
+                                 {#                <td>€325</td>#}
+                                 {#            </tr>#}
+                                 {#            </tfoot>#}
+
+                                 </tbody>
+                             </table>
+                         </div>
+                     </div>
+                     <div class="tab-pane fade set-attendee-travels" id="edit-attendee-travels">
+                         <div class="table-info">
+                             <table class="table table-bordered table-striped attendee-edit-travels"
+                                    style="clear: both">
+                                 <thead>
+                                 <tr>
+                                     <td></td>
+                                     <td>Travel</td>
+                                     <td>Departure</td>
+                                     <td>Arrival</td>
+                                     <td>Status</td>
+                                     <td>Added</td>
+                                     {#                <td>Cost</td>#}
+                                     {#                <td>Rebate</td>#}
+                                     {#                <td>Total</td>#}
+                                     {#                <td>VAT</td>#}
+                                     {#                <td>Total incl. VAT</td>#}
+                                 </tr>
+                                 </thead>
+                                 <tbody class="attendee-travels">
+                                 {#            <tfoot>#}
+                                 {#            <tr class="total">#}
+                                 {#                <td></td>#}
+                                 {#                <td>TOTAL</td>#}
+                                 {#                <td></td>#}
+                                 {#                <td>$310</td>#}
+                                 {#                <td>$50</td>#}
+                                 {#                <td>$260</td>#}
+                                 {#                <td>25%</td>#}
+                                 {#                <td>€325</td>#}
+                                 {#            </tr>#}
+                                 {#            </tfoot>#}
+
+                                 </tbody>
+                             </table>
+                         </div>
+                     </div>
+                     <div class="tab-pane fade" id="edit-attendee-hotels">
+                         <div class="table-info">
+                             <script>
+                                 init.push(function () {
+                                     $('#edit-attendee-hotel-select-room-buddies').editable({
+                                         select2: {
+                                             tags: ['Sam Neill', 'Laura Dern', 'Jeff Goldblum', 'Richard Attenborough', 'Bob Peck', 'Martin Ferrero', 'Joseph Mazzello'],
+                                             tokenSeparators: [","],
+                                             maximumSelectionSize: 1
+                                         }
+                                     });
+                                 });
+                             </script>
+
+
+
+                             <table id="attendee-edit-hotels"
+                                    class="attendee-add-hotels table table-bordered table-striped"
+                                    style="clear: both">
+                                 <thead>
+                                 <tr>
+                                     <td></td>
+                                     <td>Hotel</td>
+                                     <td>Check in / Check out</td>
+                                     <td>Room Buddy</td>
+                                     {#                <td>Cost</td>#}
+                                     {#                <td>Rebate</td>#}
+                                     {#                <td>Total</td>#}
+                                     {#                <td>VAT</td>#}
+                                     {#                <td>Total incl. VAT</td>#}
+                                 </tr>
+                                 </thead>
+                                 <tbody>
+                                 {#            <tfoot>#}
+                                 {#            <tr class="total">#}
+                                 {#                <td colspan="4">TOTAL</td>#}
+                                 {#                <td>$0</td>#}
+                                 {#                <td>$0</td>#}
+                                 {#                <td>$0</td>#}
+                                 {#                <td>0%</td>#}
+                                 {#                <td>€0</td>#}
+                                 {#            </tr>#}
+                                 {#            </tfoot>#}
+                                 </tbody>
+                             </table>
+                         </div>
+                     </div>
+                     <div class="tab-pane fade" id="edit-attendee-history">
+
+                     </div>
+                 </div>
+             </div>
+         </div>
+     </div>
+
+{% endblock %}

@@ -1,0 +1,23 @@
+<div class="form-plugin element form-plugin-location-list box" {% if data_user_id %}id="page-{{ page_id }}-box-{{ box_id }}-u-{{ data_user_id }}" data-uid="{{ data_user_id }}"{% else %}id="page-{{ page_id }}-box-{{ box_id }}"{% endif %} data-id="{{ element_id }}"
+     data-name="location-list">
+    {% if locationGroups %}
+        {#    <div class="form-plugin element form-plugin-location-list">#}
+        <div class="form-plugin-intro">
+            {#            {% if title != '' or title != None %}#}
+            {#                <h3>{{ title }}</h3>#}
+            {#            {% endif %}#}
+            {{ message|safe }}
+        </div>
+        {% if list_searchable == 'True' %}
+            <div class="form-plugin-search-wrapper">
+                <input id="temporary-id-1" class="form-plugin-search page-search-location" type="text"
+                       placeholder="{{ language.langkey.locationlist_txt_placeholder_search }}"/>
+                <div class="form-plugin-clear-search"></div>
+            </div>
+        {% endif %}
+        <div class="form-plugin-list">
+            {% include 'public/element/locations.html' %}
+        </div>
+        {#    </div>#}
+    {% endif %}
+</div>

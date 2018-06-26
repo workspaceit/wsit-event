@@ -1,0 +1,497 @@
+{% extends "layout/main.html" %}
+{% block content %}
+    {% load staticfiles %}
+    <div id="content-wrapper">
+        {% csrf_token %}
+        <div class="panel colourable">
+            <div class="panel-heading">
+            <span class="panel-title"><i class="fa fa-lg fa-exchange"></i></i>
+                &nbsp;&nbsp;&nbsp;<strong>Checkpoint lists</strong></span>
+                                <span style="float:right"><img style="display:none" height="25px"
+                                                               src="{% static 'public/images/712.GIF' %}" id="loader"
+                                                               alt=""/>
+                                    <input type="text" name="search_key_checkpoint"
+                                           id="search_key_checkpoint"/></span>
+            </div>
+            <!-- / .panel-heading -->
+            <div class="panel-body tab-content">
+                <div class="tab-pane fade in active">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            {% if request.session.admin_permission.content_permission.checkpoints_permission and request.session.admin_permission.content_permission.checkpoints_permission.access_level == 'write' or request.session.event_auth_user.type == 'super_admin' %}
+                                <button type="button" id="btn-add-preset" class="btn btn-primary btn-lg"
+                                        data-toggle="modal"
+                                        data-target="#add-checkpoint-modal"><i class="fa fa-plus-circle"></i>&nbsp;&nbsp;Add
+                                    checkpoint
+                                </button>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <br>
+
+                    <div id="checkpoints">
+                        <div class="table-light">
+                            <div class="table-header" id="filter_export_group_{{ group.id }}">
+                                <div class="table-caption">
+                                    Checkpoint
+                                </div>
+                                <input type="checkbox" id="hide_session"> Hide session checkpoints
+                            </div>
+                            <table class="table table-bordered data-table-checkpoint">
+                                <thead>
+                                <tr>
+                                    <th>Checkpoint name</th>
+                                    <th>Checked</th>
+                                    <th>%</th>
+                                    <th>Remaining</th>
+                                    <th>Max</th>
+                                    <th>Action</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for checkpoint in checkpoints %}
+                                    <tr class="{{ checkpoint.type }}">
+                                        <td>{{ checkpoint.name }}</td>
+                                        <td>{{ checkpoint.checked }}</td>
+                                        <td>{{ checkpoint.percentage|floatformat:-2 }}</td>
+                                        <td>{{ checkpoint.remaining }}</td>
+                                        <td>{{ checkpoint.max }}</td>
+                                        <td>
+                                            {% if request.session.admin_permission.content_permission.checkpoints_permission and request.session.admin_permission.content_permission.checkpoints_permission.access_level == 'write' or request.session.event_auth_user.type == 'super_admin' %}
+                                                <a href="{% url 'checkpoint' %}{{ checkpoint.id }}"
+                                                   class="btn btn-xs btn-play-checkpoint"
+                                                   data-id="{{ checkpoint.id }}"
+                                                   target="_blank"
+                                                   data-toggle="tooltip"
+                                                   data-placement="top" title=""
+                                                   data-original-title="View"><i
+                                                        class="dropdown-icon fa fa-play"></i></a>
+                                                <button class="btn btn-xs btn-success btn-export-checkpoint"
+                                                        data-id="{{ checkpoint.id }}" data-toggle="tooltip"
+                                                        data-placement="top"
+                                                        title="" data-original-title="Export"><i
+                                                        class="dropdown-icon fa fa-file-excel-o"></i></button>
+                                                <button class="btn btn-xs btn-edit-checkpoint"
+                                                        data-id="{{ checkpoint.id }}"
+                                                        data-toggle="tooltip"
+                                                        data-placement="top" title=""
+                                                        data-original-title="Edit"><i
+                                                        class="dropdown-icon fa fa-cog"></i></button>
+                                                {% if checkpoint.type != "session" %}
+
+
+                                                    <button class="btn btn-xs btn-duplicate-checkpoint"
+                                                            data-id="{{ checkpoint.id }}"
+                                                            data-toggle="tooltip" data-placement="top" title=""
+                                                            data-original-title="Duplicate"><i
+                                                            class="dropdown-icon fa fa-files-o"></i>
+                                                    </button>
+                                                    <button class="btn btn-xs btn-danger btn-delete-checkpoint"
+                                                            data-id="{{ checkpoint.id }}" data-toggle="tooltip"
+                                                            data-placement="top"
+                                                            title="" data-original-title="Delete"><i
+                                                            class="dropdown-icon fa fa-times-circle"></i></button>
+
+                                                {% endif %}
+                                            {% else %}
+                                                <button class="btn btn-xs btn-success btn-export-checkpoint"
+                                                        data-id="{{ checkpoint.id }}" data-toggle="tooltip"
+                                                        data-placement="top"
+                                                        title="" data-original-title="Export"><i
+                                                        class="dropdown-icon fa fa-file-excel-o"></i></button>
+                                                <button class="btn btn-xs btn-view-checkpoint"
+                                                        data-id="{{ checkpoint.id }}"
+                                                        data-toggle="tooltip"
+                                                        data-placement="top" title=""
+                                                        data-original-title="Edit"><i
+                                                        class="dropdown-icon fa fa-search-plus"></i></button>
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+
+        <!-- MODAL - TEXT -->
+        <div id="add-checkpoint-modal" class="modal fade" role="dialog" style="display: none;">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title">Add Checkpoints</h4>
+                    </div>
+                    <div class="modal-body" id="modal_body">
+
+
+                    </div>
+                    <!-- / .modal-content -->
+                </div>
+                <!-- / .modal-dialog -->
+            </div>
+            <!-- / .modal -->
+            <!-- / Large modal -->
+        </div>
+    </div>
+
+    <form id="export-form" action="{% url 'export-checkpoint' %}" method="POST">
+        <input type="hidden" name="id">
+        {% csrf_token %}
+    </form>
+
+
+    <script>
+
+
+        $(document).on('click', '#hide_session', function (event) {
+            if (this.checked) { // check select status
+                $(".data-table-checkpoint").find(".session").hide();
+            } else {
+                $(".data-table-checkpoint").find(".session").show();
+            }
+            event.stopPropagation();
+        });
+
+
+        $("#btn-add-preset").click(function () {
+
+            var csrf_token = $('input[name=csrfmiddlewaretoken]').val();
+            //get-export-html
+            $.ajax({
+                url: base_url + '/admin/get-add-checkpoint-html/',
+                type: "POST",
+                data: {
+                    csrfmiddlewaretoken: csrf_token
+                },
+                success: function (result) {
+                    $("#add-checkpoint-modal").modal();
+                    $("#add-checkpoint-modal .modal-title").html("Add");
+                    $("#modal_body").html(result.modal_html);
+                    accrodion_jquery();
+                    $('input[name=csrfmiddlewaretoken]').val(csrf_token);
+                }
+            });
+        });
+
+
+        $(document).on('click', '.btn-edit-checkpoint', function () {
+            var csrf_token = $('input[name=csrfmiddlewaretoken]').val();
+            var filter_id = $(this).data('id');
+            var modal_class = 'edit';
+            //get-export-html
+            showExportFilterData(csrf_token, filter_id, modal_class);
+        });
+
+        $(document).on('click', '.btn-view-checkpoint', function () {
+            var csrf_token = $('input[name=csrfmiddlewaretoken]').val();
+            var filter_id = $(this).data('id');
+            var modal_class = 'view';
+            showExportFilterData(csrf_token, filter_id, modal_class);
+        });
+
+        $(document).on('click', '.btn-view-play-checkpoint', function () {
+            var csrf_token = $('input[name=csrfmiddlewaretoken]').val();
+            var filter_id = $(this).data('id');
+            var modal_class = 'view';
+            //get-export-html
+            showExportFilterData(csrf_token, filter_id, modal_class);
+        });
+
+        function showExportFilterData(csrf_token, filter_id, modal_class) {
+            $.ajax({
+                url: base_url + '/admin/get-add-checkpoint-html/',
+                type: "POST",
+                data: {
+                    id: filter_id,
+                    csrfmiddlewaretoken: csrf_token
+                },
+                success: function (result) {
+                    $("#add-checkpoint-modal").modal();
+                    $("#modal_body").html(result.modal_html);
+                    $("#add-checkpoint-form").append("<input type='hidden' name='id' value='" + filter_id + "' >")
+                    accrodion_jquery();
+                    if (modal_class == 'view') {
+                        $("body #add-checkpoint-modal").find("input, select").attr('disabled', 'disabled');
+                        $("#add-checkpoint-modal .modal-title").html("View checkpoint");
+                        $("#add-checkpoint-modal .panel-heading").html("View checkpoint filter");
+                        $("#add-checkpoint-modal .btn-group").closest('.row').remove();
+                    }
+                    else {
+                        $('input[name=csrfmiddlewaretoken]').val(csrf_token);
+                        $("#add-checkpoint-modal .modal-title").html("Edit checkpoint");
+                        $("#add-checkpoint-modal .panel-heading").html("Edit checkpoint filter");
+                        $("#add-checkpoint-modal .btn.save").html('<i class="fa fa-check-circle"> Save ')
+                    }
+
+                }
+            });
+        }
+
+
+        function accrodion_jquery() {
+
+
+            $('#selecctall').click(function (event) {  //on click
+                if (this.checked) { // check select status
+                    $('.allselect').each(function () { //loop through each checkbox
+                        this.checked = true;  //select all checkboxes with class "checkbox1"
+                    });
+                } else {
+                    $('.allselect').each(function () { //loop through each checkbox
+                        this.checked = false; //deselect all checkboxes with class "checkbox1"
+                    });
+                }
+            });
+
+
+            $('.groupname').click(function (event) {  //on click
+
+                if (this.checked) { // check select status
+                    $(this).parent().siblings()
+                            .find("input[type='checkbox']")
+                            .prop('checked', this.checked);
+                } else {
+                    $(this).parent().siblings()
+                            .find("input[type='checkbox']")
+                            .prop('checked', false);
+                }
+                event.stopPropagation();
+            });
+            $('.question').click(function (event) {
+                var groupname = $(this).closest('.row').siblings().find("input[type='checkbox']");
+                var allChecked = true;
+                var indeterminate = false;
+                $(this).closest('.row').find('.question').each(function () {
+                    if (!this.checked) {
+                        allChecked = false;
+                    } else {
+                        indeterminate = true;
+                    }
+                });
+                if (allChecked) {
+                    groupname.prop("indeterminate", false);
+                    groupname.prop('checked', true);
+                } else {
+                    if (indeterminate) {
+                        groupname.prop("indeterminate", true);
+                    } else {
+                        groupname.prop("indeterminate", false);
+                        groupname.prop('checked', false);
+                    }
+                }
+                event.stopPropagation();
+            });
+
+            $('.question').each(function () {
+                var groupname = $(this).closest('.row').siblings().find("input[type='checkbox']");
+                var allChecked = true;
+                var indeterminate = false;
+                $(this).closest('.row').find('.question').each(function () {
+                    if (!this.checked) {
+                        allChecked = false;
+                    } else {
+                        indeterminate = true;
+                    }
+                });
+                if (allChecked) {
+                    groupname.prop("indeterminate", false);
+                    groupname.prop('checked', true);
+                } else {
+                    if (indeterminate) {
+                        groupname.prop("indeterminate", true);
+                    } else {
+                        groupname.prop("indeterminate", false);
+                        groupname.prop('checked', false);
+                    }
+                }
+            });
+
+            $("#ui-accordion").accordion({
+                animate: 100,
+                collapsible: true,
+                heightStyle: "content",
+                header: "> div > h3",
+                beforeActivate: function (event, ui) {
+                    // The accordion believes a panel is being opened
+                    if (ui.newHeader[0]) {
+                        var currHeader = ui.newHeader;
+                        var currContent = currHeader.next('.ui-accordion-content');
+                        // The accordion believes a panel is being closed
+                    } else {
+                        var currHeader = ui.oldHeader;
+                        var currContent = currHeader.next('.ui-accordion-content');
+                    }
+                    // Since we've changed the default behavior, this detects the actual status
+                    var isPanelSelected = currHeader.attr('aria-selected') == 'true';
+
+                    // Toggle the panel's header
+                    currHeader.toggleClass('ui-corner-all', isPanelSelected).toggleClass('accordion-header-active ui-state-active ui-corner-top', !isPanelSelected).attr('aria-selected', ((!isPanelSelected).toString()));
+
+                    // Toggle the panel's icon
+                    currHeader.children('.ui-icon').toggleClass('ui-icon-triangle-1-e', isPanelSelected).toggleClass('ui-icon-triangle-1-s', !isPanelSelected);
+
+                    // Toggle the panel's content
+                    currContent.toggleClass('accordion-content-active', !isPanelSelected)
+                    if (isPanelSelected) {
+                        currContent.slideUp();
+                    } else {
+                        currContent.slideDown();
+                    }
+
+                    return false; // Cancels the default action
+                }
+            });
+
+
+            $("#ui-accordion2").accordion({
+                animate: 100,
+                collapsible: true,
+                heightStyle: "content",
+                header: "> div > h3",
+                beforeActivate: function (event, ui) {
+                    // The accordion believes a panel is being opened
+                    if (ui.newHeader[0]) {
+                        var currHeader = ui.newHeader;
+                        var currContent = currHeader.next('.ui-accordion-content');
+                        // The accordion believes a panel is being closed
+                    } else {
+                        var currHeader = ui.oldHeader;
+                        var currContent = currHeader.next('.ui-accordion-content');
+                    }
+                    // Since we've changed the default behavior, this detects the actual status
+                    var isPanelSelected = currHeader.attr('aria-selected') == 'true';
+
+                    // Toggle the panel's header
+                    currHeader.toggleClass('ui-corner-all', isPanelSelected).toggleClass('accordion-header-active ui-state-active ui-corner-top', !isPanelSelected).attr('aria-selected', ((!isPanelSelected).toString()));
+
+                    // Toggle the panel's icon
+                    currHeader.children('.ui-icon').toggleClass('ui-icon-triangle-1-e', isPanelSelected).toggleClass('ui-icon-triangle-1-s', !isPanelSelected);
+
+                    // Toggle the panel's content
+                    currContent.toggleClass('accordion-content-active', !isPanelSelected)
+                    if (isPanelSelected) {
+                        currContent.slideUp();
+                    } else {
+                        currContent.slideDown();
+                    }
+
+                    return false; // Cancels the default action
+                }
+            });
+        }
+
+
+        $(document).on('click', '.btn-duplicate-checkpoint', function (e) {
+            var id = $(this).data('id');
+            var csrfToken = $('input[name=csrfmiddlewaretoken]').val();
+            var data = {
+                id: id,
+                csrfmiddlewaretoken: csrfToken
+            }
+            $.ajax({
+                url: base_url + '/admin/checkpoint/duplicate/',
+                type: "POST",
+                data: data,
+                success: function (response) {
+                    if (response.success) {
+                        $.growl.notice({message: response.success});
+                        var checkpoint = response.checkpoint;
+                        var row = '' +
+                                '<td>' + checkpoint.name + '</td>' +
+                                '<td>' + response.checked + '</td>' +
+                                '<td>' + response.percentage + '</td>' +
+                                '<td>' + response.remaining + '</td>' +
+                                '<td>' + response.max + '</td>' +
+                                '      <td>' +
+                                '          <button class="btn btn-xs btn-play-checkpoint" data-id="' + checkpoint.id + '" data-toggle="tooltip" data-placement="top" data-original-title="View"><i class="dropdown-icon fa fa-play"></i></button>' +
+                                '          <button class="btn btn-xs btn-success btn-export-checkpoint" data-id="' + checkpoint.id + '" data-toggle="tooltip" data-placement="top" title="" data-original-title="Export"><i class="dropdown-icon fa fa-file-excel-o"></i></button>' +
+                                '          <button class="btn btn-xs btn-edit-checkpoint" data-id="' + checkpoint.id + '" data-toggle="tooltip" data-placement="top" title="" data-original-title="Edit"><i class="dropdown-icon fa fa-cog"></i></button>' +
+                                '          <button class="btn btn-xs btn-duplicate-checkpoint" data-id="' + checkpoint.id + '" data-toggle="tooltip" data-placement="top" title="" data-original-title="Duplicate"><i class="dropdown-icon fa fa-files-o"></i></button>' +
+                                '          <button class="btn btn-xs btn-danger btn-delete-checkpoint" data-id="' + checkpoint.id + '" data-toggle="tooltip" data-placement="top" title="" data-original-title="Delete"><i class="dropdown-icon fa fa-times-circle"></i></button>' +
+                                '      </td>';
+                        $('.data-table-checkpoint').find('tbody').append('<tr>' + row + '</tr>');
+                    } else {
+                        $.growl.warning({message: response.error});
+                    }
+                }
+            });
+        });
+
+        $(document).on('click', '.btn-delete-checkpoint', function (e) {
+            var $this = $(this);
+            var rule_preset = $this.closest('tr').find('td').first().html();
+            bootbox.confirm("Are you sure you want to delete " + rule_preset + "?", function (result) {
+                if (result) {
+                    var id = $this.attr('data-id');
+                    var csrf_token = $('input[name=csrfmiddlewaretoken]').val();
+                    $.ajax({
+                        url: base_url + '/admin/checkpoint/delete/',
+                        type: "POST",
+                        data: {
+                            id: id,
+                            csrfmiddlewaretoken: csrf_token
+                        },
+                        success: function (result) {
+                            result = JSON.parse(result);
+                            console.log(result);
+                            if (result.error) {
+                                $.growl.error({message: result.msg});
+                            } else {
+                                $.growl.notice({message: result.msg});
+                                $this.closest('tr').remove();
+                            }
+                        }
+                    });
+                }
+            });
+        });
+
+        $(document).on('click', '.btn-export-checkpoint', function (event) {
+            var $this = $(this);
+            var rule_name = $this.parent().parent().find("td").eq(0).html();
+            bootbox.confirm("Are you sure you want to Export " + rule_name + "?", function (result) {
+                if (result) {
+                    var id = $this.attr('data-id');
+                    var csrf_token = $('input[name=csrfmiddlewaretoken]').val();
+
+
+                    {#                   $("#export-form input[name=id]").val(id);#}
+                    {#                    $("#export-form").submit();#}
+
+                    $(".loader").show();
+                    $.ajax({
+                        url: base_url + "/admin/export-checkpoint/",
+                        data: {
+                            id: id,
+                            csrfmiddlewaretoken: csrf_token
+                        },
+                        type: "POST",
+                        success: function (result) {
+                            $(".loader").hide();
+                            $.growl.notice({message: result.message});
+                            check_export_status();
+                        },
+                        error: function () {
+                            $(".loader").hide();
+                            $.growl.error({message: "Something Wrong"});
+                        }
+                    });
+
+
+                }
+            });
+        });
+
+
+    </script>
+
+
+
+{% endblock %}

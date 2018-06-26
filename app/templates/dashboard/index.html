@@ -1,0 +1,93 @@
+{% extends "layout/main.html" %}
+{% block content %}
+    {% load staticfiles %}
+    <div id="content-wrapper">
+	    <div class="panel colourable">
+			<div class="panel-heading">
+	            <span class="panel-title"><i class="fa fa-tachometer" aria-hidden="true"></i>&nbsp;&nbsp;&nbsp;<strong>Dashboard</strong></span>
+			</div>
+	        <script type="application/javascript"
+	                src="{% static 'assets/plugin/Chart.js/Chart.bundle.min.js' %}"></script>
+	        <script type="application/javascript" src="{% static 'assets/plugin/Chart.js/Chart.min.js' %}"></script>
+	
+	        <div class="panel-body">
+	            <div class="row" id="dashboard-content">
+	                {{ plugins  | safe }}
+	            </div>
+	        </div>
+	    </div>
+    </div>
+    <style type="text/css">
+        {#        .panel-body {#}
+        {#            height: 350px !important;#}
+        {#        }#}
+        {##}
+        {#        .col-md-6 {#}
+        {#            max-height: 400px;#}
+        {#        }#}
+
+        a {
+            cursor: pointer;
+        }
+    </style>
+    <script type="application/javascript">
+        $(document).ready(function () {
+{#            $("#dashboard-content").sortable({#}
+{#                handle: ".panel-heading",#}
+{#                connectWith: ".col-sm-12",#}
+{#                cursor: "move",#}
+{#                helper: 'clone',#}
+{#                opacity: '.5',#}
+{#                revert: "invalid",#}
+{#                receive: function (event, ui) {#}
+{#                    saveOrUpdate();#}
+{#                },#}
+{#                stop: function (event, ui) {#}
+{#                    saveOrUpdate();#}
+{#                }#}
+{#            });#}
+
+            function saveOrUpdate() {
+                var element_filters = [];
+                $('body').find('#dashboard-content .col-md-6').each(
+                        function () {
+                            var box_id = $(this).attr('id');
+                            if (box_id != "") {
+                                element_filters.push(box_id);
+                            }
+                        }
+                );
+                var csrfToken = $('input[name=csrfmiddlewaretoken]').val();
+                var data = {
+                    sort: JSON.stringify(element_filters),
+                    csrfmiddlewaretoken: csrfToken
+                };
+
+                $.ajax({
+                    url: base_url + '/admin/dashboard/sort-plugin/',
+                    type: 'POST',
+                    data: data,
+                    dataType: "json",
+                    success: function (response) {
+                        $.growl.notice({message: "Plugin's position saved"});
+                    },
+                    error: function (e) {
+                        clog(e);
+                    }
+                });
+            }
+
+{#            $(".panel-heading").mouseover(function () {#}
+{#                $(this).find(".pull-right").css("display", "block");#}
+{##}
+{#            });#}
+{##}
+{#            $(".panel-heading").mouseout(function () {#}
+{#                $(this).find(".pull-right").css("display", "none");#}
+{##}
+{#            });#}
+        });
+
+    </script>
+
+{% endblock %}

@@ -1,0 +1,1468 @@
+<section style="display: none;" id="elements-evaluations">
+    <div class="form-plugin element form-plugin-evaluations">
+        <div class="form-plugin-intro">
+            {#            <h3 class="settings-plugin-element plugin-evaluations-{{ plugin_settings.evaluations.evaluation_title.id }} text-color2">{{ language.evaluations.evaluation_txt_title }}</h3>#}
+            <span class="settings-plugin-element plugin-evaluations-{{ plugin_settings.evaluations.evaluation_message.id }}">This text is defined by a setting</span>
+        </div>
+        <div class="form-plugin-list">
+            <div class="form-plugin-item">
+                <h3 class="form-plugin-title">Session name 1</h3>
+                <span class="star-evaluation-group">
+                                <input type="radio" id="rating-3-5" name="rating3" value="5"/><label
+                        for="rating-3-5">5</label>
+                                <input type="radio" id="rating-3-4" name="rating3" value="4" checked="checked"/><label
+                        for="rating-3-4">4</label>
+                                <input type="radio" id="rating-3-3" name="rating3" value="3"/><label
+                        for="rating-3-3">3</label>
+                                <input type="radio" id="rating-3-2" name="rating3" value="2"/><label
+                        for="rating-3-2">2</label>
+                                <input type="radio" id="rating-3-1" name="rating3" value="1"/><label
+                        for="rating-3-1">1</label>
+                                <input type="radio" id="rating-3-0" name="rating3" value="0"
+                                       class="star-evaluation-clear"/><label for="rating-3-0">0</label>
+                            </span>
+            </div>
+            <div class="form-plugin-item">
+                <h3 class="form-plugin-title">Session name 2</h3>
+                <span class="star-evaluation-group">
+                                <input type="radio" id="rating-4-5" name="rating4" value="5"/><label
+                        for="rating-4-5">5</label>
+                                <input type="radio" id="rating-4-4" name="rating4" value="4"/><label
+                        for="rating-4-4">4</label>
+                                <input type="radio" id="rating-4-3" name="rating4" value="3"/><label
+                        for="rating-4-3">3</label>
+                                <input type="radio" id="rating-4-2" name="rating4" value="2"/><label
+                        for="rating-4-2">2</label>
+                                <input type="radio" id="rating-4-1" name="rating4" value="1"/><label
+                        for="rating-4-1">1</label>
+                                <input type="radio" id="rating-4-0" name="rating4" value="0"
+                                       class="star-evaluation-clear"/><label for="rating-4-0">0</label>
+                            </span>
+            </div>
+        </div>
+        <button class="form-plugin-button evaluation-send-button">{{ language.evaluations.evaluation_btn_send }}</button>
+    </div>
+</section>
+<section style="display: none;" id="elements-messages">
+    <div class="form-plugin element form-plugin-messages">
+        <div class="form-plugin-intro">
+            {#            <h3 class="settings-plugin-element plugin-messages-{{ plugin_settings.messages.message_title.id }} text-color2">{{ language.messages.messages_txt_title }}</h3>#}
+            <span class="settings-plugin-element plugin-messages-{{ plugin_settings.messages.message_message.id }}">This text is defined by a setting</span>
+        </div>
+        <div class="form-plugin-list">
+            <div class="form-plugin-item">
+                <div class="messages-hide form-plugin-item-archive settings-plugin-element plugin-messages-{{ plugin_settings.messages.message_allow_archive.id }}"></div>
+                <h3 class="form-plugin-title">Message 1 sender</h3>
+                <span class="form-plugin-title-date">13:23 2016-06-23</span>
+                <div class="form-plugin-messages-message-wrapper">Testar att skriva lite här</div>
+            </div>
+            <div class="form-plugin-item">
+                <div class="messages-hide form-plugin-item-archive settings-plugin-element plugin-messages-{{ plugin_settings.messages.message_allow_archive.id }}"></div>
+                <h3 class="form-plugin-title">Message 2 sender</h3>
+                <span class="form-plugin-title-date">16:03 2016-06-23</span>
+                <div class="form-plugin-messages-message-wrapper">Testar att skriva lite här</div>
+            </div>
+        </div>
+        <button class="form-plugin-button messages-read-archived-messages settings-plugin-element plugin-messages-{{ plugin_settings.messages.message_archive_button.id }}">{{ language.messages.messages_btn_read_archived }}</button>
+        <button class="form-plugin-button messages-mark-all-button settings-plugin-element plugin-messages-{{ plugin_settings.messages.message_read_button.id }}">{{ language.messages.messages_btn_mark_all_read }}</button>
+    </div>
+</section>
+<section style="display: none;" id="elements-next-up">
+    <div class="form-plugin element form-plugin-next-up">
+        <div class="form-plugin-intro">
+            {#            <h3 class="settings-plugin-element plugin-next-up-{{ plugin_settings.next_up.next_up_title.id }} text-color2">{{ language.next_up.nextup_txt_title }}</h3>#}
+            <span class="settings-plugin-element plugin-next-up-{{ plugin_settings.next_up.next_up_message.id }}">This text is defined by a setting</span>
+        </div>
+        <div class="form-plugin-list">
+            <div class="form-plugin-item">
+                <h3 class="form-plugin-title session-detail-title">Session name 1</h3>
+                <table class="form-plugin-table">
+                    <tr class="time-and-date" title="Start time and date">
+                        <td><span class="next-up-time-and-date-icon"></span></td>
+                        <td><span
+                                class="time settings-plugin-element plugin-next-up-{{ plugin_settings.next_up.next_up_start_time.id }}">23:00</span>
+                            <span
+                                    class="date settings-plugin-element plugin-next-up-{{ plugin_settings.next_up.next_up_start_date.id }}">2016-06-23</span>
+                        </td>
+                    </tr>
+                    <tr class="location" title="Location">
+                        <td><span class="next-up-location-icon"></span></td>
+                        <td><a href="#"
+                               class="settings-plugin-element plugin-next-up-{{ plugin_settings.next_up.next_up_location.id }}">Location</a>
+                        </td>
+                    </tr>
+                    <tr class="speaker" title="Speakers">
+                        <td><span class="next-up-speaker-icon"></span></td>
+                        <td><a href="#"
+                               class="settings-plugin-element plugin-next-up-{{ plugin_settings.next_up.next_up_speaker.id }}">Firstname
+                            Lastname</a></td>
+                    </tr>
+                </table>
+            </div>
+            <div class="form-plugin-item">
+                <h3 class="form-plugin-title">Session name 2</h3>
+                <table class="form-plugin-table">
+                    <tr class="time-and-date" title="Start time and date">
+                        <td><span class="next-up-time-and-date-icon"></span></td>
+                        <td><span
+                                class="time settings-plugin-element plugin-next-up-{{ plugin_settings.next_up.next_up_start_time.id }}">23:00</span>
+                            <span
+                                    class="date settings-plugin-element plugin-next-up-{{ plugin_settings.next_up.next_up_start_date.id }}">2016-06-23</span>
+                        </td>
+                    </tr>
+                    <tr class="location" title="Location">
+                        <td><span class="next-up-location-icon"></span></td>
+                        <td><a href="#"
+                               class="settings-plugin-element plugin-next-up-{{ plugin_settings.next_up.next_up_location.id }}">Location</a>
+                        </td>
+                    </tr>
+                    <tr class="speaker" title="Speakers">
+                        <td><span class="next-up-speaker-icon"></span></td>
+                        <td><a href="#"
+                               class="settings-plugin-element plugin-next-up-{{ plugin_settings.next_up.next_up_speaker.id }}">Firstname
+                            Lastname</a></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+</section>
+<section style="display: none;" id="elements-location-list">
+    <div class="form-plugin element form-plugin-location-list">
+        <div class="form-plugin-intro">
+            {#            <h3 class="settings-plugin-element plugin-location-list-{{ plugin_settings.location_list.location_title.id }}">{{ language.location_list.locationlist_txt_title }}</h3>#}
+            <span class="settings-plugin-element plugin-location-list-{{ plugin_settings.location_list.location_message.id }}">This text is defined by a setting</span>
+        </div>
+        <div class="form-plugin-search-wrapper settings-plugin-element plugin-location-list-{{ plugin_settings.location_list.location_list_searchable.id }}">
+            <input id="temporary-id-1" class="form-plugin-search" type="text"
+                   placeholder="{{ language.location_list.locationlist_txt_placeholder_search }}"/>
+            <div class="form-plugin-clear-search"></div>
+        </div>
+        <div class="form-plugin-list">
+            <div class="form-plugin-item">
+                <h3 class="form-plugin-title settings-plugin-element plugin-location-list-{{ plugin_settings.location_list.location_list_title.id }}">
+                    Location 1</h3>
+                <div class="form-plugin-description settings-plugin-element plugin-location-list-{{ plugin_settings.location_list.location_description.id }}">
+                    <p>Description tristique tempus dolor, vitae faucibus enim vestibulum eu. Donec feugiat
+                        form-pluginum arcu nec faucibus. Interdum et malesuada fames ac ante ipsum primis in faucibus.
+                        Sed imperdiet lacus non rutrum faucibus. Mauris tincidunt risus ac purus placerat eleifend.</p>
+                    <p>Curabitur facilisis, diam et pulvinar euismod, ex magna ornare ipsum, nec dignissim magna sem
+                        faucibus nibh. In ut blandit ex, in cursus dolor. Pellentesque ut dui sit amet purus blandit
+                        dignissim ut vitae libero. Nullam diam lorem, vestibulum quis viverra sed, sollicitudin ac
+                        velit. Duis iaculis nisi ante.</p>
+                </div>
+                <table class="form-plugin-table">
+                    <tr class="location">
+                        <td><span class="location-list-map-icon"></span>
+                        </td>
+                        <td><a href="#" target="_blank"
+                               class="settings-plugin-element plugin-location-list-{{ plugin_settings.location_list.location_link_map.id }}">{{ language.location_list.locationlist_txt_map_location }}</a>
+                        </td>
+                    </tr>
+                    <tr class="address">
+                        <td><span class="location-list-address-icon"></span>
+                        </td>
+                        <td>
+                            <span class="settings-plugin-element plugin-location-list-{{ plugin_settings.location_list.location_address_details.id }}"><label
+                                    class="form-plugin-label">{{ language.location_list.locationlist_txt_address }}:</label><br/>
+                            Ankdammsgatan 5C<br/>
+                            171 43 Stockholm</span>
+                        </td>
+                    </tr>
+                    <tr class="contact">
+                        <td><span class="location-list-speaker-icon"></span>
+                        </td>
+                        <td>
+                            <span class="settings-plugin-element plugin-location-list-{{ plugin_settings.location_list.location_contact_details.id }}"><label
+                                    class="form-plugin-label">{{ language.location_list.locationlist_txt_contact }}:</label><br/>
+                            <span class="name">Joakim Svensson<br/></span>
+                            <span class="web"><a href="#">http://www.springconf.com</a><br/></span>
+                            <span class="mail"><a
+                                    href="mailto:joakim@springconf.com">joakim@springconf.com</a><br/></span>
+                            <span class="web">+46 (0)732 31 80 23</span></span>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div class="form-plugin-item">
+                <h3 class="form-plugin-title settings-plugin-element plugin-location-list-{{ plugin_settings.location_list.location_list_title.id }}">
+                    Location 2</h3>
+                <div class="form-plugin-description settings-plugin-element plugin-location-list-{{ plugin_settings.location_list.location_description.id }}">
+                    <p>Description tristique tempus dolor, vitae faucibus enim vestibulum eu. Donec feugiat
+                        form-pluginum arcu nec faucibus. Interdum et malesuada fames ac ante ipsum primis in faucibus.
+                        Sed imperdiet lacus non rutrum faucibus. Mauris tincidunt risus ac purus placerat eleifend.</p>
+                    <p>Curabitur facilisis, diam et pulvinar euismod, ex magna ornare ipsum, nec dignissim magna sem
+                        faucibus nibh. In ut blandit ex, in cursus dolor. Pellentesque ut dui sit amet purus blandit
+                        dignissim ut vitae libero. Nullam diam lorem, vestibulum quis viverra sed, sollicitudin ac
+                        velit. Duis iaculis nisi ante.</p>
+                </div>
+                <table class="form-plugin-table">
+                    <tr class="location">
+                        <td><span class="location-list-map-icon"></span>
+                        </td>
+                        <td><a href="#" target="_blank"
+                               class="settings-plugin-element plugin-location-list-{{ plugin_settings.location_list.location_link_map.id }}">{{ language.location_list.locationlist_txt_map_location }}</a>
+                        </td>
+                    </tr>
+                    <tr class="address">
+                        <td><span class="location-list-address-icon"></span>
+                        </td>
+                        <td>
+                            <span class="settings-plugin-element plugin-location-list-{{ plugin_settings.location_list.location_address_details.id }}"><label
+                                    class="form-plugin-label">{{ language.location_list.locationlist_txt_address }}:</label><br/>
+                            Ankdammsgatan 5C<br/>
+                            171 43 Stockholm</span>
+                        </td>
+                    </tr>
+                    <tr class="contact">
+                        <td><span class="location-list-speaker-icon"></span>
+                        </td>
+                        <td>
+                            <span class="settings-plugin-element plugin-location-list-{{ plugin_settings.location_list.location_contact_details.id }}"><label
+                                    class="form-plugin-label">{{ language.location_list.locationlist_txt_contact }}:</label><br/>
+                            <span class="name">Joakim Svensson<br/></span>
+                            <span class="web"><a href="#">http://www.springconf.com</a><br/></span>
+                            <span class="mail"><a
+                                    href="mailto:joakim@springconf.com">joakim@springconf.com</a><br/></span>
+                            <span class="web">+46 (0)732 31 80 23</span></span>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+</section>
+<section style="display: none;" id="elements-session-radio-button">
+    <div class="form-plugin element form-plugin-session-radio">
+        <div class="form-plugin-intro">
+            {#            <h4 class="settings-plugin-element plugin-session-radio-button-{{ plugin_settings.session_radio_button.session_radio_title.id }}">{{ language.session_radio_button.sessionradiobutton_txt_title }}</h4>#}
+            <span class="settings-plugin-element plugin-session-radio-button-{{ plugin_settings.session_radio_button.session_radio_message.id }}">This text is defined by a setting</span>
+        </div>
+        <div class="form-plugin-list">
+            <div class="form-plugin-item">
+                <table class="form-plugin-table session-table">
+                    <tr>
+                        <td><input type="radio" id="temporary-id-2" name="temporary-name-1"/><label
+                                for="temporary-id-2"></label>
+                        </td>
+                        <td>
+                            <h4 class="form-plugin-title"><label for="temporary-id-2">Session 1</label></h4>
+                            <div class="form-plugin-description settings-plugin-element plugin-session-radio-button-{{ plugin_settings.session_radio_button.session_radio_description.id }}">
+                                <p>Description tristique tempus dolor, vitae faucibus enim vestibulum eu. Donec feugiat
+                                    form-pluginum arcu nec faucibus. Interdum et malesuada fames ac ante ipsum primis in
+                                    faucibus. Sed imperdiet lacus non rutrum faucibus. Mauris tincidunt risus ac purus
+                                    placerat eleifend.</p>
+                            </div>
+                            <table class="form-plugin-table">
+                                <tr class="time-and-date">
+                                    <td><span class="session-time-and-date-icon"></span>
+                                    </td>
+                                    <td><span><label
+                                            class="form-plugin-label">{{ language.session_details.sessiondetails_txt_starts }}: </label><span
+                                            class="time start settings-plugin-element plugin-session-radio-button-{{ plugin_settings.session_radio_button.session_radio_start_time.id }}">10:00</span> <span
+                                            class="date start settings-plugin-element plugin-session-radio-button-{{ plugin_settings.session_radio_button.session_radio_start_date.id }}">2016-06-15</span></span><br/>
+                                        <span><label
+                                                class="form-plugin-label">{{ language.session_details.sessiondetails_txt_ends }}: </label><span
+                                                class="time end settings-plugin-element plugin-session-radio-button-{{ plugin_settings.session_radio_button.session_radio_end_time.id }}">10:00</span> <span
+                                                class="date end settings-plugin-element plugin-session-radio-button-{{ plugin_settings.session_radio_button.session_radio_end_date.id }}">2016-06-15</span></span>
+                                    </td>
+                                </tr>
+                                <tr class="rsvp-deadline">
+                                    <td><span class="session-rsvp-deadline-icon"></span>
+                                    </td>
+                                    <td><span
+                                            class="settings-plugin-element plugin-session-radio-button-{{ plugin_settings.session_radio_button.session_radio_rvsp_date.id }}"><label
+                                            class="form-plugin-label">{{ language.session_details.sessiondetails_txt_rsvp }}: </label><span
+                                            class="date">2016-06-15</span></span>
+                                    </td>
+                                </tr>
+                                <tr class="cost">
+                                    <td><span class="session-cost-icon"></span>
+                                    </td>
+                                    <td><span
+                                            class="settings-plugin-element plugin-session-radio-button-{{ plugin_settings.session_radio_button.session_radio_cost.id }}"><label
+                                            class="form-plugin-label">{{ language.session_details.sessiondetails_txt_session_cost }}: </label><span>15 </span>
+                                            </span>
+                                    </td>
+                                </tr>
+                                <tr class="speaker">
+                                    <td><span class="session-speaker-icon"></span>
+                                    </td>
+                                    <td><span
+                                            class="settings-plugin-element plugin-session-radio-button-{{ plugin_settings.session_radio_button.session_radio_speaker.id }}"><label
+                                            class="form-plugin-label">{{ language.session_details.sessiondetails_txt_speakers }}: </label><a
+                                            href="#" target="_blank">Firstname
+                                        Lastname</a>, <a href="#" target="_blank">Firstname Lastname</a>, <a href="#"
+                                                                                                             target="_blank">Firstname
+                                        Lastname</a></span>
+                                    </td>
+                                </tr>
+                                <tr class="tags">
+                                    <td><span class="session-tags-icon"></span>
+                                    </td>
+                                    <td>
+                                        <label class="form-plugin-label">{{ language.session_details.sessiondetails_txt_tags }}:</label>
+                                        <div class="form-plugin-tags-list settings-plugin-element plugin-session-radio-button-{{ plugin_settings.session_radio_button.session_radio_tags.id }}">
+                                            <div class="form-plugin-tag">Tag 1
+                                            </div>
+                                            <div class="form-plugin-tag">Tag 2
+                                            </div>
+                                            <div class="form-plugin-tag">Tag 3
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr class="session-group">
+                                    <td><span class="session-group-icon"></span>
+                                    </td>
+                                    <td><span
+                                            class="settings-plugin-element plugin-session-radio-button-{{ plugin_settings.session_radio_button.session_radio_session_group.id }}"><label
+                                            class="form-plugin-label">{{ language.session_details.sessiondetails_txt_session_group }}: </label>Testgroup
+                                            </span>
+                                    </td>
+                                </tr>
+                                <tr class="seats-available">
+                                    <td><span class="session-seats-available-icon"></span>
+                                    </td>
+                                    <td><span
+                                            class="settings-plugin-element plugin-session-radio-button-{{ plugin_settings.session_radio_button.session_radio_session_available.id }}"><label
+                                            class="form-plugin-label">{{ language.session_details.sessiondetails_txt_seat_availability }}: </label>Good</span>
+                                    </td>
+                                </tr>
+                                <tr class="location">
+                                    <td><span class="session-location-icon"></span>
+                                    </td>
+                                    <td><span
+                                            class="settings-plugin-element plugin-session-radio-button-{{ plugin_settings.session_radio_button.session_radio_location.id }}"><label
+                                            class="form-plugin-label">{{ language.session_details.sessiondetails_txt_location }}: </label><a
+                                            href="#" target="_blank">Stockholm</a></span>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div class="form-plugin-item">
+                <table class="form-plugin-table session-table">
+                    <tr>
+                        <td><input type="radio" class="" id="temporary-id-3" class="" name="temporary-name-1"/><label
+                                for="temporary-id-3"></label>
+                        </td>
+                        <td>
+                            <h4 class="form-plugin-title"><label for="temporary-id-3">Session 2</label></h4>
+                            <div class="form-plugin-description settings-plugin-element plugin-session-radio-button-{{ plugin_settings.session_radio_button.session_radio_description.id }}">
+                                <p>Description tristique tempus dolor, vitae faucibus enim vestibulum eu. Donec feugiat
+                                    form-pluginum arcu nec faucibus. Interdum et malesuada fames ac ante ipsum primis in
+                                    faucibus. Sed imperdiet lacus non rutrum faucibus. Mauris tincidunt risus ac purus
+                                    placerat eleifend.</p>
+                            </div>
+                            <table class="form-plugin-table">
+                                <tr class="time-and-date">
+                                    <td><span class="session-time-and-date-icon"></span>
+                                    </td>
+                                    <td><span><label
+                                            class="form-plugin-label">{{ language.session_details.sessiondetails_txt_starts }}: </label><span
+                                            class="time start settings-plugin-element plugin-session-radio-button-{{ plugin_settings.session_radio_button.session_radio_start_time.id }}">10:00</span> <span
+                                            class="date start settings-plugin-element plugin-session-radio-button-{{ plugin_settings.session_radio_button.session_radio_start_date.id }}">2016-06-15</span></span><br/>
+                                        <span><label
+                                                class="form-plugin-label">{{ language.session_details.sessiondetails_txt_ends }}: </label><span
+                                                class="time end settings-plugin-element plugin-session-radio-button-{{ plugin_settings.session_radio_button.session_radio_end_time.id }}">10:00</span> <span
+                                                class="date end settings-plugin-element plugin-session-radio-button-{{ plugin_settings.session_radio_button.session_radio_end_date.id }}">2016-06-15</span></span>
+                                    </td>
+                                </tr>
+                                <tr class="rsvp-deadline">
+                                    <td><span class="session-rsvp-deadline-icon"></span>
+                                    </td>
+                                    <td><span
+                                            class="settings-plugin-element plugin-session-radio-button-{{ plugin_settings.session_radio_button.session_radio_rvsp_date.id }}"><label
+                                            class="form-plugin-label">{{ language.session_details.sessiondetails_txt_rsvp }}: </label><span
+                                            class="date">2016-06-15</span></span>
+                                    </td>
+                                </tr>
+                                <tr class="cost">
+                                    <td><span class="session-cost-icon"></span>
+                                    </td>
+                                    <td><span
+                                            class="settings-plugin-element plugin-session-radio-button-{{ plugin_settings.session_radio_button.session_radio_cost.id }}"><label
+                                            class="form-plugin-label">{{ language.session_details.sessiondetails_txt_session_cost }}: </label><span>15 </span>
+                                            </span>
+                                    </td>
+                                </tr>
+                                <tr class="speaker">
+                                    <td><span class="session-speaker-icon"></span>
+                                    </td>
+                                    <td><span
+                                            class="settings-plugin-element plugin-session-radio-button-{{ plugin_settings.session_radio_button.session_radio_speaker.id }}"><label
+                                            class="form-plugin-label">{{ language.session_details.sessiondetails_txt_speakers }}: </label><a
+                                            href="#" target="_blank">Firstname
+                                        Lastname</a>, <a href="#" target="_blank">Firstname Lastname</a>, <a href="#"
+                                                                                                             target="_blank">Firstname
+                                        Lastname</a></span>
+                                    </td>
+                                </tr>
+                                <tr class="tags">
+                                    <td><span class="session-tags-icon"></span>
+                                    </td>
+                                    <td>
+                                        <label class="form-plugin-label">{{ language.session_details.sessiondetails_txt_tags }}:</label>
+                                        <div class="form-plugin-tags-list settings-plugin-element plugin-session-radio-button-{{ plugin_settings.session_radio_button.session_radio_tags.id }}">
+                                            <div class="form-plugin-tag">Tag 1
+                                            </div>
+                                            <div class="form-plugin-tag">Tag 2
+                                            </div>
+                                            <div class="form-plugin-tag">Tag 3
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr class="session-group">
+                                    <td><span class="session-group-icon"></span>
+                                    </td>
+                                    <td><span
+                                            class="settings-plugin-element plugin-session-radio-button-{{ plugin_settings.session_radio_button.session_radio_session_group.id }}"><label
+                                            class="form-plugin-label">{{ language.session_details.sessiondetails_txt_session_group }}: </label>Testgroup
+                                            </span>
+                                    </td>
+                                </tr>
+                                <tr class="seats-available">
+                                    <td><span class="session-seats-available-icon"></span>
+                                    </td>
+                                    <td><span
+                                            class="settings-plugin-element plugin-session-radio-button-{{ plugin_settings.session_radio_button.session_radio_session_available.id }}"><label
+                                            class="form-plugin-label">{{ language.session_details.sessiondetails_txt_seat_availability }}: </label>Good</span>
+                                    </td>
+                                </tr>
+                                <tr class="location">
+                                    <td><span class="session-location-icon"></span>
+                                    </td>
+                                    <td><span
+                                            class="settings-plugin-element plugin-session-radio-button-{{ plugin_settings.session_radio_button.session_radio_location.id }}"><label
+                                            class="form-plugin-label">{{ language.session_details.sessiondetails_txt_location }}: </label><a
+                                            href="#" target="_blank">Stockholm</a></span>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <div class="error-validating">Validation failed</div>
+    </div>
+</section>
+<section style="display: none;" id="elements-session-checkbox">
+    <div class="form-plugin element form-plugin-session-checkbox">
+        <div class="form-plugin-intro">
+            {#            <h3 class="settings-plugin-element plugin-session-checkbox-{{ plugin_settings.session_checkbox.session_checkbox_title.id }}">{{ language.session_checkbox.sessioncheckbox_txt_title }}</h3>#}
+            <span class="settings-plugin-element plugin-session-checkbox-{{ plugin_settings.session_checkbox.session_checkbox_message.id }}">This text is defined by a setting</span>
+        </div>
+        <div class="form-plugin-list">
+            <div class="form-plugin-item">
+                <table class="form-plugin-table session-table">
+                    <tr>
+                        <td><input type="checkbox" id="temporary-id-4"/><label for="temporary-id-4"></label>
+                        </td>
+                        <td>
+                            <h4 class="form-plugin-title"><label for="temporary-id-4">Session 1</label></h4>
+                            <div class="form-plugin-description settings-plugin-element plugin-session-checkbox-{{ plugin_settings.session_checkbox.session_checkbox_description.id }}">
+                                <p>Description tristique tempus dolor, vitae faucibus enim vestibulum eu. Donec feugiat
+                                    form-pluginum arcu nec faucibus. Interdum et malesuada fames ac ante ipsum primis in
+                                    faucibus. Sed imperdiet lacus non rutrum faucibus. Mauris tincidunt risus ac purus
+                                    placerat eleifend.</p>
+                            </div>
+                            <table class="form-plugin-table">
+                                <tr class="time-and-date">
+                                    <td><span class="session-time-and-date-icon"></span>
+                                    </td>
+                                    <td><span><label
+                                            class="form-plugin-label">{{ language.session_details.sessiondetails_txt_starts }}: </label><span
+                                            class="time start settings-plugin-element plugin-session-checkbox-{{ plugin_settings.session_checkbox.session_checkbox_start_time.id }}">10:00</span> <span
+                                            class="date start settings-plugin-element plugin-session-checkbox-{{ plugin_settings.session_checkbox.session_checkbox_start_date.id }}">2016-06-15</span><br/></span>
+                                        <span><label
+                                                class="form-plugin-label">{{ language.session_details.sessiondetails_txt_ends }}: </label><span
+                                                class="time end settings-plugin-element plugin-session-checkbox-{{ plugin_settings.session_checkbox.session_checkbox_end_time.id }}">10:00</span> <span
+                                                class="date end settings-plugin-element plugin-session-checkbox-{{ plugin_settings.session_checkbox.session_checkbox_end_date.id }}">2016-06-15</span></span>
+                                    </td>
+                                </tr>
+                                <tr class="rsvp-deadline">
+                                    <td><span class="session-rsvp-deadline-icon"></span>
+                                    </td>
+                                    <td><span
+                                            class="settings-plugin-element plugin-session-checkbox-{{ plugin_settings.session_checkbox.session_checkbox_rvsp_date.id }}"><label
+                                            class="form-plugin-label">{{ language.session_details.sessiondetails_txt_rsvp }}: </label><span
+                                            class="date">2016-06-15</span></span>
+                                    </td>
+                                </tr>
+                                <tr class="cost">
+                                    <td><span class="session-cost-icon"></span>
+                                    </td>
+                                    <td><span
+                                            class="settings-plugin-element plugin-session-checkbox-{{ plugin_settings.session_checkbox.session_checkbox_cost.id }}"><label
+                                            class="form-plugin-label">{{ language.session_details.sessiondetails_txt_session_cost }}: </label><span>15 </span>
+                                            </span>
+                                    </td>
+                                </tr>
+                                <tr class="speaker">
+                                    <td><span class="session-speaker-icon"></span>
+                                    </td>
+                                    <td><span
+                                            class="settings-plugin-element plugin-session-checkbox-{{ plugin_settings.session_checkbox.session_checkbox_speaker.id }}"><label
+                                            class="form-plugin-label">{{ language.session_details.sessiondetails_txt_speakers }}: </label><a
+                                            href="#" target="_blank">Firstname
+                                        Lastname</a>, <a href="#" target="_blank">Firstname Lastname</a>, <a href="#"
+                                                                                                             target="_blank">Firstname
+                                        Lastname</a></span>
+                                    </td>
+                                </tr>
+                                <tr class="tags">
+                                    <td><span class="session-tags-icon"></span>
+                                    </td>
+                                    <td>
+                                        <label class="form-plugin-label">{{ language.session_details.sessiondetails_txt_tags }}:</label>
+                                        <div class="form-plugin-tags-list settings-plugin-element plugin-session-checkbox-{{ plugin_settings.session_checkbox.session_checkbox_tags.id }}">
+                                            <div class="form-plugin-tag">Tag 1
+                                            </div>
+                                            <div class="form-plugin-tag">Tag 2
+                                            </div>
+                                            <div class="form-plugin-tag">Tag 3
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr class="session-group">
+                                    <td><span class="session-group-icon"></span>
+                                    </td>
+                                    <td><span
+                                            class="settings-plugin-element plugin-session-checkbox-{{ plugin_settings.session_checkbox.session_checkbox_session_group.id }}"><label
+                                            class="form-plugin-label">{{ language.session_details.sessiondetails_txt_session_group }}: </label>Testgroup</span>
+                                    </td>
+                                </tr>
+                                <tr class="seats-available">
+                                    <td><span class="session-seats-available-icon"></span>
+                                    </td>
+                                    <td><span
+                                            class="settings-plugin-element plugin-session-checkbox-{{ plugin_settings.session_checkbox.session_checkbox_session_available.id }}"><label
+                                            class="form-plugin-label">{{ language.session_details.sessiondetails_txt_seat_availability }}: </label>Good</span>
+                                    </td>
+                                </tr>
+                                <tr class="location">
+                                    <td><span class="session-location-icon"></span>
+                                    </td>
+                                    <td><span
+                                            class="settings-plugin-element plugin-session-checkbox-{{ plugin_settings.session_checkbox.session_checkbox_location.id }}"><label
+                                            class="form-plugin-label">{{ language.session_details.sessiondetails_txt_location }}: </label><a
+                                            href="#" target="_blank">Stockholm</a></span>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div class="form-plugin-item">
+                <table class="form-plugin-table session-table">
+                    <tr>
+                        <td><input type="checkbox" id="temporary-id-5"/><label for="temporary-id-5"></label>
+                        </td>
+                        <td>
+                            <h4 class="form-plugin-title"><label for="temporary-id-5">Session 2</label></h4>
+                            <div class="form-plugin-description settings-plugin-element plugin-session-checkbox-{{ plugin_settings.session_checkbox.session_checkbox_description.id }}">
+                                <p>Description tristique tempus dolor, vitae faucibus enim vestibulum eu. Donec feugiat
+                                    form-pluginum arcu nec faucibus. Interdum et malesuada fames ac ante ipsum primis in
+                                    faucibus. Sed imperdiet lacus non rutrum faucibus. Mauris tincidunt risus ac purus
+                                    placerat eleifend.</p>
+                            </div>
+                            <table class="form-plugin-table">
+                                <tr class="time-and-date">
+                                    <td><span class="session-time-and-date-icon"></span>
+                                    </td>
+                                    <td><span><label
+                                            class="form-plugin-label">{{ language.session_details.sessiondetails_txt_starts }}: </label><span
+                                            class="time start settings-plugin-element plugin-session-checkbox-{{ plugin_settings.session_checkbox.session_checkbox_start_time.id }}">10:00</span> <span
+                                            class="date start settings-plugin-element plugin-session-checkbox-{{ plugin_settings.session_checkbox.session_checkbox_start_date.id }}">2016-06-15</span><br/></span>
+                                        <span><label
+                                                class="form-plugin-label">{{ language.session_details.sessiondetails_txt_ends }}: </label><span
+                                                class="time end settings-plugin-element plugin-session-checkbox-{{ plugin_settings.session_checkbox.session_checkbox_end_time.id }}">10:00</span> <span
+                                                class="date end settings-plugin-element plugin-session-checkbox-{{ plugin_settings.session_checkbox.session_checkbox_end_date.id }}">2016-06-15</span></span>
+                                    </td>
+                                </tr>
+                                <tr class="rsvp-deadline">
+                                    <td><span class="session-rsvp-deadline-icon"></span>
+                                    </td>
+                                    <td><span
+                                            class="settings-plugin-element plugin-session-checkbox-{{ plugin_settings.session_checkbox.session_checkbox_rvsp_date.id }}"><label
+                                            class="form-plugin-label">{{ language.session_details.sessiondetails_txt_rsvp }}: </label><span
+                                            class="date">2016-06-15</span></span>
+                                    </td>
+                                </tr>
+                                <tr class="cost">
+                                    <td><span class="session-cost-icon"></span>
+                                    </td>
+                                    <td><span
+                                            class="settings-plugin-element plugin-session-checkbox-{{ plugin_settings.session_checkbox.session_checkbox_cost.id }}"><label
+                                            class="form-plugin-label">{{ language.session_details.sessiondetails_txt_session_cost }}: </label><span>15 </span>
+                                            </span>
+                                    </td>
+                                </tr>
+                                <tr class="speaker">
+                                    <td><span class="session-speaker-icon"></span>
+                                    </td>
+                                    <td><span
+                                            class="settings-plugin-element plugin-session-checkbox-{{ plugin_settings.session_checkbox.session_checkbox_speaker.id }}"><label
+                                            class="form-plugin-label">{{ language.session_details.sessiondetails_txt_speakers }}: </label><a
+                                            href="#" target="_blank">Firstname
+                                        Lastname</a>, <a href="#" target="_blank">Firstname Lastname</a>, <a href="#"
+                                                                                                             target="_blank">Firstname
+                                        Lastname</a></span>
+                                    </td>
+                                </tr>
+                                <tr class="tags">
+                                    <td><span class="session-tags-icon"></span>
+                                    </td>
+                                    <td>
+                                        <label class="form-plugin-label">{{ language.session_details.sessiondetails_txt_tags }}:</label>
+                                        <div class="form-plugin-tags-list settings-plugin-element plugin-session-checkbox-{{ plugin_settings.session_checkbox.session_checkbox_tags.id }}">
+                                            <div class="form-plugin-tag">Tag 1
+                                            </div>
+                                            <div class="form-plugin-tag">Tag 2
+                                            </div>
+                                            <div class="form-plugin-tag">Tag 3
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr class="session-group">
+                                    <td><span class="session-group-icon"></span>
+                                    </td>
+                                    <td><span
+                                            class="settings-plugin-element plugin-session-checkbox-{{ plugin_settings.session_checkbox.session_checkbox_session_group.id }}"><label
+                                            class="form-plugin-label">{{ language.session_details.sessiondetails_txt_session_group }}: </label>Testgroup</span>
+                                    </td>
+                                </tr>
+                                <tr class="seats-available">
+                                    <td><span class="session-seats-available-icon"></span>
+                                    </td>
+                                    <td><span
+                                            class="settings-plugin-element plugin-session-checkbox-{{ plugin_settings.session_checkbox.session_checkbox_session_available.id }}"><label
+                                            class="form-plugin-label">{{ language.session_details.sessiondetails_txt_seat_availability }}: </label>Good</span>
+                                    </td>
+                                </tr>
+                                <tr class="location">
+                                    <td><span class="session-location-icon"></span>
+                                    </td>
+                                    <td><span
+                                            class="settings-plugin-element plugin-session-checkbox-{{ plugin_settings.session_checkbox.session_checkbox_location.id }}"><label
+                                            class="form-plugin-label">{{ language.session_details.sessiondetails_txt_location }}: </label><a
+                                            href="#" target="_blank">Stockholm</a></span>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <div class="error-validating">{{ language.session_checkbox.sessioncheckbox_notify_validation_fail }}</div>
+    </div>
+</section>
+<section style="display: none;" id="elements-session-scheduler">
+    <div class="form-plugin element form-plugin-session-scheduler">
+        <div class="form-plugin-intro">
+            {#            <h4 class="settings-plugin-element plugin-session-scheduler-{{ plugin_settings.session_scheduler.session_scheduler_title.id }}">{{ language.session_scheduler.sessionscheduler_txt_title }}</h4>#}
+            <span class="settings-plugin-element plugin-session-scheduler-{{ plugin_settings.session_scheduler.session_scheduler_message.id }}">This text is defined by a setting</span>
+        </div>
+        <div class="session-group-toggle-list settings-plugin-element plugin-session-scheduler-{{ plugin_settings.session_scheduler.session_scheduler_show_session_group_toggle.id }}">
+            <div class="session-group-toggle-list-item">
+                <input type="checkbox" id="session-group-1" checked="checked"/>
+                <label class="session-group-toggle-list-item-label" for="session-group-1">Session Group 1</label>
+            </div>
+            <div class="session-group-toggle-list-item">
+                <input type="checkbox" id="session-group-2" checked="checked"/>
+                <label class="session-group-toggle-list-item-label" for="session-group-2">Session Group 2</label>
+            </div>
+            <div class="session-group-toggle-list-item">
+                <input type="checkbox" id="session-group-3"/>
+                <label class="session-group-toggle-list-item-label" for="session-group-3">Session Group 3</label>
+            </div>
+            <div class="session-group-toggle-list-item">
+                <input type="checkbox" id="session-group-4"/>
+                <label class="session-group-toggle-list-item-label" for="session-group-4">Session Group 4</label>
+            </div>
+        </div>
+        <div class="switch-wrapper settings-plugin-element plugin-session-scheduler-{{ plugin_settings.session_scheduler.session_scheduler_show_all_or_my_sessions.id }}">
+            <label class="switch">
+                <input type="checkbox" class="session-my-session-toggle" id="session-my-session-toggle">
+                <div class="slider round"></div>
+            </label>
+            <label class="toggle-label session-my-session-toggle-label"
+                   for="session-my-session-toggle">{{ language.session_scheduler.sessionscheduler_txt_show_my_sess }}</label>
+        </div>
+        <div class="session-scheduler"></div>
+        <button class="form-plugin-button session-subscribe-to-calendar-icon settings-plugin-element plugin-session-scheduler-{{ plugin_settings.session_scheduler.session_scheduler_show_subscribe_to_calender.id }}">{{ language.session_scheduler.sessionscheduler_btn_subscribe_sessions }}</button>
+    </div>
+</section>
+<section style="display: none;" id="elements-hotel-reservation">
+    <div class="form-plugin element form-plugin-hotel-reservation">
+        <div class="form-plugin-intro">
+            {#            <h3 class="settings-plugin-element plugin-hotel-reservation-{{ plugin_settings.hotel_reservation.hotel_reservation_title.id }} text-color2">#}
+            {#                {{ language.hotel_reservation.hotelreservation_txt_session_status }}</h3>#}
+            <span class="settings-plugin-element plugin-hotel-reservation-{{ plugin_settings.hotel_reservation.hotel_reservation_message.id }}">This text is defined by a setting</span>
+        </div>
+        <button class="form-plugin-button top hotel-reservation-add-button">{{ language.hotel_reservation.hotelreservation_btn_add_stay }}</button>
+        <button class="form-plugin-button top hotel-reservation-remove-button">{{ language.hotel_reservation.hotelreservation_btn_remove_stay }}</button>
+        <div class="form-plugin-list">
+            <div class="form-plugin-item">
+                <div class="row inner-gutter">
+                    <div class="col span-6">
+                        <div class="row inner-gutter unbreakable">
+                            <div class="col span-4">
+                                <label class="form-plugin-label">{{ language.hotel_reservation.hotelreservation_txt_checkin }}</label>
+                            </div>
+                            <div class="col span-8">
+                                <input class="hotel-reservation-calendar"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col span-6">
+                        <div class="row inner-gutter unbreakable">
+                            <div class="col span-4">
+                                <label class="form-plugin-label">{{ language.hotel_reservation.hotelreservation_txt_checkout }}</label>
+                            </div>
+                            <div class="col span-8">
+                                <input class="hotel-reservation-calendar"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row inner-gutter">
+                    <div class="col span-12">
+                        <div class="scroll-x">
+                            <table class="form-plugin-table lines">
+                                <thead>
+                                <tr>
+                                    <th>&nbsp;</th>
+                                    <th>{{ language.hotel_reservation.hotelreservation_txt_name }}</th>
+                                    <th>{{ language.hotel_reservation.hotelreservation_txt_description }}</th>
+                                    <th>{{ language.hotel_reservation.hotelreservation_txt_location }}</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td><input type="radio" id="hotel1" name="hotel-selection-1"/></td>
+                                    <td><label for="hotel1" class="form-plugin-label">Hotel name 1</label></td>
+                                    <td>Single room</td>
+                                    <td>Stockholm</td>
+                                </tr>
+                                <tr>
+                                    <td><input type="radio" id="hotel2" name="hotel-selection-1"/></td>
+                                    <td><label for="hotel2" class="form-plugin-label">Hotel name 2</label></td>
+                                    <td>Double room</td>
+                                    <td>Stockholm</td>
+                                </tr>
+                                <tr class="sold-out">
+                                    <td><input type="radio" id="hotel3" name="hotel-selection-1" disabled/></td>
+                                    <td><label for="hotel3" class="form-plugin-label">Hotel name 3</label></td>
+                                    <td>Single room</td>
+                                    <td>Stockholm</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="row inner-gutter">
+                    <div class="col span-6">
+                        <div class="row inner-gutter unbreakable">
+                            <div class="col span-4">
+                                <label class="form-plugin-label">{{ language.hotel_reservation.hotelreservation_txt_room_buddy }}</label>
+                            </div>
+                            <div class="col span-8">
+                                <input class="hotel-room-buddy"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="error-validating">{{ language.hotel_reservation.hotelreservation_notify_validation_fail }}</div>
+    </div>
+</section>
+<section style="display: none;" id="elements-login-form">
+    <div class="form-plugin element form-plugin-login-form">
+        <div class="form-plugin-intro">
+            {#            <h3 class="settings-plugin-element plugin-login-form-{{ plugin_settings.login_form.login_form_title.id }} text-color2">#}
+            {#                Email and password verification#}
+            {#                intro</h3>#}
+            <span class="settings-plugin-element plugin-login-form-{{ plugin_settings.login_form.login_form_message.id }}">This text is defined by a setting</span>
+        </div>
+        <div class="form-question">
+            <label for="text1"
+                   class="form-question-label email-password-verification-email-label">{{ language.login_form.login_form_txt_email }}</label>
+            <input type="text" class="email-password-verification-email" id="">
+        </div>
+        <div class="form-question">
+            <label for="text1"
+                   class="form-question-label email-password-verification-password-label">{{ language.login_form.login_form_txt_password }}</label>
+            <input type="password" class="email-password-verification-password" id="">
+        </div>
+        <div class="error-validating">{{ language.login_form.login_form_notify_valid_failed }}</div>
+        <button class="form-plugin-button verification-login-send-button">{{ language.login_form.login_form_btn_login }}</button>
+        <a href=""
+           class="settings-plugin-element reset-password-link plugin-login-form-{{ plugin_settings.login_form.login_form_password_link.id }}">{{ language.login_form.login_form_txt_forgot_password }}</a>
+    </div>
+</section>
+<section style="display: none;" id="elements-submit-button">
+    <div class="form-plugin element form-plugin-submit-button">
+        <button class="form-plugin-button form-submit-button settings-plugin-element plugin-submit-button-{{ plugin_settings.submit_button.submit_button_title.id }}">
+            Submit
+        </button>
+    </div>
+</section>
+<section style="display: none;" id="elements-request-login">
+    {#    <h2 class="element-document-headline">Request login</h2>#}
+    <div class="form-plugin element form-plugin-request-login">
+        <div class="form-plugin-intro">
+            {#            <h3 class="settings-plugin-element plugin-request-login-{{ plugin_settings.request_login.request_login_title.id }} text-color2">#}
+            {#                Request login intro</h3>#}
+            <span class="settings-plugin-element plugin-request-login-{{ plugin_settings.request_login.request_login_message.id }}">This text is defined by a setting</span>
+        </div>
+        <div class="form-question">
+            <label for="text1"
+                   class="form-question-label request-login-email-label">{{ language.request_login.request_login_txt_email }}</label>
+            <input type="text" class="request-login-email" id="">
+            <div class="error-validating">{{ language.request_login.request_login_notify_request }}</div>
+        </div>
+        <button class="form-plugin-button request-login-send-button">{{ language.request_login.request_login_btn_request }}</button>
+    </div>
+</section>
+
+<section style="display: none;" id="elements-reset-password">
+    {#    <h2 class="element-document-headline">Reset Password</h2>#}
+    <div class="form-plugin element form-plugin-reset-password">
+        <div class="form-plugin-intro">
+            {#            <h3 class="settings-plugin-element plugin-reset-password-{{ plugin_settings.reset_password.reset_password_title.id }} text-color2">#}
+            {#                Reset password intro</h3>#}
+            <span class="settings-plugin-element plugin-reset-password-{{ plugin_settings.reset_password.reset_password_message.id }}">This text is defined by a setting</span>
+        </div>
+        <div class="form-question">
+            <label for="text1"
+                   class="form-question-label form-plugin-reset-password-email-label">{{ language.reset_password.reset_password_txt_email }}</label>
+            <input type="text" class="form-plugin-reset-password-email" id="">
+            <div class="error-validating">{{ language.reset_password.reset_password_notify_validation }}</div>
+        </div>
+        <button class="form-plugin-button reset-password-button">{{ language.reset_password.reset_password_btn_send }}</button>
+    </div>
+</section>
+
+<section style="display: none;" id="elements-new-password">
+    {#    <h2 class="element-document-headline">New Password</h2>#}
+    <div class="form-plugin element form-plugin-new-password">
+        <div class="form-plugin-intro">
+            {#            <h3 class="settings-plugin-element plugin-new-password-{{ plugin_settings.new_password.new_password_title.id }} text-color2">#}
+            {#                New password intro</h3>#}
+            <span class="settings-plugin-element plugin-new-password-{{ plugin_settings.new_password.new_password_message.id }}">This text is defined by a setting</span>
+        </div>
+        <div class="form-question">
+            <label for="text1"
+                   class="form-question-label form-plugin-new-password-email-label">{{ language.new_password.new_password_txt_password }}</label>
+            <input type="text" class="form-plugin-new-password-email" id="">
+            <div class="error-validating">{{ language.new_password.new_password_notify_validation }}</div>
+        </div>
+        <div class="form-question">
+            <label for="text1"
+                   class="form-question-label form-plugin-repeat-new-password-email-label">{{ language.new_password.new_password_txt_repeat_password }}</label>
+            <input type="text" class="form-plugin-repeat-new-password-email" id="">
+            <div class="error-validating">{{ language.new_password.new_password_notify_validation }}</div>
+        </div>
+        <button class="form-plugin-button form-plugin-new-password-button">{{ language.new_password.new_password_btn_change }}</button>
+    </div>
+</section>
+
+<section style="display: none;" id="elements-attendee-list">
+    {#    <h3 class="element-document-headline">Attendee list</h3>#}
+    <div class="form-plugin element form-plugin-attendee-list">
+        <div class="form-plugin-intro">
+            {#            <h3 class="settings-plugin-element plugin-attendee-list-{{ plugin_settings.attendee_list.attendee_list_title.id }} text-color2">{{ language.attendee_list.attendee_list_txt_title }}</h3>#}
+            <span class="settings-plugin-element plugin-attendee-list-{{ plugin_settings.attendee_list.attendee_list_message.id }}">This text is defined by a setting</span>
+        </div>
+        <button class="form-plugin-button top attendee-list-download-spreadsheet-button settings-plugin-element plugin-attendee-list-{{ plugin_settings.attendee_list.attendee_list_allow_excel_export.id }}">{{ language.attendee_list.attendee_list_btn_download_spreadsheet }}</button>
+        <div class="form-plugin-search-wrapper settings-plugin-element plugin-attendee-list-{{ plugin_settings.attendee_list.attendee_list_show_search_field.id }}">
+            <input id="temporary-id-1" class="form-plugin-search attendee-plugin-search" type="text"
+                   placeholder="{{ language.attendee_list.attendee_list_txt_placeholder_search }}"/>
+            <div class="form-plugin-clear-search"></div>
+        </div>
+        <div class="scroll-x">
+            <table class="form-plugin-table lines">
+                <thead>
+                <tr>
+                    <th class="desc">First name</th>
+                    <th class="asc">Last name</th>
+                    <th>Email address</th>
+                    <th>Company</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>Armando</td>
+                    <td>Marsh</td>
+                    <td>purus@Nuncmauriselit.ca</td>
+                    <td>Amet Ante LLP</td>
+                </tr>
+                <tr>
+                    <td>Dawn</td>
+                    <td>Gilliam</td>
+                    <td>consectetuer@Duis.com</td>
+                    <td>Ullamcorper Duis At Consulting</td>
+                </tr>
+                <tr>
+                    <td>Xerxes</td>
+                    <td>Mack</td>
+                    <td>eleifend.non.dapibus@Duis.co.uk</td>
+                    <td>Ipsum Dolor Sit Ltd</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</section>
+
+<section style="display: none;" id="elements-archive-messages">
+    <div class="form-plugin element form-plugin-archive-messages">
+        <div class="form-plugin-intro">
+            <span class="settings-plugin-element plugin-archive-messages-{{ plugin_settings.archive_messages.archive_messages_message.id }}">This text is defined by a setting</span>
+        </div>
+        <div class="form-plugin-list">
+            <div class="form-plugin-item">
+                <h3 class="form-plugin-title">Message 1 sender</h3>
+                <span class="form-plugin-title-date">13:23 2016-06-23</span>
+                <p>Testar att skriva lite här</p>
+            </div>
+            <div class="form-plugin-item">
+                <h3 class="form-plugin-title">Message 2 sender</h3>
+                <span class="form-plugin-title-date">16:03 2016-06-23</span>
+                <p>Testar att skriva lite här</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section style="display: none;" id="elements-logout">
+    <div class="form-plugin element form-plugin-logout">
+        <div class="form-plugin-intro">
+            <span class="settings-plugin-element plugin-logout-{{ plugin_settings.logout.logout_message.id }}">This text is defined by a setting</span>
+        </div>
+        <div class="form-question">
+            <span>{{ language.logout.logout_message_text }}</span>
+            <a href="#" class="button logout-back-button">{{ language.logout.logout_back_button }}</a>
+        </div>
+    </div>
+</section>
+
+<section style="display: none;" id="elements-photo-upload">
+    <div class="form-plugin element form-plugin-photo-upload">
+        <div class="form-plugin-intro">
+            <span class="settings-plugin-element plugin-photo-upload-{{ plugin_settings.photo_upload.photo_upload_message.id }}">This text is defined by a setting</span>
+        </div>
+        <div class="form-question">
+            <label class="form-plugin-button form-plugin-photo-upload-file-select-button">{{ language.photo_upload.photo_upload_photo_choose }}<input type="file"
+                                                                                                          name="pic"
+                                                                                                          accept="image/*"
+                                                                                                          disabled></label>
+            <div class="selected-file" style="display: none;"><span
+                    class="file-name-label">{{ language.photo_upload.photo_upload_filename }}</span> <span
+                    class="file-fake-path"></span>
+            </div>
+        </div>
+        <div class="form-question plugin-photo-upload-{{ plugin_settings.photo_upload.photo_upload_add_comment.id }}">
+            <label for="text1" class="form-question-label form-plugin-photo-upload-comment-label">{{ language.photo_upload.photo_upload_comment_label }}</label>
+            <textarea name="comment" class="form-plugin-photo-upload-comment-textarea" placeholder="{{ language.photo_upload.photo_upload_comment_placeholder }}"></textarea>
+        </div>
+        <button class="form-plugin-button form-plugin-photo-upload-button">{{ language.photo_upload.photo_upload_button }}</button>
+    </div>
+</section>
+
+<section style="display: none;" id="elements-photo-gallery">
+    <div class="form-plugin element form-plugin-photo-gallery">
+        <div class="form-plugin-intro">
+            <span class="settings-plugin-element plugin-photo-gallery-{{ plugin_settings.photo_gallery.photo_gallery_message.id }}">This text is defined by a setting</span>
+        </div>
+        <div class="form-plugin-list">
+            <div class="form-plugin-item" style="background-image: url('https://192.168.1.12:8080/public/non-essential-images/eventdobby.png')">
+                <img width="200"
+                     src="https://192.168.1.12:8080/public/non-essential-images/eventdobby.png">
+                <div class="form-plugin-description">
+                    <div class="photo-submitter settings-plugin-element plugin-photo-gallery-{{ plugin_settings.photo_gallery.photo_gallery_show_submitter_name.id }}">
+                        <label>Uploader: </label>
+                        <span>Armando Marsh</span>
+                    </div>
+                    <div class="photo-comment settings-plugin-element plugin-photo-gallery-{{ plugin_settings.photo_gallery.photo_gallery_show_comment.id }}">
+                        <label>Comment: </label>
+                        <span>Nice</span>
+                    </div>
+                </div>
+            </div>
+            <div class="form-plugin-item" style="background-image: url('https://192.168.1.12:8080/public/non-essential-images/eventdobby.png')">
+                <img width="200"
+                     src="https://192.168.1.12:8080/public/non-essential-images/eventdobby.png">
+                <div class="form-plugin-description">
+                    <div class="photo-submitter settings-plugin-element plugin-photo-gallery-{{ plugin_settings.photo_gallery.photo_gallery_show_submitter_name.id }}">
+                        <label>Uploader: </label>
+                        <span>Armando Marsh</span>
+                    </div>
+                    <div class="photo-comment settings-plugin-element plugin-photo-gallery-{{ plugin_settings.photo_gallery.photo_gallery_show_comment.id }}">
+                        <label>Comment: </label>
+                        <span>Nice</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <span class="pagination-info"></span>
+        <div class="pagination">
+            <a class="previous pagination-button">{{ language.photo_gallery.photo_gallery_previous_text }}</a>
+            <a class="active pagination-button">1</a>
+            <a class="pagination-button">2</a>
+            <a class="pagination-button">3</a>
+            <a class="next pagination-button">{{ language.photo_gallery.photo_gallery_next_text }}</a>
+        </div>
+    </div>
+</section>
+
+<section style="display: none;" id="elements-multiple-registration">
+    <div class="form-plugin element form-plugin-multiple-registration">
+        <div class="form-plugin-intro">
+            <span class="settings-plugin-element plugin-multiple-registration-{{ plugin_settings.multiple_registration.multiple_registration_message.id }}">This text is defined by a setting</span>
+        </div>
+        <div class="form-question">
+            <button class="form-plugin-button form-plugin-multiple-registration-add-attendee-button">Add an attendee
+            </button>
+            <label class="form-question-label form-plugin-multiple-registration-current-count">Current number of
+                attendees: <span class="form-plugin-multiple-registration-current-count-number">3</span></label>
+        </div>
+        <div class="loop-registration-form settings-plugin-element plugin-multiple-registration-{{ plugin_settings.multiple_registration.multiple_registration_form.id }}"
+             style="display: none;">
+            <div class="form-question">
+                <div class="scroll-x">
+                    <table class="form-plugin-multiple-registration-attendee-table lines">
+                        <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Attendee group</th>
+                            <th>First name</th>
+                            <th>Last name</th>
+                            <th>Email address</th>
+                            <th>Actions</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>1</td>
+                            <td>Some group 1</td>
+                            <td>Joakim</td>
+                            <td>Svensson</td>
+                            <td>joakim@springconf.com</td>
+                            <td>
+                                <button class="form-plugin-button form-plugin-multiple-registration-edit-attendee-button small">
+                                    Edit
+                                </button>
+                            </td>
+                        </tr>
+                        <tr class="active">
+                            <td>2</td>
+                            <td>Some group 2</td>
+                            <td>Joakim</td>
+                            <td>Svensson</td>
+                            <td>joakim@springconf.com</td>
+                            <td>
+                                <button class="form-plugin-button form-plugin-multiple-registration-edit-attendee-button small">
+                                    Edit
+                                </button>
+                                <button class="form-plugin-button form-plugin-multiple-registration-delete-attendee-button small">
+                                    Delete
+                                </button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>3</td>
+                            <td colspan="4" class="not-yet-registered">Not yet registered</td>
+                            <td>
+                                <button class="form-plugin-button form-plugin-multiple-registration-edit-attendee-button small">
+                                    Edit
+                                </button>
+                                <button class="form-plugin-button form-plugin-multiple-registration-delete-attendee-button small">
+                                    Delete
+                                </button>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="error-validating">Validation failed</div>
+            </div>
+            <h3>Loop</h3>
+            <div class="form-plugin-list form-plugin-multiple-registration-attendee-forms">
+                <div class="form-plugin-item form-plugin-multiple-registration-order-owner-form">
+                    <!--This is where the form starts-->
+                    <h3>{Order owner form}</h3>
+                    <!--This is where the form ends-->
+                </div>
+                <div class="form-plugin-item form-plugin-multiple-registration-attendee-form">
+                    <!--This is where the form starts-->
+                    <h3>{Attendee form}</h3>
+                    <!--This is where the form ends-->
+                </div>
+            </div>
+        </div>
+        <div class="inline-registration-form settings-plugin-element plugin-multiple-registration-{{ plugin_settings.multiple_registration.multiple_registration_form.id }}"
+             style="display: none;">
+            <h3>Inline</h3>
+            <div class="form-plugin-list form-plugin-multiple-registration-attendee-forms">
+                <div class="form-plugin-item form-plugin-multiple-registration-order-owner-form">
+                    <div class="form-plugin-item-information">
+                        <label class="form-question-label form-plugin-multiple-registration-form-information">Order
+                            owner
+                            <span class="form-plugin-multiple-registration-form-information-number"></span></label>
+                    </div>
+                    <!--This is where the form starts-->
+                    <h3>{Order owner form}</h3>
+                    <!--This is where the form ends-->
+                </div>
+                <div class="form-plugin-item form-plugin-multiple-registration-attendee-form">
+                    <div class="form-plugin-item-information">
+                        <label class="form-question-label form-plugin-multiple-registration-form-information">Attendee <span
+                                class="form-plugin-multiple-registration-form-information-number">1 / 2</span></label>
+                        <button class="form-plugin-button form-plugin-multiple-registration-delete-attendee-button-from-inline small">
+                            Delete
+                        </button>
+                    </div>
+                    <!--This is where the form starts-->
+                    <h3>{Attendee form}</h3>
+                    <!--This is where the form ends-->
+                </div>
+                <div class="form-plugin-item form-plugin-multiple-registration-attendee-form">
+                    <div class="form-plugin-item-information">
+                        <label class="form-question-label form-plugin-multiple-registration-form-information">Attendee <span
+                                class="form-plugin-multiple-registration-form-information-number">2 / 2</span></label>
+                        <button class="form-plugin-button form-plugin-multiple-registration-delete-attendee-button-from-inline small">
+                            Delete
+                        </button>
+                    </div>
+                    <!--This is where the form starts-->
+                    <h3>{Attendee form}</h3>
+                    <!--This is where the form ends-->
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section style="display: none;" id="elements-rebate">
+    <div class="form-plugin element form-plugin-rebate">
+        <div class="admin-cms-plugin-placeholder">Rebate - This plugin does not have a visual representation</div>
+    </div>
+</section>
+
+<section style="display: none;" id="elements-economy">
+    <div class="form-plugin element form-plugin-economy">
+        <div class="form-plugin-intro">
+            <span class="settings-plugin-element plugin-economy-{{ plugin_settings.economy.economy_message.id }}">This text is defined by a setting</span>
+        </div>
+        <div class="economy-order-table settings-plugin-element plugin-economy-{{ plugin_settings.economy.economy_include_order_table.id }}">
+            <h3>{{ language.economy.economy_txt_order_table }}</h3>
+            <div class="form-question">
+                <div class="order-info">
+                    <div class="economy-order-number-wrapper"><span class="economy-order-number">{{ language.economy.economy_txt_order_number }}:</span><span class="economy-order-number-value">123</span></div>
+                    <div class="economy-status-wrapper"><span class="economy-status">{{ language.economy.economy_txt_status }}:</span><span class="economy-status-value">{{ language.economy.economy_txt_status_pending }}</span></div>
+                    <div class="economy-amount-due-wrapper"><span class="economy-amount-due">{{ language.economy.economy_txt_amount_due }}:</span><span class="economy-amount-due-value">100 {{ language.economy.economy_txt_currency }}</span></div>
+                    <div class="economy-due-date-wrapper"><span class="economy-due-date">{{ language.economy.economy_txt_due_date }}:</span><span class="economy-due-date-value">2016-08-01</span> </div>
+                </div>
+                <div class="scroll-x">
+                    <table class="form-plugin-table form-plugin-economy-order-table lines">
+                        <thead>
+                        <tr>
+                            <th>{{ language.economy.economy_txt_order_number }}</th>
+                            <th>{{ language.economy.economy_txt_cost_excl_vat }}</th>
+                            <th>{{ language.economy.economy_txt_rebate_amount }}</th>
+                            <th>{{ language.economy.economy_txt_vat }}</th>
+                            <th>{{ language.economy.economy_txt_vat }} %</th>
+                            <th>{{ language.economy.economy_txt_cost_incl_vat }}</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>Session A</td>
+                            <td>80</td>
+                            <td></td>
+                            <td>20</td>
+                            <td>25%</td>
+                            <td>100</td>
+                        </tr>
+                        <tr>
+                            <td>Session A Rebate</td>
+                            <td>−20</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>Hotel A</td>
+                            <td>200</td>
+                            <td></td>
+                            <td>25</td>
+                            <td>12.5%</td>
+                            <td>225</td>
+                        </tr>
+                        <tr>
+                            <td>Session B</td>
+                            <td>150</td>
+                            <td></td>
+                            <td>37.5</td>
+                            <td>25%</td>
+                            <td>187.5</td>
+                        </tr>
+                        <tr>
+                            <td>{{ language.economy.economy_txt_grand_total }}</td>
+                            <td>430</td>
+                            <td>-20</td>
+                            <td>82.5</td>
+                            <td></td>
+                            <td>512.5</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <table class="form-plugin-table form-plugin-economy-vat-table lines">
+                        <thead>
+                        <tr>
+                            <th>{{ language.economy.economy_txt_vat }}</th>
+                            <th>{{ language.economy.economy_txt_amount }}</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>25%</td>
+                            <td>57.5</td>
+                        </tr>
+                        <tr>
+                            <td>12.5%</td>
+                            <td>25</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="error-validating">Validation failed</div>
+            </div>
+        </div>
+        <div class="economy-balance-table settings-plugin-element plugin-economy-{{ plugin_settings.economy.economy_include_balance_table.id }}">
+            <h3>{{ language.economy.economy_txt_balance_table }}</h3>
+            <div class="form-question">
+                <div class="scroll-x">
+                    <table class="form-plugin-table form-plugin-economy-balance-table lines">
+                        <thead>
+                        <tr>
+                            <th>{{ language.economy.economy_txt_order_number }}</th>
+                            <th>{{ language.economy.economy_txt_cost_excl_vat }}</th>
+                            <th>{{ language.economy.economy_txt_cost_incl_vat }}</th>
+                            <th>{{ language.economy.economy_txt_data_and_time }}</th>
+                            <th>{{ language.economy.economy_txt_link_to_invoice_or_receipt }}</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>Invoice created</td>
+                            <td>200</td>
+                            <td>225</td>
+                            <td>2017-08-01 12:00</td>
+                            <td>
+                                <button class="form-plugin-button form-plugin-economy-invoice-download small">
+                                    Download
+                                </button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Invoice settled</td>
+                            <td>200</td>
+                            <td>225</td>
+                            <td>2017-08-01 12:05</td>
+                            <td>
+                                <button class="form-plugin-button form-plugin-economy-invoice-download small">
+                                    Download
+                                </button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Credit invoice</td>
+                            <td>−50</td>
+                            <td>−62.5</td>
+                            <td>2017-08-01 12:00</td>
+                            <td>
+                                <button class="form-plugin-button form-plugin-economy-invoice-download small">
+                                    Download
+                                </button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Order balance</td>
+                            <td>−50</td>
+                            <td>−62.5</td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="error-validating">Validation failed</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section style="display: none;" id="elements-session-agenda">
+    <div class="form-plugin element form-plugin-session-agenda">
+        <div class="form-plugin-intro">
+            <span class="settings-plugin-element plugin-session-agenda-{{ plugin_settings.session_agenda.session_agenda_message.id }}">This text is defined by a setting</span>
+        </div>
+        <div class="form-plugin-search-wrapper settings-plugin-element plugin-session-agenda-{{ plugin_settings.session_agenda.session_agenda_searchable.id }}">
+            <input id="temporary-id-1" class="form-plugin-search" type="text"
+                   placeholder="{{ language.session_agenda.session_agenda_txt_placeholder_search }}"/>
+            <div class="form-plugin-clear-search"></div>
+        </div>
+        <div class="session-group-toggle-list settings-plugin-element plugin-session-agenda-{{ plugin_settings.session_agenda.session_agenda_show_session_group_toggle.id }}">
+            <div class="session-group-toggle-list-item">
+                <input type="checkbox" id="session-group-1" checked="checked"/>
+                <label class="session-group-toggle-list-item-label" for="session-group-1">Session Group 1</label>
+            </div>
+            <div class="session-group-toggle-list-item">
+                <input type="checkbox" id="session-group-2" checked="checked"/>
+                <label class="session-group-toggle-list-item-label" for="session-group-2">Session Group 2</label>
+            </div>
+            <div class="session-group-toggle-list-item">
+                <input type="checkbox" id="session-group-3"/>
+                <label class="session-group-toggle-list-item-label" for="session-group-3">Session Group 3</label>
+            </div>
+            <div class="session-group-toggle-list-item">
+                <input type="checkbox" id="session-group-4"/>
+                <label class="session-group-toggle-list-item-label" for="session-group-4">Session Group 4</label>
+            </div>
+        </div>
+        <div class="switch-wrapper settings-plugin-element plugin-session-agenda-{{ plugin_settings.session_agenda.session_agenda_show_all_or_my_sessions.id }}">
+            <label class="switch">
+                <input type="checkbox" class="session-my-session-toggle" id="session-my-session-toggle">
+                <div class="slider round"></div>
+            </label>
+            <label class="toggle-label session-my-session-toggle-label"
+                   for="session-my-session-toggle">{{ language.session_agenda.session_agenda_txt_show_my_sess }}</label>
+        </div>
+        <a class="form-plugin-button session-subscribe-to-calendar settings-plugin-element plugin-session-agenda-{{ plugin_settings.session_agenda.session_agenda_show_subscribe_to_calender.id }}"
+           href="javascript:void(0);">{{ language.session_agenda.session_agenda_btn_subscribe_sessions }}</a>
+        <div>
+            <ul>
+                <li class="settings-plugin-element plugin-session-agenda-{{ plugin_settings.session_agenda.session_agenda_show_toolbar_move_day_forward_or_backwards_buttons.id }}">
+                    <a role="button" href="#"
+                       class=""><span>{{ language.session_agenda.session_agenda_btn_prev }}</span></a></li>
+{#                <li class="settings-plugin-element plugin-session-agenda-{{ plugin_settings.session_agenda.session_agenda_show_toolbar_today_button.id }}">#}
+{#                    <a role="button" href="#"#}
+{#                       class=""><span>{{ language.session_agenda.session_agenda_btn_today }}</span></a></li>#}
+                <li class="settings-plugin-element plugin-session-agenda-{{ plugin_settings.session_agenda.session_agenda_show_toolbar_currently_selected_date.id }}">
+                    <a role="button" href="#" class=""><span>Thursday, June 13, 2013</span></a>
+                </li>
+                <li class="settings-plugin-element plugin-session-agenda-{{ plugin_settings.session_agenda.session_agenda_show_toolbar_move_day_forward_or_backwards_buttons.id }}">
+                    <a role="button" href="#"
+                       class=""><span>{{ language.session_agenda.session_agenda_btn_next }}</span></a></li>
+            </ul>
+        </div>
+        <div class="scroll-x session-agenda">
+            <table class="form-plugin-table lines">
+                <thead>
+                <tr>
+                    <th>{{ language.session_agenda.session_agenda_txt_column_session_group }}</th>
+                    <th>{{ language.session_agenda.session_agenda_txt_column_date }}</th>
+                    <th>{{ language.session_agenda.session_agenda_txt_column_time }}</th>
+                    <th>{{ language.session_agenda.session_agenda_txt_column_event }}</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>Group 1</td>
+                    <td>09 September</td>
+                    <td>5:00 AM - 8:00 AM</td>
+                    <td>Session 1</td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>09 September</td>
+                    <td>9:00 AM - 10:00 AM</td>
+                    <td>Session 2</td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>09 September</td>
+                    <td>10:00 AM - 11:00 AM</td>
+                    <td>Session 3</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</section>
+
+<section style="display: none;" id="elements-pdf-button">
+    <div class="form-plugin element form-plugin-pdf-button">
+        <button class="form-plugin-button form-pdf-button settings-plugin-element plugin-pdf-button-{{ plugin_settings.pdf_button.pdf_button_title.id }}">
+            Download PDF
+        </button>
+    </div>
+</section>
+
+<section style="display: none;" id="elements-log-out">
+    <div class="form-plugin element form-plugin-log-out">
+        <a class="form-plugin-button form-plugin-log-out-button settings-plugin-element plugin-log-out-{{ plugin_settings.log_out.attendee_logout_button.id }}" href="javascript:void(0);" style="display: none;">
+            {{ language.log_out.attendee_logout_txt_button }}
+        </a>
+        <div class="plugin-automatic-log-out">
+            <div class="admin-cms-plugin-placeholder">Log Out - This plugin does not have a visual representation</div>
+        </div>
+    </div>
+</section>
+
+<style>
+    .k-in {
+        white-space: normal;
+    }
+</style>
+{#<style>#}
+{#    .pagination {#}
+{#        display: inline-block;#}
+{#    }#}
+{##}
+{#    .photo-pagination {#}
+{#        float: right;#}
+{#    }#}
+{##}
+{#    .photo-pagination a {#}
+{#        color: black;#}
+{#        float: left;#}
+{#        padding: 8px 16px;#}
+{#        text-decoration: none !important;#}
+{#    }#}
+{##}
+{#    .photo-pagination a.active {#}
+{#        background-color: #4CAF50;#}
+{#        color: white;#}
+{#    }#}
+{##}
+{#    .photo-pagination a:hover:not(.active) {#}
+{#        background-color: #ddd;#}
+{#    }#}
+{#</style>#}
+<style>
+    .file-upload input {
+        position: absolute;
+        top: 0;
+        left: 0;
+        margin: 0;
+        opacity: 0;
+        filter: alpha(opacity=0);
+        z-index: -1;
+    }
+</style>

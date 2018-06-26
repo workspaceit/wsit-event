@@ -1,0 +1,116 @@
+{% extends "layout/main.html" %}
+{% block content %}
+    {% load staticfiles %}
+    <div id="content-wrapper">
+        <div class="panel colourable">
+            <div class="panel-heading">
+            <span class="panel-title"><i class="fa fa-lg fa-calendar"></i></i>
+                &nbsp;&nbsp;&nbsp;<strong>Admins</strong></span>
+                <span style="float:right"><img style="display:none" height="25px"
+                                               src="{% static 'public/images/712.GIF' %}" id="loader" alt=""/>
+                    <input type="text" name="search_key_admin" id="search_key_admin"/></span>
+            </div>
+            <!-- / .panel-heading -->
+            {% csrf_token %}
+            <div class="panel-body tab-content">
+                <div class="tab-pane fade in active">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <button type="button" id="btn-add-admin" class="btn btn-primary btn-lg"
+                                    data-toggle="modal"
+                                    data-target=""><i class="fa fa-plus-circle"></i>&nbsp;&nbsp;Add an Admin
+                            </button>
+                        </div>
+                    </div>
+                    <br>
+
+                    <div id="admins">
+                        <div class="table-light">
+                                <table class="table table-bordered sortable admin-table">
+                                    <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>First Name</th>
+                                        <th>Last Name</th>
+                                        <th>Email</th>
+                                        <th>Company</th>
+                                        <th>Phone number</th>
+                                        <th>Status</th>
+                                        <th>Edit</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% for admin in admins %}
+                                        <tr>
+                                            <td>{{ admin.id }}</td>
+                                            <td>{{ admin.firstname }}</td>
+                                            <td>{{ admin.lastname }}</td>
+                                            <td>{{ admin.email }}</td>
+                                            <td>{{ admin.company }}</td>
+                                            <td>{{ admin.phonenumber }}</td>
+                                            <td>{{ admin.status }}</td>
+                                            <td>
+                                                <button class="btn btn-xs btn-edit-admin" data-id="{{ admin.id }}"
+                                                        data-toggle="tooltip" data-placement="top" title=""
+                                                        data-original-title="Edit"><i
+                                                        class="dropdown-icon fa fa-cog"></i>
+                                                </button>
+                                                {% if admin.status == "inactive" %}
+                                                <button class="btn btn-xs btn-primary btn-active-admin"
+                                                        data-id="{{ admin.id }}" data-toggle="tooltip"
+                                                        data-placement="top"
+                                                        title="" data-original-title="active"><i
+                                                        class="dropdown-icon fa fa-unlock"></i></button>
+                                                {% endif %}
+                                                {% if admin.status == "active" %}
+                                                <button class="btn btn-xs btn-warning btn-inactive-admin"
+                                                        data-id="{{ admin.id }}" data-toggle="tooltip"
+                                                        data-placement="top"
+                                                        title="" data-original-title="inactive"><i
+                                                        class="dropdown-icon fa fa-lock"></i></button>
+                                                {% endif %}
+
+                                                <button class="btn btn-xs btn btn-permit-admin"
+                                                        data-id="{{ admin.id }}" data-toggle="tooltip"
+                                                        data-placement="top"
+                                                        title="" data-original-title="Permissions"><i
+                                                        class="dropdown-icon fa fa-cogs"></i></button>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        {% include 'admin/add_admin.html' %}
+
+        {#        {% include 'seminar/edit_seminar_queue.html' %}#}
+
+        <!-- MODAL - EDIT SEMINAR CUE -->
+        <!-- / #content-wrapper -->
+    </div>
+    <script>
+        {#        $(document).ready(function () {#}
+        {#            $('.seminar-table').dataTable({#}
+        {#                "lengthMenu": [#}
+        {#                    [10, 25, 50, -1],#}
+        {#                    [10, 25, 50, "All"]#}
+        {#                ],#}
+        {#                "iDisplayLength": 10,#}
+        {#                "sDom": '<"dt_top" <"dt_left"f><"dt_right"l><"clear">>rt<"dt_bottom" <"dt_left"i><"dt_right"p><"clear">>',#}
+        {#                "scrollX": true,#}
+        {#                "order": [#}
+        {#                    [ 0, "asc" ]#}
+        {#                ],#}
+        {#                "columnDefs": [#}
+        {#                    { orderable: false, targets: 0 }#}
+        {#                ]#}
+        {#            });#}
+        {#        });#}
+    </script>
+{% endblock %}

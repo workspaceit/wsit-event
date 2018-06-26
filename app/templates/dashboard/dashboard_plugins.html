@@ -1,0 +1,273 @@
+{% load staticfiles %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.11.2/moment.min.js"></script>
+<script type="application/javascript"
+        src="{% static 'assets/plugin/daterangepicker/daterangepicker.js' %}"></script>
+<link href="{% static 'assets/plugin/daterangepicker/daterangepicker.css' %}" rel="stylesheet"
+      type="text/css">
+{% if give == "1" %}
+    <div class="row" style="display: block;">
+        <div class="col-md-6" data-id="1" id="1">
+            <div class="panel">
+                <div class="panel-heading">
+                    <div class="panel-title">Page Hits</div>
+                </div>
+                <div class="panel-body">
+                    <div class=" pull-right btn-group form-inline">
+                        <select id="pagehit" class="pull-left form-control input-sm m-b-2">
+                            <option value="all" selected>All Pages</option>
+                            {% for page in pages %}
+                                <option value="{{ page.id }}">{{ page.url }}</option>
+                            {% endfor %}
+                        </select>
+
+                        <button type="button" class="btn btn-info btn-outline"
+                                id="page-hit-daterange-btn">
+                            <span><i class="fa fa-calendar"></i> <i
+                                    class="caret"></i>&nbsp;{{ pagehit_columns.start_time|default:start_date|date:"F d, Y" }}-{{ pagehit_columns.end_time|default:end_date|date:"F d, Y" }}</span>
+                        </button>
+                        <input type="hidden" name="start_time" id="page_hit_start_date"
+                               value="{{ pagehit_columns.start_time|default:start_date|date:"Y-m-d" }}">
+                        <input type="hidden" name="end_time" id="page_hit_end_date"
+                               value="{{ pagehit_columns.end_time|default:end_date|date:"Y-m-d" }}">
+                    </div>
+                    <div id="graph-container-pagehit">
+                        <canvas id="chart-graph-pagehit" width="400" height="250"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script type="application/javascript" src="{% static 'assets/javascripts/dashboardjs/pagehit.js' %}"></script>
+        {% elif give == "2" %}
+        <div class="col-md-6" data-id="2" id="2">
+            <div class="panel">
+                <div class="panel-heading">
+                    <div class="panel-title">Registrations
+                        <div class="pull-right" style="display: none">
+                            <i class="fa fa-arrows" aria-hidden="true"></i>
+                            <i class="fa fa-cog" aria-hidden="true"></i>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="panel-body">
+
+                    <div class="pull-right btn-group">
+                        <button type="button" class="btn btn-info btn-outline"
+                                id="reg-daterange-btn">
+                            <span><i class="fa fa-calendar"></i> <i
+                                    class="caret"></i>&nbsp;{{ reg_columns.start_time|default:start_date|date:"F d, Y" }}-{{ reg_columns.end_time|default:end_date|date:"F d, Y" }}</span>
+                        </button>
+                        <input type="hidden" name="start_time" id="reg_start_date"
+                               value="{{ reg_columns.start_time|default:start_date|date:"Y-m-d" }}">
+                        <input type="hidden" name="end_time" id="reg_end_date"
+                               value="{{ reg_columns.end_time|default:end_date|date:"Y-m-d" }}">
+                    </div>
+
+                    <div id="graph-container-reg">
+                        <canvas id="chart-graph-reg" width="400" height="250"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script type="application/javascript"
+                src="{% static 'assets/javascripts/dashboardjs/registration.js' %}"></script>
+        {% elif give == "3" %}
+    </div>
+
+    <div class="row">
+        <div class="col-md-6" data-id="3" id="3">
+            <div class="panel">
+                <div class="panel-heading">
+                    <div class="panel-title">Attendee Groups</div>
+                </div>
+                <div class="panel-body">
+
+                    {#                <div class=" pull-right btn-group">#}
+                    {#                    <select name="columns" class="pull-left selectpicker attendee-column-control" multiple#}
+                    {#                            data-live-search="true"#}
+                    {#                            data-live-search-placeholder="Search"#}
+                    {#                            data-actions-box="false">#}
+                    {#                        {% for attendee in attendees %}#}
+                    {#                            <option class="selected_column" value="{{ attendee.id }}"#}
+                    {#                                    {% if attendee.id in attendee_columns %}#}
+                    {#                                    selected {% endif %} {% if not attendee_columns %}#}
+                    {#                                    selected {% endif %}>{{ attendee.name }}#}
+                    {#                            </option>#}
+                    {#                        {% endfor %}#}
+                    {#                    </select>#}
+                    {#                </div>#}
+
+                    <div class="table-responsive">
+                        <table class="table table-striped valign-middle">
+                            <thead>
+                            <tr>
+                                <th>Groups</th>
+                                <th class="text-right">Total</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% if attendees %}
+                                {% for attendee in attendees %}
+                                    <tr>
+                                        <td>{{ attendee.group__name }}</td>
+                                        <td class="text-right">{{ attendee.count }}</td>
+                                    </tr>
+                                {% endfor %}
+                            {% else %}
+                                <tr>
+                                    <td colspan="2" class="text-center">No Group Found</td>
+                                </tr>
+                            {% endif %}
+                            </tbody>
+                        </table>
+                    </div>
+
+                    {#                <div id="graph-container-attendeegroup">#}
+                    {#                    <canvas id="chart-graph-attendeegroup" width="400" height="250"></canvas>#}
+                    {#                </div>#}
+                </div>
+            </div>
+        </div>
+        {#    <script type="application/javascript" src="{% static 'assets/javascripts/dashboardjs/attendeegroup.js' %}"></script>#}
+
+        {% elif give == "4" %}
+        <div class="col-md-6" data-id="4" id="4">
+            <div class="panel">
+                <div class="panel-heading">
+                    <div class="panel-title">Sessions</div>
+                </div>
+                <div class="panel-body">
+
+                    <div class=" pull-right btn-group form-inline show-columns">
+
+                        <select name="columns" class="pull-left selectpicker session-column-control"
+                                data-live-search="true"
+                                data-live-search-placeholder="Search"
+                                data-actions-box="false">
+                            {% for session in sessions %}
+                                <option class="selected_column" value="{{ session.id }}"
+                                        {% if session.id == session_columns %}
+                                        selected {% endif %}>{{ session.name }}
+                                </option>
+                            {% endfor %}
+                        </select>
+
+                    </div>
+
+                    <div class="table-responsive">
+                        <img src="{% static 'public/images/712.GIF' %}" class="session-loader" alt=""/>
+                        <table class="table table-striped valign-middle" id="session-group-table">
+                            <thead>
+                            <tr>
+                                <th>Session</th>
+                                <th class="text-right">Attendees</th>
+                            </tr>
+                            </thead>
+                            <tbody id="session-group-tbody">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script type="application/javascript" src="{% static 'assets/javascripts/dashboardjs/session.js' %}"></script>
+        {% elif give == "5" %}
+    </div>
+    <div class="row">
+        <div class="col-md-6" data-id="5" id="5">
+            <div class="panel">
+                <div class="panel-heading">
+                    <div class="panel-title">Filters</div>
+                </div>
+                <div class="panel-body">
+
+                    <div class=" pull-right btn-group">
+                        <select name="columns" class="pull-left selectpicker filter-column-control"
+                                data-live-search="true"
+                                data-live-search-placeholder="Search"
+                                data-actions-box="false">
+                            {% for filter in filters %}
+                                <option class="selected_column" value="{{ filter.id }}"
+                                        {% if filter.id == filter_columns %} selected {% endif %}>
+                                    {{ filter.name }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="table-responsive">
+                        <img src="{% static 'public/images/712.GIF' %}" class="filter-loader" alt=""/>
+                        <table class="table table-striped valign-middle" id="filter-group-table">
+                            <thead>
+                            <tr>
+                                <th>Filter</th>
+                                <th class="text-right">Attendees</th>
+                            </tr>
+                            </thead>
+                            <tbody id="filter-group-tbody">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <style>
+            .table-header {
+                display: none;
+            }
+        </style>
+        <script type="application/javascript" src="{% static 'assets/javascripts/dashboardjs/filter.js' %}"></script>
+        {% elif give == "6" %}
+        <div class="col-md-6" data-id="6" id="6">
+            <div class="panel">
+                <div class="panel-heading">
+                    <div class="panel-title">Messages</div>
+                </div>
+                <div class="panel-body">
+
+                    <div class=" pull-right btn-group">
+                        <button type="button" class="btn btn-info btn-outline"
+                                id="message-daterange-btn">
+                            <span><i class="fa fa-calendar"></i> <i
+                                    class="caret"></i>&nbsp;{{ message_columns.start_time|default:start_date|date:"F d, Y" }}-{{ message_columns.end_time|default:end_date|date:"F d, Y" }}&nbsp;</span>
+                        </button>
+                        <input type="hidden" name="start_time" id="message_start_date"
+                               value="{{ message_columns.start_time|default:start_date|date:"Y-m-d" }}">
+                        <input type="hidden" name="end_time" id="message_end_date"
+                               value="{{ message_columns.end_time|default:end_date|date:"Y-m-d" }}">
+                    </div>
+
+                    <div id="graph-container-message">
+                        <canvas id="chart-graph-message" width="400" height="250"></canvas>
+                    </div>
+
+                    <div class="table-responsive">
+                        <table class="table table-striped valign-middle">
+                            <thead>
+                            <tr>
+                                <th>Message Type</th>
+                                <th class="text-right">Total</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td>Email</td>
+                                <td class="text-right">{{ email_count }}</td>
+                            </tr>
+                            <tr>
+                                <td>SMS</td>
+                                <td class="text-right">{{ sms_count }}</td>
+                            </tr>
+                            <tr>
+                                <td>Notifications</td>
+                                <td class="text-right">{{ notification_count }}</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script type="application/javascript" src="{% static 'assets/javascripts/dashboardjs/message.js' %}"></script>
+{% endif %}

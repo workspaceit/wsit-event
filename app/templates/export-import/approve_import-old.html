@@ -1,0 +1,135 @@
+{#{% extends "layout/main.html" %}#}
+{#{% block content %}#}
+    <div id="content-wrapper">
+
+    {% for item in items.cd %}
+        <h3>Attendee Id : {{ item.Attendee }}</h3>
+        {% if item.data.questions %}
+            <div class="panel-body tab-content">
+            <div class="tab-pane fade in active">
+                <br>
+                <div id="filters">
+                    <div class="table-light">
+
+                        <div class="table-header">
+                            <div class="table-caption">
+                                Questions
+                            </div>
+                        </div>
+                        <table class="table table-bordered">
+                            <thead>
+                            <tr>
+                                <td>Selection</td>
+                                <td>Question Name</td>
+                                <td>Existing Answer</td>
+                                <td>New Answer</td>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for question in item.data.questions %}
+                                <tr>
+                                    <td><input class="checkbox" type="checkbox" data-val="{{ question.new_data }}" data-att-id="{{ item.Attendee }}" data-attribute-id="{{ question.id }}" data-attribute-name="q"></td>
+                                    <td>{{ question.name }}</td>
+                                    <td>{{ question.old_data }}</td>
+                                    <td>{{ question.new_data }}</td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+        {% if item.data.sessions %}
+            <div class="panel-body tab-content">
+            <div class="tab-pane fade in active">
+                <br>
+                <div id="filters">
+                    <div class="table-light">
+                        <div class="table-header" >
+                            <div class="table-caption">
+                                Sessions
+                            </div>
+                        </div>
+                        <table class="table table-bordered">
+                            <thead>
+                            <tr>
+                                <td>Selection</td>
+                                <td>Session Name</td>
+                                <td>Existing Status</td>
+                                <td>New Status</td>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for session in item.data.sessions %}
+                                <tr>
+                                    <td><input class="checkbox" type="checkbox" data-val="{{ session.new_data }}" data-att-id="{{ item.Attendee }}" data-attribute-id="{{ session.id }}" data-attribute-name="s"></td>
+                                    <td>{{ session.name }}</td>
+                                    <td>{{ session.old_data }}</td>
+                                    <td>{{ session.new_data }}</td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        {% endif %}
+        {% if item.data.travels %}
+            <div class="panel-body tab-content">
+            <div class="tab-pane fade in active">
+                <br>
+                <div id="filters">
+                    <div class="table-light">
+                        <div class="table-header">
+                            <div class="table-caption">
+                                Travels
+                            </div>
+                        </div>
+                        <table class="table table-bordered">
+                            <thead>
+                            <tr>
+                                <td>Selection</td>
+                                <td>Travel Name</td>
+                                <td>Existing Status</td>
+                                <td>New Status</td>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for travel in item.data.travels %}
+                                <tr>
+                                    <td><input class="checkbox" type="checkbox" data-val="{{ travel.new_data }}" data-att-id="{{ item.Attendee }}" data-attribute-id="{{ travel.id }}" data-attribute-name="t"></td>
+                                    <td>{{ travel.name }}</td>
+                                    <td>{{ travel.old_data }}</td>
+                                    <td>{{ travel.new_data }}</td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+    {% endfor %}
+
+
+        <div class="btn-group float-right">
+            <button type="button" class="btn btn-lg" data-dismiss="modal"><i
+                    class="fa fa-ban"></i>&nbsp;&nbsp;Cancel
+            </button>
+            <div class="btn-group">
+                <button type="button" class="btn btn-success btn-lg save" id="save-change" data-save-for="{{ items.id }}">
+                    <i class="fa fa-check-circle"></i>&nbsp;&nbsp;Save &nbsp;
+                </button>
+            </div>
+        </div>
+
+
+    </div>
+
+{#{% endblock %}#}

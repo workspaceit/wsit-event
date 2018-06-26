@@ -1,0 +1,254 @@
+{% extends "gt/layout/layout.html" %}
+{% block content %}
+    <div class="wrapper headline color8" style="padding: 0; z-index: 2;">
+        <div id="bg1"></div>
+        <div class="wrapper" style="z-index: 2; overflow-x: visible;">
+
+            <h1 class="color1">Start</h1>
+        </div>
+    </div>
+
+    <div class="wrapper">
+        <div class="container padding mainContent">
+            <!--<div class="col span_12 white">
+                <h3 class="color1">Vänligen läs igenom instruktionerna innan du påbörjar din registrering</h3>
+                <p>Donec tristique tempus dolor, vitae faucibus enim vestibulum eu.</p>
+                <p>Donec feugiat elementum arcu nec faucibus. Interdum et malesuada fames ac ante ipsum primis in faucibus. Sed imperdiet lacus non rutrum faucibus. Mauris tincidunt risus ac purus placerat eleifend.</p>
+            </div>-->
+            <p>&nbsp;</p>
+            <div class="row gutters">
+                    <div class="col span_4 elementNextUp" {% if not sessions_next_up %} style="display: none;" {% endif %}>
+                        <h3>Härnäst</h3>
+                        <ul class="nextUp">
+                            {% for session in sessions_next_up %}
+                                <li>
+                                    <h4>{{ session.title }}<span class="timeUntil">{% if session.difference > 0 %} in
+                                            {{ session.difference }} min {% else %} Now{% endif %}</span></h4>
+
+                                    <div class="content">
+                                        <p class="data time">{{ session.start|date:'H:i' }}
+                                            - {{ session.end|date:'H:i' }}</p>
+                                        <p class="data location">{{ session.location }}
+                                        </p>
+
+                                        {% for speaker in session.speakers %}
+                                            <p class="data presenter">
+                                                {{ speaker.firstname }}{{ speaker.lastname }}</p>
+                                        {% endfor %}
+
+                                    </div>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    <div class="col span_4 elementEvaluate" {% if not sessions_finished %} style="display: none" {% endif %}>
+                        <h3>Utvärdera</h3>
+                        <p>Klicka på stjärnorna för att utvärdera. När du är färdig klickar du på "Skicka utvärdering".</p>
+                        <ul class="evaluate">
+                            {% for session in sessions_finished %}
+                                <li><h4>{{ session.session.name }}</h4>
+                                    <ul class="stars" id="rated_session_{{ session.session.id }}"
+                                        data-id="{{ session.session.id }}">
+                                        <li class="star" data-rating="1"></li>
+                                        <li class="star" data-rating="2"></li>
+                                        <li class="star" data-rating="3"></li>
+                                        <li class="star" data-rating="4"></li>
+                                        <li class="star" data-rating="5"></li>
+                                    </ul>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                        <a href="javascript:void(0);" class="button round session-evaluate"
+                           style="margin-bottom: 1em; float: right;">Skicka utvärdering</a>
+                    </div>
+                <div class="col span_4 elementNotifications">
+                    <h3 id="noti_hidden" style="{% if not notifications %}display:none{% endif %}">Meddelande</h3>
+                    <ul class="notifications">
+                        {% if notifications %}
+                            {% for notification in notifications %}
+                                {% if notification.type == "session" %}
+                                    <li>
+                                        <h4> Aktivitetskonflikt  <span
+                                                class="date">{{ notification.created_at|date:'Y-m-d H:i:s' }}</span>
+                                        </h4>
+
+                                        <p>{{ notification.message | safe }}</p>
+
+                                        {% if notification.type == "session" %}
+
+                                            <p><a href="javascript:void(0)" class="label color2 click-notification"
+                                                  data-id="{{ notification.id }}">Ja</a>&nbsp;&nbsp;<a
+                                                    href="javascript:void(0)"
+                                                    class="label color3 click-notification"
+                                                    data-id="{{ notification.id }}">Nej</a>
+                                            </p>
+                                            <br/>
+                                            <p>Om inget svar mottagits inom
+                                                                                <span class="defaultCountdown time"
+                                                                                      data-id="{{ notification.expire_at|date:"Y-m-d-H-i-s" }}"></span>
+                                                så går platsen vidare till nästa i kön.
+                                            </p>
+                                        {% endif %}
+                                    </li>
+                                {% endif %}
+                                {% if notification.type == "attendee" %}
+                                    <li>
+                                        <div class="dismiss delete_notification" data-id="{{ notification.id }}"></div>
+                                        <h4>{{ notification.sender_attendee.firstname }} <span
+                                                class="date">{{ notification.created_at|date:"Y-m-d , H:i" }}</span>
+                                        </h4>
+
+                                        <p>{{ notification.message | safe }}</p>
+                                    </li>
+                                {% endif %}
+                                {% if notification.type == "session_attend" %}
+                                    <li>
+                                        <div class="dismiss delete_notification" data-id="{{ notification.id }}"></div>
+                                        <h4>Aktivitet  <span
+                                                class="date">{{ notification.created_at|date:"Y-m-d , H:i" }}</span>
+                                        </h4>
+
+                                        <p>{{ notification.message | safe }}</p>
+                                    </li>
+                                {% endif %}
+                                {% if notification.type == "filter_message" %}
+                                    <li>
+                                        <div class="dismiss delete_notification" data-id="{{ notification.id }}"></div>
+                                        <h4>Grant Thorton Team <span
+                                                class="date">{{ notification.created_at|date:"Y-m-d , H:i" }}</span>
+                                        </h4>
+
+                                        <p>{{ notification.message | safe }}</p>
+                                    </li>
+                                {% endif %}
+                            {% endfor %}
+                        {% endif %}
+                    </ul>
+                </div>
+
+
+                <div class="col span_12">
+                    {#                    <h2>Välkommen till din personliga sida för Kunskapsveckan och GetTogether!</h2>#}
+                    {##}
+                    {#                    <p>När vi närmar oss avspark kommer du här att hitta ett samlat schema för din medverkan under#}
+                    {#                        Kunskapsveckan och GetTogether.</p>#}
+                    {##}
+                    {#                    <p>För att ha all information lättillgänglig är vårt tips att du även laddar ner din personliga sida#}
+                    {#                        som app till telefonen. Under fliken <strong>Information</strong> finns instruktioner för detta.#}
+                    {#                    </p>#}
+                    {##}
+                    {#                    <p>Anmälan till seminarier är fortfarande öppen! Gå in under fliken <strong>seminarier</strong> och#}
+                    {#                        gör dina val.</p>#}
+                    {##}
+                    {#                    <p>Har du frågor kring logi och middagar kontakta: <a href="mailto:my.nyander@springconf.com">My#}
+                    {#                        Nyander</a></p>#}
+                    {##}
+                    {#                    <p>Har du frågor kring kurser och seminarier kontakta: <a href="mailto:Utbildningsfragor@se.gt.com">Utbildningsfragor@se.gt.com</a>#}
+                    {#                    </p>#}
+
+                    <h2>Välkommen till din personliga sida för Kunskapsveckan och GetTogether!</h2>
+
+                    <p>Under <a href="{% url 'gt-summering' %}">Min medverkan</a> hittar du ett samlat
+                        schema för din vecka. För att ha all information lättillgänglig är vårt tips att du även laddar
+                        ner appen till din telefon. Under fliken <a
+                                href="{% url 'gt-static-page' staticPage='information' %}">Information</a> finns
+                        instruktioner</p>
+
+                    <p>Har du frågor kring logi och middagar kontakta: <a href="mailto:my.nyander@springconf.com">my.nyander@springconf.com</a>
+                    </p>
+
+                    <p>Har du frågor kring kurser och seminarier kontakta: <a href="mailto:Utbildningsfragor@se.gt.com">Utbildningsfragor@se.gt.com</a>
+                    </p>
+                </div>
+            </div>
+
+        </div>
+        <!-- mainContent -->
+
+    </div><!--wrapper-->
+
+
+
+    {#            <div class="row gutters">#}
+    {#                <div class="col span_4">#}
+    {#                    <h3>Härnäst</h3>#}
+    {#                    <div class="element elementNextUp">#}
+    {#                        <ul class="nextUp">#}
+    {#                            <li>#}
+    {#                                <h4><a href="">Lunch</a> <span class="timeUntil">om 10 minuter</span></h4>#}
+    {#                                <div class="content">#}
+    {#                                    <p class="data time"><i class="fa fa-clock-o"></i> 12:00 - 12:30, 2016-02-18</p>#}
+    {#                                    <p class="data location"><i class="fa fa-map-marker"></i> <a href="#">Matsalen</a>#}
+    {#                                    </p>#}
+    {#                                </div>#}
+    {#                            </li>#}
+    {#                            <li>#}
+    {#                                <h4><a href="">Affärsrådgivning 4, modul 4:1</a> <span#}
+    {#                                        class="timeUntil">om 40 minuter</span></h4>#}
+    {#                                <div class="content">#}
+    {#                                    <p class="data time"><i class="fa fa-clock-o"></i> 12:30 - 13:30, 2016-02-18</p>#}
+    {#                                    <p class="data location"><i class="fa fa-map-marker"></i> <a href="#">Rum 10</a></p>#}
+    {#                                    <p class="data presenter"><i class="fa fa-user"></i> <a href="#">Pål Näslund</a> <a#}
+    {#                                            href="#">Mats Anväg</a></p>#}
+    {#                                </div>#}
+    {#                            </li>#}
+    {#                        </ul>#}
+    {#                    </div>#}
+    {#                </div>#}
+    {#                <div class="col span_4">#}
+    {#                    <h3>Utvärdera</h3>#}
+    {#                    <div class="element elementEvaluate">#}
+    {#                        <ul class="evaluate">#}
+    {#                            <li>#}
+    {#                                <h4 class="title">Redovisning 3</h4>#}
+    {#                                <ul class="stars">#}
+    {#                                    <li class="star"><i class="fa fa-star"></i></li>#}
+    {#                                    <li class="star"><i class="fa fa-star"></i></li>#}
+    {#                                    <li class="star"><i class="fa fa-star"></i></li>#}
+    {#                                    <li class="star"><i class="fa fa-star"></i></li>#}
+    {#                                    <li class="star"><i class="fa fa-star-o"></i></li>#}
+    {#                                </ul>#}
+    {#                            </li>#}
+    {#                            <li>#}
+    {#                                <h4 class="title">Finansiella dagen</h4>#}
+    {#                                <ul class="stars">#}
+    {#                                    <li class="star"><i class="fa fa-star"></i></li>#}
+    {#                                    <li class="star"><i class="fa fa-star"></i></li>#}
+    {#                                    <li class="star"><i class="fa fa-star"></i></li>#}
+    {#                                    <li class="star"><i class="fa fa-star-o"></i></li>#}
+    {#                                    <li class="star"><i class="fa fa-star-o"></i></li>#}
+    {#                                </ul>#}
+    {#                            </li>#}
+    {#                        </ul>#}
+    {#                        <a href="" class="button">Skicka</a>#}
+    {#                    </div>#}
+    {#                </div>#}
+    {#                <div class="col span_4">#}
+    {#                    <h3>Meddelanden</h3>#}
+    {#                    <div class="element elementNotifications">#}
+    {#                        <ul class="notifications">#}
+    {#                            <li>#}
+    {#                                <div class="dismiss delete_notification" data-id="1302"><i#}
+    {#                                        class="fa fa-times-circle"></i></div>#}
+    {#                                <h4>Sender <span class="date">2016-02-18 , 10:05</span></h4>#}
+    {#                                <p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu#}
+    {#                                    fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa#}
+    {#                                    qui officia deserunt mollit anim id est laborum.</p>#}
+    {#                            </li>#}
+    {#                            <li>#}
+    {#                                <div class="dismiss delete_notification" data-id="1303"><i#}
+    {#                                        class="fa fa-times-circle"></i></div>#}
+    {#                                <h4>Sender <span class="date">2016-02-17 , 08:21</span></h4>#}
+    {#                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor#}
+    {#                                    incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud#}
+    {#                                    exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>#}
+    {#                            </li>#}
+    {#                        </ul>#}
+    {#                    </div>#}
+    {#                </div>#}
+    {#            </div>#}
+
+    </div><!-- mainContent -->
+
+    </div><!--wrapper-->
+{% endblock %}

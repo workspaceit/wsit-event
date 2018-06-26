@@ -1,0 +1,442 @@
+{% extends "gt/layout/layout.html" %}
+
+{% block content %}
+    <style>
+
+        .hightlight {
+            background: white;
+            padding: 0.35em;
+            box-shadow: 0px 3px 2px rgba(148, 137, 122, 0.2);
+            white-space: nowrap;
+            display: inline-block;
+        }
+
+        .divider {
+            border-bottom: 2px solid #eae7e2;
+            margin-bottom: 1em;
+        }
+
+        .whiteTable {
+            box-shadow: 0px 3px 2px rgba(148, 137, 122, 0.2);
+        }
+
+        .whiteTable td {
+            background: white;
+            font-size: 0.85em;
+        }
+
+        .hightlightUL {
+            background: white;
+            padding: 0.5em;
+            box-shadow: 0px 3px 2px rgba(148, 137, 122, 0.2);
+            list-style: none;
+            padding: 0.75em 0 0 0;
+        }
+
+        .hightlightUL li {
+            padding-bottom: 0.75em;
+        }
+    </style>
+    <div class="wrapper headline color8" style="padding: 0; z-index: 2;">
+        <div id="bg1"></div>
+        <div class="wrapper" style="z-index: 2; overflow-x: visible;">
+
+            <h1 class="color1">Min medverkan</h1>
+        </div>
+    </div>
+    <div class="wrapper">
+        <div class="container padding mainContent">
+            <p>&nbsp;</p>
+
+            <div class="row gutters">
+
+                <div class="col span_4 elementNextUp" {% if not sessions_next_up %} style="display: none;" {% endif %}>
+                    <h3>Härnäst</h3>
+                    <ul class="nextUp">
+                        {% for session in sessions_next_up %}
+                            <li>
+                                <h4>{{ session.title }}<span class="timeUntil">{% if session.difference > 0 %} in
+                                    {{ session.difference }} min {% else %} Now{% endif %}</span></h4>
+
+                                <div class="content">
+                                    <p class="data time">{{ session.start|date:'H:i' }}
+                                        - {{ session.end|date:'H:i' }}</p>
+                                    <p class="data location">{{ session.location }}
+                                    </p>
+
+                                    {% for speaker in session.speakers %}
+                                        <p class="data presenter">
+                                            {{ speaker.firstname }}{{ speaker.lastname }}</p>
+                                    {% endfor %}
+
+                                </div>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                <div class="col span_4 elementEvaluate" {% if not sessions_finished %}
+                     style="display: none" {% endif %}>
+                    <h3>Utvärdera</h3>
+                    <p>Klicka på stjärnorna för att utvärdera. När du är färdig klickar du på "Skicka utvärdering".</p>
+                    <ul class="evaluate">
+                        {% for session in sessions_finished %}
+                            <li><h4>{{ session.session.name }}</h4>
+                                <ul class="stars" id="rated_session_{{ session.session.id }}"
+                                    data-id="{{ session.session.id }}">
+                                    <li class="star" data-rating="1"></li>
+                                    <li class="star" data-rating="2"></li>
+                                    <li class="star" data-rating="3"></li>
+                                    <li class="star" data-rating="4"></li>
+                                    <li class="star" data-rating="5"></li>
+                                </ul>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                    <a href="javascript:void(0);" class="button round session-evaluate"
+                       style="margin-bottom: 1em; float: right;">Skicka utvärdering</a>
+                </div>
+                <div class="col span_4 elementNotifications">
+                    <h3 id="noti_hidden" style="{% if not notifications %}display:none{% endif %}">Meddelande</h3>
+                    <ul class="notifications">
+                        {% if notifications %}
+                            {% for notification in notifications %}
+                                {% if notification.type == "session" %}
+                                    <li>
+                                        <h4> Aktivitetskonflikt  <span
+                                                class="date">{{ notification.created_at|date:'Y-m-d H:i:s' }}</span>
+                                        </h4>
+
+                                        <p>{{ notification.message | safe }}</p>
+
+                                        {% if notification.type == "session" %}
+
+                                            <p><a href="javascript:void(0)" class="label color2 click-notification"
+                                                  data-id="{{ notification.id }}">Ja</a>&nbsp;&nbsp;<a
+                                                    href="javascript:void(0)"
+                                                    class="label color3 click-notification"
+                                                    data-id="{{ notification.id }}">Nej</a>
+                                            </p>
+                                            <br/>
+                                            <p>Om inget svar mottagits inom
+                                                                                <span class="defaultCountdown time"
+                                                                                      data-id="{{ notification.expire_at|date:"Y-m-d-H-i-s" }}"></span>
+                                                så går platsen vidare till nästa i kön.
+                                            </p>
+                                        {% endif %}
+                                    </li>
+                                {% endif %}
+                                {% if notification.type == "attendee" %}
+                                    <li>
+                                        <div class="dismiss delete_notification" data-id="{{ notification.id }}"></div>
+                                        <h4>{{ notification.sender_attendee.firstname }} <span
+                                                class="date">{{ notification.created_at|date:"Y-m-d , H:i" }}</span>
+                                        </h4>
+
+                                        <p>{{ notification.message | safe }}</p>
+                                    </li>
+                                {% endif %}
+                                {% if notification.type == "session_attend" %}
+                                    <li>
+                                        <div class="dismiss delete_notification" data-id="{{ notification.id }}"></div>
+                                        <h4>Aktivitet  <span
+                                                class="date">{{ notification.created_at|date:"Y-m-d , H:i" }}</span>
+                                        </h4>
+
+                                        <p>{{ notification.message | safe }}</p>
+                                    </li>
+                                {% endif %}
+                                {% if notification.type == "filter_message" %}
+                                    <li>
+                                        <div class="dismiss delete_notification" data-id="{{ notification.id }}"></div>
+                                        <h4>Grant Thorton Team <span
+                                                class="date">{{ notification.created_at|date:"Y-m-d , H:i" }}</span>
+                                        </h4>
+
+                                        <p>{{ notification.message | safe }}</p>
+                                    </li>
+                                {% endif %}
+                            {% endfor %}
+                        {% endif %}
+                    </ul>
+                </div>
+                <div class="col span_12">
+                    <p><strong>Hej {{ request.session.event_user.name }}!</strong></p>
+
+                    <p>Nedan ser du en summering av alla dina val inför Kunskapsveckan och GetTogether.</p>
+
+                    {#                    <p>Om du önskar ändra något i din bokning, vänligen kontakta#}
+                    {#                        <a#}
+                    {#                            href="mailto:{{ request.session.event_user.email }} ">My Nyander</a>.#}
+                    {#                        <a href="mailto:my.nyander@springconf.com?subject=Kunskapsveckan och GetTogether - Ändringar i min anmälan">My Nyander</a>#}
+                    {#                    </p>#}
+                    <p>Om du har några ändringar vänligen kontakta <a
+                            href="mailto:my.nyander@springconf.com?subject=Kunskapsveckan och GetTogether - Ändringar i min anmälan">my.nyander@springconf.com</a>
+                        så ska vi göra vårt bästa för att tillmötesgå dina behov.</p>
+
+                    {% if booking_info %}
+                        <div class="boende">
+                            <h2>Boende</h2>
+
+                            {% for booking in booking_info %}
+                                <div class="divider">
+                                    <p>Du har tilldelats ett <strong
+                                            class="hightlight">{{ booking.room_description }}</strong> på
+                                        hotellet
+                                        <strong class="hightlight">{{ booking.hotel_name }}</strong>.</p>
+
+                                    {% if booking.roombuddy %}
+                                        <p>Du kommer dela rum med
+
+                                            {% for buddy in booking.roombuddy %}
+
+
+                                                <a href="mailto:{{ buddy.email }}"
+                                                   class="hightlight">
+                                                    {{ buddy.firstname }} {{ buddy.lastname }} </a>
+                                                {% if not forloop.last %}
+                                                    ,
+                                                {% endif %}
+
+                                            {% endfor %}
+
+
+                                        </p>
+                                    {% endif %}
+
+                                    <p>Check in: <strong
+                                            class="hightlight">{{ booking.check_in | date:"Y-m-d" }}</strong>
+                                    </p>
+
+                                    <p>Check out: <strong
+                                            class="hightlight">{{ booking.check_out | date:"Y-m-d" }}</strong>
+                                    </p>
+                                </div>
+                            {% endfor %}
+
+
+
+                            <p class=""><em>Notera att om du har flera vistelser visas eventuellt endast ditt första
+                                datum
+                                för check in samt sista datum för check out.</em></p>
+                        </div>
+
+                    {% endif %}
+
+                    <div class="middagar">
+                        <h2>Middagar</h2>
+
+                        <p>Du har valt att äta middag följande dagar:</p>
+                        <ul class="hightlightUL">
+                            {% if dinners %}
+                                {% for dinner in dinners %}
+                                    <li>
+                                        <strong>{{ dinner.session.name }}</strong> {{ dinner.session.start | date:"H:i" }}-{{ dinner.session.end | date:"H:i" }}
+                                    </li>
+                                {% endfor %}
+                            {% else %}
+                                <li>Inga Middagar</li>
+                            {% endif %}
+
+
+                        </ul>
+                        {% if quesion_answer3 %}
+                            <p>Bordsnummer lördag kväll: <strong class="hightlight">{{ quesion_answer3 }}</strong></p>
+                        {% endif %}
+
+                        {% if answer %}
+                            <p>Vi har följande noteringar om matavvikelser: <strong
+                                    class="hightlight">{{ answer }}</strong></p>
+                        {% else %}
+                            <p>Vi har inga noteringar om matavvikelser.</p>
+                        {% endif %}
+
+                        <p class=""><em>Middagarna under GetTogether ingår i din anmälan men listas inte ovan.</em></p>
+                    </div>
+                </div>
+                <div class="col span_12 kurser">
+                    <h2>Kurser</h2>
+                    <table class="whiteTable">
+                        <thead>
+                        <tr>
+                            <th>Datum
+                            </th>
+                            <th>Kurs
+                            </th>
+                            <th>Lokal
+                            </th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% if courses %}
+                            {% for course in courses %}
+                                <tr>
+                                    <td>{{ course.session.start | date:"Y-m-d" }}
+                                        - {{ course.session.end | date:"Y-m-d" }} </strong>
+                                    </td>
+                                    <td>
+                                        <a href="javascript:void(0)" class="session-view"
+                                           data-id="{{ course.session.id }}">{{ course.session.name }}</a>
+                                    </td>
+                                    <td>{{ course.session.location.name }}
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        {% else %}
+                            <tr>
+                                <td colspan="3">Inga kurser</td>
+                            </tr>
+                        {% endif %}
+
+
+                        </tbody>
+                    </table>
+                </div>
+                <div class="col span_12 seminarier">
+                    <h2>Seminarier</h2>
+                    <table class="whiteTable">
+                        <thead>
+                        <tr>
+                            <th>Datum / Tid
+                            </th>
+                            <th>Seminarie
+                            </th>
+                            <th>Lokal
+                            </th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% if seminers %}
+                            {% for seminar in seminers %}
+                                <tr>
+                                    <td>{{ seminar.session.start | date:"Y-m-d" }}
+                                        <strong>{{ seminar.session.start | date:"H:i" }}
+                                            - {{ seminar.session.end | date:"H:i" }}</strong>
+                                    </td>
+                                    <td>
+                                        <a href="javascript:void(0)" class="session-view"
+                                           data-id="{{ seminar.session.id }}">{{ seminar.session.name }}</a>
+                                    </td>
+                                    <td>{{ seminar.session.location.name }}
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        {% else %}
+                            <tr>
+                                <td colspan="3">Inga seminarier</td>
+                            </tr>
+                        {% endif %}
+
+                        </tbody>
+                    </table>
+                </div>
+                <div class="col span_12 seminarier">
+                    <h2>Träning & aktiviteter</h2>
+                    <table class="whiteTable">
+                        <thead>
+                        <tr>
+                            <th>Datum / Tid
+                            </th>
+                            <th>Aktivitet
+                            </th>
+                            <th>Lokal
+                            </th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% if training_activities %}
+                            {% for seminar in training_activities %}
+                                <tr>
+                                    <td>{{ seminar.session.start | date:"Y-m-d" }}
+                                        <strong>{{ seminar.session.start | date:"H:i" }}
+                                            - {{ seminar.session.end | date:"H:i" }}</strong>
+                                    </td>
+                                    <td>
+                                        <a href="javascript:void(0)" class="session-view"
+                                           data-id="{{ seminar.session.id }}">{{ seminar.session.name }}</a>
+                                    </td>
+                                    <td>{{ seminar.session.location.name }}
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        {% else %}
+                            <tr>
+                                <td colspan="3">Inga träningspass eller aktiviteter valda</td>
+                            </tr>
+                        {% endif %}
+
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="col span_12 Aktivitet">
+                    <h2>Lördagsaktivitet</h2>
+                    {% if activities %}
+                        <p>Som lördagsaktivitet har du valt
+                            <strong class="hightlight">
+                                {% for activity in activities %}
+                                    <a href="javascript:void(0)" class="session-view"
+                                       data-id="{{ activity.session.id }}">{{ activity.session.name }}</a>
+                                    {% if not forloop.last %}
+                                        ,
+                                    {% endif %}
+                                {% endfor %}
+                            </strong>.
+                        </p>
+                    {% else %}
+                        <p>Ingen aktivitet vald för lördagen.</p>
+                    {% endif %}
+                </div>
+                {% if quesion_answer1 or quesion_answer2 %}
+                    <div class="col span_12">
+                        <h4>Gruppindelning</h4>
+                        {% if quesion_answer1 %}
+                            <p>Lokal lördag kl. 09:00: <strong class="hightlight">{{ quesion_answer1 }}</strong></p>
+                        {% endif %}
+                        {% if quesion_answer2 %}
+                            <p>Lokal lördag kl. 10:40: <strong class=" hightlight">{{ quesion_answer2 }}</strong></p>
+                        {% endif %}
+                    </div>
+
+                {% endif %}
+            </div>
+        </div>
+    </div><!-- mainContent -->
+
+    </div><!--wrapper-->
+    <script>
+        $(function () {
+            $('body').on('click', '.session-view', function (e) {
+                var session_id = $(this).attr('data-id');
+                console.log(session_id);
+                $('body #session-loader').show();
+                $.ajax({
+                    {#                    url: window.location.origin + '/gt/sessions/' + session_id + '/',#}
+                    url: window.location.origin + '/gt/session-detail-post/' + session_id + '/',
+                    type: "GET",
+                    success: function (result) {
+                        if (result.error) {
+                        } else {
+                            $.fancybox(result, {
+                                maxWidth: 1000,
+                                maxHeight: 800,
+                                fitToView: false,
+                                width: '100%',
+                                height: '100%',
+                                autoSize: false,
+                                closeClick: false,
+                                openEffect: 'fade',
+                                closeEffect: 'fade',
+                                openSpeed: 'slow',
+                                autoHeight: true
+                            });
+
+                        }
+                        $('body #session-loader').hide();
+
+                    }
+                });
+
+            });
+        })
+    </script>
+{% endblock %}

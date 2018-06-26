@@ -1,0 +1,100 @@
+{% extends "layout/main.html" %}
+{% block content %}
+    {% load staticfiles %}
+
+
+    <script>
+        init.push(function () {
+            $('#jq-datatables-example').dataTable({
+                "order": [[1, "desc"]]
+            });
+            $('#jq-datatables-example_wrapper .table-caption').html('<i class="fa fa-lg fa-download"></i>&nbsp;&nbsp;&nbsp;Download exported lists');
+            $('#jq-datatables-example_wrapper .dataTables_filter input').attr('placeholder', 'Search...');
+        });
+    </script>
+    <style>
+        {#        .input-sm {#}
+        {#            position: absolute;#}
+        {#            right: 10px;#}
+        {#            top: 15px;#}
+        {#        }#}
+        {#       .dataTables_length label{#}
+        {#           right: 10px;#}
+        {#       }#}
+    </style>
+
+    <div class="panel">
+        <div class="panel-heading">
+        <span class="panel-title">
+                Exported File List</span>
+        </div>
+        <div class="panel-body">
+            <div class="table-light">
+                <table cellpadding="0" cellspacing="0" border="0" class="table table-striped table-bordered"
+                       id="jq-datatables-example">
+                    <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Time</th>
+                        {% if request.session.admin_permission.content_permission.export_filter_permission and request.session.admin_permission.content_permission.export_filter_permission.access_level == 'write' or request.session.event_auth_user.type == 'super_admin' %}
+                            <th>Action</th>
+                        {% endif %}
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for file_name in file_list %}
+
+                        <tr>
+                            <td><a href="{% url 'downloadExportedFile' %}?export={{ file_name.Key }}"
+                                   target="_blank">{{ file_name.file_name }}</a></td>
+                            <td>{{ file_name.LastModified |date:'Y-m-d H:i:s' }}</td>
+                            {% if request.session.admin_permission.content_permission.export_filter_permission and request.session.admin_permission.content_permission.export_filter_permission.access_level == 'write' or request.session.event_auth_user.type == 'super_admin' %}
+                                <td>
+                                    <button class="btn btn-xs btn-danger btn-delete-from-s3"
+                                            data-id="{{ file_name.Key }}" data-toggle="delete"
+                                            data-placement="top"
+                                            title="" data-original-title="Delete">
+                                        <i class="dropdown-icon fa fa-times-circle"></i>
+                                    </button>
+                                </td>
+                            {% endif %}
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+                {% csrf_token %}
+            </div>
+        </div>
+    </div>
+
+    <script>
+        $(".btn-delete-from-s3").click(function () {
+            var $this = $(this);
+            bootbox.confirm("Are you sure you want to delete?", function (result) {
+                if (result) {
+                    var id = $this.attr('data-id');
+                    var csrf_token = $('input[name=csrfmiddlewaretoken]').val();
+                    $.ajax({
+                        url: base_url + '/admin/export_file/delete/',
+                        type: "POST",
+                        data: {
+                            key: id,
+                            csrfmiddlewaretoken: csrf_token
+                        },
+                        success: function (result) {
+                            if (result.error) {
+                                $.growl.error({message: result.error});
+                            } else {
+                                $.growl.notice({message: result.success});
+                                $this.closest('tr').remove();
+                            }
+                        }
+                    });
+                }
+            });
+        });
+    </script>
+    <!-- /11. $JQUERY_DATA_TABLES -->
+
+
+{% endblock %}

@@ -1,0 +1,479 @@
+<div id="filters-view-filter" class="modal fade" role="dialog" style="display: none;">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
+                <h4 class="modal-title">View Filter</h4>
+            </div>
+            <div class="modal-body">
+                <div class="panel colourable">
+                    <div class="panel-heading">
+                        <span class="panel-title filter-panel-title"></span>
+                    </div>
+                    <div class="panel-body tab-content">
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group no-margin-hr">
+                                    <label class="control-label">Filter Group</label>
+                                    <select class="form-control filter-question-selector" id="preset_filter_group"
+                                            name="group" data-id="" disabled>
+                                        {% for group in filterGroup %}
+                                            <option value="{{ group.id }}">{{ group.name|safe }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group no-margin-hr">
+                                    <label class="control-label">Preset Name</label>
+                                    <input type="text" id="preset_name" class="form-control" placeholder="Preset Name"
+                                           disabled>
+                                </div>
+                            </div>
+                        </div>
+                        <form class="form-inline">
+                            <div class="row">
+                                {% csrf_token %}
+                                <div class="form-group filter-nested-rule-form-group">
+                                    Match
+                                    <select class="form-control any-or-all" disabled>
+                                        <option value="1">Any</option>
+                                        <option value="2">All</option>
+                                    </select>
+                                    of the following rules:
+                                </div>
+                                <hr class="">
+
+                                <ul class="list-group filter-rule-list filter-list" id="filter-list">
+                                    {#            {% include 'attendee/filter_extra.html' %}#}
+                                </ul>
+                            </div>
+                        </form>
+                        <div id="filter-nested-html" style="display: none;">
+                            <li class="list-group-item filter-nested-rule filter-rule">
+                                <div class="form-group filter-nested-rule-form-group">
+                                    {#                <div class="btn-group btn-group-xs">#}
+                                    {#                    <button type="button" class="btn btn-add-rule"><span#}
+                                    {#                            class="icon fa fa-plus"></span></button>#}
+                                    {#                    <button type="button" class="btn btn-delete-nested-rule"><span#}
+                                    {#                            class="icon fa fa-minus"></span></button>#}
+                                    {#                </div>#}
+                                    <select class="form-control any-or-all" disabled>
+                                        <option value="1">Any</option>
+                                        <option value="2">All</option>
+                                    </select>
+                                    of the following are true
+                                </div>
+                                <button class="btn float-right btn-add-nested-rule" data-toggle="tooltip"
+                                        data-placement="bottom" title=""
+                                        data-original-title="Rules can be nested inside other rules to convey a more complex logical structure">
+                                    <span class="icon fa fa-plus"></span> &nbsp;Nested Rule
+                                </button>
+                                <ul class="list-group filter-rule-list filter-list">
+                                </ul>
+                            </li>
+                        </div>
+
+
+                        <div id="filter-li-html" style="display: none;">
+                            <li class="list-group-item filter-rule f-row">
+                                <div class="form-group">
+                                    {#                <div class="btn-group btn-group-xs">#}
+                                    {#                    <button type="button" class="btn btn-add-rule"><span#}
+                                    {#                            class="icon fa fa-plus"></span></button>#}
+                                    {#                    <button type="button" class="btn btn-delete-rule"><span#}
+                                    {#                            class="icon fa fa-minus"></span></button>#}
+                                    {#                </div>#}
+
+                                    <!-- rules (first column) -->
+                                    <select class="form-control rule" disabled>
+                                        <option data-target="second-1" value="1">Registration Date</option>
+                                        <option data-target="second-2" value="2">Registration status</option>
+                                        <option data-target="second-3" value="3">Attendee Group</option>
+                                        <option data-target="second-4" value="4">Attendee Tag</option>
+                                        <option data-target="second-5" value="5">Payment Status</option>
+                                        <option data-target="second-6" value="6">Session</option>
+                                        <option data-target="second-7" value="7">Question</option>
+                                        <option data-target="second-8" value="8">App</option>
+                                        <option data-target="second-9" value="9">Hotel</option>
+                                        <option data-target="second-10" value="10">Speaker</option>
+                                        <option data-target="second-11" value="11">Email</option>
+                                        <option data-target="second-12" value="12">Message</option>
+                                        <option data-target="second-13" value="13">Page</option>
+                                        <option data-target="second-14" value="14">Language</option>
+                                        <option data-target="second-15" value="15">Group Registration</option>
+                                    </select>
+                                    <!-- end rules (first column) -->
+
+                                    <!-- second column -->
+                                    <select class="form-control second second-1" disabled>
+                                        <option value="1">is</option>
+                                        <option value="2">is not</option>
+                                        <option value="3">is after</option>
+                                        <option value="4">is before</option>
+                                        <option value="5">is within the last</option>
+                                        <option value="6">is not within the last</option>
+                                        <option value="7">is between</option>
+                                    </select>
+
+
+                                    <select class="form-control second second-2" style="display: none;" disabled>
+                                        <option value="1">is</option>
+                                        <option value="2">is not</option>
+                                        <option value="3">is after</option>
+                                        <option value="4">is before</option>
+                                        <option value="5">is within the last</option>
+                                        <option value="6">is not within the last</option>
+                                        <option value="7">is between</option>
+                                    </select>
+
+
+                                    <select class="form-control second second-3" style="display: none;" disabled>
+                                        <option value="1">has</option>
+                                        <option value="2">has not</option>
+                                        <option value="3">is only</option>
+                                    </select>
+
+
+                                    <select class="form-control second second-4" style="display: none;" disabled>
+                                        <option value="1">has</option>
+                                        <option value="2">has not</option>
+                                        <option value="3">is only</option>
+                                    </select>
+
+
+                                    <select class="form-control second second-5" style="display: none;" disabled>
+                                        <option value="1">is</option>
+                                        <option value="2">is not</option>
+                                    </select>
+
+
+                                    <select class="form-control second second-6" style="display: none;" disabled>
+                                        <option value="1">Attending</option>
+                                        <option value="2">Not attending</option>
+                                        <option value="3">In Queue for</option>
+                                        <option value="4">Answer Pending</option>
+                                    </select>
+
+                                    <select class="form-control second second-7 filter-question-selector-1 question-dropdown"
+                                            style="display: none; width: 200px;" disabled>
+                                        {% for group in question_groups %}
+                                            <optgroup label="{{ group.name }}">
+                                                {% for question in group.questions %}
+                                                    <option value="{{ question.id }}" data-type="{{ question.type }}">
+                                                        {{ question.title }}
+                                                    </option>
+                                                {% endfor %}
+                                            </optgroup>
+                                        {% endfor %}
+                                    </select>
+                                    <select class="form-control second second-8" style="display: none;" disabled>
+                                        <option value="1">can receive push notification</option>
+                                        <option value="2">cannot receive push notification</option>
+
+                                    </select>
+
+                                    <select class="form-control second second-9" style="display: none;" disabled>
+                                        <option value="1">Description</option>
+                                        <option value="2">Check in</option>
+                                        <option value="3">Check out</option>
+                                        <option value="4">Amount of beds</option>
+                                        <option value="5">Occupancy</option>
+                                        <option value="6">Room Buddy status</option>
+
+                                    </select>
+
+                                    <select class="form-control second second-10" style="display: none;" disabled>
+                                        <option value="1">is Speaker</option>
+                                        <option value="2">is not Speaker</option>
+                                    </select>
+
+                                    <select class="form-control second second-11" style="display: none;" disabled>
+
+                                        {% for email in emails %}
+                                            <option value="{{ email.id }}">{{ email.name }}</option>
+                                        {% endfor %}
+                                    </select>
+
+                                    <select class="form-control second second-12" style="display: none;" disabled>
+                                        {% for message in messages %}
+                                            <option value="{{ message.id }}">{{ message.name }}</option>
+                                        {% endfor %}
+                                    </select>
+
+                                    <select class="form-control second second-13" style="display: none;" disabled>
+                                        {% for page in pages %}
+                                            <optgroup label="{{ page.url }}">
+                                                {% for button in page.buttons %}
+                                                    <option value="{{ button.id }}">
+                                                        {{ button.name }}
+                                                    </option>
+                                                {% endfor %}
+                                            </optgroup>
+                                        {% endfor %}
+                                    </select>
+
+                                    <select class="form-control second second-14" style="display: none;" disabled>
+                                        <option value="1">is</option>
+                                        <option value="2">is not</option>
+                                    </select>
+
+                                    <select class="form-control second second-15" style="display: none;" disabled>
+                                        <option value="1">is part of group registration</option>
+                                        <option value="2">is order owner</option>
+                                        <option value="3">number of attendees in group registration</option>
+                                    </select>
+                                    <select class="form-control second second-16" style="display:none;" disabled>
+                                        <option value="1">status</option>
+                                        <option value="2">creation date</option>
+                                        <option value="3">due date</option>
+                                        <option value="4">is part of multiple order</option>
+                                        <option value="5">has past due</option>
+                                        <option value="6">balance</option>
+                                        <option value="7">value</option>
+                                    </select>
+
+                                    <!-- end second column -->
+
+                                    <!-- third column -->
+                                    <div class="form-group third t-1">
+                                        <div class="input-group date filter-datepicker">
+                                            <input type="text" class="form-control" disabled><span
+                                                class="input-group-addon"><i
+                                                class="fa fa-calendar"></i></span>
+                                        </div>
+                                    </div>
+
+
+                                    <div class="form-group  third t-2" style="display: none;">
+                                        <input type="number" min="1" value="1" class="form-control filter-numberpicker"
+                                               disabled>
+                                        <select class="form-control" disabled>
+                                            <option value="1">days</option>
+                                            <option value="2">weeks</option>
+                                            <option value="3">months</option>
+                                        </select>
+                                    </div>
+
+
+                                    <div class="form-group test third t-3" style="display: none;">
+                                        <div class="input-daterange input-group filter-datepicker-range">
+                                            <input type="text" class="input-sm form-control" name="start"
+                                                   placeholder="Start date" disabled>
+                                            <span class="input-group-addon">and</span>
+                                            <input type="text" class="input-sm form-control" name="end"
+                                                   placeholder="End date" disabled>
+                                        </div>
+                                    </div>
+
+
+                                    <select class="form-control third third-2" style="display: none" disabled>
+                                        <option value="1" selected>Registered</option>
+                                        <option value="2">Pending</option>
+                                        <option value="3">Canceled</option>
+                                    </select>
+
+
+                                    <select class="form-control third third-3" style="display: none" disabled>
+                                        {% for group in attendee_groups %}
+                                            <option value="{{ group.id }}">{{ group.name }}</option>
+                                        {% endfor %}
+                                    </select>
+
+
+                                    <select class="form-control third third-4" style="display: none" disabled>
+                                        {% for tag in tags %}
+                                            <option value="{{ tag.id }}">{{ tag.name }}</option>
+                                        {% endfor %}
+                                    </select>
+
+
+                                    <select class="form-control third third-5" style="display: none" disabled>
+                                        <option value="1">not invoiced or paid</option>
+                                        <option value="2">invoiced - payment pending</option>
+                                        <option value="3">payment received</option>
+                                        <option value="4">canceled</option>
+                                    </select>
+
+
+                                    <select class="form-control filter-session-selector third third-6"
+                                            style="display: none" disabled>
+                                        {% for group in session_groups %}
+                                            <optgroup label="{{ group.name }}">
+                                                {% for session in group.sessions %}
+                                                    <option value="{{ session.id }}">{{ session.name }}</option>
+                                                {% endfor %}
+                                            </optgroup>
+                                        {% endfor %}
+                                    </select>
+                                    <select class="form-control filter-language-selector third third-7"
+                                            style="display: none" disabled>
+
+                                        {% for language in languages %}
+                                            <option value="{{ language.id }}">{{ language.preset_name }}</option>
+                                        {% endfor %}
+
+                                    </select>
+
+                                    <!-- for group registration start -->
+                                    <select class="form-control third third-8" style="display: none" disabled>
+                                        <option value="1">Yes</option>
+                                        <option value="2">No</option>
+                                    </select>
+
+                                    <select class="form-control third third-9" style="display: none" disabled>
+                                        <option value="1">Is</option>
+                                        <option value="2">Is not</option>
+                                        <option value="3">Is higher than</option>
+                                        <option value="4">Is lower than</option>
+                                    </select>
+                                    <div class="form-group third value-for-group-registration"
+                                         style="display: none">
+                                        <input type="number" min="0" value="" class="form-control answer-text" disabled>
+                                    </div>
+                                    <!-- for group registration end -->
+
+                                    <!-- question third column start -->
+
+                                    <select class="form-control third condition-1" style="display: none" disabled>
+                                        <option value="1">is</option>
+                                        <option value="2">is not</option>
+                                    </select>
+
+                                    {% for question_group in question_groups %}
+                                        {% for question in question_group.questions %}
+                                            {% if question.type != 'text' and question.type != 'textarea' %}
+                                                <select name="" class="form-control option-select qid-{{ question.id }}"
+                                                        id="option-select-{{ question.id }}"
+                                                        style="display: none;" disabled>
+                                                    {% for option in question.options %}
+                                                        <option value="{{ option.id }}">
+                                                            {{ option.option }}
+                                                        </option>
+                                                    {% endfor %}
+                                                </select>
+                                            {% endif %}
+                                        {% endfor %}
+                                    {% endfor %}
+
+                                    <select class="form-control third condition-2" style="display: none" disabled>
+                                        <option value="1">contains</option>
+                                        <option value="2">does not contain</option>
+                                        <option value="3">is</option>
+                                        <option value="4">is not</option>
+                                        <option value="5">starts with</option>
+                                        <option value="6">ends with</option>
+                                        <option value="7">is Empty</option>
+                                        <option value="8">is not Empty</option>
+                                    </select>
+                                    <select class="form-control third condition-3" style="display: none" disabled>
+                                        <option value="1">is</option>
+                                        <option value="2">is not</option>
+                                    </select>
+
+                                    <select class="form-control third condition-4" style="display: none" disabled>
+                                        <option value="1">is</option>
+                                        <option value="2">is not</option>
+                                        <option value="3">is higher than</option>
+                                        <option value="4">is lower than</option>
+                                    </select>
+                                    <select class="form-control third condition-5" style="display: none" disabled>
+                                        <option value="1">is</option>
+                                        <option value="2">is not</option>
+                                        <option value="3">is after</option>
+                                        <option value="4">is before</option>
+                                        <option value="5">is within the last</option>
+                                        <option value="6">is not within the last</option>
+                                        <option value="7">is between</option>
+                                    </select>
+                                    <select class="form-control third condition-6" style="display: none" disabled>
+                                        <option value="1">has received</option>
+                                        <option value="2">has not received</option>
+                                    </select>
+                                    <select class="form-control third condition-7" style="display: none" disabled>
+                                        <option value="1">is submitted</option>
+                                        <option value="2">is not submitted</option>
+                                        <option value="3">submitted</option>
+                                        <option value="4">submitted more than</option>
+                                        <option value="5">submitted less than</option>
+                                    </select>
+
+                                    <div class="form-group third answer-text-container" style="display: none">
+                                        <input type="text" value="" class="form-control answer-text" disabled>
+                                    </div>
+                                    <div class="form-group third answer-number-container"
+                                         style="display: none">
+                                        <input type="number" min="0" value="" class="form-control answer-text" disabled>
+                                    </div>
+                                    <div class="form-group  third matched-unmatched" style="display: none;">
+
+                                        <select class="form-control" disabled>
+                                            <option value="1">Matched</option>
+                                            <option value="2">Not matched</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group  third hotel-group" style="display: none;">
+                                        <select class="form-control" disabled>
+                                            {% for data in hotelGroups %}
+                                                <optgroup label="{{ data.name }}">
+                                                    {% for room in data.rooms %}
+                                                        <option value="{{ room.id }}">{{ room.hotel.name }}-{{ room.description }}</option>
+                                                    {% endfor %}
+                                                </optgroup>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                    <div class="form-group third date-div" style="display: none">
+                                        <div class="form-group forth tt-1">
+                                            <div class="input-group date filter-datepicker">
+                                                <input type="text" class="form-control" disabled><span
+                                                    class="input-group-addon"><i
+                                                    class="fa fa-calendar"></i></span>
+                                            </div>
+                                        </div>
+
+
+                                        <div class="form-group  forth tt-2" style="display: none;">
+                                            <input type="number" min="1" value="1"
+                                                   class="form-control filter-numberpicker" disabled>
+                                            <select class="form-control" disabled>
+                                                <option value="1">days</option>
+                                                <option value="2">weeks</option>
+                                                <option value="3">months</option>
+                                            </select>
+                                        </div>
+
+
+                                        <div class="form-group test forth tt-3" style="display: none;">
+                                            <div class="input-daterange input-group filter-datepicker-range">
+                                                <input type="text" class="input-sm form-control"
+                                                       name="start"
+                                                       placeholder="Start date" disabled>
+                                                <span class="input-group-addon">and</span>
+                                                <input type="text" class="input-sm form-control" name="end"
+                                                       placeholder="End date" disabled>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <select class="form-control forth forth-16" style="display: none" disabled>
+                                        <option value="1">Open</option>
+                                        <option value="2">Pending</option>
+                                        <option value="3">Paid</option>
+                                        <option value="4">Cancelled</option>
+                                    </select>
+                                    <div class="form-group forth page-input-div" style="display: none">
+                                        <input type="number" min="0" class="form-control" disabled><span> times</span>
+                                    </div>
+                                </div>
+
+                                <!-- question third column end -->
+                                <!-- end third column -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- / .modal-content -->
+    </div>
+    <!-- / .modal-dialog -->
+</div>

@@ -1,0 +1,222 @@
+<div class="form-plugin element form-plugin-multiple-registration box"
+     {% if data_user_id %}id="page-{{ page_id }}-box-{{ box_id }}-u-{{ data_user_id }}" data-uid="{{ data_user_id }}"
+     {% else %}id="page-{{ page_id }}-box-{{ box_id }}"{% endif %}
+     data-id="{{ element_id }}"
+     data-name="multiple-registration" data-page-id="{{ page_id }}" data-attendee-page="{{ attendee_page }}"
+     data-min-attendees="{{ min_attendees }}" data-max-attendees="{{ max_attendees }}"
+     data-default-attendees="{{ total_attendees }}">
+    <div class="form-plugin-intro">
+        {{ message|safe }}
+    </div>
+    {% if display_form == 'loop' %}
+        <div class="loop-registration-form">
+            <div class="form-question">
+                <button class="form-plugin-button form-plugin-multiple-registration-add-attendee-button" {% if max_attendees  <= attendees_without_owner %}style="display: none;" {% endif %}>{{ language.langkey.multiple_registration_add_attendee }}
+                </button>
+                <label class="form-question-label form-plugin-multiple-registration-current-count">{{ language.langkey.multiple_registration_current_no_of_attendees }}:
+                    <span class="form-plugin-multiple-registration-current-count-number">{{ total_attendees }}</span></label>
+            </div>
+            <div class="form-question">
+                <div class="scroll-x">
+                    <table class="form-plugin-multiple-registration-attendee-table lines">
+                        <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>{{ language.langkey.multiple_registration_group_column }}</th>
+                            {% for column in columns %}
+                                <th data-column-id="{{ column.id }}">{{ column.title }}</th>
+                            {% endfor %}
+                            <th>{{ language.langkey.multiple_registration_actions_column }}</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr class='default-empty-attendee' style="display: none">
+                            <td></td>
+                            <td class="not-yet-registered">{{ language.langkey.multiple_registration_not_yet_registered }}</td>
+                            {% for column in columns %}
+                                <td data-column-id="{{ column.id }}"></td>
+                            {% endfor %}
+                            <td>
+                                <button class="form-plugin-button form-plugin-multiple-registration-edit-attendee-button small">
+                                    {{ language.langkey.multiple_registration_edit_button }}
+                                </button>
+                                <button class="form-plugin-button form-plugin-multiple-registration-delete-attendee-button small">
+                                    {{ language.langkey.multiple_registration_delete_button }}
+                                </button>
+                            </td>
+                        </tr>
+
+                        <tr class="active" data-multiple-attendee-id="{{ owner_data.id }}">
+
+                            <td>{% if number_of_attendees == 'include-owner' %}1{% else %}
+                                {{ language.langkey.multiple_registration_text_order_owner }}{% endif %}</td>
+                            <td>{{ group_name }}</td>
+                            {% for att in owner_data.attr %}
+                                <td class="{{ att.question }}"
+                                    data-column-id="{{ att.question_id }}">{{ att.answer|safe }}</td>
+                            {% endfor %}
+                            <td>
+                                <button class="form-plugin-button form-plugin-multiple-registration-edit-attendee-button small"
+                                        data-id="{{ owner_data.id }}" data-owner-idz4Vv3ZLs3R="{{ owner_data.id }}">
+                                    {{ language.langkey.multiple_registration_edit_button }}
+                                </button>
+                            </td>
+
+                        </tr>
+
+                        {% for attendee in attendee_datas %}
+                            <tr data-multiple-attendee-id="{{ attendee.id }}">
+                                <td>{% if number_of_attendees == 'include-owner' %}
+                                    {{ forloop.counter|add:1 }}{% else %}
+                                    {{ forloop.counter }}{% endif %}</td>
+                                {% if is_owner %}
+                                    <td>{{ group_name }}</td>{% else %}
+                                    <td class="not-yet-registered">{{ language.langkey.multiple_registration_not_yet_registered }}</td>{% endif %}
+                                {% for att in attendee.attr %}
+                                    <td class="{{ att.question }}"
+                                        data-column-id="{{ att.question_id }}">{{ att.answer|safe }}</td>
+                                {% endfor %}
+                                <td>
+                                    <button class="form-plugin-button form-plugin-multiple-registration-edit-attendee-button small"
+                                            data-id="{{ attendee.id }}" data-attendee-idz4Vv3ZLs3R="{{ attendee.id }}">
+                                        {{ language.langkey.multiple_registration_edit_button }}
+                                    </button>
+                                    {% if attendee.status == 'pending' %}
+                                        <button class="form-plugin-button form-plugin-multiple-registration-delete-attendee-button small"
+                                                data-id="{{ attendee.id }}"
+                                                data-attendee-del-idz4Vv3ZLs3R="{{ attendee.id }}">
+
+                                            {{ language.langkey.multiple_registration_delete_button }}
+                                        </button>
+                                    {% endif %}
+
+                                </td>
+                            </tr>
+                        {% endfor %}
+
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="form-plugin-list form-plugin-multiple-registration-attendee-forms">
+                <h3 class="form-plugin-multiple-registration-form-header">
+                    {% if not is_owner %}{{ language.langkey.multiple_registration_text_order_owner }}{% endif %}</h3>
+                <div class="form-plugin-item form-plugin-multiple-registration-form">
+                    {% if not is_owner %}
+                        <!--This is where the form starts-->
+                        {{ owner_page|safe }}
+                        <!--This is where the form ends-->
+                    {% endif %}
+                </div>
+                {#                <div class="form-plugin-item form-plugin-multiple-registration-attendee-form">#}
+                {#                    <!--This is where the form starts-->#}
+                {#                    <h3>{Attendee form}</h3>#}
+                {#                    <!--This is where the form ends-->#}
+                {#                </div>#}
+            </div>
+        </div>
+    {% else %}
+        <div class="inline-registration-form">
+            <div class="form-question">
+                <button class="form-plugin-button form-plugin-multiple-registration-add-attendee-button-inline" {% if max_attendees  <= attendees_without_owner %}style="display: none;" {% endif %}>{{ language.langkey.multiple_registration_add_attendee }}
+                </button>
+                <label class="form-question-label form-plugin-multiple-registration-current-count">{{ language.langkey.multiple_registration_current_no_of_attendees }}:
+                    <span class="form-plugin-multiple-registration-current-count-number-inline">{{ total_attendees }}</span></label>
+            </div>
+            <div class="form-plugin-list form-plugin-multiple-registration-attendee-forms-inline">
+                <div class="form-plugin-item form-plugin-multiple-registration-order-owner-form"
+                     inline-data-owner-idz4Vv3ZLs3R="{{ owner_data.id }}"
+                     data-include-ownerz4Vv3ZLs3R="{% if number_of_attendees == 'include-owner' %}1{% else %}0{% endif %}">
+                    <div class="form-plugin-item-information">
+                        <label class="form-question-label form-plugin-multiple-registration-form-information">
+                            {% if number_of_attendees == 'include-owner' %}
+                                {{ language.langkey.multiple_registration_text_attendee }}
+                                <span class="form-plugin-multiple-registration-form-information-number">1 / {{ total_attendees }}</span>
+                                <span class="order-owner-title">({{ language.langkey.multiple_registration_text_order_owner }})</span>{% else %}
+                                {{ language.langkey.multiple_registration_text_order_owner }}{% endif %}
+                        </label>
+                    </div>
+                    <!--This is where the form starts-->
+                    {{ owner_page|safe }}
+                    <!--This is where the form ends-->
+                </div>
+                {% for attendee_html in multiple_attendee_html %}
+                    <div class="form-plugin-item form-plugin-multiple-registration-attendee-form-inline"
+                         inline-data-attendee-idz4Vv3ZLs3R="{{ attendee_html.user_id }}">
+                        <div class="form-plugin-item-information">
+                            <label class="form-question-label form-plugin-multiple-registration-form-information">{{ language.langkey.multiple_registration_text_attendee }}
+                                <span class="form-plugin-multiple-registration-form-information-number">{% if number_of_attendees == 'include-owner' %}
+                                    {{ forloop.counter|add:1 }}{% else %}
+                                    {{ forloop.counter }}{% endif %} / {{ total_attendees }}</span></label>
+                            {% if attendee_html.status == 'pending' %}
+                                <button class="form-plugin-button form-plugin-multiple-registration-delete-attendee-button-from-inline small"
+                                        inline-data-attendee-del-idz4Vv3ZLs3R="{{ attendee_html.user_id }}">
+                                    {{ language.langkey.multiple_registration_delete_button }}
+                                </button>
+                            {% endif %}
+
+                        </div>
+                        <!--This is where the form starts-->
+                        {{ attendee_html.html|safe }}
+                        <!--This is where the form ends-->
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    {% endif %}
+    <div class="error-validating">{{ language.langkey.multiple_registration_validation_fail }}</div>
+</div>
+<input id="attendee_answer_serialize" type="hidden" value="{{ attendee_answer }}">
+<input id="order_owner_text" type="hidden" value="{{ language.langkey.multiple_registration_text_order_owner }}">
+<input id="attendee_text" type="hidden" value="{{ language.langkey.multiple_registration_text_attendee }}">
+<style>
+    tr.active {
+        color: #3c763d;
+        background-color: #dff0d8;
+        border-color: #d6e9c6;
+    }
+</style>
+<script>
+    {{ owner_filter|safe }}
+    $(function () {
+        $(window).on('beforeunload', function () {
+            delete_temporary();
+            return;
+        });
+        if($('.temporary_attendee_expire_time').length) {
+            temporary_attendee_expire_time = $('.temporary_attendee_expire_time').val();
+            setTimeout(function () {
+                delete_temporary();
+                $("<div></div>").html($('.notify_attendee_registration_time_expire').val()).dialog({
+                    modal: true,
+                    resizable: false,
+                    width: 'auto',
+                    buttons: {
+                        "OK" : function () {
+                            location.reload();
+                        }
+                    }
+                });
+            },temporary_attendee_expire_time);
+        }
+    });
+
+    function delete_temporary() {
+        $.ajax({
+            url: base_url + '/delete-temporary-attendee-session/',
+            type: "POST",
+            data: {
+                csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val()
+            },
+            success: function (response) {
+                if (response.result) {
+                    console.log(response.message);
+                } else {
+                    console.log(response.message);
+                }
+            }
+        });
+    }
+</script>

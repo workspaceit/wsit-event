@@ -1,0 +1,120 @@
+{% extends "layout/main.html" %}
+{% block content %}
+    <br>
+    <br>
+    {% if not_found %}
+        <h3>&nbsp;Import not found</h3>
+    {% else %}
+        {% if header_error %}
+            <div class="panel-body tab-content">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Incorrect header</th>
+                            <th>Available header</th>
+                            <th>Message</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for error in errors %}
+                            <tr>
+                                <td>{{ error.incorrect_header }}</td>
+                                <td>{{ error.available_headers }}</td>
+                                <td>{{ error.message }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                <form action="{% url 'importAction' %}" method="POST">
+                    {% csrf_token %}
+                    <input type="hidden" name="icr_id" value="{{ icr.id }}">
+                    <input type="submit" name="action" value="Cancel">
+                </form>
+            </div>
+        {% elif deciding_attendees %}
+            <div class="panel-body tab-content">
+            <h4>Chose attendee from duplicate email.</h4>
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Email</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for attendees in deciding_attendees %}
+                            {% for attendee in attendees %}
+                                <tr>
+                                    <td><input type="radio" value="{{ attendee.id }}" class="import-deciding-attendees" name="email-{{ attendee.email }}" id="identifier-{{ forloop.parentloop.counter }}{{ forloop.counter }}">
+                                    &nbsp;<label style="" for="identifier-{{ forloop.parentloop.counter }}{{ forloop.counter }}">{{ attendee.name }}</label></td>
+                                    <td>{{ attendee.email }}</td>
+                                </tr>
+                            {% endfor %}
+                            <tr><td>&nbsp;</td><td>&nbsp;</td></tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                <form action="{% url 'importAction' %}" method="POST">
+                    {% csrf_token %}
+                    <input type="hidden" class="ignored_attendees" name="ignored_attendees" value="{{ ignored_attendees }}">
+                    <input type="hidden" name="icr_id" value="{{ icr.id }}">
+                    <input type="submit" name="action" value="Proceed">
+                    <input style="margin-left: 26em;" type="submit" name="action" value="Cancel">
+                </form>
+            </div>
+            <script>
+                $(function () {
+                    $(".import-deciding-attendees").on("change", function () {
+                        var ignored_attendees = [];
+                        $(".import-deciding-attendees").each(function () {
+                            if (!$(this).prop('checked')){
+                                ignored_attendees.push($(this).val());
+                            }
+                        });
+                        $(".ignored_attendees").val(JSON.stringify(ignored_attendees));
+                    })
+                })
+            </script>
+        {% else %}
+            <div class="panel-body tab-content">
+            {% if errors %}
+                <table class="table table-bordered">
+                    <thead>
+                    <tr>
+                        <th>Attendee</th>
+                        <th>Type</th>
+                        <th>Name</th>
+                        <th>Reason</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for error in errors %}
+                        <tr>
+                            <td>{{ error.0.attendee }}</td>
+                            <td>{{ error.0.type}}</td>
+                            <td>{{ error.0.name}}</td>
+                            <td>{{ error.0.reason }}</td>
+
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+
+                {% if icr.id %}
+                    <form action="{% url 'importAction' %}" method="POST">
+                        {% csrf_token %}
+                        <input type="hidden" name="icr_id" value="{{ icr.id }}">
+                        <input type="hidden" name="import_change_status_id" value="{{ import_change_status_id }}">
+                        <input type="submit" name="action" value="Continue Without Error">
+                        <input type="submit" name="action" value="Cancel">
+                    </form>
+                {% endif %}
+            {% endif %}
+
+            {% if success %}
+                {{ success }}
+            {% endif %}
+        </div>
+        {% endif %}
+    {% endif %}
+{% endblock %}

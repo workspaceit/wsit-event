@@ -1,0 +1,31 @@
+{% for booking in unmatched_bookings %}
+    {% if booking.buddies.all %}
+        {% for buddy in booking.buddies.all %}
+            <tr>
+                <td><input type="checkbox" class="match_checkbox"
+                           data-id="{{ booking.id }}"></td>
+                <td class="userInfo"
+                    data-id="{{ booking.attendee.id }}">{{ booking.attendee.firstname }} {{ booking.attendee.lastname }}</td>
+                <td>
+                    {% if buddy.exists == 1 %}
+                        {{ buddy.buddy.firstname }} {{ buddy.buddy.lastname }}
+                    {% else %}
+                        {{ buddy.email }}
+                    {% endif %}
+                </td>
+                <td>{{ booking.check_in }}</td>
+                <td>{{ booking.check_out }}</td>
+            </tr>
+        {% endfor %}
+    {% else %}
+        <tr>
+            <td><input type="checkbox" class="match_checkbox" data-id="{{ booking.id }}">
+            </td>
+            <td class="userInfo"
+                data-id="{{ booking.attendee.id }}">{{ booking.attendee.firstname }} {{ booking.attendee.lastname }}</td>
+            <td></td>
+            <td>{{ booking.check_in }}</td>
+            <td>{{ booking.check_out }}</td>
+        </tr>
+    {% endif %}
+{% endfor %}

@@ -1,0 +1,10 @@
+{% for group in question_groups %}
+    <optgroup label="{{ group.name|safe }}">
+        {% for question in group.questions %}
+            <option value="{{ question.id }}"
+                    data-type="{{ question.type }}">
+                {{ question.title }}
+            </option>
+        {% endfor %}
+    </optgroup>
+{% endfor %}

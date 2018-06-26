@@ -1,0 +1,12 @@
+{% load staticfiles %}
+{% csrf_token %}
+{{ page_content|safe }}
+<script>
+    $(function () {
+        $('body').attr('id', 'elements');
+        $('body').addClass('edit');
+    });
+</script>
+<script src="{% static 'assets/javascripts/filter_logic.js' %}"></script>
+<script src="{% static 'assets/javascripts/filter-cms.js' %}"></script>
+<script src="{% static 'assets/javascripts/country-list.js' %}"></script>

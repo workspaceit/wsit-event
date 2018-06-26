@@ -1,0 +1,14 @@
+<div class="form-plugin-item form-plugin-multiple-registration-attendee-form-inline"
+     inline-data-attendee-idz4Vv3ZLs3R="{{ user_id }}">
+    <div class="form-plugin-item-information">
+        <label class="form-question-label form-plugin-multiple-registration-form-information">{{ language.langkey.multiple_registration_text_attendee }}
+            <span class="form-plugin-multiple-registration-form-information-number"> {{ total_attendees }} / {{ total_attendees }}</span></label>
+        <button class="form-plugin-button form-plugin-multiple-registration-delete-attendee-button-from-inline small"
+                inline-data-attendee-del-idz4Vv3ZLs3R="{{ user_id }}">
+            {{ language.langkey.multiple_registration_delete_button }}
+        </button>
+    </div>
+    <!--This is where the form starts-->
+    {{ html|safe }}
+    <!--This is where the form ends-->
+</div>

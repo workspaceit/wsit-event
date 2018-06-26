@@ -1,0 +1,197 @@
+<div id="seminars-view-seminar" class="modal fade" tabindex="-1" role="dialog" style="display: none;">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
+                <h4 class="modal-title">View Seminar</h4>
+            </div>
+            <div class="modal-body">
+                <form action="" id="add-session-form">
+                    <input type="hidden" id="session-id" disabled/>
+
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group no-margin-hr">
+                                <label class="control-label">Name</label>
+                                <input type="text" id="name" name="name" class="form-control" placeholder="Name"
+                                       disabled>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group no-margin-hr">
+                                <label class="control-label">Seminar Group</label>
+                                <select class="form-control filter-question-selector" id="group" name="group" data-id=""
+                                        disabled>
+                                    <optgroup label="Session">
+                                        {% for group in session_groups %}
+                                            <option value="{{ group.id }}">{{ group.name|safe }}</option>
+                                        {% endfor %}
+                                    </optgroup>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- row -->
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <label class="control-label">Description</label>
+                            <div class="froala-editor-div">
+                            <textarea id="froala_content_editor"
+                                      name="froala_content_editor"></textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group no-margin-hr">
+                                <label class="control-label">Starts</label>
+
+                                <div class="input-group date datepicker-start">
+                                    <input type="text" id="start-date" name="start-date" class="form-control"
+                                           disabled><span
+                                        class="input-group-addon"><i
+                                        class="fa fa-calendar"></i></span>
+                                </div>
+                                <br/>
+
+                                <div class="input-group date">
+                                    <input type="text" id="start-time" name="start-time"
+                                           class="form-control timepicker-start" disabled><span
+                                        class="input-group-addon"><i class="fa fa-clock-o"></i></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group no-margin-hr">
+                                <label class="control-label">Ends</label>
+
+                                <div class="input-group date datepicker-end">
+                                    <input type="text" id="end-date" name="end-date" class="form-control" disabled><span
+                                        class="input-group-addon"><i
+                                        class="fa fa-calendar"></i></span>
+                                </div>
+                                <br/>
+
+                                <div class="input-group date">
+                                    <input type="text" id="end-time" name="end-time"
+                                           class="form-control timepicker-end" disabled><span
+                                        class="input-group-addon"><i class="fa fa-clock-o"></i></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- row -->
+
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group no-margin-hr">
+                                <label class="control-label">Open for Registration Between</label>
+
+                                <div class="input-group date datepicker-registration-available">
+                                    <input type="text" id="reg-between-start" name="reg-between-start"
+                                           class="form-control" placeholder="First day" disabled>
+                                    <span class="input-group-addon">and</span>
+                                    <input type="text" id="reg-between-end" name="reg-between-end" class="form-control"
+                                           placeholder="Last day" disabled>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    <label class="control-label">Max #Attendees</label>
+                                    <input type="number" id="max-attendees" name="max-attendees" class="form-control"
+                                           disabled>
+                                </div>
+                                {#                                <div class="col-sm-2">#}
+                                {#                                </div>#}
+
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    <label class="control-label">Attendees are Allowed to Queue</label>
+
+                                    <div class="checkbox">
+                                        <label>
+                                            <input type="checkbox" id="allow-attendees-queue"
+                                                   name="allow-attendees-queue" class="px" disabled>
+                                            <span class="lbl">Yes</span>
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-4">
+                                    <label class="control-label">Don't Show on Evaluation</label>
+
+                                    <div class="checkbox">
+                                        <label>
+                                            <input type="checkbox" id="not-show-evaluation" name="not-show-evaluation"
+                                                   class="px" disabled>
+                                            <span class="lbl">Yes</span>
+                                        </label>
+                                    </div>
+                                </div>
+
+
+                                <div class="col-sm-4">
+                                    <div class="checkbox" style="margin-top: 10px;">
+                                        <label style="float: left;font-weight: 600;">
+                                            <input type="checkbox" class="receive-no-answer px"
+                                                   name="receive-no-answer" disabled>
+                                            <span class="lbl color3">Attendee Can Choose Not to Participate</span>
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-4">
+                                    <div class="checkbox" style="margin-top: 10px;">
+                                        <label style="float: left;font-weight: 600;">
+                                            <input type="checkbox" class="allow-overlapping px"
+                                                   name="allow-overlapping" id="allow-overlapping" disabled>
+                                            <span class="lbl color3">Allow Overlapping Sessions</span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <!-- row -->
+
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <label class="control-label">Location</label>
+                            <select id="location" name="location" class="form-control filter-question-selector"
+                                    disabled>
+                                {% for group in locationGroup %}
+                                    <optgroup label="{{ group.name|safe }}">
+                                        {% for location in group.locations %}
+                                            <option value="{{ location.id }}">{{ location.name }}</option>
+                                        {% endfor %}
+                                    </optgroup>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="col-sm-6">
+                            <label class="control-label">Speakers</label>
+                            <input id="speakers" name="speakers" class="add-speakerss form-control" disabled>
+                        </div>
+                    </div>
+                    <!-- row -->
+
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <label class="control-label">Tags</label>
+                            <input id="tags" name="tags" class="add-tags form-control" disabled>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <!-- / .modal-content -->
+    </div>
+    <!-- / .modal-dialog -->
+</div>
+<!-- / .modal -->
+<!-- / Large modal -->

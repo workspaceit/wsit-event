@@ -1,0 +1,146 @@
+{% extends "layout/main.html" %}
+{% block content %}
+    {% load i18n %}
+    {% load staticfiles %}
+    {% block extra_head %}
+        <script src="{% static 'assets/javascripts/dt_checkpoint.js' %}"></script>
+        <script type="text/javascript">
+{#            var ATTENDEE_LIST_JSON_URL = '{% url "attendeeList" %}';#}
+            var ATTENDEE_LIST_JSON_URL = '{% url "getcheckpointattendee" %}';
+            // translations for datatables
+
+            var dt_language = {
+                "emptyTable": "{% trans "No data available in table" %}",
+                "info": "{% trans "Showing _START_ to _END_ of _TOTAL_ entries" %}",
+                "infoEmpty": "{% trans "Showing 0 to 0 of 0 entries" %}",
+                "infoFiltered": "{% trans "(filtered from _MAX_ total entries)" %}",
+                "infoPostFix": "",
+                "thousands": ",",
+                "lengthMenu": "{% trans "Show _MENU_ entries" %}",
+                "loadingRecords": "{% trans "Loading..." %}",
+                "processing": "{% trans "Processing..." %}",
+                "search": "{% trans "Search:" %}",
+                "zeroRecords": "{% trans "No matching records found" %}",
+                "paginate": {
+                    "first": "{% trans "First" %}",
+                    "last": "{% trans "Last" %}",
+                    "next": "{% trans "Next" %}",
+                    "previous": "{% trans "Previous" %}"
+                },
+                "aria": {
+                    "sortAscending": "{% trans ": activate to sort column ascending" %}",
+                    "sortDescending": "{% trans ": activate to sort column descending" %}"
+                }
+            }
+        </script>
+        <style>
+        .input-sm{
+            margin-left: 10px;
+        }
+        #main-wrapper{
+            padding-left: 0px !important;
+        }
+        #main-navbar{
+            display: none !important;
+        }
+        #main-menu{
+            display: none !important;
+        }
+        #content-wrapper{
+            padding: 0px !important;
+        }
+        #main-menu-bg{
+            width:0px !important;
+        }
+        </style>
+    {% endblock %}
+    <div id="content-wrapper">
+        <input type="hidden" id="search_key" value="{{ search_key }}"/>
+        <input type="hidden" value="{{ show_entries }}" id="show_entries_checkpoint">
+        <input type="hidden" value="{{ sorted_column }}" id="sorted_column_checkpoint">
+        <input type="hidden" value="{{ sorting_order }}" id="sorting_order_checkpoint">
+
+        <div class="panel colourable">
+            <div class="panel-heading">
+            <span class="panel-title"><i class="fa fa-lg fa-exchange"></i></i>
+                &nbsp;&nbsp;&nbsp;<strong>Checkpoint View</strong></span>
+{#                                <span style="float:right"><img style="display:none" height="25px"#}
+{#                                                               src="{% static 'public/images/712.GIF' %}" id="loader"#}
+{#                                                               alt=""/>#}
+{#                                    <input type="text" name="search_key_checkpoint"#}
+{#                                           id="search_key_checkpoint"/></span>#}
+            </div>
+            <!-- / .panel-heading -->
+            <div class="panel-body tab-content">
+                <input type="hidden" id="checkpoint_id" value="{{ checkpoint.id }}">
+                <div class="row">
+                        <div class="col-sm-6">
+                            <h3>{{ checkpoint.name }}</h3>
+                            <big>
+                                <span class="chkpnt-checked-text">{{ checkpoint.checked }}</span> checked <span class="chkpnt-percentage-text">({{ checkpoint.percentage|floatformat:-2 }}%)</span><br>
+                                <span class="chkpnt-remaining-text">{{ checkpoint.remaining }}</span> remaining <br>
+                                <span class="chkpnt-max-text">{{ checkpoint.max }}</span> total
+                            </big>
+                            <div><button class="checkpoint-update-stat">Update</button></div>
+                        </div>
+                        <div class="col-sm-6">
+                            Last action
+                            <h3>
+                                <div id="last_check">
+                                    <p>
+                                        <span id="last_check_firstname">{{ last_scan.attendee.firstname }}</span>
+                                        <span id="last_check_lastname">{{ last_scan.attendee.lastname }}</span>
+                                    </p>
+                                    {% if last_scan %}
+                                        {% if last_scan.status %}
+                                            <i class="fa fa-thumbs-up" aria-hidden="true" style="font-size: 3em; color: #00C851;"></i>
+                                        {% else %}
+                                            <i class="fa fa-star-o" aria-hidden="true" style="font-size: 3em; color: #ffbb33;"></i>
+                                        {% endif %}
+                                    {% else %}
+                                        <i class="fa fa-ban" aria-hidden="true" style="font-size: 3em; color: #ff4444;"></i>
+                                    {% endif %}
+                                </div>
+                                <div id="last_check_error" style="display: none;">
+                                    <p></p>
+                                    <i class="fa fa-ban" aria-hidden="true" style="font-size: 3em; color: #ff4444;"></i>
+                                </div>
+
+                            </h3>
+                        </div>
+                    </div>
+
+                <div class="tab-pane fade in active" id="attendee-search">
+                    <table cellpadding="0" cellspacing="0" border="0"
+                           class="datatable table table-striped table-bordered links"
+                           id="filter-search-table" style="display: none;">
+                        <thead>
+                        <tr>
+                            <th>Status</th>
+                            <th>ID</th>
+
+                            {% for gen_qus in general_questions %}
+                                    <th data-id="{{ gen_qus.id }}"> {{ gen_qus.title|slice:"20" }}</th>
+                            {% endfor %}
+
+                            {% for q_group in questionGroup %}
+                                    <th data-id="{{ q_group.id }}"> {{ q_group.title|slice:"20" }}</th>
+                            {% endfor %}
+                            <th>Action</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+                {% include 'attendee/filters.html' %}
+                <div class="tab-pane fade" id="filter-visible-columns">
+                    Visible Columns
+                </div>
+            </div>
+
+        </div>
+    </div> <!-- / #content-wrapper -->
+    <input type='hidden' id="attendee_session_list" name='' value='[]'/>
+    <input type='hidden' id="attendee_travel_list" name='' value='[]'/>
+{% endblock %}

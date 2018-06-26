@@ -1,0 +1,77 @@
+{% load thousand_filter %}
+{% if balance_tables %}
+<div class="economy-balance-table">
+    <h3>Balance Table</h3>
+    {% for balance_table in balance_tables %}
+        <div class="form-question">
+            <div class="scroll-x">
+                <table class="table table-bordered">
+                    <thead>
+                    <tr>
+                        <th>Order Number: <span style="font-weight:normal;">{{ balance_table.order_number }}</span></th>
+                        <th>Cost Excl. vat</th>
+                        <th>Cost Incl. vat</th>
+                        <th>Date and Time</th>
+                        <th>Download</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>Invoice Created</td>
+                        <td>{{ balance_table.invoice_created.cost_excl_vat|floatformat:"-2"|format_thousands }}</td>
+                        <td>{{ balance_table.invoice_created.cost_incl_vat|floatformat:"-2"|format_thousands }}</td>
+                        <td>{{ balance_table.invoice_created.date|date:date_format}}</td>
+                        <td>
+                            <button data-order-id="{{ balance_table.invoice_created.order_id }}"
+                                    class="btn btn-primary admin-request-download-pdf" data-pdf="order-invoice"
+                                    data-order_number="{{ balance_table.order_number }}">
+                                Download
+                            </button>
+                        </td>
+                    </tr>
+                    {% if balance_table.invoice_settled %}
+
+                        <tr>
+                            <td>Invoice Settled</td>
+                            <td>{{ balance_table.invoice_settled.cost_excl_vat|floatformat:"-2"|format_thousands }}</td>
+                            <td>{{ balance_table.invoice_settled.cost_incl_vat|floatformat:"-2"|format_thousands }}</td>
+                            <td>{{ balance_table.invoice_settled.date|date:date_format}}</td>
+                            <td>
+                                <button data-order-id="{{ balance_table.invoice_settled.order_id }}"
+                                        class="btn btn-primary admin-request-download-pdf" data-pdf="receipt"
+                                        data-order_number="{{ balance_table.order_number }}">
+                                    Download
+                                </button>
+                            </td>
+                        </tr>
+                    {% endif %}
+                    {% for credit_invoice in balance_table.credit_invoices %}
+                        <tr>
+                            <td>Credit Invoice</td>
+                            <td>{{ credit_invoice.cost_excl_vat|floatformat:"-2"|format_thousands }}</td>
+                            <td>{{ credit_invoice.cost_incl_vat|floatformat:"-2"|format_thousands }}</td>
+                            <td>{{ credit_invoice.date |date:date_format}}</td>
+                            <td>
+                                <button data-credit-order-id="{{ credit_invoice.credit_order_id }}"
+                                        class="btn btn-primary  admin-request-download-pdf" data-pdf="credit-invoice"
+                                        data-order_number="{{ balance_table.order_number }}">
+                                    Download
+                                </button>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    <tr>
+                        <td>Order Balance</td>
+                        <td>{{ balance_table.total_amount_excluding_vat|floatformat:"-2"|format_thousands }}</td>
+                        <td>{{ balance_table.total_amount_including_vat|floatformat:"-2"|format_thousands }}</td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    {% endfor %}
+
+</div>
+{% endif %}

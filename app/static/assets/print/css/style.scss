@@ -1,0 +1,2358 @@
+@font-face {
+  font-family: 'king_SuperGroteskWebPro-Medium';
+  src: url('../fonts/king_SuperGroteskWebPro-Medium.eot');
+  src: url('../fonts/king_SuperGroteskWebPro-Medium.eot?#iefix') format('embedded-opentype'), url('http://www.delegia.com/fonts/5838/king_SuperGroteskWebPro-Medium.woff') format('woff'), url('http://www.delegia.com/fonts/5838/king_SuperGroteskOffcPro-Medium.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal; }
+  
+  
+  
+  @font-face {
+  font-family: 'king_SuperGroteskWebPro';
+  src: url('../fonts/king_SuperGroteskWebProRegular.eot');
+  src: url('../fonts/king_SuperGroteskWebProRegular.eot?#iefix') format('embedded-opentype'), url('http://www.delegia.com/fonts/5838/king_SuperGroteskWebProRegular.woff') format('woff'), url('http://www.delegia.com/fonts/5838/king_SuperGroteskOffcPro.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal; }
+  
+/*** VARIABLES ****/
+
+/* Body settings */
+$bodyBackgroundColor: #F3F3EB;
+$bodyTransitionTime: 0.25s;
+
+/* Wrapper settings */
+$wrapperPaddingHorizontal: 30px; /* Variable must be a pixel value */
+$wrapperPaddingVertical: 30px; /* Variable must be a pixel value */
+$wrapperMaxWidth: 1200px;
+$wrapperMinWidth: 160px; /* Set to '$wrapperMaxWidth' to disable responsiveness */
+$wrapperBorderRadius: 0;
+$wrapperBorder: none;
+$wrapperShadowColor: rgba(0,0,0,0); /* Set to 'rgba(0,0,0,0)' for none */
+
+/* Content settings */
+$contentBackgroundColor: none;
+$contentPadding: 0em;
+$contentBorderradius: 0.25em;
+$contentShadowColor: rgba(0,0,0,0);
+$contentBorderColor: #DADAC4; /* Used for borders in element classes */
+
+/* Color variations */
+$color1Background: #FF6A00;
+$color1Text: white;
+$color1Bright: lighten($color1Background, 20%);
+$color1Shadow: darken($color1Background, 10%);
+$color1BorderColor: darken($color1Background, 10%);
+
+$color2Background: #00B67D;
+$color2Text: white;
+$color2Bright: lighten($color2Background, 20%);
+$color2Shadow: darken($color2Background, 10%);
+$color2BorderColor: darken($color2Background, 10%);
+
+$color3Background: #FA4092;
+$color3Text: white;
+$color3Bright: lighten($color3Background, 20%);
+$color3Shadow: darken($color3Background, 20%);
+$color3BorderColor: darken($color3Background, 10%);
+
+$color4Background: #FFC000;
+$color4Text: white;
+$color4Bright: lighten($color4Background, 20%);
+$color4Shadow: darken($color4Background, 10%);
+$color4BorderColor: darken($color4Background, 10%);
+
+/* Links */
+$linkTextDecoration: none;
+$linkTextDecorationHover: underline;
+
+/* Headlines */
+$headlineFontFamily: 'king_SuperGroteskWebPro', Helvetica, Arial, sans-serif;
+$headlineColor: $color1Background;
+
+$h1FontSize: 2.5em;
+$h1Padding: 0 0 0.35em 0;
+
+$h2FontSize: 2em;
+$h2Padding: 0 0 0.35em 0;
+
+$h3FontSize: 1.5em;
+$h3Padding: 0 0 0.5em 0;
+
+$h4FontSize: 1.25em;
+$h4Padding: 0 0 0.75em 0;
+
+/* Paragraph text */
+$paragraphFontFamily: 'king_SuperGroteskWebPro', Helvetica,  Arial, sans-serif;
+$paragraphFontColor: #94897A;
+$paragraphFontSize: 16px;
+$paragraphFontMargin: 0 0 1em 0;
+$paragraphLineHeight: 125%;
+
+/* Form settings */
+$inputBackgroundColor: white;
+$inputBorder: 2px solid #c1c19d;
+$inputFontColor: black;
+$inputFontSize: 1.1em;
+$inputFontFamily: $paragraphFontFamily;
+$inputBorderRadius: 0.25em;
+$inputPadding: 0.5em;
+$inputWidth: 70%;
+$inputRequiredColor: #c1272d;
+
+/* Main menu */
+$menuFontSize: 1em;
+$menuBackgroundColor: linear-gradient(-180deg, #9AE2CB 3%, #38C497 99%);
+$menuTextColor: white;
+$menuBackgroundColor_hover: $color2Background;
+$menuTextColorHover: white;
+$menuBorderRadius: 3em;
+$menuBorder: 2px solid #00B67D;
+$menuMargin: 0em;
+$menuTextTransform: uppercase;
+
+/* Main menu - Submenu */
+$submenuBackgroundColor: white;
+$submenuTextColor: $paragraphFontColor;
+$submenuBackgroundColorHover: $color2Background;
+$submenuTextColorHover: white;
+$submenuBorderColor: $contentBorderColor;
+$submenuFontSize: $menuFontSize;
+$subMenuBorderRadius: 0.25em;
+$subMenuTextTransform: none;
+
+/* Mobile menu */
+$mobilemenuExpandButtonFontSize: $menuFontSize;
+$mobileMenuExpandButtonBackgroundColor: $color1Background;
+$mobileMenuExpandButtonTextColor: $color1Text;
+$mobileMenuBackgroundColor: $color1Background;
+$mobileMenuTextColor: $color1Text;
+$mobileMenuBackgroundColorHover: $color1Shadow;
+$mobileMenuTextColorHover: $color1Text;
+$mobileMenuFontSize: $menuFontSize;
+
+/* Mobile menu - Submenu */
+$mobileSubmenuBackgroundColor: darken($color1Background, 10%);
+$mobileSubmenuTextColor: $color2Text;
+$mobileSubmenuBackgroundColorHover: darken($color1Shadow, 10%);
+$mobileSubmenuTextColorHover: white;
+$mobileSubmenuFontSize: $menuFontSize;
+
+* {
+	margin: 0;
+	padding: 0;
+	/* Boxsizeing all elements */
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+	*behavior: url(../js/boxsizing.htc); /* Set to fixed link to boxsizing.htc */
+}
+
+/*** MIXINS ***/
+
+@mixin gradient($gradcolor1, $gradcolor2) {
+	background-color: $gradcolor1; /* Old browser support */
+	background: linear-gradient(to bottom, $gradcolor1 0%,$gradcolor2 100%);
+}
+
+@mixin border-radius($radius) {
+	border-radius: $radius;
+}
+
+@mixin box-shadow($h-shadow, $v-shadow, $blur, $spread, $color) {
+	box-shadow: $h-shadow $v-shadow $blur $spread $color;
+}
+
+@mixin text-shadow($h-shadow, $v-shadow, $blur, $color) {
+	text-shadow: $h-shadow $v-shadow $blur $color;
+}
+
+/*** TEXT ***/
+
+/* Headlines */
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+	font-family: $headlineFontFamily;
+	color: $headlineColor;
+	font-weight: normal;
+}
+
+h1 {
+	font-size: $h1FontSize;
+	padding: $h1Padding;
+}
+
+h2 {
+	font-size: $h2FontSize;
+	padding: $h2Padding;
+}
+
+h3 {
+	font-size: $h3FontSize;
+	padding: $h3Padding;
+}
+
+h4 {
+	font-size: $h4FontSize;
+	padding: $h4Padding;
+}
+
+h1.color1,
+h2.color1,
+h3.color1,
+h4.color1 {
+	color: $color1Background;
+}
+
+h1.color2,
+h2.color2,
+h3.color2,
+h4.color2 {
+	color: $color2Background;
+}
+
+h1.color3,
+h2.color3,
+h3.color3,
+h4.color3 {
+	color: $color3Background;
+}
+
+h1.color4,
+h2.color4,
+h3.color4,
+h4.color4 {
+	color: $color4Background;
+}
+
+/* Paragraph */
+p {
+	font-family: $paragraphFontFamily;
+	color: $paragraphFontColor;
+	line-height: $paragraphLineHeight;
+	padding: $paragraphFontMargin;
+}
+
+p.color1 {
+	color: $color1Background;
+}
+
+p.color2 {
+	color: $color2Background;
+}
+
+p.color3 {
+	color: $color3Background;
+}
+
+p.color4 {
+	color: $color4Background;
+}
+
+/* Link */
+a {
+	color: $color2Background; /* Link color */
+	text-decoration: $linkTextDecoration;
+}
+
+a:hover {
+	text-decoration: $linkTextDecorationHover;
+}
+
+a.color2 {
+	color: $color2Background; /* Link color */
+}
+
+a.color3 {
+	color: $color3Background; /* Link color */
+}
+
+.color4 {
+	color: $color4Background; /* Link color */
+}
+
+
+i.color1 {
+	color: $color1Background; /* Link color */
+}
+
+i.color2 {
+	color: $color2Background; /* Link color */
+}
+
+i.color3 {
+	color: $color3Background; /* Link color */
+}
+
+i.color4 {
+	color: $color4Background; /* Link color */
+}
+
+
+/* Label */
+.label {
+	display: inline-block;
+	background-color: $color1Background; /* Background color */
+	color: $color1Text; /* Text color */
+	padding: 0.15em 0.3em;
+	border-radius: $contentBorderradius;
+	text-decoration: none;
+}
+
+a.label:hover {
+	background-color: $color1Shadow ; /* Background color */
+	text-decoration: none;
+}
+
+.label.color2 {
+	background-color: $color2Background; /* Background color */
+	color: $color2Text; /* Text color */
+}
+
+a.label.color2:hover {
+	background-color: $color2Shadow; /* Background color */
+}
+
+.label.color3 {
+	background-color: $color3Background; /* Background color */
+	color: $color2Text;
+}
+
+a.label.color3:hover {
+	background-color: $color3Shadow;
+}
+
+.label.color4 {
+	background-color: $color4Background;
+	color: $color2Text;
+}
+
+a.label.color4:hover {
+	background-color: $color4Shadow;
+}
+
+/*** BASIC DIVS ***/
+
+
+
+body {
+	color: $paragraphFontColor;
+	font-family: $headlineFontFamily;
+	background-color: $bodyBackgroundColor;
+	font-size: $paragraphFontSize;
+}
+
+/* Outermost div, separates background from content */
+
+.wrapper {
+	max-width: $wrapperMaxWidth;
+	min-width: $wrapperMinWidth;
+	display: block;
+	position: relative;
+	margin: 0 auto;
+	box-shadow: 0px 0px 10px $wrapperShadowColor;
+	border-radius: $wrapperBorderRadius;
+	overflow: hidden;
+	border: $wrapperBorder;
+}
+
+.wrapper.header, .wrapper.footer {
+	width: 100%;
+	max-width: 100%;
+	border-radius: 0;
+	padding: 1em;
+}
+
+.mainContent {
+	margin-top: 12em;
+}
+
+#mainContent {
+	background: $bodyBackgroundColor;
+}
+
+.header.tiny {
+    height:5.5em;
+    background-color: rgba(255, 255, 255, 0.95)!important;
+    
+    	#logo {
+		height: 3.5em!important;
+		width: auto;
+	}
+}
+
+.header {
+	border-bottom: 1px solid $contentBorderColor;
+	position:fixed;
+    top:0;
+    left:0;
+    transition: height 300ms, background 300ms;
+    height: 12em;
+	z-index: 100;
+	background-color: white!important;
+	
+	#logo {
+		height: 10em!important;
+		width: auto;
+		transition: height 300ms, width 300ms;
+	}
+}
+
+.wrapper.footer {
+}
+
+/* Group content, with padding */
+.container {
+	width: 100%;
+	padding: $contentPadding;
+	background-color: $contentBackgroundColor; /* Background color, '$bodyBackgroundColor' */
+	transition: $bodyTransitionTime;
+
+	img {
+		width: 100%; /* Images is 100% width of column */
+	}
+}
+
+.container.padding {
+	padding: 2em 1em;
+}
+
+.container.color1 {
+	background-color: $color1Background;
+	color: $color1Text;
+
+	p {
+		color: $color1Text;
+	}
+}
+
+.container.color2 {
+	background-color: $color2Background;
+	color: $color2Text;
+
+	p {
+		color: $color2Text;
+	}
+}
+
+.container.color3 {
+	background-color: $color3Background;
+	color: $color3Text;
+
+	p {
+		color: $color3Text;
+	}
+}
+
+.container.color4 {
+	background-color: $color4Background;
+	color: $color4Text;
+
+	p {
+		color: $color4Text;
+	}
+}
+
+/* Group content, edge to edge */
+.container.noPadding {
+	padding: 0;
+}
+
+/*** Responive CSS for display size -768 ***/
+
+@media ( max-width: 768px ) {
+
+	body {
+		font-size: 0.85em; /* Decrease font size */
+		margin: 0; /* Edge to edge */
+	}
+
+	.noMobile {
+		display: none!important; /* Hide on small screen */
+	}
+
+	.onlyMobile {
+		display: block!important; /* Only show on small screen */
+	}
+
+	.wrapper {
+		border-radius: 0px!important;
+	}
+	
+	.wrapper.header {
+		position: fixed!important;
+		left: 0;
+		top: 0;
+		margin-top: 0px;
+		z-index: 100;
+		height: 3em;
+		margin-bottom: 3em;
+		overflow: hidden;
+		background: rgba(255, 255, 255, 0.95)!important;
+	}
+
+	.mainContent {
+		margin-top: 3em;
+	}
+	
+	#menuButton, #backButton {
+		color: $color2Background;
+		background: none;
+		box-shadow: none;
+		border: none;
+		padding: 0;
+		border-radius: 0;
+	}
+
+	#backButton {
+		display: inline-block;
+	}
+
+}
+
+/*** Responive CSS for display size +768 ***/
+
+@media ( min-width: $wrapperMaxWidth + $wrapperPaddingHorizontal + $wrapperPaddingHorizontal ) {
+	body {
+		font-size: 1.2em; /* Increase font-size */
+	}
+}
+
+/*** SUPPORT CLASSES ***/
+
+
+.fontTiny {
+	font-size: 0.5em;
+}
+
+.fontSmall {
+	font-size: 0.85em;
+}
+
+.fontLarge {
+	font-size: 1.25em;
+}
+
+.fontHuge {
+	font-size: 1.5em;
+}
+
+.clear {
+	clear: both; /* Clear floats */
+}
+
+.pullRight {
+	float: right; /* Align to right */
+}
+
+.pullLeft {
+	float: left; /* Align to left */
+}
+
+.forceRight {
+	position: absolute; /* Floats */
+	right: 0; /* Align to right */
+}
+
+.forceLeft {
+	position: absolute; /* Floats */
+	left: 0; /* Align to left */
+}
+
+.addPadding {
+	padding: $contentPadding; /* Padding */
+}
+
+.addMorePadding {
+	padding: $contentPadding*1.5; /* More padding */
+}
+
+/* Undocumented */
+.addPaddingBottom {
+	padding-bottom: $contentPadding; /* Padding */
+}
+
+/* Undocumented */
+.addMorePaddingBottom {
+	padding-bottom: $contentPadding*1.5; /* More padding */
+}
+
+/* Undocumented */
+.noPaddingBottom {
+	padding-bottom: 0!important; /* Padding */
+}
+
+/* Undocumented */
+.noMarginBottom {
+	margin-bottom: 0!important; /* Margin */
+}
+
+.noScale {
+	width: auto!important; /* Image is not scaled */
+}
+
+.noMobile {
+	display: inline-block;	/* Hide on display size -768 */
+}
+
+.onlyMobile {
+	display: none; /* Only show on display size -768 */
+}
+
+#backButton {
+	display: none;
+}
+
+/*** LISTS ***/
+
+/* Circle list */
+ul {
+	list-style-type: disc;
+	list-style-position: outside;
+	padding: 0 0 0 1.625em;
+	margin-bottom: 1em;
+
+	li {
+		padding: 0 0 0.25em 0.625em;
+	}
+}
+
+ul.color1,
+ol.color1 {
+	color: $color1Background;
+}
+
+ul.color2,
+ol.color2 {
+	color: $color2Background;
+}
+
+ul.color3,
+ol.color3 {
+	color: $color3Background;
+}
+
+ul.color4,
+ol.color4 {
+	color: $color4Background;
+}
+
+/* Square list */
+.squareList {
+	list-style-type: square;
+	list-style-position: outside;
+	padding: 0 0 0 1.625em;
+}
+
+ul p,
+ol p {
+	padding-bottom: 0;
+}
+
+/* Ordered list */
+ol {
+	list-style-position: outside;
+	padding: 0 0 0 1.625em;
+
+	li {
+		padding: 0 0 0.25em 0.625em;
+	}
+}
+
+/*** MENUS ***/
+
+#menu {
+	overflow-y: auto;
+}
+
+/* General styles for all menus */
+.cbp-spmenu {
+    background: $color2Background;
+    position: fixed;
+	box-shadow: 0px 0px 0.5em rgba(0, 0, 0, 0.5);
+    
+    ul {
+		list-style: none;
+		padding: 0;
+		
+		li {
+			padding: 0;
+			
+			a {
+				display: block;
+				border-bottom: 1px dotted $color2Shadow;
+				color: $color2Text;
+				padding: 0.7em;
+				text-decoration: none;
+			}
+			
+			a.current {
+				background-color: $color3Background;
+			}
+			
+			ul {
+				
+				margin-bottom: 0;
+				
+				li {
+					 a {
+						 padding-left: 1.3em;
+						 background: darken($color2Background, 3%);
+						 text-transform: uppercase;
+					 }
+				}
+			}
+			
+
+		}
+	}
+}
+
+.cbp-spmenu {
+	
+	h3 {
+	    color: $color2Text;
+	    font-size: 1.5em;
+	    padding: 1em 1em 0 0.75em;
+	    margin: 0;
+	    background: $color2Shadow;
+	}	
+
+	.profile {
+		padding: 1em 1em 0.5em 1em;
+		color: white;
+		background: $color2Shadow;
+		
+		p {
+			color: white;
+		}
+	}
+	
+	#profilePicture {
+		width: 3em;
+		border-radius: 1.5em;
+		float: left;
+		margin-right: 1em;
+		border: 1px solid white;
+	}
+	
+	a {
+		color: white;
+		text-decoration: underline;
+	}
+}
+
+/* Orientation-dependent styles for the content of the menu */
+.cbp-spmenu-vertical {
+    width: 20em;
+    height: 100%;
+    top: 0;
+    z-index: 1000;
+}
+
+/* Vertical menu that slides from the left or right */
+.cbp-spmenu-left {
+    left: -20.5em;
+}
+
+.cbp-spmenu-right {
+    right: -20.5em;
+}
+
+.cbp-spmenu-left.menu-open {
+    left: 0px;
+}
+
+.cbp-spmenu-right.menu-open {
+    right: 0px;
+}
+
+
+/* Push classes applied to the body */
+.push-body {
+    overflow-x: hidden;
+    position: relative;
+    left: 0;
+}
+
+.push-body-toright {
+    left: 240px;
+}
+
+.push-body-toleft {
+    left: -240px;
+}
+
+/* Transitions */
+.cbp-spmenu,
+.push-body {
+    -webkit-transition: all 0.3s ease;
+       -moz-transition: all 0.3s ease;
+            transition: all 0.3s ease;
+}
+
+/* Navigation comlumn */
+.navigationColumn {
+	border: 1px solid $contentBorderColor;
+	@include border-radius($contentBorderradius);
+	margin-bottom: 0.938em;
+
+	ul {
+		padding: 0;
+	}
+
+	ul li {
+		display: block;
+		border-bottom: 1px solid $contentBorderColor;
+		padding: 0;
+	}
+
+	ul li:last-child {
+		border-bottom: none;
+	}
+
+	ul li p,
+	ul li a {
+		display: block;
+		text-decoration: none;
+		color: $paragraphFontColor;
+		padding: 0.9065em;
+	}
+
+	ul li p:hover,
+	ul li:hover > a {
+		background-color: $color1Background;
+		color: $color1Text;
+	}
+}
+
+.navigationColumn.color2 {
+	ul li p:hover,
+	ul li:hover > a {
+		background-color: $color2Background;
+		color: $color2Text;
+	}
+}
+
+.navigationColumn.color3 {
+	ul li p:hover,
+	ul li:hover > a {
+		background-color: $color3Background;
+		color: $color3Text;
+	}
+}
+
+.navigationColumn.color4 {
+	ul li p:hover,
+	ul li:hover > a {
+		background-color: $color4Background;
+		color: $color4Text;
+	}
+}
+
+/* Navigation comlumn with no border */
+.navigationColumnNoBorder {
+	margin-bottom: 0.938em;
+
+	ul {
+		padding: 0;
+	}
+
+	ul li {
+		display: block;
+		padding: 0;
+	}
+
+	ul li p,
+	ul li a {
+		display: block;
+		text-decoration: none;
+		color: $paragraphFontColor;
+		padding: 0.9065em;
+	}
+
+	ul li p:hover,
+	ul li:hover > a {
+		background-color: $color1Background;
+		color: $color1Text;
+		@include border-radius($inputBorderRadius);
+	}
+}
+
+.navigationColumnNoBorder.color2 {
+	ul li p:hover,
+	ul li:hover > a {
+		background-color: $color2Background;
+		color: $color2Text;
+	}
+}
+
+.navigationColumnNoBorder.color3 {
+	ul li p:hover,
+	ul li:hover > a {
+		background-color: $color3Background;
+		color: $color3Text;
+	}
+}
+
+.navigationColumnNoBorder.color4 {
+	ul li p:hover,
+	ul li:hover > a {
+		background-color: $color4Background;
+		color: $color4Text;
+	}
+}
+
+/*** PAGINATION ***/
+
+/* Pagination with numbers */
+.pagination {
+	padding: 0;
+	display: inline-block;
+
+	li {
+		display: inline-block;
+		list-style-type: none;
+		float: left;
+		padding: 0;
+		margin: 0 0 0.938em 0;
+
+		a {
+			margin: 0;
+			border-left: 1px solid $contentBorderColor;
+			border-top: 1px solid $contentBorderColor;
+			border-bottom: 1px solid $contentBorderColor;
+			display: inline-block;
+			color: $paragraphFontColor;
+			text-decoration: none;
+			padding: 0.5em 0.75em;
+		}
+
+		a:hover {
+			background-color: $color1Background;
+			color: $color1Text;
+		}
+	}
+
+	li:last-child a {
+		border-right: 1px solid $contentBorderColor;
+		border-top-right-radius: $contentBorderradius;
+		border-bottom-right-radius: $contentBorderradius;
+	}
+
+	li:first-child a {
+		border-top-left-radius: $contentBorderradius;
+		border-bottom-left-radius: $contentBorderradius;
+	}
+
+}
+
+.pagination.color2 {
+	a:hover {
+		background-color: $color2Background;
+		color: $color2Text;
+	}
+}
+
+.pagination.color3 {
+	a:hover {
+		background-color: $color3Background;
+		color: $color3Text;
+	}
+}
+
+.pagination.color4 {
+	a:hover {
+		background-color: $color4Background;
+		color: $color4Text;
+	}
+}
+
+/* Pagination with dots */
+.paginationDots {
+	padding: 0;
+	display: inline-block;
+	li {
+		list-style: none;
+		float: left;
+		padding: 0;
+		margin: 0 0 0.938em 0.5em;
+
+		a {
+			display: inline-block;
+			width: 1em;
+			height: 1em;
+			border: 1px solid $contentBorderColor;
+			@include border-radius(0.55em);
+			text-indent: -9999px;
+			font-size: 1em;
+		}
+
+		a:hover{
+			background-color: $color1Background;
+		}
+	}
+
+	li:first-child {
+		margin-left: 0;
+	}
+}
+
+.paginationDots.color2 {
+	a:hover{
+		background-color: $color2Background;
+	}
+}
+
+.paginationDots.color3 {
+	a:hover{
+		background-color: $color3Background;
+	}
+}
+
+.paginationDots.color4 {
+	a:hover{
+		background-color: $color4Background;
+	}
+}
+
+/*** TABLES ***/
+
+/* Table width row lines */
+table {
+	width: 100%;
+	border-top: 1px solid $contentBorderColor;
+	border-right: 1px solid $contentBorderColor;
+	border-left: 1px solid $contentBorderColor;
+	margin: $paragraphFontMargin;
+	border-spacing: 0;
+	border-collapse: collapse;
+
+	tr {
+		border-bottom: 1px solid $contentBorderColor;
+	}
+
+	td, th {
+		padding: 0.625em;
+		vertical-align: top;
+		text-align: left;
+	}
+
+	thead {
+		background-color: $color1Background;
+		color: $color1Text;
+		font-weight: bold;
+	}
+}
+
+table.color2 {
+	color: $paragraphFontColor;
+	thead {
+		background-color: $color2Background;
+		color: $color2Text;
+	}
+}
+
+table.color3 {
+	color: $paragraphFontColor;
+	thead {
+		background-color: $color3Background;
+		color: $color3Text;
+	}
+}
+
+table.color4 {
+	color: $paragraphFontColor;
+	thead {
+		background-color: $color4Background;
+		color: $color4Text;
+	}
+}
+
+/* Table width dotted column and row lines */
+.tableDottedLines {
+	border: 1px solid $contentBorderColor;
+
+	tr {
+		border-bottom: 1px dotted $contentBorderColor;
+	}
+
+	td {
+		padding: 0.625em;
+		border-right: 1px dotted $contentBorderColor;
+	}
+
+	thead {
+
+		tr:last-child {
+			border: 1px solid $contentBorderColor;
+		}
+
+		td {
+			border: none;
+		}
+	}
+}
+
+/* Table width dotted column and row lines */
+.tableNoLines {
+	border: none;
+
+	tr {
+		border-bottom: none;
+	}
+
+	td {
+		padding: 0.625em;
+	}
+
+	thead {
+		font-weight: bold;
+
+		tr:last-child {
+			border: none;
+		}
+
+		td {
+			border: none;
+		}
+	}
+}
+
+/* Table with alternating row colors */
+.tableAlternateColors {
+	border: none;
+
+	tr {
+		border-bottom: none;
+	}
+
+	td {
+		padding: 0.625em;
+	}
+
+	thead {
+		background-color: $color1Background;
+		color: $color1Text;
+		font-weight: bold;
+
+		tr:last-child {
+			border: none;
+		}
+
+		td {
+			border: none;
+		}
+	}
+
+	tbody tr:nth-child(even) {
+		background-color: lighten($color1Bright, 20%);
+	}
+}
+
+.tableAlternateColors.color2 {
+	tbody tr:nth-child(even) {
+		background-color: lighten($color2Bright, 20%);
+	}
+}
+
+.tableAlternateColors.color3 {
+	tbody tr:nth-child(even) {
+		background-color: lighten($color3Bright, 55%);
+	}
+}
+
+.tableAlternateColors.color4 {
+	tbody tr:nth-child(even) {
+		background-color: lighten($color4Bright, 55%);
+	}
+}
+
+/*** PANELS ***/
+
+/* Panel */
+.panel {
+	width: 100%;
+	border: 1px solid $contentBorderColor;
+	@include border-radius($contentBorderradius);
+	margin: $paragraphFontMargin;
+	overflow: hidden;
+
+	h1,
+	h2,
+	h3,
+	h4,
+	h5,
+	h6 {
+		padding: 0.35em 0.5em;
+		background-color: $color1Background;
+		color: $color1Text;
+		border-bottom: 1px solid $contentBorderColor;
+	}
+
+	.content {
+		padding: 0.5em;
+	}
+
+	p:last-child {
+		padding-bottom: 0;
+	}
+}
+
+.panel.color2 {
+	h1,
+	h2,
+	h3,
+	h4,
+	h5,
+	h6 {
+		background-color: $color2Background;
+		color: $color2Text;
+	}
+}
+
+.panel.color3 {
+	h1,
+	h2,
+	h3,
+	h4,
+	h5,
+	h6 {
+		background-color: $color3Background;
+		color: $color3Text;
+	}
+}
+
+.panel.color4 {
+	h1,
+	h2,
+	h3,
+	h4,
+	h5,
+	h6 {
+		background-color: $color4Background;
+		color: $color4Text;
+	}
+}
+
+/* Well */
+.well {
+	width: 100%;
+	border: 1px solid $contentBorderColor;
+	@include border-radius($contentBorderradius);
+	margin: $paragraphFontMargin;
+	.content {
+		padding: 1em;
+
+		h1,
+		h2,
+		h3,
+		h4,
+		h5,
+		h6 {
+			background-color: white;
+			border: none;
+			padding: $h1Padding;
+			color: $color1Background;
+		}
+	}
+
+	p:last-child {
+		padding-bottom: 0;
+	}
+}
+
+.well.color1 {
+	background-color: $color1Background;
+	color: $color1Text;
+
+	p,
+	h1,
+	h2,
+	h3,
+	h4,
+	h5,
+	h6 {
+		color: $color1Text;
+	}
+}
+
+.well.color2 {
+	background-color: $color2Background;
+	color: $color2Text;
+
+	p,
+	h1,
+	h2,
+	h3,
+	h4,
+	h5,
+	h6 {
+		color: $color2Text;
+	}
+}
+
+.well.color3 {
+	background-color: $color3Background;
+	color: $color3Text;
+
+	p,
+	h1,
+	h2,
+	h3,
+	h4,
+	h5,
+	h6 {
+		color: $color3Text;
+	}
+}
+
+.well.color4 {
+	background-color: $color4Background;
+	color: $color4Text;
+
+	p,
+	h1,
+	h2,
+	h3,
+	h4,
+	h5,
+	h6 {
+		color: $color4Text;
+	}
+}
+
+/*** BUTTONS ***/
+
+/* Regular - flat rectangular */
+.button {
+	display: inline-block;
+	padding: 1em 2em;
+	background-color: $color1Background;
+	font-size: 1em;
+	color: $color1Text;
+	text-decoration: none;
+	box-shadow: 0px 4px 0px #e3e3d7;
+	border-top: none!important;
+    border-left: none!important;
+    border-right: none!important;
+	border-bottom: 4px solid $color1Shadow;
+	-webkit-transition: all 0.2s ease;
+    -moz-transition: all 0.2s ease;
+    transition: all 0.2s ease;
+}
+
+.button.color2 {
+	background-color: $color2Background;
+	color: $color2Text;
+	border-bottom: 4px solid $color2Shadow;
+}
+
+.button.color3 {
+	background-color: $color3Background;
+	color: $color3Text;
+	border-bottom: 4px solid $color3Shadow;
+}
+
+.button.color4 {
+	background-color: $color4Background;
+	color: $color4Text;
+	border-bottom: 4px solid $color4Shadow;
+}
+
+.button:hover {
+	background-color: darken($color1Background, 2%);
+	text-decoration: none;
+	color: $color1Text;
+}
+
+.button.color2:hover {
+	background-color: darken($color2Background, 2%);
+	text-decoration: none;
+	color: $color2Text;
+}
+
+.button.color3:hover {
+	background-color: darken($color3Background, 5%);
+	text-decoration: none;
+	color: $color3Text;
+}
+
+.button.color4:hover {
+	background-color: darken($color4Background, 2%);
+	text-decoration: none;
+	color: $color4Text;
+}
+
+
+.button:active {
+	background-color: darken($color1Background, 2%);
+	margin-top: 2px;
+
+	border-bottom: 2px solid $color1Shadow;
+	box-shadow: none; 
+}
+
+.button.color2:active {
+	background-color: darken($color2Background, 2%);
+	margin-top: 2px;
+	border-bottom: 2px solid $color2Shadow;
+	box-shadow: none; 
+}
+
+.button.color3:active {
+	background-color: darken($color3Background, 5%);
+	margin-top: 2px;
+	border-bottom: 2px solid $color3Shadow;
+	box-shadow: none; 
+}
+
+.button.color4:active {
+	background-color: darken($color4Background, 2%);
+	margin-top: 2px;
+	border-bottom: 2px solid $color4Shadow;
+	box-shadow: none; 
+}
+
+/* Rounded corners */
+.button.rounded {
+	@include border-radius($contentBorderradius);
+}
+
+/* Round corners */
+.button.round {
+	@include border-radius(2em);
+}
+
+/* Gradient background */
+.button.gradient {
+	@include gradient($color1Bright, $color1Background);
+	background-color: $color1Background; /* Old browser support */
+	border: 1px solid $color1BorderColor;
+}
+
+.button.gradient.color2 {
+	@include gradient($color2Bright, $color2Background);
+	background-color: $color2Background; /* Old browser support */
+	border: 1px solid $color2BorderColor;
+}
+
+.button.gradient.color3 {
+	@include gradient($color3Bright, $color3Background);
+	background-color: $color3Background; /* Old browser support */
+	border: 1px solid $color3BorderColor;
+}
+
+.button.gradient.color4 {
+	@include gradient($color4Bright, $color4Background);
+	background-color: $color4Background; /* Old browser support */
+	border: 1px solid $color4BorderColor;
+}
+
+.button.gradient:hover {
+	background-color: $color1Bright;
+	@include gradient(lighten($color1Bright, 5%), $color1Background);
+	text-decoration: none;
+}
+
+.button.gradient.color2:hover {
+	background-color: $color2Bright;
+	@include gradient($color2Bright, $color2Shadow);
+}
+
+.button.gradient.color3:hover {
+	background-color: $color3Bright;
+	@include gradient($color3Bright, $color3Shadow);
+}
+
+.button.gradient.color4:hover {
+	background-color: $color4Bright;
+	@include gradient($color4Bright, $color4Shadow);
+}
+
+.button.gradient:active {
+	background-color: $color1Shadow;
+	@include gradient($color1Shadow, $color1Shadow);
+}
+
+.button.gradient.color2:active {
+	background-color: $color2Shadow;
+	@include gradient($color2Shadow, $color2Shadow);
+}
+
+.button.gradient.color3:active {
+	background-color: $color3Shadow;
+	@include gradient($color3Shadow, $color3Shadow);
+}
+
+.button.gradient.color4:active {
+	background-color: $color4Shadow;
+	@include gradient($color4Shadow, $color4Shadow);
+}
+
+/* Buttons transparent */
+.button.transparent {
+	border: 2px solid $color1Background;
+	font-size: 1em;
+	color: $color1Background;
+	text-decoration: none;
+	background-color: none!important;
+	background: none;
+}
+
+.button.transparent.color2 {
+	border: 2px solid $color2Background;
+	color: $color2Background;
+}
+
+.button.transparent.color3 {
+	border: 2px solid $color3Background;
+	color: $color3Background;
+}
+
+.button.transparent.color4 {
+	border: 2px solid $color4Background;
+	color: $color4Background;
+}
+
+.button.transparent:hover {
+	background-color: $color1Background;
+	color: $color1Text;
+}
+
+.button.transparent.color2:hover {
+	background-color: $color2Background;
+	color: $color2Text;
+}
+
+.button.transparent.color3:hover {
+	background-color: $color3Background;
+	color: $color3Text;
+}
+
+.button.transparent.color4:hover {
+	background-color: $color4Background;
+	color: $color4Text;
+}
+
+.button.transparent:active {
+	background-color: $color1Bright;
+	color: $color1Text;
+}
+
+.button.transparent.color2:active {
+	background-color: $color2Bright;
+	color: $color2Text;
+}
+
+.button.transparent.color3:active {
+	background-color: $color3Bright;
+	color: $color3Text;
+}
+
+.button.transparent.color4:active {
+	background-color: $color4Bright;
+	color: $color4Text;
+}
+
+/* Button size large */
+.button.large {
+	padding: 1em 2em!important;
+}
+
+/* Button size small */
+.button.small {
+	padding: 0.4em 0.8em!important;
+	font-size: 0.9em;
+}
+
+/*** FORM ***/
+
+button {
+	font-family: $paragraphFontFamily;
+	cursor: pointer;
+}
+
+button, input, textarea {
+	outline: none;
+}
+
+/*	Self celaring floats - Clearfix method */
+.container:after,
+.container.noPadding:after,
+.row:after,
+.col:after,
+.clr:after,
+.group:after {
+	content: "";
+	display: table;
+	clear: both;
+}
+
+/* 	Default row */
+.row { padding-bottom: 0em;
+}
+
+.container.color1 {
+	background: $color1Background;
+	color: $color1Text;
+	a {
+		color: $color1Text;	
+		text-decoration: underline;
+	}
+}
+
+.container.color2 {
+	background: $color2Background;
+	color: $color2Text;
+	a {
+		color: $color2Text;	
+		text-decoration: underline;
+	}
+}
+
+.container.color3 {
+	background: $color3Background;
+	color: $color3Text;
+	a {
+		color: $color3Text;
+		text-decoration: underline;
+	}
+}
+
+.container.color4 {
+	background: $color4Background;
+	color: $color4Text;
+	a {
+		color: $color4Text;	
+		text-decoration: underline;
+	}
+}
+
+/* Default column width on display +768px */
+.col {
+	display: block;
+	float: left;
+	width: 100%;
+	position: relative;
+}
+
+.col img {
+	width: 100%;
+	margin-bottom: 1em;
+}
+
+/* Two columns width on display -768px */
+.half.gutters .span_3 {
+	width: 49.0%;
+}
+
+.half.gutters .span_6 {
+	width: 49.0%;
+}
+
+.half.gutters .col {
+	margin-left: 2%;
+}
+
+.half.gutters .col:nth-child(odd)  {
+	margin-left: 0;
+}
+
+/*	Column width on display +768px  */
+@media ( min-width : 768px ) {
+
+	.gutters .col {
+		margin-left: 2%;
+	}
+
+	.gutters .col:first-child {
+		margin-left: 0;
+	}
+
+	.half.gutters .span_3 {
+		width: 23.5%;
+	}
+
+	.half.gutters .col,
+	.half.gutters .col:nth-child(odd) {
+		margin-left: 2%;
+	}
+
+	.half.gutters .col:first-child  {
+		margin-left: 0;
+	}
+
+	.span_1 {
+		width: 8.33333333333%;
+	}
+
+	.span_2 {
+		width: 16.6666666667%;
+	}
+
+	.span_3 {
+		width: 25%;
+	}
+
+	.span_4 {
+		width: 33.3333333333%;
+	}
+
+	.span_5 {
+		width: 41.6666666667%;
+	}
+
+	.span_6 {
+		width: 50%;
+	}
+
+	.span_7 {
+		width: 58.3333333333%;
+	}
+
+	.span_8 {
+		width: 66.6666666667%;
+	}
+
+	.span_9 {
+		width: 75%;
+	}
+
+	.span_10 {
+		width: 83.3333333333%;
+	}
+
+	.span_11 {
+		width: 91.6666666667%;
+	}
+
+	.span_12 {
+		width: 100%;
+	}
+
+	.gutters .span_1 {
+		width: 6.5%;
+	}
+
+	.gutters .span_2 {
+		width: 15.0%;
+	}
+
+	.gutters .span_3 {
+		width: 23.5%;
+	}
+
+	.gutters .span_4 {
+		width: 32.0%;
+	}
+
+	.gutters .span_5 {
+		width: 40.5%;
+	}
+
+	.gutters .span_6 {
+		width: 49.0%;
+	}
+
+	.gutters .span_7 {
+		width: 57.5%;
+	}
+
+	.gutters .span_8 {
+		width: 66.0%;
+	}
+
+	.gutters .span_9 {
+		width: 74.5%;
+	}
+
+	.gutters .span_10 {
+		width: 83.0%;
+	}
+
+	.gutters .span_11 {
+		width: 91.5%;
+	}
+
+	.gutters .span_12 {
+		width: 100%;
+	}
+}
+
+
+/*** SITE SPECIFIC ***/
+ul.nextUp {
+	list-style: none;
+	padding: 0;
+	
+	li {
+		margin: 0;
+		width: 100%;
+		display: inline-block;
+		background-color: white;
+		box-shadow: 0px 3px 2px rgba(148, 137, 122, 0.20);
+		border-radius: $contentBorderradius;
+		margin-bottom: 0.5em;
+		padding: 0;
+		
+		.content {
+			padding: 0.5em;
+			
+			.timeUntil {
+				float: right;
+			}
+			
+			.data {
+				padding-left: 2em;
+				margin-right: 1em;	
+				background-repeat: no-repeat;
+				background-size: contain;
+				padding-bottom: 0;
+				margin-bottom: 0.5em;
+				white-space: nowrap;			
+			}
+			
+			.time {
+				background-image: url("../images/icon_time.svg");
+			}
+			
+			.location {
+				background-image: url("../images/icon_location.svg");
+				
+			}
+			
+			.presenter {
+				background-image: url("../images/icon_presenter.svg");
+			}
+		}
+		
+		p {
+			padding-bottom: 0.5em;
+			display: inline-block;
+		}
+		
+		h4 {
+			color: $paragraphFontColor;
+			padding-bottom: 0.25em;
+			border-bottom: 1px solid $contentBorderColor;
+			padding: 0.5em;
+			
+			span {
+				font-size: 0.7em;
+				white-space: nowrap;
+			}
+		}
+	}
+}
+
+ul.evaluate {
+	list-style: none;
+	padding: 0;
+	border-radius: $contentBorderradius;
+	overflow: hidden;
+	box-shadow: 0px 3px 2px rgba(148, 137, 122, 0.20);
+	
+	li {
+		padding: 0.5em 0.5em 0 0.5em;
+		margin: 0;
+		width: 100%;
+		display: inline-block;
+		background-color: white;
+		font-size: 1em;
+		border-bottom: 1px solid $contentBorderColor;
+		
+		h4 {
+			padding-bottom: 0.5em;
+			display: inline-block;
+			color: $paragraphFontColor;
+		}
+	}
+	
+	li:last-child {
+		border-bottom: none;
+	}
+	
+	.stars {
+	list-style: none;
+	padding: 0 0 0 0.5em;		
+	display: inline-block;
+	float: right;
+	margin-bottom: 0;
+
+		.star {
+			width: $paragraphFontSize * 1.5;
+			height: $paragraphFontSize * 1.5; 
+			margin: 0 0 ($paragraphFontSize / 2) 0;
+			padding: 0;
+			font-size: 0;
+			border: none;
+			cursor: pointer;
+			background-image: url("../images/star2.svg");
+			background-size: contain;
+			background-repeat: no-repeat;
+		}
+		
+		.star.selected {
+			background-image: url("../images/star1.svg");
+		}
+	}
+}
+
+ul.notifications {
+	list-style: none;
+	padding: 0;
+	
+	li {
+		padding: 0.5em 0.5em 0 0.5em;
+		margin: 0;
+		width: 100%;
+		display: inline-block;
+		background-color: white;
+		box-shadow: 0px 3px 2px rgba(148, 137, 122, 0.20);
+		border-radius: $contentBorderradius;
+		margin-bottom: 0.5em;
+		
+		.dismiss {
+			height: 1.5em;
+			width: 1.5em;
+			float: right;
+			top: 0;
+			right: 0;
+			background-image: url("../images/dismiss.svg");
+			background-size: contain;
+			background-repeat: no-repeat;
+			cursor: pointer;
+		}
+		
+		img {
+			border-radius: 3em;
+			border: 1px solid $contentBorderColor;
+			width: 30%;
+			max-width: 6em;
+			float: left;
+			margin: 0 0.5em 0.5em 0;
+		}
+		
+		p {
+			padding-bottom: 0.5em;
+			display: inline-block;
+		}
+		
+		h4 {
+			color: $paragraphFontColor;
+			padding-bottom: 0.25em;
+			
+			span {
+				font-size: 0.7em;
+				white-space: nowrap;
+			}
+		}
+	}
+		
+	li.important {
+		background: linear-gradient(-180deg, #FB8DBE 0%, #FA569D 98%);
+		background-color: #FB8DBE;
+		box-shadow: 0px 3px 2px rgba(148, 137, 122, 0.20);
+		border: 1px solid $color3Background;
+		
+		p {
+			color: white;
+		}
+
+		
+		.dismiss {
+			background-image: url("../images/dismiss_inverted.svg");
+		}
+		
+		
+		h4 {
+			color: $color2Background;
+			color: white;
+		}
+	}
+}
+
+input, textarea {
+		    outline: none;
+	    }
+	    
+.formQuestion {
+    margin-bottom: 1em;
+    
+    label {
+		display: inline-block;
+		margin-bottom: 0.75em;
+		font-weight: 500;
+		margin-right: 0.5em;
+		
+		span {
+			display: block;
+			width: 100%;
+			font-style: italic;
+			font-weight: normal;
+			padding-top: 0.25em;
+		}
+
+	}
+
+}
+
+
+.formQuestion input[type="text"],
+.formQuestion input[type="search"],
+.formQuestion select,
+.formQuestion textarea,
+.formQuestion input[type="date"] {
+	width: 100%;
+}
+
+.searchBox {
+	position: relative;
+	.search {
+		padding-left: 2.3em!important;
+	}
+
+	.sort {
+		font-size: 1.1em;
+		position: absolute;
+	   -webkit-appearance: none;
+	   -moz-appearance: none;
+	   appearance: none;
+	   border: none;
+	   background: none;
+	   padding: 0.5em;
+	   font-size: 1em;
+	   color: $color2Background;
+	   z-index: 2;
+	   border: 2px solid rgba(255, 255, 255, 0);
+	}	
+
+	.sort:hover {
+		border: 2px solid $color2Background;
+	}
+
+	i.searchIcon {
+		position: absolute;
+		font-size: 1.5em;
+		margin: 0.25em 0 0 0.5em;
+	}
+
+	i.sortIcon {
+		position: absolute;
+		font-size: 1.5em;
+		right: 0;
+		margin: 0.15em 0.5em 0 0.5em;
+		z-index: 0;
+		color: $color2Background;
+	}
+}
+
+
+.formQuestion input[type="radio"], .formQuestion input[type="checkbox"]  {
+	display: inline-block;
+	width: auto;
+	margin-right: 0.5em;
+}
+
+.formQuestion input[type="text"]:disabled,
+.formQuestion input[type="date"]:disabled,
+formQuestion input[type="search"]:disabled,
+.formQuestion textarea:disabled {
+	background: #ebebeb;
+	border-color: #d3d3d3; 
+	cursor: not-allowed;
+} 
+
+.formQuestion input[type="text"],
+.formQuestion input[type="search"],
+.formQuestion input[type="date"],
+.formQuestion textarea {
+	border: 2px solid #C1C19D;
+	padding: 0.5em 1em;
+	border-radius: 1.5em;
+	font-family: $paragraphFontFamily;
+	font-size: 1.1em;
+}
+
+.formQuestion textarea { 
+	border-radius: 0.5em;
+}
+
+.formQuestion select {
+	font-size: $paragraphFontSize;
+	font-family: $paragraphFontFamily;
+}
+
+.formQuestion input[type="text"]:focus, 
+.formQuestion input[type="date"]:focus,
+.formQuestion textarea:focus,
+.formQuestion input[type="search"] {
+	border: 2px solid #00B67D;
+}
+
+#flights_table {
+	border-radius: 0.5em;
+	overflow: hidden;
+	margin-bottom: 0;
+	padding-bottom: 0;
+
+	td {
+		background: white;
+	}
+
+	thead th {
+		padding: 0.5em;
+		text-align: left;
+	}
+
+	.titleOrigin td {
+		background: #FFF0E5;
+	}
+}
+
+.alwaysHide {display: none!important;}
+
+
+.errorValidating {
+	display: none;
+	margin: 0 1.25em;
+	padding: 0.5em;
+	background: #e76858;
+	border-bottom-left-radius: 0.25em;
+	border-bottom-right-radius: 0.25em;
+	color: white;
+}
+
+.errorValidating.noMargin {
+	margin: 0;	
+}
+
+.errorValidating.rounded {
+	border-radius: 0.5em;
+}
+
+.validationBorder {
+	border: 0px solid #e76858;
+}
+
+.notValidated  {
+	.errorValidating {
+		display: inline-block;
+	}
+	
+	input[type="text"], input[type="date"], textarea {
+		border-color: #e76858!important;
+		background: #f3e2e2;
+	}
+
+	.validationBorder {
+		border: 2px solid #e76858;
+		background: #e76858;
+	}
+	
+	input[type="radio"] + label {
+		background: #e76858;
+		padding: 0.5em;
+		color: white;
+		border-radius: 0.25em;
+	}
+
+}
+
+.full {
+	text-decoration: line-through!important;
+	label {
+		text-decoration: line-through!important;		
+	}
+	
+	td input {
+		display: none!important;
+	}
+
+}
+
+select {
+	padding: 0.25em;
+}
+
+
+/* TRAVEL */
+
+.panel.flight, panel.taxi, .panel.hotel, .panel.session {
+	background: white;
+	border: none;
+	box-shadow: 0px 3px 2px rgba(148, 137, 122, 0.20);
+	
+	h1, h2, h3, h4 {
+		background: white;
+		color: $paragraphFontColor;
+		
+		span {
+			float: right;
+		}
+	}
+	
+	table {
+		margin-bottom: 0;
+		
+		td:first-child {
+			width: 1%;
+		}
+	}
+}
+
+/* SESSIONS */
+
+ul.select {
+	list-style: none;
+	padding: 0;	
+	width: 100%;
+	font-size: 0;
+	border-radius: 0.5em;
+	margin-bottom: $paragraphFontSize;
+	
+	li {
+		font-size: $paragraphFontSize;
+		display: inline-block;
+		padding: 0;
+		width: 50%;
+		text-align: center;
+		padding: 0.5em;
+		border: 2px solid $color2Background;
+		color: $color2Background;
+		border-top-left-radius: 0.5em;
+		border-bottom-left-radius: 0.5em;
+	}
+	
+	li:last-child {
+		border-left: none;
+		border-top-left-radius: 0.0em;
+		border-bottom-left-radius: 0.0em;
+		border-top-right-radius: 0.5em;
+		border-bottom-right-radius: 0.5em;
+	}
+	
+	li:hover, .selected {
+		background: $color2Background;
+		color: white;
+		cursor: pointer;
+	}
+	
+}
+
+/* Grid */
+
+#sessionGrid {
+	width: 100%;
+	height: auto;
+	
+}
+
+.panel.session h4 span {
+	float: right;
+	
+}
+
+.panel.session .attending {
+	color: $color2Background;
+}
+
+.panel.session .inCue {
+	color: $color4Background;
+}
+
+/* PROFILE */
+#currentProfilePicture {
+	max-width: 10em;
+	border-radius: 5em;
+	box-shadow: 0px 3px 2px rgba(148, 137, 122, 0.20);
+	border: 2px solid #C1C19D;
+}
+
+input:focus,
+select:focus,
+textarea:focus,
+button:focus {
+    outline: none;
+}
+
+/* Chat */
+
+.chat {
+	text-align: right;
+	padding-bottom: 1em;
+	display: inline-block;
+	
+	.report {
+		float: right;
+		cursor: pointer;
+	}
+	
+	.date {
+		color: $paragraphFontColor;
+		font-size: 0.7em;
+	}
+	
+	img {
+		float: left;
+		width: 15%;
+		border-radius: 5em;
+		margin-right: 2%;
+		box-shadow: 0px 3px 2px rgba(148, 137, 122, 0.20);
+	}
+	
+	.chatContent {
+		text-align: left;
+		background: white;
+		padding: 0.5em;
+		width: 83%;
+		float: right;
+		box-shadow: 0px 3px 2px rgba(148, 137, 122, 0.20);
+		border-radius: 0.5em;
+		
+		p:last-child {
+			padding-bottom: 0;
+		}
+	}
+	
+}
+
+.chat:nth-child(even) {
+	img {
+		float: right!important;
+		margin-right: 0!important;
+		margin-left: 2%!important;
+	}
+}
+
+.bioHeadline {
+	img {
+		width: 6em;
+		vertical-align: middle;
+		box-shadow: 0px 3px 2px rgba(148, 137, 122, 0.20);
+		border-radius: 3em;
+		margin-right: 1em;
+	}
+	
+	h1 {
+		display: inline-block;
+	}
+}
+
+ul.sessionTags {
+	padding: 0;
+    list-style: none;
+}
+
+ul.sessionTags li {
+	padding: 0.25em;
+	display: inline-block;
+	background: $color2Background;
+	color: white;
+	border-radius: 0.25em;
+}

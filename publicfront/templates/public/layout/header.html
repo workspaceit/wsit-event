@@ -1,0 +1,108 @@
+{% load staticfiles %}
+<nav id="menu" class="cbp-spmenu cbp-spmenu-vertical cbp-spmenu-right">
+    <h3>MENU</h3>
+    {% if 'is_user_login' in request.session and request.session.is_user_login %}
+        <div class="profile">
+            {% if request.session.event_user.avatar == '' %}
+                <img id="profilePicture"
+                     src="{% static 'public/images/user_no_image.png' %}"/>
+            {% else %}
+                <img id="profilePicture"
+                     src="{% static request.session.event_user.avatar %}"/>
+            {% endif %}
+
+            <p>{{ request.session.event_user.name }}<br/>
+                Secret key: {{ request.session.event_user.secret_key }}<br/>
+                <a href="{% url 'user-logout' event_url=request.session.event_url %}">Log out</a>
+            </p>
+        </div>
+    {% endif %}
+    <ul>
+
+        {% for menu in request.menus %}
+            <li {% if menu.menu.available_offline %}class="offline"{% endif %}>
+                {% if menu.menu.content_id %}
+                    <a href="
+                            {% url "static-pages" event_url=request.session.event_url staticPage=menu.menu.content.url %}{% if 'is_user_login' in request.session and request.session.is_user_login  %}{% if menu.menu.uid_include %}?uid={{ request.session.event_user.secret_key }}{% endif %}{% endif %}"
+                       class={{ menu.menu.content.url }}
+                               data-url="">{{ menu.menu.title|upper }}</a>
+                {% else %}
+                    <a href="
+                            {% url menu.menu.url event_url=request.session.event_url %}{% if 'is_user_login' in request.session and request.session.is_user_login  %}{% if menu.menu.uid_include %}?uid={{ request.session.event_user.secret_key }}{% endif %}{% endif %}"
+                       class={{ menu.menu.url }}
+                               data-url="">{{ menu.menu.title|upper }}</a>
+                {% endif %}
+                {% if menu.items %}
+                    <ul>
+                        {% for item in menu.items %}
+                            <li {% if item.menu.available_offline %}class="offline" {% endif %}>
+                                {% if item.menu.content_id %}
+                                    <a href="
+                                            {% url "static-pages" event_url=request.session.event_url staticPage=item.menu.content.url %}{% if 'is_user_login' in request.session and request.session.is_user_login  %}{% if item.menu.uid_include %}?uid={{ request.session.event_user.secret_key }}{% endif %}{% endif %}"
+                                       class={{ item.menu.content.url }} data-url="">{{ item.menu.title|upper }}</a>
+                                {% else %}
+                                    <a href="
+                                            {% url item.menu.url event_url=request.session.event_url %}{% if 'is_user_login' in request.session and request.session.is_user_login  %}{% if item.menu.uid_include %}?uid={{ request.session.event_user.secret_key }}{% endif %}{% endif %}"
+                                       class={{ item.menu.url }} data-url="">{{ item.menu.title|upper }}</a>
+                                {% endif %}
+                                {% if item.items %}
+                                    <ul>
+                                        {% for item in item.items %}
+                                            <li {% if item.menu.available_offline %}
+                                                class="offline" {% endif %}>
+                                                {% if item.menu.content_id %}
+                                                    <a href="
+                                                            {% url "static-pages" event_url=request.session.event_url staticPage=item.menu.content.url %}{% if 'is_user_login' in request.session and request.session.is_user_login  %}{% if item.menu.uid_include %}?uid={{ request.session.event_user.secret_key }}{% endif %}{% endif %}"
+                                                       class={{ item.menu.content.url }} data-url="">{{ item.menu.title|upper }}</a>
+                                                {% else %}
+                                                    <a href="
+                                                            {% url item.menu.url event_url=request.session.event_url %}{% if 'is_user_login' in request.session and request.session.is_user_login  %}{% if item.menu.uid_include %}?uid={{ request.session.event_user.secret_key }}{% endif %}{% endif %}"
+                                                       class={{ item.menu.url }} data-url="">{{ item.menu.title|upper }}</a>
+                                                {% endif %}
+                                            </li>
+                                        {% endfor %}
+                                    </ul>
+                                {% endif %}
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </li>
+        {% endfor %}
+
+
+    </ul>
+
+
+</nav>
+
+<div class="wrapper header">
+    <div class="wrapper">
+        <div class="container">
+            <div class="row gutters half">
+                <div class="col span_6">
+                    <button class="button round color2 menu-right onlyMobile" id="backButton"><i
+                            class="fa fa-chevron-left"></i> BACK
+                    </button>
+                    &nbsp;
+                    <img id="logo" src="{% static 'public/images/kingfomarket_logo.png' %}" class="noMobile">
+                </div>
+                <!--col-->
+                <div class="col span_6" style="text-align: right;">
+                    <button class="button round color2 toggle-menu menu-right" id="menuButton"><i
+                            class="fa fa-bars"></i> MENU
+                    </button>
+                </div>
+                <!--col-->
+            </div>
+            <!--row-->
+
+        </div>
+        <!--container-->
+    </div>
+</div>
+<input type="hidden" id="popurl" value=""/>
+{% csrf_token %}
+<script>
+    $("#popurl").val("");
+</script>

@@ -1,0 +1,149 @@
+<div class="row">
+    <div class="col-sm-12 ">
+        <div class="inline-group">
+            <div class="col-sm-6">
+                {% if request.session.admin_permission.content_permission.language_permission and request.session.admin_permission.content_permission.language_permission.access_level == 'write' or request.session.event_auth_user.type == 'super_admin' %}
+                    <a type="button" class="btn btn-primary  pull-left"
+                       data-target="#add-preset-modal"
+                       data-toggle="modal"
+                       title="Add Preset"><i
+                            class="fa fa-plus"></i>&nbsp;&nbsp;Add Preset
+                    </a>
+                    &nbsp;
+
+                    <a type="button" class="btn btn-danger"
+                       data-original-title=""
+                            {% if presetsEvent %}
+                            {% else %}
+                       style="display: none"
+                            {% endif %}
+                       title="Delete Preset"
+                       id="delete-preset"
+                       href="javascript:void(0);"><i
+                            class="fa fa-trash-o"></i>&nbsp;&nbsp;Delete Preset
+                    </a>
+
+                    <a type="button" class="btn btn-info"
+                            {% if presetsEvent %}
+                            {% else %}
+                       style="display: none"
+                            {% endif %}
+                       data-target="#rename-preset-modal"
+                       data-toggle="modal"
+                       title="Rename Preset"
+                       id="rename-preset"
+                       href="javascript:void(0);"><i
+                            class="fa fa-pencil"></i>&nbsp;&nbsp;Rename Preset
+                    </a>
+
+                {% endif %}
+            </div>
+            <div class="col-sm-6">
+                <div class="form-inline">
+                    <label class="form-control">Preset:</label>
+                    <select class="form-control" style="width: 70%" id="preset">
+                        {% for preset in presets %}
+                            <option value="{{ preset.id }}" data-value="{{ preset.preset_name }}"
+                                    {% if preset.id == presetsEvent.preset_id %}
+                                    selected="selected"{% endif %}>{{ preset.preset_name }}({{ preset.id }})
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+<div id="add-preset-modal" class="modal fade" tabindex="-1" role="dialog" style="display: none;">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                <h4 class="modal-title">Add Preset</h4>
+            </div>
+            <div class="modal-body">
+                <div class="panel">
+
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="form-group no-margin-hr">
+                                    <label class="control-label">Name</label>
+                                    <input type="text" name="preset_name" class="form-control"
+                                           id="preset_name" placeholder="Put Language Name ...">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12 text-right">
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-lg" data-original-title="" title=""
+                                    data-dismiss="modal" aria-hidden="true"><i
+                                    class="fa fa-ban"></i>&nbsp;&nbsp;Cancel
+                            </button>
+                            <button type="button" class="btn btn-success btn-lg" id="addPreset" data-id="0"><i
+                                    class="fa fa-check-circle"></i>&nbsp;&nbsp;Save
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="rename-preset-modal" class="modal fade" tabindex="-1" role="dialog" style="display: none;">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                <h4 class="modal-title">Rename Preset</h4>
+            </div>
+            <div class="modal-body">
+                <div class="panel">
+
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="form-group no-margin-hr">
+                                    <label class="control-label">Name</label>
+                                    <input type="text" name="rename_preset_name" class="form-control"
+                                           data-id="{{ presetsEvent.preset_id }}"
+                                           id="rename_preset_name" placeholder="Put Language Name ..."
+                                           value="{{ presetsEvent.preset.preset_name }}">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12 text-right">
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-lg" data-original-title="" title=""
+                                    data-dismiss="modal" aria-hidden="true"><i
+                                    class="fa fa-ban"></i>&nbsp;&nbsp;Cancel
+                            </button>
+                            <button type="button" class="btn btn-success btn-lg" id="renamePreset" data-id="0"><i
+                                    class="fa fa-check-circle"></i>&nbsp;&nbsp;Save
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('body').on('click', '#rename-preset', function (event) {
+            $('#rename_preset_name').val($.trim($('#preset option[value="' + $('#preset').val() + '"]').attr('data-value')));
+            $('#rename_preset_name').attr('data-id', $('#preset').val());
+        });
+    });
+</script>

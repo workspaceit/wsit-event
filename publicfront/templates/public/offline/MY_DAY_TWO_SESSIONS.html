@@ -1,0 +1,69 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<title>KingfoMarket</title>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	    <meta name="HandheldFriendly" content="True">
+		<meta name="MobileOptimized" content="320">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no">
+	    
+	    <link rel="stylesheet" type="text/css" href="css/style.css" />
+		<link rel="stylesheet" type="text/css" href="css/font-awesome.min.css" />
+	</head>
+	
+	<body>
+	    <div class="wrapper header">
+			<a href="index.html" class="selected"><i class="fa fa-bars" aria-hidden="true"></i> Menu</a>
+		</div>
+		<div class="wrapper">
+			<div class="container padding mainContent">
+				<table class="">
+					<thead>
+						<tr>
+							<th>Time
+							</th>
+							<th>Session
+							</th>
+							<th>Location
+							</th>
+						</tr>
+					</thead>
+					<tbody>
+{#						<tr>#}
+{#							<td>10:00 - 10:45#}
+{#							</td>#}
+{#							<td>Who are you, and who am I in this space? - Player profiles in Kingdom.#}
+{#							</td>#}
+{#							<td>A14#}
+{#							</td>#}
+{#						</tr>#}
+                    {% for session in sessions %}
+                        <tr>
+							<td>{{ session.session.start|date:"H:i" }}
+							</td>
+							<td>{{ session.session.name }}
+							</td>
+							<td>{{ session.session.location.name }}
+							</td>
+						</tr>
+
+                    {% endfor %}
+
+					</tbody>
+				</table>
+			</div>
+	    </div>
+	    <div class="wrapper footer">
+			<div class="wrapper">
+				<div class="container">
+					<div class="row gutters half">
+						<div class="col span_12">
+							&nbsp;
+						</div>
+					</div>
+                </div>
+            </div>
+        </div>
+	</body>
+</html>

@@ -1,0 +1,169 @@
+{% extends "layout/main.html" %}
+{% block content %}
+    {% load staticfiles %}
+    {% csrf_token %}
+    <div id="content-wrapper">
+        <div class="panel colourable">
+            <div class="panel-heading">
+            <span class="panel-title"><i class="fa fa-lg fa-envelope-o"></i>
+                &nbsp;&nbsp;&nbsp;<strong>Messages</strong></span>
+            </div>
+            <!-- / .panel-heading -->
+            {% csrf_token %}
+            <div class="panel-body tab-content">
+                <div class="tab-pane fade in active">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            {% if request.session.admin_permission.content_permission.message_permission and request.session.admin_permission.content_permission.message_permission.access_level == 'write' or request.session.event_auth_user.type == 'super_admin' %}
+                                <button type="button"
+                                        class="btn btn-primary btn-lg new-message"
+                                        data-original-title="Add New Email"
+                                        data-toggle="modal" data-target="#message-modal"
+                                        title=""
+                                ><i
+                                        class="fa fa-plus-circle"></i>&nbsp;&nbsp;Add New Message
+                                </button>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <br>
+
+                    <div id="emails">
+                        <div class="table-light">
+                            <table class="table table-bordered sortable message-table">
+                                <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Name</th>
+                                    <th>Receivers</th>
+                                    <th>Actions</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for message in messages %}
+
+                                    <tr>
+                                        <td>{{ message.id }}</td>
+                                        <td>{{ message.name }}</td>
+                                        <td>{{ message.sent_receiver }}/{{ message.total_receiver }}</td>
+                                        <td>
+                                            <a href="{% url 'messages-receivers' pk=message.id %}"
+                                               class="btn btn-xs btn-info"
+                                               data-toggle="tooltip"
+                                               data-placement="top"
+                                               title=""
+                                               data-original-title="Receivers">
+                                                <i class="dropdown-icon fa fa-users"></i>
+                                            </a>
+                                            {% if request.session.admin_permission.content_permission.message_permission and request.session.admin_permission.content_permission.message_permission.access_level == 'write' or request.session.event_auth_user.type == 'super_admin' %}
+                                                <button class="btn btn-xs message-settings"
+                                                        data-id="{{ message.id }}"
+                                                        data-toggle="tooltip"
+                                                        data-placement="top"
+                                                        title=""
+                                                        data-original-title="Setting">
+                                                    <i class="dropdown-icon fa fa-cog"></i>
+                                                </button>
+                                                <a href="{% url 'messages-content' pk=message.id %}"
+                                                   class="btn btn-xs"
+                                                   data-toggle="tooltip"
+                                                   data-placement="top"
+                                                   title=""
+                                                   data-original-title="Edit Message Content" target="_blank">
+                                                    <i class="dropdown-icon fa fa-pencil"></i>
+                                                </a>
+
+                                                <button class="btn btn-xs btn-warning duplicate-message"
+                                                        data-id="{{ message.id }}"
+                                                        data-toggle="tooltip"
+                                                        data-placement="top"
+                                                        title=""
+                                                        data-original-title="Duplicate">
+                                                    <i class="dropdown-icon fa fa-files-o"></i>
+                                                </button>
+                                                <button class="btn btn-xs btn-danger delete-message"
+                                                        data-id="{{ message.id }}"
+                                                        data-toggle="tooltip"
+                                                        data-placement="top"
+                                                        title=""
+                                                        data-original-title="Delete">
+                                                    <i class="dropdown-icon fa fa-times-circle"></i>
+                                                </button>
+                                            {% else %}
+                                                <button class="btn btn-xs view-message-settings"
+                                                        data-id="{{ message.id }}"
+                                                        data-toggle="tooltip"
+                                                        data-placement="top"
+                                                        title=""
+                                                        data-original-title="Setting">
+                                                    <i class="dropdown-icon fa fa-cog"></i>
+                                                </button>
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="message-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title"><i class="fa fa-lg fa-envelope-o"></i> Add New Message</h4>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" id="message-id" value="">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group no-margin-hr">
+                                <label class="control-label">Name</label>
+                                <input type="text" class="form-control" id="message-name" placeholder="Name">
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group no-margin-hr">
+                                <label class="control-label">Sender</label>
+                                <input type="text" class="form-control" id="message-sender"
+                                       placeholder="Name">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group no-margin-hr">
+                                <label class="control-label">Type of message</label>
+                                <select class="form-control" name="group" id="message-type">
+                                    {#                                    <option value="selected" selected>Selected</option>#}
+                                    <option value="push_or_sms">Push when available, otherwise SMS</option>
+                                    <option value="sms_and_push">SMS and Push</option>
+                                    <option value="sms">SMS only</option>
+                                    <option value="push">Push only</option>
+                                    <option value="plugin_message">Only send to Messages plugin</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                        {% if request.session.admin_permission.content_permission.message_permission and request.session.admin_permission.content_permission.message_permission.access_level == 'write' or request.session.event_auth_user.type == 'super_admin' %}
+                            <button type="button" class="btn btn-primary save-preset-btn" id="btn-save-message">Save
+                                Message
+                            </button>
+                            <button type="button" class="btn btn-primary save-preset-btn" id="btn-update-message"
+                                    style="display: none;">Update Message
+                            </button>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

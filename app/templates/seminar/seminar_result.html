@@ -1,0 +1,125 @@
+<div class="table-light">
+
+    {% for group in session_groups %}
+        <div class="table-header" id="seminar_group_{{ group.id }}">
+            <div class="table-caption">
+                {{ group.name|safe }}
+            </div>
+        </div>
+        <table class="table table-bordered sortable seminar-table seminar-table-{{ group.id }}">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Attending</th>
+                <th>Max</th>
+                <th>Percentage</th>
+                <th>In Queue</th>
+                <th>Pending</th>
+                <th>Not Attending</th>
+                <th>Cost</th>
+                <th>VAT</th>
+                <th>Average Rating</th>
+                <th>Rating Received</th>
+                <th>Lists</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for session in group.session %}
+                <tr>
+                    {#                                            <td><input type="checkbox" name="sessions_for_export" class="allselect_{{ group.id }}" value="{{ session.id }}"></td>#}
+                    <td>{{ session.id }}</td>
+                    <td>{{ session.name }}</td>
+                    <td>{{ session.attending }}</td>
+                    {% if session.max_attendees != 0 %}
+                        <td>{{ session.max_attendees }}</td>
+                    {% else %}
+                        <td>&#8734;</td>
+                    {% endif %}
+
+                    <td>{{ session.percentage }}</td>
+                    <td id="session-queue-count-{{ session.id }}">{{ session.in_queue }}</td>
+                    <td>{{ session.pending }}</td>
+                    <td>{{ session.not_attending }}</td>
+                    <td>{{ session.cost }}</td>
+                    {% if session.vat %}
+                        <td>{{ session.vat }}%
+                    {% else %}
+                        <td>N/A</td>
+                    {% endif %}
+                    {% if session.no_of_attendees_evaluating %}
+                        <td>{{ session.average_rating }}</td>
+                    {% else %}
+                        <td>N/A</td>
+                    {% endif %}
+                    {% if session.no_of_attendees_evaluating %}
+                        <td>{{ session.no_of_attendees_evaluating }}</td>
+                    {% else %}
+                        <td>N/A</td>
+                    {% endif %}
+                    {% if request.session.admin_permission.content_permission.session_permission and request.session.admin_permission.content_permission.session_permission.access_level == 'write' or request.session.event_auth_user.type == 'super_admin' %}
+                        <td>
+                            <button class="btn btn-xs btn-edit-attending"
+                                    data-id="{{ session.id }}"
+                                    data-toggle="tooltip" data-placement="top" title=""
+                                    data-original-title="Participating"><i
+                                    class="dropdown-icon fa fa-group"></i></button>
+                            <button class="btn btn-xs btn-edit-queue" data-id="{{ session.id }}"
+                                    data-toggle="tooltip" data-placement="top" title=""
+                                    data-original-title="Edit Queue"><i
+                                    class="dropdown-icon fa fa-users"></i></button>
+                            <button class="btn btn-xs btn-edit-deciding"
+                                    data-id="{{ session.id }}"
+                                    data-toggle="tooltip" data-placement="top" title=""
+                                    data-original-title="Pending"><i
+                                    class="dropdown-icon fa fa-user-secret"></i></button>
+                             <button class="btn btn-xs btn-edit-session-checkpoint" data-id="{{ session.id }}"
+                                                            data-toggle="tooltip" data-placement="top" title=""
+                                                            data-original-title="Checkpoint"><i
+                                                            class="dropdown-icon fa fa-users"></i></button>
+                        </td>
+                        <td>
+                            <button class="btn btn-xs btn-edit-session"
+                                    data-id="{{ session.id }}"
+                                    data-toggle="tooltip" data-placement="top" title=""
+                                    data-original-title="Edit"><i
+                                    class="dropdown-icon fa fa-cog"></i>
+                            </button>
+                            <button class="btn btn-xs btn-duplicate-session"
+                                    data-id="{{ session.id }}" data-toggle="tooltip"
+                                    data-placement="top"
+                                    title=""
+                                    data-original-title="Duplicate"><i
+                                    class="dropdown-icon fa fa-files-o"></i>
+                            </button>
+                            <button class="btn btn-xs btn-danger btn-delete-session"
+                                    data-id="{{ session.id }}" data-toggle="tooltip"
+                                    data-placement="top"
+                                    title="" data-original-title="Delete"><i
+                                    class="dropdown-icon fa fa-times-circle"></i></button>
+                            <a href="{% url 'exportSession' %}{{ session.id }}">
+
+                                <button class="btn btn-xs btn-success btn-export-filter"
+                                        data-original-title="Export"><i
+                                        class="dropdown-icon fa fa-file-excel-o"></i></button>
+
+                            </a>
+
+                        </td>
+                    {% else %}
+                        <td style="text-align: center;">
+                            <button class="btn btn-xs btn-view-session"
+                                    data-id="{{ session.id }}"
+                                    data-toggle="tooltip" data-placement="top" title=""
+                                    data-original-title="View"><i
+                                    class="dropdown-icon fa fa-search-plus"></i>
+                            </button>
+                        </td>
+                    {% endif %}
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    {% endfor %}
+</div>

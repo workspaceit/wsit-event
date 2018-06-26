@@ -1,0 +1,2205 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>KingfoMarket</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no">
+
+    <link rel="stylesheet" type="text/css" href="css/style.css"/>
+    <link rel="stylesheet" type="text/css" href="css/font-awesome.min.css"/>
+    <script src="js/jquery.min.js"></script>
+</head>
+
+<body>
+<div class="wrapper header">
+    <a href="index.html" class="selected"><i class="fa fa-bars" aria-hidden="true"></i> Menu</a>
+</div>
+</div>
+<div class="wrapper">
+    <div class="container padding mainContent">
+        <h1>FUNKY MEET AGENDAS ARE LIVE!</h1>
+
+        <p>Click on your function below to view the agenda for your Funky Meet. If your function is not
+            currently listed, please check back as we'll be updating and adding these until the day or
+            ask your functional leader for more info.</p>
+
+        <p>
+            <select class="custom-select given-answer" id="funky_meet_agenda" style="width:100%">
+                <option value="default">- Select -</option>
+                <option value="agenda1"
+                        {% if funky_answer == 'Art Funky Meet – Plenary Track' %}selected{% endif %}
+                        data-value="Art Funky Meet – Plenary Track">Art
+                    Funky Meet – Plenary Track
+                </option>
+                <option value="agenda2"
+                        {% if funky_answer == 'Art Funky Meet – Tech Art Track' %}selected{% endif %}
+                        data-value="Art Funky Meet – Tech Art Track">
+                    Art Funky Meet – Tech Art Track
+                </option>
+                <option value="agenda3"
+                        {% if funky_answer == 'Art Funky Meet – UX & UI Track' or funky_answer == 'Art Funky Meet – UX &amp; UI Track' %}selected{% endif %}
+                        data-value="Art Funky Meet – UX & UI Track">Art
+                    Funky Meet – UX & UI Track
+                </option>
+                <option value="agenda4" {% if funky_answer == 'BP/DS Funky Meet' %}selected{% endif %}
+                        data-value="BP/DS Funky Meet">
+                    BP/DS Funky Meet
+                </option>
+                <option value="agenda5" {% if funky_answer == 'DA Funky Meet' %}selected{% endif %}
+                        data-value="DA Funky Meet">DA
+                    Funky Meet
+                </option>
+                <option value="agenda12" {% if funky_answer == 'EA Funky Meet' %}selected{% endif %}
+                        data-value="EA Funky Meet">EA
+                    Funky Meet
+                </option>
+                <option value="agenda6"
+                        {% if funky_answer == 'Finance Funky Meet' %}selected{% endif %}
+                        data-value="Finance Funky Meet">Finance Funky
+                    Meet
+                </option>
+                <option value="agenda7"
+                        {% if funky_answer == 'Game Design Funky Meet' %}selected{% endif %}
+                        data-value="Game Design Funky Meet">Game Design
+                    Funky Meet
+                </option>
+                <option value="agenda8" {% if funky_answer == 'HR Funky Meet' %}selected{% endif %}
+                        data-value="HR Funky Meet">HR
+                    Funky Meet
+                </option>
+                <option value="agenda14"
+                        {% if funky_answer == 'Marketing Funky Meet' %}selected{% endif %}
+                        data-value="Marketing Funky Meet">Marketing Funky Meet
+                </option>
+                <option value="agenda13"
+                        {% if funky_answer == 'Legal Sharks Funky Meet' %}selected{% endif %}
+                        data-value="Legal Sharks Funky Meet">Legal
+                    Sharks Funky Meet
+                </option>
+                <option value="agenda9"
+                        {% if funky_answer == 'PP, BD & Asia Funky Meet' or funky_answer == 'PP, BD &amp; Asia Funky Meet' %}selected{% endif %}
+                        data-value="PP, BD & Asia Funky Meet">PP, BD &
+                    Asia Funky Meet
+                </option>
+                <option value="agenda10"
+                        {% if funky_answer == 'Tech MegaFunky AM' %}selected{% endif %}
+                        data-value="Tech MegaFunky AM">Tech MegaFunky AM
+                </option>
+                <option value="agenda11"
+                        {% if funky_answer == 'Tech MegaFunky PM' %}selected{% endif %}
+                        data-value="Tech MegaFunky PM">Tech MegaFunky PM
+                </option>
+            </select>
+        </p>
+
+        <p>On the day, please make sure you’re at the venue by 08:30. Coffee will be served before the
+            first of the Funky Meets get going at <strong>09:00</strong>.</p>
+
+        <p><strong>IMPORTANT:</strong> Check your Funkies Agenda as start and end times vary – some kick
+            off later than 09:00, for example.</p>
+
+        <p>Please also check the venue map on this Portal and give yourself plenty of time to find your
+            room. It’s a pretty big place!</p>
+
+        <p>Lunch will be served between <strong>12:30</strong> and <strong>14:00</strong> (depending on
+            your function).</p>
+
+        <p>Funky Meets continue through the afternoon, before Evening Activities start at
+            <strong>17:30</strong>.</p>
+
+        <div id="agenda1wrapper" style="display: none;"><a name="agenda1"></a>
+
+            <h2>Art Funky Meet – Plenary Track</h2><h4>Room T1</h4>
+            <table class="tableAlternateColors">
+                <thead>
+                <tr>
+                    <th>Session Start / End Time</th>
+                    <th>Session Title / Description</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>08:30 - 08:45</td>
+                    <td><p><strong>Arrivals/Welcome Coffee</strong></p></td>
+                </tr>
+                <tr>
+                    <td>09:00 - 09:30</td>
+                    <td><p><strong>Update on Global Art</strong><br><em>Graeme Gish, VP Global Art</em>
+                    </p>
+
+                        <p><strong>Audience:</strong> All</p></td>
+                </tr>
+                <tr>
+                    <td>09:30 - 09:45</td>
+                    <td><p><strong>What's happening today?</strong><br><em>Kiki Olofsson, Senior
+                        Director Global Art</em></p>
+
+                        <p><strong>Audience:</strong> All</p></td>
+                </tr>
+                <tr>
+                    <td>09:45 - 10:30</td>
+                    <td><p><strong>Evolution of Candy style, the story so far</strong><br><em>Seamus
+                        Flanagan, Studio AD Candy Crush</em></p>
+
+                        <p>A story of how the Candy style has evolved over the years, how the different
+                            games have worked with it and the key points to keep in mind when developing
+                            visuals for a Candy game.</p>
+
+                        <p><strong>Audience:</strong> Art</p></td>
+                </tr>
+                <tr>
+                    <td>10:30 - 11:00</td>
+                    <td><p><strong>BREAK</strong></p></td>
+                </tr>
+                <tr>
+                    <td>11:00 - 11:45</td>
+                    <td><p><strong>Watering the Blossom Maps</strong><br><em>Fredrik Malmer, Client Tech
+                        Lead Genesis</em></p>
+
+                        <p>Every flower needs lots of love and clear water to blossom. This is also true
+                            for Saga maps! The Blossom Blast Saga team share how they made their maps
+                            come alive in new unique ways using some pretty clever tricks, the
+                            capabilities of Defold and just the right amount of petals.</p>
+
+                        <p><strong>Audience:</strong> Art</p></td>
+                </tr>
+                <tr>
+                    <td>11:45 - 12:30</td>
+                    <td><p><strong>Levelling up Animation in Super Saga</strong><br><em>Hollie Taylor,
+                        Senior Game Artist &amp; Anthony Simpson, Senior Technical Artist, London
+                        Farm</em></p>
+
+                        <p>A tour through our animation techniques &amp; tools in the new Farm Heroes
+                            sister title.</p>
+
+                        <p><strong>Audience:</strong> Art</p></td>
+                </tr>
+                <tr>
+                    <td>12:30 - 13:30</td>
+                    <td><p><strong>LUNCH HALL B</strong></p></td>
+                </tr>
+                <tr>
+                    <td>13:30 - 14:30</td>
+                    <td><p><strong>Creative Process and Production Design Development at Pixar</strong>
+                    </p>
+
+                        <p><em>Daniel Lopez Munoz, Production Designer / Art Director / Character
+                            Designer Pixar Animation Studios</em></p>
+
+                        <p>This presentation will reveal the main tenets of the Production Design
+                            process at Pixar. Daniel will take us from inspiration, through visual
+                            development, the final result and the hardships in between, in order to
+                            express the true nature of creative ideas, their constant evolution, their
+                            humble origins and their often tempestuous journeys toward the silver
+                            screen.</p>
+
+                        <p><strong>Audience:</strong> All</p></td>
+                </tr>
+                <tr>
+                    <td>14:45 - 15:00</td>
+                    <td><p><strong>Instructions Teamwork / Networking Activity</strong></p>
+
+                        <p><strong>Audience:</strong> All</p></td>
+                </tr>
+                <tr>
+                    <td>15:00 - 16:30</td>
+                    <td><p><strong>Teamwork / Networking Activity (with Break included)</strong></p>
+
+                        <p><strong>Audience:</strong> All</p></td>
+                </tr>
+                <tr>
+                    <td>16:30 - 17:30</td>
+                    <td><p><strong>Making of Journey</strong><br><em>Jenova Chen, Creative Director
+                        thatgamecompany</em></p>
+
+                        <p>It took thatgamecompany three years to develop a two-hour long video game.
+                            Many high-level experimental ideas were tested and failed, and many lessons
+                            were learned during the design and production of the game. This talk will
+                            give you the insight into the process thatgamecompany took to come up the
+                            original concept for Journey, how we polished and executed the design to
+                            realize an emotional arc, and most importantly, the difficult lessons we
+                            learned throughout the process.</p>
+
+                        <p><strong>Audience:</strong> All</p></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div id="agenda2wrapper" style="display: none;"><a name="agenda2"></a>
+
+            <h2>Art Funky Meet – Tech Art Track</h2>
+            <table class="tableAlternateColors">
+                <thead>
+                <tr>
+                    <th>Session Start / End Time</th>
+                    <th>Session Title / Description</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>08:30 - 08:45</td>
+                    <td><p><strong>Arrivals/Welcome Coffee</strong> <em>Room T1</em></p>
+
+                        <p><strong>Audience:</strong> ALL</p></td>
+                </tr>
+                <tr>
+                    <td>09:00 - 09:30</td>
+                    <td><p><strong>Update on Global Art</strong> <em>Room T1</em></p>
+
+                        <p>Graeme Gish, VP Global Art</p>
+
+                        <p><strong>Audience:</strong> ALL</p></td>
+                </tr>
+                <tr>
+                    <td>09:30 - 09:45</td>
+                    <td><p><strong>What's happening today?</strong> <em>Room T1</em></p>
+
+                        <p><em>Kiki Olofsson, Senior Director Global Art</em></p>
+
+                        <p><strong>Audience:</strong> ALL</p></td>
+                </tr>
+                <tr>
+                    <td>09:30 - 09:45</td>
+                    <td><p><strong>Photo Op</strong> <em>Room T3</em></p>
+
+                        <p>Photo OpCommunication is easier when you know what everyone looks like. Let's
+                            make a lasting memory...</p>
+
+                        <p><strong>Audience:</strong> Tech Art Track</p></td>
+                </tr>
+                <tr>
+                    <td>10:00 - 11:15</td>
+                    <td><p><strong>Micro Presentations</strong> <em>Room T3</em></p>
+
+                        <p>Presentation from each meber/team what has happened since last KingfoMarket.
+                            Who are you, where do you work, what have you done. Timeboxed: 3
+                            min/each</p>
+
+                        <p><strong>Audience:</strong> Tech Art Track</p></td>
+                </tr>
+                <tr>
+                    <td>11:15 - 11:45</td>
+                    <td><p><strong>BREAK</strong></p></td>
+                </tr>
+                <tr>
+                    <td>11:45 - 12:30</td>
+                    <td><p><strong>TA ORG - Roadmap Planning</strong> <em>Room T1</em></p>
+
+                        <p>What meetings, offsites and so on does the TA org want to do over the next 6
+                            months? What should we discuss? Who should attend?</p>
+
+                        <p><strong>Audience:</strong> Tech Art Track</p></td>
+                </tr>
+                <tr>
+                    <td>12:30 - 13:30</td>
+                    <td><p><strong>LUNCH - HALL B</strong></p></td>
+                </tr>
+                <tr>
+                    <td>13:30 - 14:30</td>
+                    <td><p><strong>Creative Process and Production Design Development at Pixar</strong>
+                        <em>Room T1</em></p>
+
+                        <p><em>Daniel Lopez Munoz, Production Designer / Art Director / Character
+                            Designer, Pixar Animation Studios</em></p>
+
+                        <p>This presentation will reveal the main tenets of the Production Design
+                            process at Pixar. Daniel will take us from inspiration, through visual
+                            development, the final result and the hardships in between, in order to
+                            express the true nature of creative ideas, their constant evolution, their
+                            humble origins and their often tempestuous journeys toward the silver
+                            screen.</p>
+
+                        <p><strong>Audience:</strong> ALL</p></td>
+                </tr>
+                <tr>
+                    <td>14:45 - 15:00</td>
+                    <td><p><strong>Instructions Teamwork / Networking Activity</strong> <em>Room T1</em>
+                    </p>
+
+                        <p><strong>Audience:</strong> ALL</p></td>
+                </tr>
+                <tr>
+                    <td>15:00 - 16:30</td>
+                    <td><p><strong>Teamwork / Networking Activity (with Break included)</strong> <em>Room
+                        T1</em></p>
+
+                        <p><strong>Audience:</strong> ALL</p></td>
+                </tr>
+                <tr>
+                    <td>16:30 - 17:30</td>
+                    <td><p><strong>Making of Journey</strong></p>
+
+                        <p><em>Jenova Chen, Creative Director, thatgamecompany</em></p>
+
+                        <p>It took thatgamecompany three years to develop a two-hour long video game.
+                            Many high-level experimental ideas were tested and failed, and many lessons
+                            were learned during the design and production of the game. This talk will
+                            give you the insight into the process thatgamecompany took to come up the
+                            original concept for Journey, how we polished and executed the design to
+                            realize an emotional arc, and most importantly, the difficult lessons we
+                            learned throughout the process.</p>
+
+                        <p><strong>Audience:</strong> ALL</p></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div id="agenda3wrapper" style="display: none;"><a name="agenda3"></a>
+
+            <h2>Art Funky Meet – UX &amp; UI Track</h2>
+            <table class="tableAlternateColors">
+                <thead>
+                <tr>
+                    <th>Session Start / End Time</th>
+                    <th>Session Title / Description</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>08:30 - 08:45</td>
+                    <td><p><strong>Arrivals/Welcome Coffee</strong>, <em>Room T1</em></p>
+
+                        <p><strong>Audience:</strong> ALL</p></td>
+                </tr>
+                <tr>
+                    <td>09:00 - 09:30</td>
+                    <td><p><strong>Update on Global Art</strong>, <em>Room T1</em></p>
+
+                        <p><em>Graeme Gish, VP Global Art</em></p>
+
+                        <p><strong>Audience:</strong> ALL</p></td>
+                </tr>
+                <tr>
+                    <td>09:30 - 09:45</td>
+                    <td><p><strong>What is happening today?</strong>, <em>Room T1</em></p>
+
+                        <p><em>Kiki Olofsson, Senior Director Global Art</em></p>
+
+                        <p><strong>Audience:</strong> ALL</p></td>
+                </tr>
+                <tr>
+                    <td>09:45 - 10:00</td>
+                    <td><p><strong>Welcome!</strong>, <em>Room T4</em></p>
+
+                        <p><em>Chris Grant &amp; Tobias Holmgren</em></p>
+
+                        <p>Welcome! Introduce schedule and maybe have quick presentations.</p>
+
+                        <p><strong>Audience:</strong> UX &amp; UI Track</p></td>
+                </tr>
+                <tr>
+                    <td>10:00 - 10:45</td>
+                    <td><p><strong>The Candy Story</strong>, <em>Room T4</em></p>
+
+                        <p><em>Melker Wickman</em></p>
+
+                        <p>Presentation about Candy Crush Saga (History and Workflow)</p>
+
+                        <p><strong>Audience:</strong> UX &amp; UI Track</p></td>
+                </tr>
+                <tr>
+                    <td>10:45 - 11:15</td>
+                    <td><p><strong>BREAK</strong></p></td>
+                </tr>
+                <tr>
+                    <td>11:15 - 12:00</td>
+                    <td><p><strong>UX Summit Highlights</strong>, <em>Room T4</em></p>
+
+                        <p><em>Chris Grant</em></p>
+
+                        <p>Presentation about insights and highlights from UX Summit.</p>
+
+                        <p><strong>Audience:</strong> UX &amp; UI Track</p></td>
+                </tr>
+                <tr>
+                    <td>12:00 - 12:30</td>
+                    <td><p><strong>Translating Games @ King</strong>, <em>Room T4</em></p>
+
+                        <p><em>Christelle Arnaud</em></p>
+
+                        <p>Workshop and presentation around common mistakes with translations in UI and
+                            how we can work together to avoid them.</p>
+
+                        <p><strong>Audience:</strong> UX &amp; UI Track</p></td>
+                </tr>
+                <tr>
+                    <td>12:30 - 13:30</td>
+                    <td><p><strong>LUNCH - HALL B</strong></p></td>
+                </tr>
+                <tr>
+                    <td>13:30 - 14:30</td>
+                    <td><p><strong>Creative Process and Production Design Development at Pixar</strong>,
+                        <em>Room T1</em></p>
+
+                        <p><em>Daniel Lopez Munoz, Production Designer / Art Director / Character
+                            Designer, Pixar Animation Studios</em></p>
+
+                        <p>This presentation will reveal the main tenets of the Production Design
+                            process at Pixar. Daniel will take us from inspiration, through visual
+                            development, the final result and the hardships in between, in order to
+                            express the true nature of creative ideas, their constant evolution, their
+                            humble origins and their often tempestuous journeys toward the silver
+                            screen.</p>
+
+                        <p><strong>Audience:</strong> ALL</p></td>
+                </tr>
+                <tr>
+                    <td>14:45 - 15:00</td>
+                    <td><p><strong>Instructions Teamwork / Networking Activity</strong>, <em>Room
+                        T1</em></p>
+
+                        <p><strong>Audience:</strong> ALL</p></td>
+                </tr>
+                <tr>
+                    <td>15:00 - 16:30</td>
+                    <td><p><strong>Teamwork / Networking</strong> , <em>Room T1</em></p>
+
+                        <p>Activity (with Break included)</p>
+
+                        <p><strong>Audience:</strong> ALL</p></td>
+                </tr>
+                <tr>
+                    <td>16:30 - 17:30</td>
+                    <td><p><strong>Making of Journey</strong></p>
+
+                        <p><em>Jenova Chen, Creative Director thatgamecompany</em></p>
+
+                        <p>It took thatgamecompany three years to develop a two-hour long video game.
+                            Many high-level experimental ideas were tested and failed, and many lessons
+                            were learned during the design and production of the game. This talk will
+                            give you the insight into the process thatgamecompany took to come up the
+                            original concept for Journey, how we polished and executed the design to
+                            realize an emotional arc, and most importantly, the difficult lessons we
+                            learned throughout the process.</p>
+
+                        <p><strong>Audience:</strong> ALL</p></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div id="agenda4wrapper" style="display: none;"><a name="agenda4"></a>
+
+            <h2>BP/DS Funky Meet</h2>
+            <table class="tableAlternateColors">
+                <thead>
+                <tr>
+                    <th>Session Start / End Time</th>
+
+                    <th>Session Title / Description</th>
+                </tr>
+                </thead>
+
+                <tbody>
+                <tr>
+                    <td>08:30 - 08:45</td>
+
+                    <td>
+                        <p><strong>Arrivals/Welcome Coffee</strong></p>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>09:00 - 09:45</td>
+
+                    <td>
+                        <p><strong>Opening session with Marcus Jacobs: Franchise and portfolio
+                            strategy</strong></p>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>09:45 - 10:00</td>
+
+                    <td>
+                        <p><strong>BREAK</strong></p>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>10:00 - 10:45</td>
+
+                    <td>
+                        <p><strong>Ways of Working -</strong><em>Room K11</em><br>
+                            Lessons from working with Saga 2.0 in Pet Rescue Patrol<br>
+                            <em>(Viggo+BPU)</em></p>
+
+                        <p><strong>Data &amp; Tools -</strong> <em>Room K13</em><br>
+                            The tech and tools that help BPUs create value<br>
+                            <em>(Christophe, Carlos)</em></p>
+
+                        <p><strong>Players -</strong> <em>Room K14</em><br>
+                            To buy or not to buy: purchase behaviour in casual games<br>
+                            <em>(Michele)</em></p>
+
+                        <p><strong>Insights -</strong> <em>Room K15</em><br>
+                            Fantastic new Research Insights<br>
+                            <em>(Dalia, Philippe)</em></p>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>10:45 - 11:15</td>
+
+                    <td>
+                        <p><strong>COFFEE BREAK</strong></p>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>11:15 - 12:00</td>
+
+                    <td>
+                        <p><strong>Ways of Working -</strong> <em>Room K11</em><br>
+                            Workshop<br>
+                            <strong>Long term analytical capabilities</strong><br>
+                            <em>(Matte, Christophe)</em></p>
+
+                        <p><strong>Data &amp; Tools -</strong> <em>Room K13</em><br>
+                            Data model and platform design<br>
+                            <em>(Natania)</em></p>
+
+                        <p><strong>Players -</strong> <em>Room K14</em><br>
+                            Understanding gaming behaviour outside of King's network<br>
+                            <em>(Teresa, Constantin)</em></p>
+
+                        <p><strong>Insights -</strong><em>Room K15</em><br>
+                            Different pricing strategies<br>
+                            <em>(Ashish)</em></p>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>12:00 - 13:00</td>
+
+                    <td>
+                        <p><strong>Analytics as a faith-based endeavor @ Activision</strong><br>
+                            &nbsp;&nbsp;&nbsp;&nbsp; (Josh Hemann, Director Analytic Services at
+                            Activision)</p>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>13:00 - 14:00</td>
+
+                    <td>
+                        <p><strong>LUNCH - Hall B</strong></p>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>14:00 - 14:45</td>
+
+                    <td>
+                        <p><strong>Ways of Working -</strong> <em>Room K11</em><br>
+                            Workshop<br>
+                            Can BPUs help game teams during prototyping?<br>
+                            <em>(George)</em></p>
+
+                        <p><strong>Data &amp; Tools -</strong> <em>Room K13</em><br>
+                            How Bayesian data analysis can help us understand A/B test results<br>
+                            <em>(Rasmus)</em></p>
+
+                        <p><strong>Players -</strong> <em>Room K14</em><br>
+                            One size fits one<br>
+                            <em>(Michele, Bartek, Sebastien, Dalia)</em></p>
+
+                        <p><strong>Insights -</strong> <em>Room K15</em><br>
+                            The story of a lifetime<br>
+                            <em>(Anton)</em></p>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>14:45 - 15:30</td>
+
+                    <td>
+                        <p><strong>Ways of Working -</strong> <em>Room K11</em><br>
+                            AB Testing: Interim Monitoring and Stopping Rules<br>
+                            <em>(Patrick, Jimmy, Christian)</em></p>
+
+                        <p><strong>Data &amp; Tools -</strong> <em>Room K13</em><br>
+                            Forecasting RPI and retention curves on PT/SL data<br>
+                            <em>(Erik)</em></p>
+
+                        <p><strong>Players -</strong> <em>Room K14</em><br>
+                            Workshop - What opportunities do we have in segmentation?<br>
+                            <em>(Stefan, Jonathan)</em></p>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>15:30 - 16:00</td>
+
+                    <td>
+                        <p><strong>COFFEE BREAK</strong></p>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>16:00 - 16:45</td>
+
+                    <td>
+                        <p><strong>Ways of Working -</strong> <em>Room K11</em><br>
+                            Workshop<br>
+                            Nature of DS work<br>
+                            <em>(Tim, Helena, Phil)</em></p>
+
+                        <p><strong>Data &amp; Tools -</strong> <em>Room K13</em><br>
+                            Jelly players: Analysis of launch, data insights<br>
+                            <em>(Stefan)</em></p>
+
+                        <p><strong>Players -</strong> <em>Room K14</em><br>
+                            Optimising levels in Candy &amp; BWS<br>
+                            <em>(James, Anna)</em></p>
+
+                        <p><strong>Insights -</strong> <em>Room K15</em><br>
+                            Speaking to the players<br>
+                            <em>(Tom)</em></p>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>16:45 - 17:00</td>
+
+                    <td>
+                        <p><strong>BREAK</strong></p>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>17:00 - 18:00</td>
+
+                    <td>
+                        <p><strong>Room K11 - ALL</strong><br>
+                            <strong>Taking decisions when nothing is black and white</strong><br>
+                            <em>(Xavi &amp; Abel)</em></p>
+
+                        <p><strong>Frodo Level Balancing</strong><br>
+                            <em>(Simon)</em></p>
+
+                        <p><strong>Survey Design 101</strong><br>
+                            <em>(Noa)</em></p>
+
+                        <p><strong>The key QV reports on our games</strong><br>
+                            <em>(Carlos, Alexandre)</em></p>
+
+                        <p><strong>Spark Use cases: DataFrames and GraphX</strong><br>
+                            <em>(Juan, Stathis)</em></p>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div id="agenda5wrapper" style="display: none;"><a name="agenda5"></a>
+
+            <h2>DA Funky Meet</h2><h4>Room K12</h4>
+            <table class="tableAlternateColors">
+                <thead>
+                <tr>
+                    <th>Session Start / End Time</th>
+                    <th>Session Title /Description</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>16:30 - 17:30</td>
+                    <td><p><strong>Team Q&amp;A</strong></p>
+
+                        <p>Get together at the end of the day for a little celebration where JB will
+                            answer questions on the company strategy and other topics</p>
+
+                        <p><strong>Audience:</strong> DA</p></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div id="agenda6wrapper" style="display: none;"><a name="agenda6"></a>
+
+            <h2>Finance Funky Meet</h2>
+
+            <p></p>
+            <table class="tableAlternateColors">
+                <thead>
+                <tr>
+                    <th>Session Start / End Time</th>
+                    <th>Session Title / Description</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>09:00 - 10:00</td>
+                    <td><p><strong>Opening &amp; Welcome</strong><br>Introduction, short ice-breaker
+                        &amp; scene setting by Humam</p>
+
+                        <p><strong>Audience:</strong> Finance, Strategy &amp; M&amp;A teams</p>
+
+                        <p><em>Room: A6</em></p></td>
+                </tr>
+                <tr>
+                    <td>10:00 - 13:00</td>
+                    <td><p><strong>Team Breakout sessions</strong><br>Accounting &amp; Shared Service
+                        Centre team break out to discuss team objectives and also to consider how to
+                        achieve outcomes as defined by Humam in the opening plenary session.</p>
+
+                        <p><strong>Audience:</strong> Accounting &amp; Shared Service Centre</p>
+
+                        <p><em>Room: A6</em></p></td>
+                </tr>
+                <tr>
+                    <td>10:00 - 13:00</td>
+                    <td><p><strong>Team Breakout sessions</strong><br>Finance Systems team break out to
+                        discuss team objectives and also to consider how to achieve outcomes as defined
+                        by Humam in the opening plenary session.</p>
+
+                        <p><strong>Audience:</strong> Finance Systems</p>
+
+                        <p><em>Room: M11</em></p></td>
+                </tr>
+                <tr>
+                    <td>10:00 - 13:00</td>
+                    <td><p><strong>Team Breakout sessions</strong><br>FP&amp;A team break out to discuss
+                        team objectives and also to consider how to achieve outcomes as defined by Humam
+                        in the opening plenary session.</p>
+
+                        <p><strong>Audience:</strong> FP&amp;A</p>
+
+                        <p><em>Room: M12</em></p></td>
+                </tr>
+                <tr>
+                    <td>10:00 - 13:00</td>
+                    <td><p><strong>Team Breakout sessions</strong><br>Tax and Treasury team break out to
+                        discuss team objectives and also to consider how to achieve outcomes as defined
+                        by Humam in the opening plenary session.</p>
+
+                        <p><strong>Audience:</strong> Tax &amp; Treasury</p>
+
+                        <p><em>Room: M13</em></p></td>
+                </tr>
+                <tr>
+                    <td>10:00 - 13:00</td>
+                    <td><p><strong>Team Breakout sessions</strong><br>Internal audit team break out to
+                        discuss team objectives and also to consider how to achieve outcomes as defined
+                        by Humam in the opening plenary session.</p>
+
+                        <p><strong>Audience:</strong> Internal Audit</p>
+
+                        <p><em>Room: M14</em></p></td>
+                </tr>
+                <tr>
+                    <td>10:00 - 13:00</td>
+                    <td><p><strong>Team Breakout sessions</strong><br>Strategy &amp; M&amp;A team break
+                        out to discuss team objectives and also to consider how to achieve outcomes as
+                        defined by Humam in the opening plenary session.</p>
+
+                        <p><strong>Audience:</strong> Strategy &amp; M&amp;A</p>
+
+                        <p><em>Room: M18</em></p></td>
+                </tr>
+                <tr>
+                    <td>13:00 - 14:00</td>
+                    <td><p><strong>LUNCH</strong></p></td>
+                </tr>
+                <tr>
+                    <td>14:00 - 15:15</td>
+                    <td><p><strong>Team Breakout sessions</strong><br>Accounting &amp; Shared Service
+                        Centre break out continues</p>
+
+                        <p><strong>Audience:</strong> Accounting &amp; Shared Service Centre</p>
+
+                        <p><em>Room: A6</em></p></td>
+                </tr>
+                <tr>
+                    <td>14:00 - 15:15</td>
+                    <td><p><strong>Team Breakout sessions</strong><br>Finance Systems team break out
+                        continues.</p>
+
+                        <p><strong>Audience:</strong> Finance Systems</p>
+
+                        <p><em>Room: M11</em></p></td>
+                </tr>
+                <tr>
+                    <td>14:00 - 15:15</td>
+                    <td><p><strong>Team Breakout sessions</strong><br>FP&amp;A team break out continues.
+                    </p>
+
+                        <p><strong>Audience:</strong> FP&amp;A</p>
+
+                        <p>Room: M12</p></td>
+                </tr>
+                <tr>
+                    <td>14:00 - 15:15</td>
+                    <td><p><strong>Team Breakout sessions</strong><br>Tax and Treasury team break out
+                        continues.</p>
+
+                        <p><strong>Audience:</strong> Tax &amp; Treasury</p>
+
+                        <p><em>Room: M13</em></p></td>
+                </tr>
+                <tr>
+                    <td>14:00 - 15:15</td>
+                    <td><p><strong>Team Breakout sessions</strong><br>Internal Audit team break out
+                        continues.</p>
+
+                        <p><strong>Audience:</strong> Internal Audit</p>
+
+                        <p><em>Room: M14</em></p></td>
+                </tr>
+                <tr>
+                    <td>14:00 - 15:15</td>
+                    <td><p><strong>Team Breakout sessions</strong><br>Strategy &amp; M&amp;A team break
+                        out continues.</p>
+
+                        <p><strong>Audience:</strong> Strategy &amp; M&amp;A</p>
+
+                        <p><em>Room: M18</em></p></td>
+                </tr>
+                <tr>
+                    <td>15:15 - 15:30</td>
+                    <td><p><strong>BREAK</strong></p></td>
+                </tr>
+                <tr>
+                    <td>15:30 - 17:00</td>
+                    <td><p><strong>Wrap up</strong><br>Wrap up and feedback from individual teams</p>
+
+                        <p><strong>Audience:</strong> Finance, Strategy &amp; M&amp;A teams</p>
+
+                        <p><em>Room: A6</em></p></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div id="agenda12wrapper" style="display: block;"><a name="agenda12"></a>
+
+            <h2>EA Funky Meet</h2><h4>Room T8</h4>
+            <table class="tableAlternateColors">
+                <thead>
+                <tr>
+                    <th>Session Start / End Time</th>
+                    <th>Session Title /Description</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>09:00 - 11:00</td>
+                    <td><p><strong>Welcome</strong></p>
+
+                        <p>Opening/Introduction/What has happened since last we met.</p></td>
+                </tr>
+                <tr>
+                    <td>11:30 - 12:30</td>
+                    <td><p><strong>EA Career Path</strong></p>
+
+                        <p>Ross &amp; Hayley to present</p></td>
+                </tr>
+                <tr>
+                    <td>12:30 - 13:30</td>
+                    <td><p><strong>Lunch - Hall B</strong></p></td>
+                </tr>
+                <tr>
+                    <td>13:30 - 15:00</td>
+                    <td><p><strong>TBA Speaker</strong></p></td>
+                </tr>
+                <tr>
+                    <td>15:30 - 17:00</td>
+                    <td><p><strong>Conclusion</strong></p>
+
+                        <p>What's coming next/Team Activity</p></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div id="agenda7wrapper" style="display: none;"><a name="agenda7"></a>
+
+            <h2>Game Design Funky Meet</h2>
+            <table class="tableAlternateColors">
+                <thead>
+                <tr>
+                    <th>Start / End Time</th>
+                    <th>Session Title / Description</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>09:00 - 09:30</td>
+                    <td><p><strong>Welcome and intro to the day</strong></p>
+
+                        <p><em>Room: T2</em></p></td>
+                </tr>
+                <tr>
+                    <td>09:30 - 10:00</td>
+                    <td><p><strong>Eric Dodds - Hearthstone Design decisions</strong></p>
+
+                        <p><em>Room: T2</em></p></td>
+                </tr>
+                <tr>
+                    <td>10:15 - 10:45</td>
+                    <td><p><strong>Josh Bridge - Activision</strong></p>
+
+                        <p><em>Room: T2</em></p></td>
+                </tr>
+                <tr>
+                    <td>10:45 - 11:15</td>
+                    <td><p><strong>BREAK</strong></p>
+
+                        <p><em>Room: T2</em></p></td>
+                </tr>
+                <tr>
+                    <td>11:15 - 12:00</td>
+                    <td><p><strong>Sean Vanaman - Campo Santo - Firewatch - Narrative</strong></p>
+
+                        <p><em>Room: T2</em></p></td>
+                </tr>
+                <tr>
+                    <td>12:00 - 12:15</td>
+                    <td><p><strong>VIKING STRETCH - Yonna Ingolf &amp; Seb Lindqvist</strong></p>
+
+                        <p><em>Room: T2</em></p></td>
+                </tr>
+                <tr>
+                    <td>12:15 - 13:00</td>
+                    <td><p><strong>Sebastian - Impact of Incrementality</strong></p>
+
+                        <p><em>Room: T2</em></p></td>
+                </tr>
+                <tr>
+                    <td>13:00 - 14:00</td>
+                    <td><p><strong>LUNCH</strong></p>
+
+                        <p><em>Room: HALL B</em></p></td>
+                </tr>
+                <tr>
+                    <td>14:15 - 15:15</td>
+                    <td><p><strong>Jenova Chen - Making of Journey</strong></p>
+
+                        <p><em>Room: T2</em></p></td>
+                </tr>
+                <tr>
+                    <td>15:15 - 16:30</td>
+                    <td><p><strong>Workshops (Level Design, Narrative, System Design)</strong></p>
+
+                        <p><em>Room: T2/T6</em></p></td>
+                </tr>
+                <tr>
+                    <td>16:30 - 16:45</td>
+                    <td><p><strong>BREAK</strong></p>
+
+                        <p><em>Room: T2</em></p></td>
+                </tr>
+                <tr>
+                    <td>16:45 - 18:00</td>
+                    <td><p><strong>Wrap up and surprise activity</strong></p>
+
+                        <p><em>Room: T2</em></p></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div id="agenda8wrapper">
+            <a id="agenda8"></a>
+            <h2>HR Funky Meet</h2>
+
+            <h4>Room A5</h4>
+
+            <table class="tableAlternateColors">
+                <thead>
+                <tr>
+                    <th>Start / End Time</th>
+
+                    <th>Session Title / Description</th>
+                </tr>
+                </thead>
+
+                <tbody>
+                <tr>
+                    <td>09:00 - 10:00</td>
+
+                    <td>
+                        <p><strong>Opening & Welcome</strong></p>
+
+                        <p>Opening for Funky Day. Introduction and Q&A with Mark and Riccardo<br>
+                            <i>Audience: HR Team & Facilities</i></p>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>10:00 - 10:15</td>
+
+                    <td>
+                        <p><strong>Coffee Break</strong></p>
+
+                        <p><br>
+                            <i>Audience: HR Team</i></p>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>10:15 - 11:00</td>
+
+                    <td>
+                        <p><strong>HR Evolution retrospective</strong></p>
+
+                        <p>Mark and HRE walk through the HR Evolution journey so far.<br>
+                            <i>Audience: HR Team</i></p>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>11:00 - 11:30</td>
+
+                    <td>
+                        <p><strong>Your HR Evolution experience</strong></p>
+
+                        <p>A chance to add your key achievements and lessons learned to the HR Evolution timeline<br>
+                            <i>Audience: HR Team</i></p>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>11:30 - 12:30</td>
+
+                    <td>
+                        <p><strong>What’s next?</strong></p>
+
+                        <p>Now we have discussed and explored our journey, let’s review and think about what we should
+                            Continue/Stop/Start doing in order to increasingly add value<br>
+                            <i>Audience: HR Team</i></p>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>12:30 - 13:30</td>
+
+                    <td>
+                        <p><strong>Lunch</strong></p>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>13:30 - 14:30</td>
+
+                    <td>
+                        <p><strong>Will it Make the Boat Go Faster</strong></p>
+
+                        <p>Ben Hunt Davis a gold medal Olympic Rower in Sydney 2000 talks about how relentlessly
+                            focusing on your goals can help you to achieve success<br>
+                            <i>Audience: HR Team</i></p>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>14:30 - 15:00</td>
+
+                    <td>
+                        <p><strong>What will make the HR Boat go Faster!</strong></p>
+
+                        <p>How do we relentlessly focus on the activities that will drive the HR evolution forward.<br>
+                            <i>Audience: HR Team</i></p>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>15:00 - 15:30</td>
+
+                    <td>
+                        <p><strong>Wrap up and close</strong><br>
+                            <i>Audience: HR Team</i></p>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>15:30 - 17:00</td>
+
+                    <td>
+                        <p><strong>Team Time</strong></p>
+
+                        <p>Teams have the chance to get together and work on their own specific topics<br>
+                            <i>Audience: HR Team</i></p>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div id="agenda13wrapper" style="display: none;"><a name="agenda13"></a>
+
+            <h2>LEGAL SHARKS FUNKY MEET AGENDA</h2><h4>Room K16</h4>
+            <table class="tableAlternateColors">
+                <thead>
+                <tr>
+                    <th>Session Start / End Time</th>
+                    <th>Session Title / Description</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>10:00 - 13:00</td>
+                    <td><strong>Team Updates</strong>
+                        <br>Scott – Gocha Mechanics<br>
+                        Jill – Candy Crush updates and promotions<br>
+                        Hakan – Patent Update<br>
+                        Susie – Spare Time Projects<br>
+                        Frankie/Luci/Adam/Mike – Publishing Deals<br>
+                        Deirdre – Impact of Brexit on Employment<br>
+                        Linda – Public Affairs Update<br>
+                        Team Leads – 2016 H2 Goals
+
+                        <p><strong>Audience:</strong> All Legal</p></td>
+                </tr>
+                <tr>
+                    <td>13:00 - 14:00</td>
+                    <td><strong>Lunch</strong></td>
+                </tr>
+                <tr>
+                    <td>14:00 - 17:00</td>
+                    <td><strong>The Conscious Professional with Neil Seligman</strong>
+
+                        <p><strong>Audience:</strong> All Legal</p></td>
+                </tr>
+                <tr>
+                    <td>19:00</td>
+                    <td>Dinner/Drinkies<br>TBC</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div id="agenda9wrapper" style="display: none;"><a name="agenda9"></a>
+
+            <h2>PP, BD &amp; Asia Funky Meet</h2>
+            <h4>Room B9</h4>
+            <table class="tableAlternateColors">
+                <thead>
+                <tr>
+                    <th>Session Start / End Time</th>
+                    <th>Session Title / Description</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>09:00 - 09:30</td>
+                    <td><p><strong>Opening &amp; Welcome</strong><br>Opening for Funky Day, Overview of
+                        agenda, Danny's intro.</p>
+
+                        <p><strong>Audience:</strong> PP, BD &amp; Asia</p></td>
+                </tr>
+                <tr>
+                    <td>09:30 - 09:45</td>
+                    <td><p><strong>Energy games</strong><br><em>Surprise</em> energy games to get the
+                        blood pumping through those veins.</p>
+
+                        <p><strong>Audience:</strong> All</p></td>
+                </tr>
+                <tr>
+                    <td>09:45 - 10:55</td>
+                    <td><p><strong>Round table</strong><br>Share your Top 3 most relevant things you are
+                        working on/want to work on this year with the whole team (5 min each).</p>
+
+                        <p><strong>Audience:</strong> PP, BD &amp; Asia</p></td>
+                </tr>
+                <tr>
+                    <td>10:55 - 11:15</td>
+                    <td><p><strong>Break</strong><br>Tea/Coffee/Snack</p>
+
+                        <p><strong>Audience:</strong> All</p></td>
+                </tr>
+                <tr>
+                    <td>11:15 - 12:00</td>
+                    <td><p><strong>New Opportunities Template</strong><br>Run through the Business Case
+                        of New Opportunities template, show, share and discuss use case examples.</p>
+
+                        <p><strong>Audience:</strong> PP, BD &amp; Asia</p></td>
+                </tr>
+                <tr>
+                    <td>12:00 - 13:00</td>
+                    <td><p><strong>Better Together</strong><br>How Korea, Japan, China and SF teams can
+                        work better together.</p>
+
+                        <p><strong>Audience:</strong> PP, BD &amp; Asia</p></td>
+                </tr>
+                <tr>
+                    <td>13:00 - 14:00</td>
+                    <td><p><strong>Lunch</strong><br>Lunch/Speed Geeking</p>
+
+                        <p><strong>Audience:</strong> All</p></td>
+                </tr>
+                <tr>
+                    <td>14:00 - 14:15</td>
+                    <td><p><strong>Energy games</strong><br><em>Surprise</em> energy games to get the
+                        blood pumping through those veins.</p>
+
+                        <p><strong>Audience:</strong> All</p></td>
+                </tr>
+                <tr>
+                    <td>14:15 - 15:30</td>
+                    <td><p><strong>Past, Present and Future</strong><br>Create a timeline with facts,
+                        our successes and failures so far, what we have achieved so far and what we
+                        would like to achieve in the next 3 years.</p>
+
+                        <p><strong>Audience:</strong> PP / Optional for Asia</p></td>
+                </tr>
+                <tr>
+                    <td>15:30 - 15:50</td>
+                    <td><p><strong>Break</strong><br>Tea/Coffee/Snack</p>
+
+                        <p><strong>Audience:</strong> All</p></td>
+                </tr>
+                <tr>
+                    <td>15:50 - 17:30</td>
+                    <td><p><strong>PP Strategy</strong><br>Explore what we would do more of, do
+                        differently or innovate on if there were no constrains or blockers.</p>
+
+                        <p><strong>Audience:</strong> PP / Optional for Asia</p></td>
+                </tr>
+                <tr>
+                    <td>17:30 - 17:45</td>
+                    <td><p><strong>Closing</strong><br>Retrospective and Closing.</p>
+
+                        <p><strong>Audience:</strong> PP / Optional for Asia</p></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div id="agenda10wrapper" style="display: none;"><a name="agenda10"></a>
+
+            <h2>Tech MegaFunky AM</h2>
+
+            <table class="tableAlternateColors">
+                <thead>
+                <tr>
+                    <th>Session Start / End Time</th>
+
+                    <th>Session Title / Description</th>
+                </tr>
+                </thead>
+
+                <tbody>
+                <tr>
+                    <td>all day</td>
+
+                    <td><strong>Makerspace</strong> <i>Room: C-Marketplace</i><br>
+                        <strong>Audience:</strong></td>
+                </tr>
+                </tbody>
+
+                <tbody>
+                <tr>
+                    <td>09:00 - 09:55</td>
+
+                    <td><strong>Opening and Guest Speaker</strong> <i>Room: K1/K2</i><br>
+                        <strong>Audience:</strong> All
+                    </td>
+                </tr>
+                </tbody>
+
+                <tbody>
+                <tr>
+                    <td>10:00 - 13:00</td>
+
+                    <td><strong>Client Dev Community</strong> <i>Room: C1</i><br>
+                        <strong>Audience:</strong> Client Developers
+                    </td>
+                </tr>
+                </tbody>
+
+                <tbody>
+                <tr>
+                    <td>10:00 - 13:00</td>
+
+                    <td><strong>QA Community</strong> <i>Room: C2</i><br>
+                        <strong>Audience:</strong> QA
+                    </td>
+                </tr>
+                </tbody>
+
+                <tbody>
+                <tr>
+                    <td>10:00 - 13:00</td>
+
+                    <td><strong>Sysadmin & Ops Community</strong> <i>Room: C6</i><br>
+                        <strong>Audience:</strong> Sysadmins & Ops
+                    </td>
+                </tr>
+                </tbody>
+
+                <tbody>
+                <tr>
+                    <td>10:00 - 13:00</td>
+
+                    <td><strong>Backend Community</strong> <i>Room: C7/8</i><br>
+                        <strong>Audience:</strong> Backend Developers
+                    </td>
+                </tr>
+                </tbody>
+
+                <tbody>
+                <tr>
+                    <td>10:00 - 13:00</td>
+
+                    <td><strong>Product Owner Community</strong> <i>Room: C9</i><br>
+                        <strong>Audience:</strong> Product Owners
+                    </td>
+                </tr>
+                </tbody>
+
+                <tbody>
+                <tr>
+                    <td>10:00 - 13:00</td>
+
+                    <td><strong>Web Dev Community</strong> <i>Room: C10</i><br>
+                        <strong>Audience:</strong> Web Developers
+                    </td>
+                </tr>
+                </tbody>
+
+                <tbody>
+                <tr>
+                    <td>10:30 - 11:30</td>
+
+                    <td><strong>Meeting: Engineering Leadership & Stephane Kurgan</strong> <i>Room:
+                        C4</i><br>
+                        <strong>Audience:</strong> ELT & SK
+                    </td>
+                </tr>
+                </tbody>
+
+                <tbody>
+                <tr>
+                    <td>12:00 - 13:00</td>
+
+                    <td><strong>Meeting: Studio Tech Directors</strong> <i>Room: C4</i><br>
+                        <strong>Audience:</strong> Studio Tech Directors
+                    </td>
+                </tr>
+                </tbody>
+
+                <tbody>
+                <tr>
+                    <td>13:00 - 14:00</td>
+
+                    <td><strong>Lunch Break / Speed Geeking</strong> <i>Room: B</i><br>
+                        <strong>Audience:</strong> All
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div id="agenda11wrapper" style="display: none;"><a name="agenda11"></a>
+
+            <h2>Tech MegaFunky PM</h2>
+
+            <table class="tableAlternateColors">
+                <thead>
+                <tr>
+                    <th>Session Start / End Time</th>
+
+                    <th>Session Title / Description</th>
+                </tr>
+                </thead>
+
+                <tbody>
+                <tr>
+                    <td>all day</td>
+
+                    <td><strong>Makerspace</strong> <i>Room: C-Marketplace</i><br></td>
+                </tr>
+                </tbody>
+
+                <tbody>
+                <tr>
+                    <td>14:00 - 17:00</td>
+
+                    <td><strong>Marketplace: FictionFactory</strong> <i>Room: C-Marketplace</i><br>
+                        <br>
+                        <strong>Audience:</strong> All
+                    </td>
+                </tr>
+                </tbody>
+
+                <tbody>
+                <tr>
+                    <td>14:00 - 17:00</td>
+
+                    <td><strong>Marketplace: Device Cloud</strong> <i>Room: C-Marketplace</i><br>
+                        <br>
+                        <strong>Audience:</strong> All
+                    </td>
+                </tr>
+                </tbody>
+
+                <tbody>
+                <tr>
+                    <td>14:00 - 17:00</td>
+
+                    <td><strong>Marketplace: Test Automation</strong> <i>Room: C-Marketplace</i><br>
+                        <br>
+                        <strong>Audience:</strong> All
+                    </td>
+                </tr>
+                </tbody>
+
+                <tbody>
+                <tr>
+                    <td>14:00 - 17:00</td>
+
+                    <td><strong>Marketplace: ESS</strong> <i>Room: C-Marketplace</i><br>
+                        <br>
+                        <strong>Audience:</strong> All
+                    </td>
+                </tr>
+                </tbody>
+
+                <tbody>
+                <tr>
+                    <td>14:00 - 17:00</td>
+
+                    <td><strong>Marketplace: Defold</strong> <i>Room: C-Marketplace</i><br>
+                        <br>
+                        <strong>Audience:</strong> All
+                    </td>
+                </tr>
+                </tbody>
+
+                <tbody>
+                <tr>
+                    <td>14:00 - 17:00</td>
+
+                    <td><strong>Marketplace: Gifting</strong> <i>Room: C-Marketplace</i><br>
+                        <br>
+                        <strong>Audience:</strong> All
+                    </td>
+                </tr>
+                </tbody>
+
+                <tbody>
+                <tr>
+                    <td>14:00 - 17:00</td>
+
+                    <td><strong>Marketplace: Pet Village in VR</strong> <i>Room: C-Marketplace</i><br>
+                        <br>
+                        <strong>Audience:</strong> All
+                    </td>
+                </tr>
+                </tbody>
+
+                <tbody>
+                <tr>
+                    <td>14:00 - 15:30</td>
+
+                    <td><strong>Lego Serious Play - Session 1</strong> <i>Room: C-Marketplace</i><br>
+                        Facilitated by Mareike Hilgenfeldt & Mattias Karlsson<br>
+                        <strong>Audience:</strong> All
+                    </td>
+                </tr>
+                </tbody>
+
+                <tbody>
+                <tr>
+                    <td>14:00 - 14:30</td>
+
+                    <td><strong>Fiction Factory Data Driven UI</strong> <i>Room: C1</i><br>
+                        Deep Dive by Molood Noori Alavijeh<br>
+                        <strong>Audience:</strong> Frontend Track
+                    </td>
+                </tr>
+                </tbody>
+
+                <tbody>
+                <tr>
+                    <td>14:00 - 14:30</td>
+
+                    <td><strong>DevOps and improving our development process</strong> <i>Room: C3</i><br>
+                        Discussion with Matti Klasson<br>
+                        <strong>Audience:</strong> Getting Stuff Done Track
+                    </td>
+                </tr>
+                </tbody>
+
+                <tbody>
+                <tr>
+                    <td>14:00 - 14:30</td>
+
+                    <td><strong>Splat: Real time data stream processing</strong> <i>Room: C4</i><br>
+                        Deep Dive by Jakob Ericsson, Gyula Fora & Mattias E Andersson<br>
+                        <strong>Audience:</strong> Tech & Team Updates Track
+                    </td>
+                </tr>
+                </tbody>
+
+                <tbody>
+                <tr>
+                    <td>14:00 - 14:30</td>
+
+                    <td><strong>Plazma - evolving our backend</strong> <i>Room: C7/8</i><br>
+                        Discussion with Jonas Rydin & Marcus Walter<br>
+                        <strong>Audience:</strong> Backend Track
+                    </td>
+                </tr>
+                </tbody>
+
+                <tbody>
+                <tr>
+                    <td>14:00 - 14:20</td>
+
+                    <td><strong>Release Management at Z2</strong> <i>Room: C2</i><br>
+                        Deep Dive by Paul Waite<br>
+                        <strong>Audience:</strong> QA Track
+                    </td>
+                </tr>
+                </tbody>
+
+                <tbody>
+                <tr>
+                    <td>14:00 - 14:20</td>
+
+                    <td><strong>"The day of... ...a central marketing campaign manager ...an embedded marketeer
+                        "</strong> <i>Room: C5</i><br>
+                        Speed Talk by Fabrizio Volpi & Janis Zaikovskis<br>
+                        <strong>Audience:</strong> Tech & Team Updates Track
+                    </td>
+                </tr>
+                </tbody>
+
+                <tbody>
+                <tr>
+                    <td>14:20 - 14:30</td>
+
+                    <td><strong>The day of... a backend game dev</strong> <i>Room: C5</i><br>
+                        Speed Talk by Matheus Boschetti<br>
+                        <strong>Audience:</strong> Tech & Team Updates Track
+                    </td>
+                </tr>
+                </tbody>
+
+                <tbody>
+                <tr>
+                    <td>14:30 - 15:00</td>
+
+                    <td><strong>ZEngine</strong> <i>Room: C1</i><br>
+                        Deep Dive by Troy Lawlor<br>
+                        <strong>Audience:</strong> Frontend Track
+                    </td>
+                </tr>
+                </tbody>
+
+                <tbody>
+                <tr>
+                    <td>14:30 - 15:00</td>
+
+                    <td><strong>The difference between PO/Lead/Head/Director and how they interconnect</strong> <i>Room:
+                        C3</i><br>
+                        Discussion with Allan Mertner<br>
+                        <strong>Audience:</strong> Getting Stuff Done Track
+                    </td>
+                </tr>
+                </tbody>
+
+                <tbody>
+                <tr>
+                    <td>14:30 - 15:00</td>
+
+                    <td><strong>Docker</strong> <i>Room: C7/8</i><br>
+                        Deep Dive by Elisenda Piñol & David Campos<br>
+                        <strong>Audience:</strong> Backend Track
+                    </td>
+                </tr>
+                </tbody>
+
+                <tbody>
+                <tr>
+                    <td>14:30 - 14:40</td>
+
+                    <td><strong>How we QA Rise of Tyrants</strong> <i>Room: C2</i><br>
+                        Speed Talk by Jeffrey Pineda<br>
+                        <strong>Audience:</strong> QA Track
+                    </td>
+                </tr>
+                </tbody>
+
+                <tbody>
+                <tr>
+                    <td>14:30 - 14:40</td>
+
+                    <td><strong>King Sized Graph</strong> <i>Room: C4</i><br>
+                        Speed Talk by Seyit Abassoglu<br>
+                        <strong>Audience:</strong> Tech & Team Updates Track
+                    </td>
+                </tr>
+                </tbody>
+
+                <tbody>
+                <tr>
+                    <td>14:30 - 14:40</td>
+
+                    <td><strong>The day of... a studio tech director</strong> <i>Room: C5</i><br>
+                        Speed Talk by Tom Niwinski<br>
+                        <strong>Audience:</strong> Tech & Team Updates Track
+                    </td>
+                </tr>
+                </tbody>
+
+                <tbody>
+                <tr>
+                    <td>14:40 - 14:50</td>
+
+                    <td><strong>Performance Testing</strong> <i>Room: C2</i><br>
+                        Speed Talk by Silviu Mihai<br>
+                        <strong>Audience:</strong> QA Track
+                    </td>
+                </tr>
+                </tbody>
+
+                <tbody>
+                <tr>
+                    <td>14:40 - 14:50</td>
+
+                    <td><strong>HTML5 with Defold</strong> <i>Room: C4</i><br>
+                        Speed Talk by Sven Andersson & Mathias Westerdahl<br>
+                        <strong>Audience:</strong> Tech & Team Updates Track
+                    </td>
+                </tr>
+                </tbody>
+
+                <tbody>
+                <tr>
+                    <td>14:40 - 14:50</td>
+
+                    <td><strong>The day of... a client game dev</strong> <i>Room: C5</i><br>
+                        Speed Talk by Alberto Denia<br>
+                        <strong>Audience:</strong> Tech & Team Updates Track
+                    </td>
+                </tr>
+                </tbody>
+
+                <tbody>
+                <tr>
+                    <td>14:50 - 15:00</td>
+
+                    <td><strong>The day of... a tech artist</strong> <i>Room: C5</i><br>
+                        Speed Talk by Cody Sargent<br>
+                        <strong>Audience:</strong> Tech & Team Updates Track
+                    </td>
+                </tr>
+                </tbody>
+
+                <tbody>
+                <tr>
+                    <td>15:30 - 17:00</td>
+
+                    <td><strong>Lego Serious Play - Session 2</strong> <i>Room: C-Marketplace</i><br>
+                        Facilitated by Mareike Hilgenfeldt & Mattias Karlsson<br>
+                        <strong>Audience:</strong> All
+                    </td>
+                </tr>
+                </tbody>
+
+                <tbody>
+                <tr>
+                    <td>15:00 - 15:30</td>
+
+                    <td><strong>Google Cloud & Amazon AWS</strong> <i>Room: C7/8</i><br>
+                        Deep Dive by Giacomo Collini<br>
+                        <strong>Audience:</strong> Backend Track
+                    </td>
+                </tr>
+                </tbody>
+
+                <tbody>
+                <tr>
+                    <td>15:00 - 15:20</td>
+
+                    <td><strong>Using Unity: Prototyping vs Production</strong> <i>Room: C1</i><br>
+                        Deep Dive by Luke Jackson<br>
+                        <strong>Audience:</strong> Frontend Track
+                    </td>
+                </tr>
+                </tbody>
+
+                <tbody>
+                <tr>
+                    <td>15:00 - 15:10</td>
+
+                    <td><strong>Testing In a Continuous Integration Environment</strong> <i>Room: C2</i><br>
+                        Speed Talk by Paul Tefft-Meeker<br>
+                        <strong>Audience:</strong> QA Track
+                    </td>
+                </tr>
+                </tbody>
+
+                <tbody>
+                <tr>
+                    <td>15:00 - 15:10</td>
+
+                    <td><strong>What's new in Rise of Tyrants?</strong> <i>Room: C4</i><br>
+                        Speed Talk by Jeff Holbrook<br>
+                        <strong>Audience:</strong> Tech & Team Updates Track
+                    </td>
+                </tr>
+                </tbody>
+
+                <tbody>
+                <tr>
+                    <td>15:00 - 15:10</td>
+
+                    <td><strong>The day of... an agile coach</strong> <i>Room: C5</i><br>
+                        Speed Talk by Yassal Sundman<br>
+                        <strong>Audience:</strong> Tech & Team Updates Track
+                    </td>
+                </tr>
+                </tbody>
+
+                <tbody>
+                <tr>
+                    <td>15:10 - 15:20</td>
+
+                    <td><strong>Working at an AAA and having an AI do your testing</strong> <i>Room: C2</i><br>
+                        Speed Talk by Thomas Shaskin<br>
+                        <strong>Audience:</strong> QA Track
+                    </td>
+                </tr>
+                </tbody>
+
+                <tbody>
+                <tr>
+                    <td>15:10 - 15:20</td>
+
+                    <td><strong>The day of... a game engine developer</strong> <i>Room: C5</i><br>
+                        Speed Talk by Romain Sididris<br>
+                        <strong>Audience:</strong> Tech & Team Updates Track
+                    </td>
+                </tr>
+                </tbody>
+
+                <tbody>
+                <tr>
+                    <td>15:30 - 16:30</td>
+
+                    <td><strong>Guest Speaker: Sociocracy 3.0 and scaling organisations</strong> <i>Room: C3</i><br>
+                        Deep Dive & Discussion with James Priest<br>
+                        <strong>Audience:</strong> Getting Stuff Done Track
+                    </td>
+                </tr>
+                </tbody>
+
+                <tbody>
+                <tr>
+                    <td>15:30 - 16:00</td>
+
+                    <td><strong>To cheat prevent... Or not?</strong> <i>Room: C2</i><br>
+                        Discussion with Staffan Mahlen<br>
+                        <strong>Audience:</strong> QA Track
+                    </td>
+                </tr>
+                </tbody>
+
+                <tbody>
+                <tr>
+                    <td>15:30 - 16:00</td>
+
+                    <td><strong>First steps with the Oculus dev kit</strong> <i>Room: C4</i><br>
+                        Deep Dive by Daniel Sim<br>
+                        <strong>Audience:</strong> Tech & Team Updates Track
+                    </td>
+                </tr>
+                </tbody>
+
+                <tbody>
+                <tr>
+                    <td>15:30 - 16:00</td>
+
+                    <td><strong>The life of a push notification</strong> <i>Room: C5</i><br>
+                        Deep Dive by Iván Rodriguez & Adam Carroll<br>
+                        <strong>Audience:</strong> Tech & Team Updates Track
+                    </td>
+                </tr>
+                </tbody>
+
+                <tbody>
+                <tr>
+                    <td>15:30 - 16:00</td>
+
+                    <td><strong>Gradle</strong> <i>Room: C7/8</i><br>
+                        Deep Dive by Hugo Cura<br>
+                        <strong>Audience:</strong> Backend Track
+                    </td>
+                </tr>
+                </tbody>
+
+                <tbody>
+                <tr>
+                    <td>15:30 - 16:00</td>
+
+                    <td><strong>Management 3.0 games - Session 1</strong> <i>Room: C10</i><br>
+                        Facilitated by Matti Klasson<br>
+                        <strong>Audience:</strong> All
+                    </td>
+                </tr>
+                </tbody>
+
+                <tbody>
+                <tr>
+                    <td>15:30 - 15:40</td>
+
+                    <td><strong>Mixing 2D and 3D in Pet Village</strong> <i>Room: C1</i><br>
+                        Speed Talk by Gregor Gullwi<br>
+                        <strong>Audience:</strong> Frontend Track
+                    </td>
+                </tr>
+                </tbody>
+
+                <tbody>
+                <tr>
+                    <td>15:40 - 15:50</td>
+
+                    <td><strong>Test Automation - Past & Future</strong> <i>Room: C1</i><br>
+                        Speed Talk by Orestes Dominguez & Simon Dass<br>
+                        <strong>Audience:</strong> Frontend Track
+                    </td>
+                </tr>
+                </tbody>
+
+                <tbody>
+                <tr>
+                    <td>15:50 - 16:00</td>
+
+                    <td><strong>Device Cloud</strong> <i>Room: C1</i><br>
+                        Speed Talk by Tulio Domingos<br>
+                        <strong>Audience:</strong> Frontend Track
+                    </td>
+                </tr>
+                </tbody>
+
+                <tbody>
+                <tr>
+                    <td>16:00 - 16:30</td>
+
+                    <td><strong>Game engines compared from a dev perspective</strong> <i>Room: C1</i><br>
+                        Discussion with Rakiv Ahmed<br>
+                        <strong>Audience:</strong> Frontend Track
+                    </td>
+                </tr>
+                </tbody>
+
+                <tbody>
+                <tr>
+                    <td>16:00 - 16:30</td>
+
+                    <td><strong>Management 3.0 games - Session 2</strong> <i>Room: C10</i><br>
+                        Facilitated by Matti Klasson<br>
+                        <strong>Audience:</strong> All
+                    </td>
+                </tr>
+                </tbody>
+
+                <tbody>
+                <tr>
+                    <td>16:00 - 16:10</td>
+
+                    <td><strong>Device Cloud</strong> <i>Room: C7/8</i><br>
+                        Speed Talk by Tulio Domingos<br>
+                        <strong>Audience:</strong> Backend Track
+                    </td>
+                </tr>
+                </tbody>
+
+                <tbody>
+                <tr>
+                    <td>16:10 - 16:20</td>
+
+                    <td><strong>Improve level development with an AI</strong> <i>Room: C2</i><br>
+                        Speed Talk by Alex Nodet & Erik Poromaa<br>
+                        <strong>Audience:</strong> QA Track
+                    </td>
+                </tr>
+                </tbody>
+
+                <tbody>
+                <tr>
+                    <td>16:10 - 16:20</td>
+
+                    <td><strong>What's new in Service Layer</strong> <i>Room: C4</i><br>
+                        Speed Talk by Ines Marques<br>
+                        <strong>Audience:</strong> Tech & Team Updates Track
+                    </td>
+                </tr>
+                </tbody>
+
+                <tbody>
+                <tr>
+                    <td>16:10 - 16:20</td>
+
+                    <td><strong>DSP: Buying advertising space programmatically</strong> <i>Room: C5</i><br>
+                        Speed Talk by Rick Walker<br>
+                        <strong>Audience:</strong> Tech & Team Updates Track
+                    </td>
+                </tr>
+                </tbody>
+
+                <tbody>
+                <tr>
+                    <td>16:10 - 16:20</td>
+
+                    <td><strong>Test Automation - Past & Future</strong> <i>Room: C7/8</i><br>
+                        Speed Talk by Orestes Dominguez & Simon Dass<br>
+                        <strong>Audience:</strong> Backend Track
+                    </td>
+                </tr>
+                </tbody>
+
+                <tbody>
+                <tr>
+                    <td>16:20 - 16:30</td>
+
+                    <td><strong>Cool stuff from Phoenix</strong> <i>Room: C4</i><br>
+                        Speed Talk by Miguel Santirso<br>
+                        <strong>Audience:</strong> Tech & Team Updates Track
+                    </td>
+                </tr>
+                </tbody>
+
+                <tbody>
+                <tr>
+                    <td>16:20 - 16:30</td>
+
+                    <td><strong>Luna Light Saga - the game, the visuals, the trouble and the fun</strong> <i>Room:
+                        C5</i><br>
+                        Speed Talk by Moritz Voss<br>
+                        <strong>Audience:</strong> Tech & Team Updates Track
+                    </td>
+                </tr>
+                </tbody>
+
+                <tbody>
+                <tr>
+                    <td>16:20 - 16:30</td>
+
+                    <td><strong>Shared backend, tools and build eng team in Berlin</strong> <i>Room: C7/8</i><br>
+                        Speed Talk by André Dittrich & Simon Schossleitner<br>
+                        <strong>Audience:</strong> Backend Track
+                    </td>
+                </tr>
+                </tbody>
+
+                <tbody>
+                <tr>
+                    <td>16:30 - 17:00</td>
+
+                    <td><strong>C++ Core Guidelines, GSL & Static Code Analysis: Open Discussion.</strong> <i>Room:
+                        C1</i><br>
+                        Discussion with Carsten Holbach<br>
+                        <strong>Audience:</strong> Frontend Track
+                    </td>
+                </tr>
+                </tbody>
+
+                <tbody>
+                <tr>
+                    <td>16:30 - 17:00</td>
+
+                    <td><strong>How to build Real Time Strategy Games - sharing ideas and experiences</strong> <i>Room:
+                        C5</i><br>
+                        Discussion with Jan Wedekind<br>
+                        <strong>Audience:</strong> Tech & Team Updates Track
+                    </td>
+                </tr>
+                </tbody>
+
+                <tbody>
+                <tr>
+                    <td>16:30 - 17:00</td>
+
+                    <td><strong>Management 3.0 games - Session 3</strong> <i>Room: C10</i><br>
+                        Facilitated by Matti Klasson<br>
+                        <strong>Audience:</strong> All
+                    </td>
+                </tr>
+                </tbody>
+
+                <tbody>
+                <tr>
+                    <td>16:30 - 16:40</td>
+
+                    <td><strong>Game pitches</strong> <i>Room: C4</i><br>
+                        Speed Talk by David Flix<br>
+                        <strong>Audience:</strong> Tech & Team Updates Track
+                    </td>
+                </tr>
+                </tbody>
+
+                <tbody>
+                <tr>
+                    <td>16:30 - 16:40</td>
+
+                    <td><strong>ESS Overview</strong> <i>Room: C5</i><br>
+                        Speed Talk by Katja Zimmermann & Josep Barranco<br>
+                        <strong>Audience:</strong> Tech & Team Updates Track
+                    </td>
+                </tr>
+                </tbody>
+
+                <tbody>
+                <tr>
+                    <td>16:30 - 16:40</td>
+
+                    <td><strong>Segmenting with Bitero</strong> <i>Room: C7/8</i><br>
+                        Speed Talk by Galderic Puntí<br>
+                        <strong>Audience:</strong> Backend Track
+                    </td>
+                </tr>
+                </tbody>
+
+                <tbody>
+                <tr>
+                    <td>16:40 - 16:50</td>
+
+                    <td><strong>Publishing, what is it?</strong> <i>Room: C3</i><br>
+                        Speed Talk by Jonas Rundberg<br>
+                        <strong>Audience:</strong> Getting Stuff Done Track
+                    </td>
+                </tr>
+                </tbody>
+
+                <tbody>
+                <tr>
+                    <td>16:40 - 16:50</td>
+
+                    <td><strong>Provisionero - launching dev instances at will</strong> <i>Room: C7/8</i><br>
+                        Speed Talk by Karl Terävä<br>
+                        <strong>Audience:</strong> Backend Track
+                    </td>
+                </tr>
+                </tbody>
+
+                <tbody>
+                <tr>
+                    <td>17:00 - 18:00</td>
+
+                    <td><strong>Closing Speaker</strong> <i>Room: K1/K2</i><br>
+                        Keynote by an author of an interesting book<br>
+                        <strong>Audience:</strong> All
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div id="agenda14wrapper" style="display: block;"><a name="agenda14"></a>
+
+            <h2>MARKETING FUNKY MEETS – AM</h2>
+            <table class="tableAlternateColors">
+                <thead>
+                <tr>
+                    <th>Start / End Time</th>
+                    <th>Session Title / Description</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>09:30 – 12:30</td>
+                    <td><p><strong>Brand &amp; PR community</strong><br>Nicki Sheard</p>
+
+                        <p><em>Room: A9<br/>
+                            Room: A8<br/>
+                            Room: B6</em></p></td>
+                </tr>
+                <tr>
+                    <td>09:30 – 12:30</td>
+                    <td><p><strong>Performance Marketing community</strong><br>Richard Hocking -
+                        together with Ben Fox’s team from 11:30</p>
+
+                        <p><em>Room: B5</em></p></td>
+                </tr>
+                <tr>
+                    <td>09:00 – 12:30</td>
+                    <td><p><strong>Player Kingdom Community</strong><br>Mikael Journo</p>
+
+                        <p><em>Room: B10<br/>Room: B4</em></p></td>
+                </tr>
+                <tr>
+                    <td>12:30 – 13:30</td>
+                    <td><p><strong>Lunch</strong><br>Served in the main dining area </p>
+
+                        <p><em>Room: Hall B</em></p></td>
+                </tr>
+                </tbody>
+            </table>
+
+            <h2>MARKETING FUNKY MEETS – PM</h2>
+            <h4>LED BY ALEX DALE WITH TALKS – HELD IN A8:</h4>
+            <table class="tableAlternateColors">
+                <thead>
+                <tr>
+                    <th>Start / End Time</th>
+                    <th>Session Title / Description</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>13:30 – 14:30</td>
+                    <td><p><strong>Data Story </strong><br>Nicki Sheard, Richard Hocking, Michael
+                        Leznik and Antoine Le Nel</p>
+                    </td>
+                </tr>
+                <tr>
+                    <td>14:30 – 15:15</td>
+                    <td><p><strong>Organic &amp; Kingdom
+                    </strong><br>Mikael Journo</p>
+                    </td>
+                </tr>
+                <tr>
+                    <td>15:15 – 16:15</td>
+                    <td><p><strong>Media</strong><br>Ben Fox</p></td>
+                </tr>
+                <tr>
+                    <td>16:15 – 17:15</td>
+                    <td><p><strong>Q&amp;A </strong><br>Alex &amp; Marketing Leadership team</p></td>
+                </tr>
+                <tr>
+                    <td>17:15</td>
+                    <td><p><strong>Close for pre-dinner drinks
+                    </strong></p></td>
+                </tr>
+                <tr>
+                    <td>17:30</td>
+                    <td><p><strong>Drinks, followed by Dinner at 6pm</strong></p>
+
+                        <p><em>Room: Hall B</em></p></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<script>
+    $(function () {
+        var $all = $('#agenda1wrapper, #agenda2wrapper, #agenda3wrapper, #agenda4wrapper, #agenda5wrapper, #agenda6wrapper, #agenda7wrapper, #agenda8wrapper, #agenda9wrapper, #agenda10wrapper, #agenda11wrapper, #agenda12wrapper, #agenda13wrapper, #agenda14wrapper').hide();
+        $body = $('body');
+        var saved_agenda = $body.find('#funky_meet_agenda').val();
+        if (saved_agenda != '' && saved_agenda != undefined && saved_agenda != null) {
+            $('#' + saved_agenda + 'wrapper').show();
+        }
+        $body.on('change', '#funky_meet_agenda', function () {
+            $all.hide();
+            var agenda = $(this).val();
+            var answer = $.trim($('#funky_meet_agenda option:selected').attr('data-value'));
+            var csrf_token = $('input[name=csrfmiddlewaretoken]').val();
+            console.log(answer);
+            if (agenda != '') {
+                $('#' + agenda + 'wrapper').show();
+
+            }
+        });
+    });
+</script>
+<div class="wrapper footer">
+    <div class="wrapper">
+        <div class="container">
+            <div class="row gutters half">
+                <div class="col span_12">
+                    &nbsp;
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

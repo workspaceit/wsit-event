@@ -1,0 +1,30 @@
+{% load staticfiles %}
+{% load thousand_filter %}
+<div class="content-main">
+    <div class="order-table">
+        {% load i18n %}
+        <div class="scroll-x">
+            <table class="form-plugin-table form-plugin-economy-order-table lines">
+                <thead>
+                <tr>
+                    <th>{{ language.langkey.economy_txt_order_number }}</th>
+                    <th>{{ language.langkey.economy_txt_cost_excl_vat }}</th>
+                    <th>{{ language.langkey.economy_txt_cost_incl_vat }}</th>
+                    <th>{{ language.langkey.economy_txt_data_and_time }}</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr class="summary">
+                    <td>{{ credit_order.order_number }}</td>
+                    <td>{{ credit_order.cost_excl_vat|floatformat:"-2"|format_thousands }} {{ language.langkey.economy_txt_currency }}</td>
+                    <td>{{ credit_order.cost_incl_vat|floatformat:"-2"|format_thousands }} {{ language.langkey.economy_txt_currency }}</td>
+                    <td>
+                        {% language language.lang_preset.language_code %}
+                            {{ credit_order.date|date:language.lang_preset.datetime_format }}{% endlanguage %}
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

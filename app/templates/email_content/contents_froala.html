@@ -1,0 +1,66 @@
+{% extends "layout/main.html" %}
+{% block content %}
+    {% load staticfiles %}
+    {% include 'layout/editor_header.html' %}
+    {% csrf_token %}
+    <div id="content-wrapper">
+        <h2>Send Email</h2>
+        <div class="col-md-12">
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="form-inline">
+                        <label class="form-control">Language:</label>
+                        <select class="form-control pull-right" style="width: 70%" id="email-preset">
+                            {% for preset in presets %}
+                                <option value="{{ preset.id }}"
+                                        {% if preset.id == presetsEvent.preset_id %}
+                                        selected="selected"{% endif %}>{{ preset.preset_name }}({{ preset.id }})
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+            </div>
+            {#            <div class="col-md-6">#}
+            <div class="row">
+                <div class="col-sm-12">
+                    <label class="control-label">Content</label>
+
+                    <div class="froala-editor-div">
+                        <form id='editor-preview-form' action="{% url 'emails-preview' %}" method="POST"
+                              target="_blank">{% csrf_token %}
+                            <input type="hidden" name="email_id" value="{{ email.id }}">
+                            <textarea id="froala_content_editor" name="froala_content_editor">{{ editor_content }}</textarea>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-4 text-right">
+                    <button type="button" class="btn btn-lg btn-save" id="btn-email-preview"
+                            style="float: left;margin-top: 10px;"><i
+                            class="fa fa-ban"></i>&nbsp;&nbsp;Preview
+                    </button>
+                </div>
+                <div class="col-sm-4 text-right">
+                    <button type="button" class="btn btn-lg btn-primary btn-save-email-content"
+                            id="btn-save-email-content"
+                            data-id="{{ email.id }}"
+                            style="float: left;margin-top: 10px;"><i
+                            class=""></i>&nbsp;&nbsp;Save
+                    </button>
+                </div>
+                <div class="col-sm-4 text-right">
+                    <button type="button" class="btn btn-lg btn-save btn-danger" id="btn-reset-editor-content"
+                            style="float: left;margin-top: 10px;"><i
+                            class=""></i>&nbsp;&nbsp;Cancel
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% include 'layout/editor_footer.html' %}
+
+    {#        <script src="{% static 'assets/javascripts/message.js' %}"></script>#}
+    {#        <script src="{% static 'assets/javascripts/message/email_content.js' %}"></script>#}
+{% endblock %}

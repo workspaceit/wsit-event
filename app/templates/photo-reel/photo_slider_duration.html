@@ -1,0 +1,53 @@
+{% extends "layout/main.html" %}
+{% block content %}
+    {% load staticfiles %}
+    {% csrf_token %}
+    <div id="content-wrapper">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="col-sm-4">
+                    <div class="form-group no-margin-hr">
+                        <label class="control-label">Photo Slider Duration</label>
+                        <input type="text" class="form-control" id="slider-duration"
+                               value="{% if duration %}{{ duration.0.value }}{% endif %}"
+                               placeholder="Duration in Milliseconds"/>
+                    </div>
+                </div>
+                <div class="col-sm-1" style="margin: 23px 0px -0px -22px;padding-right: 40px;">
+                    <span class="input-group-addon"><i class="fa fa-clock-o" style="height: 18px"></i></span>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12 text-right">
+                <button type="button" class="btn btn-success dropdown-toggle btn-lg btn-save" id="btn-save-slider-duration"
+                        style="float:left;"><i class="fa fa-check-circle"></i>&nbsp;&nbsp;Save
+                </button>
+            </div>
+        </div>
+    </div>
+    <script>
+        $(function () {
+            $('body').on('click', '#btn-save-slider-duration', function (event) {
+                var duration = $('#slider-duration').val();
+                clog(duration);
+                $.ajax({
+                    url: base_url + '/admin/photo-slider-duration/',
+                    type: "POST",
+                    data: {
+                        duration: duration,
+                        csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val()
+                    },
+                    success: function (result) {
+                        if (result.error) {
+                            $.growl.error({ message: result.error });
+                        } else {
+                            $.growl.notice({ message: result.success });
+                        }
+                    }
+                });
+
+            });
+        });
+    </script>
+{% endblock %}

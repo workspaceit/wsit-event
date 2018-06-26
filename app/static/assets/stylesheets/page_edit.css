@@ -1,0 +1,538 @@
+.edit #mainContent {
+    font-size: 15px;
+}
+
+.edit #mainContent .row {
+    border: 2px solid gray;
+    border: 2px solid rgba(255, 255, 255, 0);
+    padding: 0.5em;
+    position: relative;
+    border-radius: 0.5em;
+}
+
+.edit #mainContent .row .toolBox {
+    display: none;
+    position: absolute;
+    top: 0;
+    right: 0;
+    z-index: 99;
+    font-size: 0;
+}
+
+.edit #mainContent .row .toolBox .toolButton {
+    font-size: 15px;
+    background: gray;
+    padding: 0.25em;
+    color: white;
+    display: inline-block;
+    min-width: 1.5em;
+    text-align: center;
+}
+
+.edit #mainContent .row .toolBox .toolButton:hover {
+    background: #5a5a5a;
+    cursor: pointer;
+}
+
+.edit #mainContent .row:hover {
+    border: 2px solid gray;
+}
+
+.edit #mainContent .col {
+    border: 2px dotted silver;
+    padding: 0.5em;
+    min-height: 1em;
+    border-radius: 0.5em;
+}
+
+/*.edit #mainContent .col .toolBox {*/
+/*display: none;*/
+/*position: absolute;*/
+/*top: 0;*/
+/*right: 0;*/
+/*z-index: 99;*/
+/*font-size: 0;*/
+/*}*/
+
+/*.edit #mainContent .col .toolBox .toolButton {*/
+/*font-size: 15px;*/
+/*background: gray;*/
+/*padding: 0.25em;*/
+/*color: white;*/
+/*display: inline-block;*/
+/*min-width: 1.5em;*/
+/*text-align: center;*/
+/*}*/
+
+/*.edit #mainContent .col .toolBox .toolButton:hover {*/
+/*background: #5a5a5a;*/
+/*cursor: pointer;*/
+/*}*/
+
+/*.edit #mainContent .col:hover {*/
+/*border: 2px solid gray;*/
+/*}*/
+
+.edit #mainContent .element {
+    border: 2px solid rgba(255, 255, 255, 0);
+    padding: 0.5em;
+    margin-bottom: 0;
+    position: relative;
+}
+
+.edit #mainContent .element .toolButton {
+    font-size: 15px;
+    background: slategray !important;
+}
+
+.edit #mainContent .element .toolButton:hover {
+    background: #4e5a65 !important;
+    cursor: pointer;
+}
+
+.edit #mainContent .element:hover {
+    border: 2px solid slategray;
+}
+
+.edit #mainContent .ui-state-highlight {
+    border: 2px dotted red;
+    height: 2em;
+}
+
+.edit #mainContent .highlight {
+    color: red !important;
+    border: 5px solid red;
+}
+
+.edit #mainContent button {
+    font-size: 20px;
+    padding: 5px;
+}
+
+.floatingToolBox {
+    /*color: white;*/
+    font-family: Helvetica, Arial, sans-serif;
+    font-size: 15px;
+    display: block;
+    background: rgba(40, 39, 36, 0.9);
+    position: fixed;
+    z-index: 999;
+    left: 0;
+    top: 0;
+    border-radius: 0.25em;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.25);
+}
+
+.floatingToolBox .floatingToolBoxTitleRow {
+    border-bottom: 1px solid gray;
+    padding: 0.5em;
+    color: white;
+    text-shadow: 0px 0px 0px black;
+    position: relative;
+}
+
+.floatingToolBox .floatingToolBoxTitleRow .floatingToolBoxClose {
+    margin: 0 0.5em;
+    display: inline-block;
+    cursor: pointer;
+    position: absolute;
+    right: 0;
+}
+
+.floatingToolBox .toolBoxContent {
+    padding: 0.5em;
+}
+
+.floatingToolBox .toolBoxContent .toolBoxButtons {
+    list-style: none;
+    font-size: 0;
+    width: 75px;
+    margin: 0;
+}
+
+.floatingToolBox .toolBoxContent .toolBoxButtons li {
+    border: 1px solid rgba(255, 255, 255, 0);
+    font-size: 15px;
+    width: 2.5em;
+    height: 2.5em;
+    display: inline-block;
+    color: white;
+    border-radius: 0.25em;
+    text-align: center;
+    padding: 0;
+    transition: box-shadow 0.25s, border 0.25s, background 0.25s;
+}
+
+.floatingToolBox .toolBoxContent .toolBoxButtons li i {
+    margin-top: 0.55em;
+    cursor: pointer;
+}
+
+.floatingToolBox .toolBoxContent .toolBoxButtons li.active {
+    text-shadow: 0 -1px 0 #1D6DC1;
+    color: #fff;
+    border: 1px solid #1D6DC1;
+    background: -webkit-linear-gradient(top, #7abcff 0%, #60abf8 44%, #4096ee 100%);
+    transition: box-shadow 0.25s, border 0.25s, background 0.25s;
+}
+
+.floatingToolBox .toolBoxContent .toolBoxButtons li:hover {
+    border: 1px solid white;
+    transition: box-shadow 0.25s, border 0.25s, background 0.25s;
+}
+
+.floatingToolBox .toolBoxContent #editForm {
+    width: 100%;
+}
+
+.floatingToolBox .toolBoxContent #editForm.active i {
+    margin-top: 0.075em;
+}
+
+#currentCol {
+    width: 100%;
+    display: block;
+    border: 1px solid white;
+    overflow: hidden;
+    margin-bottom: 0.25em;
+    padding: 0.25em;
+    border-radius: 0.25em;
+}
+
+.addColPreDefined {
+    width: 2.2em;
+    height: auto;
+    border: 1px solid rgba(255, 255, 255, 0);
+    padding: 0.25em;
+}
+
+.addColPreDefined:hover {
+    border: 1px solid white;
+    cursor: pointer;
+    border-radius: 0.25em;
+}
+
+#addColumns .toolBoxContent label:first-child {
+    margin-top: 0;
+    border-top: none;
+    padding-top: 0.0em;
+}
+
+#addColumns .toolBoxContent label {
+    display: block;
+    margin-bottom: 0.5em;
+    font-style: italic;
+    margin-top: 0.5em;
+    border-top: 1px solid gray;
+    padding-top: 0.25em;
+}
+
+#addColumns {
+    width: 30em;
+    display: none;
+}
+
+#addColumns.visible {
+    display: block;
+}
+
+.addCol {
+    float: left;
+    border: 1px dotted white;
+    padding: 0.25em;
+    color: white;
+    border-radius: 0.25em;
+}
+
+.addCol-drag {
+    border-left: 3px dotted red;
+    height: 2em;
+    float: left;
+    width: auto;
+}
+
+#toolBoxCol {
+    display: block;
+    position: relative;
+}
+
+#toolBoxColFooter {
+    width: 100%;
+    background: blue;
+}
+
+.addCol i {
+    float: right;
+    cursor: pointer;
+}
+
+#addColToPage {
+    float: right;
+    margin-bottom: 0.5em;
+}
+
+[data-colWidth="12"] {
+    width: 100%;
+}
+
+[data-colWidth="11"] {
+    width: 91.666666666%;
+}
+
+[data-colWidth="10"] {
+    width: 83.333333333%;
+}
+
+[data-colWidth="9"] {
+    width: 75%;
+}
+
+[data-colWidth="8"] {
+    width: 66.666666666%;
+}
+
+[data-colWidth="7"] {
+    width: 58.333333333%;
+}
+
+[data-colWidth="6"] {
+    width: 50%;
+}
+
+[data-colWidth="5"] {
+    width: 41.666666666%;
+}
+
+[data-colWidth="4"] {
+    width: 33.333333333%;
+}
+
+[data-colWidth="3"] {
+    width: 25%;
+}
+
+[data-colWidth="2"] {
+    width: 16.666666666%;
+}
+
+[data-colWidth="1"] {
+    width: 8.3333333333%;
+}
+
+#addContent {
+    display: none;
+}
+
+#addContent.visible {
+    display: block;
+}
+
+#addQuestion, #prerequisite-popup, #element-setting-toolbox {
+    display: none;
+}
+
+#addQuestion.visible {
+    display: block;
+}
+
+#prerequisite-popup.visible {
+    display: block;
+}
+
+#upload-pop-up {
+    display: none;
+}
+
+#upload-pop-up.visible {
+    display: block;
+}
+
+#image-pop-up {
+    display: none;
+}
+
+#image-pop-up.visible {
+    display: block;
+}
+
+#element-setting-toolbox.visible {
+    display: block;
+}
+
+.CodeMirror {
+    height: auto !important;
+}
+
+.editorwrap {
+    width: 40em;
+}
+
+.entry-markdown {
+    color: black;
+    width: 49.5%;
+    margin-right: 0.5%;
+    float: left;
+    margin-bottom: 0.5em;
+}
+
+.entry-markdown-content {
+    background-color: white;
+    max-height: 15em;
+    overflow-y: auto;
+}
+
+.entry-preview-content {
+    width: 49.5%;
+    margin-left: 0.5%;
+    float: left;
+    margin-bottom: 0.5em;
+}
+
+.rendered-markdown {
+    min-height: 3em;
+    padding: 0.5em;
+    max-height: 15em;
+    overflow-y: auto;
+}
+
+.question-markdown {
+    min-height: 3em;
+    padding: 0.5em;
+    max-height: 15em;
+    overflow-y: auto;
+    cursor: pointer;
+}
+.general-markdown {
+    min-height: 2em;
+    padding: 0.5em;
+    max-height: 15em;
+    overflow-y: auto;
+    cursor: pointer;
+}
+
+.CodeMirror-wrap {
+    padding: 0.5em;
+    min-height: 3em;
+}
+
+.floatingheader {
+    padding: none !important;
+    margin: none !important;
+    color: white !important;
+}
+
+.test {
+    border: 3px solid red;
+}
+
+.module-markdown {
+    min-height: 3em;
+    padding: 0.5em;
+    max-height: 15em;
+    overflow-y: auto;
+    cursor: pointer;
+}
+
+#addModuleComponent {
+    display: none;
+}
+
+#addModuleComponent.visible {
+    display: block;
+}
+
+/* question filter */
+
+.questions-list {
+    padding-left: 20px;
+    padding-bottom: 0;
+    border: 1px solid #5bc0de;
+    z-index: 1;
+}
+
+.floatingToolBox .toolBoxContent fieldset {
+    border-color: #727985;
+    padding: 0.5em 0 0 0;
+}
+
+.floatingToolBox .toolBoxContent fieldset legend {
+    color: white;
+    font-size: 15px;
+    margin-left: 7px;
+}
+
+.floatingToolBox .toolBoxContent fieldset label {
+    color: white;
+    font-size: 12px;
+}
+
+.floatingToolBox .toolBoxContent fieldset .sidebar-button {
+    background: #889F85;
+    padding: 7px;
+    display: inline-block;
+    color: white;
+    font-size: 12px;
+    margin-top: 7px;
+    text-decoration: none;
+    border-radius: 3px;
+}
+
+.floatingToolBox .toolBoxContent fieldset .sidebar-button:hover {
+    text-decoration: none;
+    background: #94a991;
+}
+
+.floatingToolBox .toolBoxContent fieldset ul.setting-ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.floatingToolBox .toolBoxContent fieldset ul.setting-ul li {
+    padding: 0;
+    margin: 0;
+    text-indent: 0;
+}
+
+.floatingToolBox .toolBoxContent fieldset ul.setting-ul li:before {
+    content: "";
+    padding: 0;
+    margin: 0;
+}
+
+.floatingToolBox .toolBoxContent fieldset ul.setting-ul li ul, .floatingToolBox .toolBoxContent fieldset ul.setting-ul li ol {
+    padding: 0 0 0 20px;
+    margin: 0;
+}
+
+.floatingToolBox .toolBoxContent fieldset ul.setting-ul:before {
+    margin: 0;
+}
+
+.floatingToolBox .toolBoxContent fieldset .setting-calendar, .floatingToolBox .toolBoxContent fieldset .setting-time {
+    margin-top: 7px;
+}
+
+.floatingToolBox .toolBoxContent fieldset select {
+    margin-top: 7px;
+}
+
+.floatingToolBox .toolBoxContent fieldset input[type="number"] {
+    width: 100%;
+    margin-top: 7px;
+}
+
+.floatingToolBox .toolBoxContent fieldset .setting-group {
+    padding: 0 7px 7px 7px;
+    border-bottom: 1px solid #727985;
+    margin-bottom: 7px;
+}
+
+.floatingToolBox .toolBoxContent fieldset .setting-group:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+}
+
+.floatingToolBox .toolBoxContent fieldset .setting-group input {
+    margin: 0;
+}

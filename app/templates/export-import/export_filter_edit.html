@@ -1,0 +1,276 @@
+<div class="panel colourable">
+    <div class="panel-heading">
+        <span class="panel-title"><strong>New Export</strong></span>
+    </div>
+    <div class="panel-body tab-content">
+        <form action="/admin/export-filter/" id="filter-export-form" method="post">
+
+
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="form-group no-margin-hr">
+                        <label class="control-label">Export Filter Group</label>
+                        <select class="form-control filter-rules-selector" name="group_id" required>
+                            {% for group in groups %}
+                                <option value="{{ group.id }}" {{ group.selected }}> {{ group.name|safe }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="form-group no-margin-hr">
+                        <label class="control-label">Filter Name</label>
+                        <input type="text" name="filter_name" class="form-control" required value="{{ name }}">
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="form-group no-margin-hr">
+                        <label class="control-label">Filter</label>
+                        <select class="form-control filter-rules-selector" name="rule_id" id="filter">
+                            <option value="0" class="quick-filter">Quick Filter</option>
+                            {% for group in filterGroup %}
+                                <optgroup label="{{ group.name|safe }}">
+                                    {% for filter in group.filters %}
+                                        <option value="{{ filter.id }}" {{ filter.selected }}> {{ filter.name }}</option>
+                                    {% endfor %}
+                                </optgroup>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="form-group no-margin-hr">
+                         {% for export_type in export_types %}
+                            <input id="export-type-{{ forloop.counter }}" type="radio"  name="export_type" value="{{ export_type.value }}" {{ export_type.checked }}/> <label for="export-type-{{ forloop.counter }}">{{ export_type.label }}</label>
+                        {% endfor %}
+
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="form-group no-margin-hr">
+                        <input type="checkbox" {{ include_import_header }} name="include_import_header" id="include-import-header" />
+                        <label for="include-import-header">Include import header</label>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="form-group no-margin-hr">
+                        <input type="checkbox"  name="select_all" id="selecctall" /> <label for="selecctall">Select All</label>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="row">
+                <strong class="col-md-8"><h3 id="uidemo-jquery-ui-accordions2" href="#uidemo-jquery-ui-accordions2" class="header-2">Questions</h3></strong>
+                <div class="col-md-12">
+                    <div id="ui-accordion2">
+                    {% for q in questions %}
+                        {% if q.newGroup %}
+                            {% if forloop.counter  > 1 %}
+                                </div>
+                                </div> <!-- / .group -->
+
+                            {% endif %}
+
+                                    <div class="group">
+                                            <h3><input type="checkbox" class="allselect groupname"> {{ q.group.name|safe }}</h3>
+                                        <div class="row">
+                        {% endif %}
+
+                            <div class="col col-md-6 no">
+                                     {% if q.group.name == 'General' %}
+                                         <div class="col-md-1 width-sorter"><input type="checkbox" id="question_{{ q.id }}" name="{{ q.id }}" {{ q.checked }} class="allselect question" value="{{ q.id }}" /></div><div class="col-md-11 no-padding"><label for="question_{{ q.id }}">{{ q.title }}</label></div>
+                                    {% else %}
+                                          <div class="col-md-1 width-sorter"><input type="checkbox" id="question_{{ q.id }}" name="questions" {{ q.checked }} class="allselect question" value="{{ q.id }}" required /></div><div class="col-md-11 no-padding"><label for="question_{{ q.id }}">{{ q.title }}</label></div>
+                                    {% endif %}
+                            </div>
+
+                    {% endfor %}
+                    </div> <!-- / #ui-accordion -->
+                </div>
+            </div>
+
+            <br>
+
+            <div class="row">
+                <strong class="col-md-8"><h3 id="uidemo-jquery-ui-accordions" href="#uidemo-jquery-ui-accordions" class="header-2">Sessions</h3></strong>
+                <div class="col-md-12">
+                    <div id="ui-accordion">
+                    {% for ssn in sessionList %}
+                        {% if ssn.newGroup %}
+                            {% if forloop.counter  > 1 %}
+                                </div>
+                                </div> <!-- / .group -->
+
+                            {% endif %}
+
+                                    <div class="group">
+                                        <h3><input type="checkbox" class="allselect groupname" data-val="{{ ssn.group.name }}"> {{ ssn.group.name|safe }}</h3>
+                                        <div class="row">
+                        {% endif %}
+
+                            <div class="col col-md-6">
+                                    <div class="col-md-1 width-sorter"><input type="checkbox" name="sessions" {{ ssn.checked }} id="session_{{ ssn.id }}" class="allselect session" value="{{ ssn.id }}" /></div><div class="col-md-11 no-padding"><label for="session_{{ ssn.id }}">{{ ssn.name}}</label></div>
+
+                            </div>
+
+                    {% endfor %}
+                    </div> <!-- / #ui-accordion -->
+                </div>
+            </div>
+
+            <br>
+
+            <div class="row">
+                <strong class="col-md-8"><h3 id="uidemo-jquery-ui-accordions" href="#uidemo-jquery-ui-accordions" class="header-2">Hotels</h3></strong>
+                <div class="col-md-12">
+                    <div id="ui-accordion3">
+                        <div class="group">
+                            <h3><input type="checkbox" class="allselect groupname" data-val="hotel-columns"> Hotel Columns</h3>
+                            <div class="row">
+                                {% for hotel_column in hotel_column_list %}
+                                    <div class="col col-md-6">
+                                        <div class="col-md-1 width-sorter"><input type="checkbox" name="hotel_columns" id="{{ hotel_column.id }}" {{ hotel_column.checked }} class="allselect hotel" value="{{ hotel_column.id }}"/></div>
+                                        <div class="col-md-11 no-padding"><label for="{{ hotel_column.id }}">{{ hotel_column.name }}</label></div>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div> <!-- / .group -->
+                    </div> <!-- / #ui-accordion -->
+                </div>
+            </div>
+
+            <br>
+
+            <div class="row">
+                <strong class="col-md-8"><h3 id="uidemo-jquery-ui-accordions" href="#uidemo-jquery-ui-accordions" class="header-2">Economy</h3></strong>
+                <div class="col-md-12">
+                    <div id="ui-accordion-economy">
+                        <div class="group">
+                            <h3><input type="checkbox" class="allselect groupname" data-val="economy-columns"> Economy Columns</h3>
+                            <div class="row">
+                                {% for economy_column in economy_column_list %}
+                                    <div class="col col-md-6">
+                                        <div class="col-md-1 width-sorter"><input type="checkbox" name="economy_columns" id="{{ economy_column.id }}" {{ economy_column.checked }} class="allselect economy" value="{{ economy_column.id }}"/></div>
+                                        <div class="col-md-11 no-padding"><label for="{{ economy_column.id }}">{{ economy_column.name }}</label></div>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div> <!-- / .group -->
+                    </div> <!-- / #ui-accordion -->
+                </div>
+            </div>
+
+
+{##}
+{#                <br>#}
+{##}
+{#                <div class="row">#}
+{#                    <div class="col-sm-6">#}
+{#                        <div class="form-group no-margin-hr">#}
+{#                            <label class="control-label">Travel</label>#}
+{#                            <input type="checkbox" id="flight" name="flight" class="allselect travel" {{ flight }}  value="flight" /> <label for="flight">Export</label>#}
+{#                        </div>#}
+{#                    </div>#}
+{#                </div>#}
+{##}
+{#                <div class="row">#}
+{#                    <div class="col-sm-6">#}
+{#                        <div class="form-group no-margin-hr">#}
+{#                            <label class="control-label">Hotel</label>#}
+{#                            <input type="checkbox" id="hotels" name="hotels" class="allselect hotel" {{ hotels }} value="room" /> <label for="hotels">Export</label>#}
+{#                        </div>#}
+{#                    </div>#}
+{#                </div>#}
+
+
+            <br>
+            <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
+            <div class="row">
+                <div class="col-sm-12 text-right">
+                    <div class="btn-group float-right">
+                        <button type="button" class="btn btn-lg" data-dismiss="modal"><i
+                                class="fa fa-ban"></i>&nbsp;&nbsp;Cancel
+                        </button>
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-success btn-lg save" id="save-export-btn">
+                                <i class="fa fa-check-circle"></i>&nbsp;&nbsp;Save & Export&nbsp;
+                            </button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </form>
+    </div>
+</div>
+<style>
+
+    .width-sorter{
+        width: 6.333333% !important;
+    }
+
+</style>
+<script>
+    $(document).ready(function () {
+        $(".filter-rules-selector").select2({
+            placeholder: "Select a Group"
+        });
+        $('#filter').select2().on('select2-selecting', function (e) {
+            if (e.object.css == 'quick-filter') {
+                $.ajax({
+                    url: base_url + '/admin/filters/quick_filter_exists/',
+                    success: function (response) {
+                        if (response.status) {
+                            var modal_class = 'filters-add-filter';
+                            $('#quick-save-div').show();
+                            $('#filter-grp-div').hide();
+                            $('#preset-name-div').hide();
+                            var name = "export";
+                            showQuickFilterData(response.filter.id, modal_class,name);
+                        } else {
+                            $('#quick-save-div').show();
+                            $('#filter-grp-div').hide();
+                            $('#preset-name-div').hide();
+
+                            $('#btn-update-quick-filter').show();
+                            $('#btn-update-filter').hide();
+                            $('.any-or-all').val(1);
+                            $('#filters-add-filter').find('.modal-title').html('Quick Filter');
+                            $('#preset_filter_group').select2('val', '');
+
+                            $('.filter-panel-title').html("New Filter");
+                            $('#filters-add-filter').modal('show');
+                            $('#preset_name').attr('data-id', '');
+                            var rowCount = 0;
+                            $('.filter-list').html($('#filter-li-html').html());
+                            activeDatePicker();
+
+
+                        }
+                    }
+                });
+            }
+
+        });
+    });
+    </script>

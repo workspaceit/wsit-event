@@ -1,0 +1,77 @@
+{% extends "layout/main.html" %}
+{% block content %}
+    <div id="content-wrapper">
+        <div class="panel-body tab-content">
+            <div class="tab-pane fade in active">
+                <br>
+                <div id="filters">
+                    <div class="table-light">
+
+                        <div class="table-header">
+                            <div class="table-caption">
+                                <i class="fa fa-lg fa-hourglass-half"></i></i>
+                &nbsp;&nbsp;&nbsp;Import awaiting approval
+                            </div>
+                        </div>
+                        <table class="table table-bordered">
+                            <thead>
+                            <tr>
+                                <td>Imported by</td>
+                                <td>Import Time</td>
+                                <td>Action</td>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for item in items %}
+                                <tr>
+                                    <td>{{ item.imported_by.firstname }} {{ item.imported_by.lastname }}</td>
+                                    <td>{{ item.created_at|date:"Y-m-d H:i" }}</td>
+                                    <td>
+{#                                        <a tabindex="-1" href="#" data-toggle="modal" data-target="#approve-item">#}
+                                            <button class="btn btn-xs btn-view-approve-item"
+                                                        data-id='{{ item.id }}'
+                                                        data-toggle="tooltip"
+                                                        data-placement="top" title="" data-original-title="View"><i
+                                                        class="dropdown-icon fa fa-search-plus"></i>
+                                            </button>
+{#                                        </a>#}
+
+                                        <button class="btn btn-xs btn-danger btn-delete-import-file"
+                                            data-id="{{ item.id}}" data-toggle="delete"
+                                            data-placement="top"
+                                            title="Delete" data-original-title="Delete">
+                                            <i class="dropdown-icon fa fa-times-circle"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+
+                        <div id="import-save-progressbar"></div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <div class="modal fade" id="approve-item" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">Approve Item</h4>
+                </div>
+                <div class="modal-body">
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+{% csrf_token %}
+{% endblock %}

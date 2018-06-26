@@ -1,0 +1,9 @@
+{% for page in pages %}
+    <optgroup label="{{ page.url }}">
+        {% for button in page.buttons %}
+            <option value="{{ button.id }}">
+                {{ button.name }}
+            </option>
+        {% endfor %}
+    </optgroup>
+{% endfor %}

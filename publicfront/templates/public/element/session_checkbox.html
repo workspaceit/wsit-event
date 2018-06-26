@@ -1,0 +1,76 @@
+{% if sessionDatas %}
+    <div class="form-plugin element form-plugin-session-checkbox box"
+         {% if data_user_id %}id="page-{{ page_id }}-box-{{ box_id }}-u-{{ data_user_id }}"
+         data-uid="{{ data_user_id }}" preselected-order-number="{{ preselected_order_number }}"
+         {% else %}id="page-{{ page_id }}-box-{{ box_id }}"{% endif %}
+         data-id="{{ element_id }}" preselected_session="{{ preselected_session }}"
+         data-name="session-checkbox" data-act-like-radio="{% if act_like_radio_button == 'True' %}1{% else %}0{% endif %}" radio-preselected-session="{{ radio_preselected_session }}" data-conflict-session = "{% if remove_conflict_sessions == 'True' %}1{% else %}0{% endif %}">
+        <div class="form-plugin-intro">
+            {% if title != '' or title != None %}
+                <h3 class="text-color2">{{ title }}</h3>
+            {% endif %}
+            {{ message|safe }}
+        </div>
+        <div class="form-plugin-list" data-session-choose-least="{{ session_choose_least }}"
+             data-session-choose-highest="{{ session_choose_heighest }}" data-seats-option="{{ session_option }}"
+             data-count-attending="{% if count_attending == 'True' %}1{% else %}0{% endif %}" data-session-choose="{% if session_must_choose == 'True' %}1{% else %}0{% endif %}">
+            {% for session in sessionDatas %}
+                <div class="form-plugin-item">
+                    <table class="form-plugin-table session-table" data-attendee-id="{{ data_user_id }}">
+                        <tbody>
+                        <tr class="{% for session_status in session.all_status %} {{ session_status }}{% endfor %}{% for custom_class in session.custom_classes %} {{ custom_class.classname.classname }}{% endfor %}" data-session-id="{{ session.id }}">
+                            <td><input
+                                    id="temporary-checkbox-{{ box_id }}-id-{{ session.id }}-u{{ data_user_id }}"
+                                    type="checkbox"
+                                    {% if session.disable and not session.check_checkbox %} disabled {% endif %}
+                                    data-session-id="{{ session.id }}{{ data_session_id }}"
+                                    {% if session_enable != 'True' and not session.check_checkbox %}
+                                    disabled {% endif %} class="session-selection {{ session_checkbox_class_act }}"
+                                    data-checked="{% if session.check_checkbox %}true{% else %}false{% endif %}"
+                                    {% if session.check_checkbox %}
+                                    checked {% endif %} {% if session.session_expire %} disabled {% endif %}/><label
+                                    for="temporary-checkbox-{{ box_id }}-id-{{ session.id }}-u{{ data_user_id }}"></label>
+                                <input type="hidden" class="session-cost-detail" value="{{ session.cost_detail }}">
+                            </td>
+                            <td>
+                                <h4 class="form-plugin-title"><label
+                                        for="temporary-checkbox-{{ box_id }}-id-{{ session.id }}-u{{ data_user_id }}">{{ session.name|safe }}</label>
+                                </h4>
+                                {% if show_details_link == 'True' %}
+                                    <div class="session-detail-link session" data-box-id="{{ box_id }}" data-page-id="{{ page_id }}" data-id="{{ session.id }}">{{ session_details_language.langkey.sessiondetails_txt_session_detail_link }}</div>
+                                {% endif %}
+                                <div class="status {{ session.current_status }}"
+                                     {% if session.current_status == "not-attending" or session.current_status == "not-answered" %}style="display: none;" {% endif %}>
+                                    {% if session.current_status == "in-queue" %}
+                                        {{ session_details_language.langkey.sessiondetails_txt_status_in_queue }}
+                                    {% elif session.current_status == "attending" %}
+                                        {{ session_details_language.langkey.sessiondetails_txt_status_attending }}
+                                    {% elif session.current_status == "deciding" %}
+                                        {{ session_details_language.langkey.sessiondetails_txt_status_deciding }}
+                                    {% elif session.current_status == "time-conflict" %}
+                                        {{ session_details_language.langkey.sessiondetails_txt_status_time_conflict }}
+                                    {% elif session.current_status == "full" %}
+                                        {{ session_details_language.langkey.sessiondetails_txt_status_full }}
+                                        {% if session.full_queue_open %}
+                                            <span class="queue-open">{{ session_details_language.langkey.sessiondetails_txt_status_queue_open }}</span>
+                                        {% endif %}
+                                    {% elif session.current_status == "rsvp-ended" %}
+                                        {{ session_details_language.langkey.sessiondetails_txt_status_rsvp_passed }}
+                                    {% endif %}
+                                </div>
+                                {% if  description == 'True' %}
+                                    <div class="form-plugin-description">
+                                        {{ session.description|safe }}
+                                    </div>
+                                {% endif %}
+                                {% include 'public/element/session_details_data.html' %}
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            {% endfor %}
+        </div>
+        <div class="error-validating">{{ language.langkey.sessioncheckbox_notify_validation_fail }}</div>
+    </div>
+{% endif %}

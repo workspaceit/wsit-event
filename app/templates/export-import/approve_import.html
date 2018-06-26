@@ -1,0 +1,276 @@
+<div class="panel-body tab-content">
+    <div class="tab-pane fade in active">
+        <div id="filters" style="margin-top: -20px;">
+        <div><input type="checkbox" checked id="selecctall" class="allselect"><label for="selecctall">&nbsp;All</label></div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div id="ui-accordion2">
+
+                        {% for item in items.cd %}
+                            <div class="group">
+                                {% if item.Attendee > 0 %}
+                                    <h3><input type="checkbox" class="allselect groupname">&nbsp;&nbsp;<label>{{ item.Attendee }}</label> {{ item.name }}</h3>
+                                {% else %}
+                                    <h3><input type="checkbox" class="allselect groupname">&nbsp;&nbsp;<label>new</label> {{ item.name }}</h3>
+                                {% endif %}
+
+                                <div class="row">
+                                    <div class="table-light">
+                                        <table class="table table-bordered">
+                                            <thead>
+                                            <tr>
+                                                <td>&nbsp;</td>
+                                                <td>Name</td>
+                                                <td>Type</td>
+                                                <td>Existing Answer</td>
+                                                <td>New Answer</td>
+                                            </tr>
+                                            </thead>
+
+                                            <tbody>
+                                            {% if item.data.generals %}
+                                                {% for general in item.data.generals %}
+                                                    <tr>
+                                                        <td><input type="checkbox" class="allselect question alldata"
+                                                                   checked data-val="{{ general.new_data }}"
+                                                                   data-att-id="{{ item.Attendee }}"
+                                                                   data-attribute-id="{{ general.id }}"
+                                                                   data-attribute-name="g"></td>
+                                                        <td>{{ general.name }}</td>
+                                                        <td>General</td>
+                                                        <td>{{ general.old_data }}</td>
+                                                        <td>{{ general.new_data }}</td>
+                                                    </tr>
+                                                {% endfor %}
+                                            {% endif %}
+
+                                            {% if item.data.questions %}
+                                                {% for question in item.data.questions %}
+                                                    <tr>
+                                                        <td><input type="checkbox" class="allselect question alldata"
+                                                                   checked data-val="{{ question.new_data }}"
+                                                                   data-att-id="{{ item.Attendee }}"
+                                                                   data-attribute-id="{{ question.id }}"
+                                                                   data-attribute-name="q"
+                                                                   data-attribute-defination="{{ question.defination }}"></td>
+                                                        <td>{{ question.name }}</td>
+                                                        <td>Question</td>
+                                                        <td>{{ question.old_data }}</td>
+                                                        <td>{{ question.new_data }}</td>
+                                                    </tr>
+                                                {% endfor %}
+                                            {% endif %}
+
+                                            {% if item.data.sessions %}
+                                                {% for session in item.data.sessions %}
+                                                    <tr>
+                                                        <td><input type="checkbox" class="allselect session alldata"
+                                                                   checked data-val="{{ session.new_data }}"
+                                                                   data-att-id="{{ item.Attendee }}"
+                                                                   data-attribute-id="{{ session.id }}"
+                                                                   data-attribute-name="s"></td>
+                                                        <td>{{ session.name }}</td>
+                                                        <td>Session</td>
+                                                        <td>{{ session.old_data }}</td>
+                                                        <td>{{ session.new_data }}</td>
+                                                    </tr>
+                                                {% endfor %}
+                                            {% endif %}
+
+                                            {% if item.data.travels %}
+                                                {% for travel in item.data.travels %}
+                                                    <tr>
+                                                        <td><input type="checkbox" class="allselect travel alldata"
+                                                                   checked data-val="{{ travel.new_data }}"
+                                                                   data-att-id="{{ item.Attendee }}"
+                                                                   data-attribute-id="{{ travel.id }}"
+                                                                   data-attribute-name="t"></td>
+                                                        <td>{{ travel.name }}</td>
+                                                        <td>Travel</td>
+                                                        <td>{{ travel.old_data }}</td>
+                                                        <td>{{ travel.new_data }}</td>
+                                                    </tr>
+                                                {% endfor %}
+                                            {% endif %}
+
+                                            {% if item.data.hotels %}
+                                                {% for hotel in item.data.hotels %}
+                                                    <tr>
+                                                        <td><input type="checkbox" class="allselect hotel alldata"
+                                                                   checked data-val="{{ hotel.new_data.sqls }}"
+                                                                   data-att-id="{{ item.Attendee }}"
+                                                                   data-attribute-id="{{ hotel.id }}"
+                                                                   data-attribute-name="h"></td>
+                                                        <td>{{ hotel.name }}</td>
+                                                        <td>Hotel</td>
+{#                                                        <td>{{ hotel.old_data|safe }}</td>#}
+                                                        <td> <ul> {% for ol_item in hotel.old_data %} <li>{{ ol_item|safe }}</li> {% endfor %} </ul> </td>
+{#                                                        <td>{{ hotel.new_data.view|safe }}</td>#}
+                                                        <td> <ul> {% for new_item in hotel.new_data.view %} <li>{{ new_item|safe }}</li> {% endfor %} </ul> </td>
+                                                    </tr>
+                                                {% endfor %}
+                                            {% endif %}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="btn-group float-right">
+                <button type="button" class="btn btn-lg" data-dismiss="modal">
+                    <i class="fa fa-ban"></i>&nbsp;&nbsp;Cancel
+                </button>
+                <div class="btn-group">
+{#                    <button type="button" class="btn btn-success btn-lg save" id="save-change" data-save-for="{{ items.id }}">#}
+{#                        <i class="fa fa-check-circle"></i>&nbsp;&nbsp;Save &nbsp;#}
+{#                    </button>#}
+
+                    <button type="button" class="btn btn-success dropdown-toggle btn-lg" data-toggle="dropdown" >
+                        <i class="fa fa-check-circle"></i>&nbsp;&nbsp;Save&nbsp;
+                        <i class="fa fa-caret-down"></i></button>
+                    <ul class="dropdown-menu pull-right">
+                        <li><a href="#" class="save-import-change" data-name="" data-save-for="{{ items.id }}">
+                            <i class="fa fa-check-circle"></i>&nbsp;&nbsp;Save</a>
+                        </li>
+                        <li><a href="#" data-name="send_mail" class="save-import-change" data-save-for="{{ items.id }}">
+                            <i class="fa fa-envelope"></i>&nbsp;&nbsp;Save with Confirmation</a></li>
+
+                        <li><a href="#" data-name="make_pending" class="save-import-change" data-save-for="{{ items.id }}">
+                            <i class="fa fa-money"></i>&nbsp;&nbsp;Save with close new orders</a></li>
+                        <li><a href="#" data-name="send_mail_make_pending" class="save-import-change" data-save-for="{{ items.id }}">
+                            <i class="fa fa-cubes"></i>&nbsp;&nbsp;Save with Confirmation and close new orders</a></li>
+                    </ul>
+
+                </div>
+        </div>
+
+    </div>
+
+
+
+
+
+<script>
+    $('#selecctall').click(function (event) {  //on click
+        if (this.checked) { // check select status
+            $('.allselect').each(function () { //loop through each checkbox
+                this.checked = true;  //select all checkboxes with class "checkbox1"
+            });
+        } else {
+            $('.allselect').each(function () { //loop through each checkbox
+                this.checked = false; //deselect all checkboxes with class "checkbox1"
+            });
+        }
+    });
+
+
+    $('.groupname').click(function (event) {  //on click
+
+        if (this.checked) { // check select status
+            $(this).parent().siblings()
+                    .find("input[type='checkbox']")
+                    .prop('checked', this.checked);
+        } else {
+            $(this).parent().siblings()
+                    .find("input[type='checkbox']")
+                    .prop('checked', false);
+        }
+        event.stopPropagation();
+    });
+
+    $('.question').click(function (event) {
+        var groupname = $(this).closest('.row').siblings().find("input[type='checkbox']");
+        var allChecked = true;
+        var indeterminate = false;
+        $(this).closest('.row').find('.question').each(function () {
+            if (!this.checked) {
+                allChecked = false;
+            } else {
+                indeterminate = true;
+            }
+        });
+        if (allChecked) {
+            groupname.prop("indeterminate", false);
+            groupname.prop('checked', true);
+        } else {
+            if (indeterminate) {
+                groupname.prop("indeterminate", true);
+            } else {
+                groupname.prop("indeterminate", false);
+                groupname.prop('checked', false);
+            }
+        }
+        event.stopPropagation();
+    });
+
+    $('.question').each(function () {
+        var groupname = $(this).closest('.row').siblings().find("input[type='checkbox']");
+        var allChecked = true;
+        var indeterminate = false;
+        $(this).closest('.row').find('.question').each(function () {
+            if (!this.checked) {
+                allChecked = false;
+            } else {
+                indeterminate = true;
+            }
+        });
+        if (allChecked) {
+            groupname.prop("indeterminate", false);
+            groupname.prop('checked', true);
+        } else {
+            if (indeterminate) {
+                groupname.prop("indeterminate", true);
+            } else {
+                groupname.prop("indeterminate", false);
+                groupname.prop('checked', false);
+            }
+        }
+    });
+
+
+
+    $("#ui-accordion2").accordion({
+        animate: 100,
+        collapsible: true,
+        heightStyle: "content",
+        header: "> div > h3",
+        beforeActivate: function (event, ui) {
+            // The accordion believes a panel is being opened
+            if (ui.newHeader[0]) {
+                var currHeader = ui.newHeader;
+                var currContent = currHeader.next('.ui-accordion-content');
+                // The accordion believes a panel is being closed
+            } else {
+                var currHeader = ui.oldHeader;
+                var currContent = currHeader.next('.ui-accordion-content');
+            }
+            // Since we've changed the default behavior, this detects the actual status
+            var isPanelSelected = currHeader.attr('aria-selected') == 'true';
+
+            // Toggle the panel's header
+            currHeader.toggleClass('ui-corner-all', isPanelSelected).toggleClass('accordion-header-active ui-state-active ui-corner-top', !isPanelSelected).attr('aria-selected', ((!isPanelSelected).toString()));
+
+            // Toggle the panel's icon
+            currHeader.children('.ui-icon').toggleClass('ui-icon-triangle-1-e', isPanelSelected).toggleClass('ui-icon-triangle-1-s', !isPanelSelected);
+
+            // Toggle the panel's content
+            currContent.toggleClass('accordion-content-active', !isPanelSelected)
+            if (isPanelSelected) {
+                currContent.slideUp();
+            } else {
+                currContent.slideDown();
+            }
+
+            return false; // Cancels the default action
+        }
+    });
+</script>
+
+</div>

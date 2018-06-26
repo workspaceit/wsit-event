@@ -1,0 +1,200 @@
+{% load thousand_filter %}
+{% load masking_filter %}
+{% load i18n %}
+{% if receipts %}
+<div class="content-main">
+
+    <div class="receipt-info">
+        <h3>{{ language.langkey.economy_txt_payment_information }}</h3>
+        {% for receipt in receipts %}
+
+            {% if receipt.payment %}
+                <div class="transfer-details">
+                    {% if receipt.payment.method == 'dibs' %}
+
+                        <div class="date"> {{ language.langkey.economy_txt_date_of_transaction }}<span class="value">{% language language.lang_preset.language_code %}
+                            {{ receipt.payment.created_at |date:language.lang_preset.datetime_format }}{% endlanguage %}</span>
+                        </div>
+                        <div class="transaction-id"> {{ language.langkey.economy_txt_transaction_id }}<span class="value">{{ receipt.payment.transaction }}</span>
+                        </div>
+                        <div class="card-number"> {{ language.langkey.economy_txt_card_number }}<span class="value">{{ receipt.payment.details.cardNumberMasked|mask }}</span>
+                        </div>
+                    {% elif receipt.payment.method == 'admin' %}
+                        <div class="date"> {{ language.langkey.economy_txt_date_of_transaction }}<span class="value">{% language language.lang_preset.language_code %}
+                            {{ receipt.payment.created_at |date:language.lang_preset.datetime_format }}{% endlanguage %}</span>
+                        </div>
+                        <div class="transaction-id"> {{ language.langkey.economy_txt_transaction_id }}<span class="value">{{ receipt.payment.transaction }}</span>
+                        </div>
+                    {% endif %}
+                </div>
+            {% else %}
+                <p>...</p>
+            {% endif %}
+            </div>
+
+            <div class="order-table">
+                <div class="economy-order-table">
+                    <h3>{{ language.langkey.economy_txt_order_table }}</h3>
+
+                    {% for order in receipt.orders %}
+                        {% if not order.is_group_total %}
+                            <div class="form-question order-table-form-question">
+                                {% if receipt.order_table_type == 'attendee-order' %}
+                                    <div class="order-info">
+                                        <div class="economy-order-number-wrapper"><span class="economy-order-number">{{ language.langkey.economy_txt_order_number }}:</span><span class="economy-order-number-value">{{ order.order.order_number }}</span></div>
+                                        <div class="economy-status-wrapper"><span class="economy-status">{{ language.langkey.economy_txt_status }}:</span><span class="economy-status-value">{{ order.order.status_lang }}</span></div>
+                                        <div class="economy-amount-due-wrapper"><span class="economy-amount-due" {% if order.order.status == 'open' or order.order.status == 'cancelled' %} style="display: none;" {% endif %}>{{ language.langkey.economy_txt_amount_due }}:</span><span class="economy-amount-due-value">{{ order.order_amount_due|floatformat:"-2"|format_thousands }} {{ language.langkey.economy_txt_currency }}</span></div>
+                                    </div>
+                                {% else %}
+                                    <span class="">{{ language.langkey.economy_txt_attendee }} {{ order.order.attendee.firstname }} {{ order.order.attendee.lastname }}<br/></span>
+                                {% endif %}
+
+                                <div class="scroll-x">
+                                    <table class="form-plugin-economy-order-table lines">
+                                        <thead>
+                                        <tr>
+                                            <th>{{ language.langkey.economy_txt_order_table_costs }}</th>
+                                            <th>{{ language.langkey.economy_txt_cost_excl_vat }}</th>
+                                            <th>{{ language.langkey.economy_txt_rebate_amount }}</th>
+                                            <th>{{ language.langkey.economy_txt_vat }}</th>
+                                            <th>{{ language.langkey.economy_txt_vat }} %</th>
+                                            <th>{{ language.langkey.economy_txt_cost_incl_vat }}</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        {% for order_item in order.order_items %}
+                                            {% if order_item.item_type == 'rebate' %}
+                                                <tr class="rebate">
+                                                    <td>{{ language.langkey.economy_txt_rebate_with }} {{ order_item.item_name }} {{ language.langkey.economy_txt_rebate_rebate }}</td>
+                                                    <td></td>
+                                                    <td>-{{ order_item.rebate_amount|floatformat:"-2"|format_thousands }} {{ language.langkey.economy_txt_currency }}</td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                </tr>
+                                            {% else %}
+                                                <tr  {% if order_item.rebate_amount > 0 %} class="rebated" {% endif %}>
+                                                    <td>{{ order_item.item_name }}</td>
+                                                    <td>{{ order_item.cost|floatformat:"-2"|format_thousands }} {{ language.langkey.economy_txt_currency }}</td>
+                                                    <td></td>
+                                                    {% if order_item.item_type == 'adjustment' %}
+                                                        <td></td>
+                                                        <td></td>
+                                                    {% else %}
+                                                        <td>{{ order_item.vat_amount|floatformat:"-2"|format_thousands }} {{ language.langkey.economy_txt_currency }}</td>
+                                                        <td>{{ order_item.vat_rate|floatformat:"-2"|format_thousands }}%</td>
+                                                    {% endif %}
+                                                    <td>{{ order_item.total_cost|floatformat:"-2"|format_thousands }} {{ language.langkey.economy_txt_currency }}</td>
+                                                </tr>
+                                            {% endif %}
+                                        {% endfor %}
+
+                                        {% for credit_usage in order.credit_usages %}
+                                            <tr>
+                                                <td>{{ credit_usage.name }}</td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td>-{{ credit_usage.cost|floatformat:"-2"|format_thousands }} {{ language.langkey.economy_txt_currency }}</td>
+                                            </tr>
+                                        {% endfor %}
+
+                                        <tr class="grand-total summary">
+                                            <td>{{ language.langkey.economy_txt_grand_total }}</td>
+{#                                            <td class="total_cost_exl_vat">{{ order.total_cost_exl_vat|floatformat:"-2"|format_thousands }} {{ language.langkey.economy_txt_currency }}</td>#}
+{#                                            <td class="total_rebate_amount">{{ order.total_rebate_amount|floatformat:"-2"|format_thousands }} {{ language.langkey.economy_txt_currency }}</td>#}
+{#                                            <td class="total_vat_amount">{{ order.total_vat_amount|floatformat:"-2"|format_thousands }} {{ language.langkey.economy_txt_currency }}</td>#}
+                                            <td>&nbsp;</td>
+                                            <td>&nbsp;</td>
+                                            <td>&nbsp;</td>
+                                            <td>&nbsp;</td>
+                                            <td class="total_cost_incl_vat">{{ order.total_cost_incl_vat|floatformat:"-2"|format_thousands }} {{ language.langkey.economy_txt_currency }}</td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="scroll-x">
+                                    <table class="form-plugin-economy-vat-table lines">
+                                        <thead>
+                                        <tr>
+                                            <th>{{ language.langkey.economy_txt_vat|floatformat:"-2"|format_thousands }}</th>
+                                            <th>{{ language.langkey.economy_txt_amount|floatformat:"-2"|format_thousands }}</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        {% for vat in order.vats %}
+                                            <tr>
+                                                <td>{{ vat.vat_rate|floatformat:"-2"|format_thousands }}%</td>
+                                                <td>{{ vat.amount|floatformat:"-2"|format_thousands }} {{ language.langkey.economy_txt_currency }}</td>
+                                            </tr>
+                                        {% endfor %}
+                                        <tr class="grand-total summary">
+                                            <td>{{ language.langkey.economy_txt_order_table_total_vat }}</td>
+                                            <td class="total_vat_amount">{{ order.total_vat_amount|floatformat:"-2"|format_thousands }} {{ language.langkey.economy_txt_currency }}</td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        {% else %}
+                            <div class="form-question order-table-form-question">
+                            {% if order.is_group_detail %}
+                                <div class="order-info">
+                                    <span class="economy-order-number">{{ language.langkey.economy_txt_order_number }}: {{ order.order_number }}<br/></span>
+                                    <span class="economy-status">{{ language.langkey.economy_txt_status }}: {{ order.order_status_lang }}<br/></span>
+                                    <span class="economy-amount-due" {% if order.order_status == 'open' or order.order_status == 'cancelled' %} style="display: none;" {% endif %}>
+                                        {{ language.langkey.economy_txt_amount_due }}: <span class="economy-amount-due-value">{{ order.order_amount_due|floatformat:"-2"|format_thousands }} {{ language.langkey.economy_txt_currency }}</span> <br/>
+                                    </span>
+                                </div>
+                                {% else %}
+                                <div class="scroll-x">
+                                    <table class="form-plugin-economy-order-table lines">
+                                        <thead>
+                                        <tr>
+                                            <th>{{ language.langkey.economy_txt_order_table_costs }}</th>
+                                            <th>{{ language.langkey.economy_txt_cost_excl_vat }}</th>
+                                            <th>{{ language.langkey.economy_txt_rebate_amount }}</th>
+                                            <th>{{ language.langkey.economy_txt_vat }}</th>
+                                            {#                                <th>{{ language.langkey.economy_txt_vat }} %</th>#}
+                                            <th>{{ language.langkey.economy_txt_cost_incl_vat }}</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        {% for credit_usage in order.credit_usages %}
+                                            <tr>
+                                                <td>{{ credit_usage.name }}</td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td>-{{ credit_usage.cost|floatformat:"-2"|format_thousands }} {{ language.langkey.economy_txt_currency }}</td>
+                                            </tr>
+                                        {% endfor %}
+                                        <tr class="grand-total summary">
+                                            <td>{{ language.langkey.economy_txt_grand_total }}</td>
+{#                                            <td class="total_cost_exl_vat">{{ order.group_total_cost_exl_vat|floatformat:"-2"|format_thousands }} {{ language.langkey.economy_txt_currency }}</td>#}
+{#                                            <td class="total_rebate_amount">{{ order.group_total_rebate_amount|floatformat:"-2"|format_thousands }} {{ language.langkey.economy_txt_currency }}</td>#}
+{#                                            <td class="total_vat_amount">{{ order.group_total_vat_amount|floatformat:"-2"|format_thousands }} {{ language.langkey.economy_txt_currency }}</td>#}
+                                            {#                                <td></td>#}
+                                            <td>&nbsp;</td>
+                                            <td>&nbsp;</td>
+                                            <td>&nbsp;</td>
+                                            <td class="total_cost_incl_vat">{{ order.group_total_cost_incl_vat|floatformat:"-2"|format_thousands }} {{ language.langkey.economy_txt_currency }}</td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                {% endif %}
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+
+                </div>
+
+
+            </div>
+
+        {% endfor %}
+
+</div>
+{% endif %}

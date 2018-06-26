@@ -1,0 +1,4 @@
+{% load i18n %}
+{% language current_language.language_code %}
+    {{ request_date|date:current_language.date_format }}
+{% endlanguage %}

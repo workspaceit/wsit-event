@@ -1,0 +1,99 @@
+{% load i18n %}
+{% load thousand_filter %}
+{% if balance_tables %}
+<div class="economy-balance-table">
+    <h3>{{ language.langkey.economy_txt_balance_table }}</h3>
+    {% for balance_table in balance_tables %}
+        <div class="form-question">
+            <div class="scroll-x">
+                <table class="form-plugin-economy-balance-table lines">
+                    <thead>
+                    <tr>
+                        <th>{{ language.langkey.economy_txt_balance_table_activities }}</th>
+                        <th>{{ language.langkey.economy_txt_cost_excl_vat }}</th>
+                        <th>{{ language.langkey.economy_txt_cost_incl_vat }}</th>
+                        <th>{{ language.langkey.economy_txt_data_and_time }}</th>
+                        {% if download %}
+                        <th>{{ language.langkey.economy_txt_link_to_invoice_or_receipt }}</th>
+                        {% endif %}
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>{{ language.langkey.economy_txt_invoice_created }}</td>
+                        <td>{{ balance_table.invoice_created.cost_excl_vat|floatformat:"-2"|format_thousands }} {{ language.langkey.economy_txt_currency }}</td>
+                        <td>{{ balance_table.invoice_created.cost_incl_vat|floatformat:"-2"|format_thousands }} {{ language.langkey.economy_txt_currency }}</td>
+
+                        <td>
+                            {% language language.lang_preset.language_code %}
+                            {{ balance_table.invoice_created.date |date:language.lang_preset.datetime_format }}{% endlanguage %}
+                        </td>
+                        {% if download %}
+                        <td>
+                            <button data-order-id="{{ balance_table.invoice_created.order_id }}"
+                                    class="form-plugin-button form-plugin-economy-invoice-download small economy-request-download-pdf"
+                                    data-pdf="order-invoice" data-order_number="{{ balance_table.order_number }}">
+                                {{ language.langkey.economy_txt_invoice_download_button }}
+                            </button>
+                        </td>
+                        {% endif %}
+                    </tr>
+                    {% if balance_table.invoice_settled %}
+
+                        <tr>
+                            <td>{{ language.langkey.economy_txt_invoice_settled }}</td>
+                            <td>{{ balance_table.invoice_settled.cost_excl_vat|floatformat:"-2"|format_thousands }} {{ language.langkey.economy_txt_currency }}</td>
+                            <td>{{ balance_table.invoice_settled.cost_incl_vat|floatformat:"-2"|format_thousands }} {{ language.langkey.economy_txt_currency }}</td>
+                            <td>
+                                {% language language.lang_preset.language_code %}
+                                {{ balance_table.invoice_settled.date |date:language.lang_preset.datetime_format  }}
+                                {% endlanguage %}
+                            </td>
+                            {% if download %}
+                            <td>
+                                <button data-order-id="{{ balance_table.invoice_settled.order_id }}"
+                                        class="form-plugin-button form-plugin-economy-invoice-download small economy-request-download-pdf"
+                                        data-pdf="receipt" data-order_number="{{ balance_table.order_number }}">
+                                    {{ language.langkey.economy_txt_invoice_download_button }}
+                                </button>
+                            </td>
+                            {% endif %}
+                        </tr>
+                    {% endif %}
+                    {% for credit_invoice in balance_table.credit_invoices %}
+                        <tr>
+                            <td>{{ language.langkey.economy_txt_credit_invoice }}</td>
+                            <td>{{ credit_invoice.cost_excl_vat|floatformat:"-2"|format_thousands }} {{ language.langkey.economy_txt_currency }}</td>
+                            <td>{{ credit_invoice.cost_incl_vat|floatformat:"-2"|format_thousands }} {{ language.langkey.economy_txt_currency }}</td>
+                            <td>
+                                {% language language.lang_preset.language_code %}
+                                {{ credit_invoice.date |date:language.lang_preset.datetime_format  }}
+                                {% endlanguage %}
+                            </td>
+                            {% if download %}
+                            <td>
+                                <button data-credit-order-id="{{ credit_invoice.credit_order_id }}"
+                                        class="form-plugin-button form-plugin-economy-invoice-download small economy-request-download-pdf"
+                                        data-pdf="credit-invoice" data-order_number="{{ balance_table.order_number }}">
+                                    {{ language.langkey.economy_txt_invoice_download_button }}
+                                </button>
+                            </td>
+                            {% endif %}
+                        </tr>
+                    {% endfor %}
+                    <tr class="summary">
+                        <td>{{ language.langkey.economy_txt_order_balance }}</td>
+{#                        <td>{{ balance_table.total_amount_excluding_vat|floatformat:"-2"|format_thousands }} {{ language.langkey.economy_txt_currency }}</td>#}
+                        <td>&nbsp;</td>
+                        <td>{{ balance_table.total_amount_including_vat|floatformat:"-2"|format_thousands }} {{ language.langkey.economy_txt_currency }}</td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    {% endfor %}
+
+</div>
+{% endif %}

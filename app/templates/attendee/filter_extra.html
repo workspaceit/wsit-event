@@ -1,0 +1,445 @@
+<!-- / .list-group-item -->
+<li class="list-group-item filter-rule">
+    <div class="form-group">
+        <div class="btn-group btn-group-xs">
+            <button type="button" class="btn"><span class="icon fa fa-plus"></span></button>
+            <button type="button" class="btn"><span class="icon fa fa-minus"></span></button>
+        </div>
+        <select class="form-control">
+            <option value="">Registration Date</option>
+            {#                <option value="">Registration status</option>#}
+            {#                <option value="">Attendee Group</option>#}
+            {#                <option value="">Attendee Tag</option>#}
+            {#                <option value="">Payment Status</option>#}
+            {#                <option value="">Session</option>#}
+            {#                <option value="">Question</option>#}
+        </select>
+        <select class="form-control">
+            {#                <option value="">is</option>#}
+            {#                <option value="">is not</option>#}
+            {#                <option value="">is after</option>#}
+            {#                <option value="">is before</option>#}
+            <option value="" selected>is within the last</option>
+            <option value="">is not within the last</option>
+            {#                <option value="">is between</option>#}
+        </select>
+        <input type="number" min="1" value="1" class="form-control filter-numberpicker">
+        <select class="form-control">
+            <option value="">days</option>
+            <option value="">weeks</option>
+            <option value="">months</option>
+        </select>
+    </div>
+</li>
+<!-- / .list-group-item -->
+
+<li class="list-group-item filter-rule">
+    <div class="form-group">
+        <div class="btn-group btn-group-xs">
+            <button type="button" class="btn"><span class="icon fa fa-plus"></span></button>
+            <button type="button" class="btn"><span class="icon fa fa-minus"></span></button>
+        </div>
+        <select class="form-control">
+            <option value="">Registration Date</option>
+            {#                <option value="">Registration status</option>#}
+            {#                <option value="">Attendee Group</option>#}
+            {#                <option value="">Attendee Tag</option>#}
+            {#                <option value="">Payment Status</option>#}
+            {#                <option value="">Session</option>#}
+            {#                <option value="">Question</option>#}
+        </select>
+        <select class="form-control">
+            {#                <option value="">is</option>#}
+            {#                <option value="">is not</option>#}
+            {#                <option value="">is after</option>#}
+            {#                <option value="">is before</option>#}
+            {#                <option value="">is within the last</option>#}
+            {#                <option value="">is not within the last</option>#}
+            <option value="" selected>is between</option>
+        </select>
+    </div>
+    <div class="form-group">
+        <div class="input-daterange input-group filter-datepicker-range">
+            <input type="text" class="input-sm form-control" name="start" placeholder="Start date">
+            <span class="input-group-addon">and</span>
+            <input type="text" class="input-sm form-control" name="end" placeholder="End date">
+        </div>
+    </div>
+</li>
+<!-- / .list-group-item -->
+<li class="list-group-item filter-nested-rule filter-rule">
+    <div class="form-group filter-nested-rule-form-group">
+        <div class="btn-group btn-group-xs">
+            <button type="button" class="btn"><span class="icon fa fa-plus"></span></button>
+            <button type="button" class="btn"><span class="icon fa fa-minus"></span></button>
+        </div>
+        <select class="form-control">
+            <option value="">Any</option>
+            <option value="">All</option>
+        </select>
+        of the following are true
+    </div>
+    <ul class="list-group filter-rule-list">
+        <li class="list-group-item filter-rule">
+            <div class="form-group">
+                <div class="btn-group btn-group-xs">
+                    <button type="button" class="btn"><span class="icon fa fa-plus"></span></button>
+                    <button type="button" class="btn"><span class="icon fa fa-minus"></span></button>
+                </div>
+                <select class="form-control">
+                    {#                        <option value="">Registration Date</option>#}
+                    <option value="" selected>Registration status</option>
+                    {#                        <option value="">Attendee Group</option>#}
+                    {#                        <option value="">Attendee Tag</option>#}
+                    {#                        <option value="">Payment Status</option>#}
+                    {#                        <option value="">Session</option>#}
+                    {#                        <option value="">Question</option>#}
+                </select>
+                <select class="form-control">
+                    <option value="">is</option>
+                    <option value="">is not</option>
+                </select>
+                <select class="form-control">
+                    <option value="" selected>Registered</option>
+                    <option value="">Pending</option>
+                    <option value="">Canceled</option>
+                </select>
+            </div>
+        </li>
+        <!-- / .list-group-item -->
+
+        <li class="list-group-item filter-rule">
+            <div class="form-group">
+                <div class="btn-group btn-group-xs">
+                    <button type="button" class="btn"><span class="icon fa fa-plus"></span></button>
+                    <button type="button" class="btn"><span class="icon fa fa-minus"></span></button>
+                </div>
+                <select class="form-control">
+                    {#                        <option value="">Registration Date</option>#}
+                    {#                        <option value="">Registration status</option>#}
+                    <option value="" selected>Attendee Group</option>
+                    {#                        <option value="">Attendee Tag</option>#}
+                    {#                        <option value="">Payment Status</option>#}
+                    {#                        <option value="">Session</option>#}
+                    {#                        <option value="">Question</option>#}
+                </select>
+                <select class="form-control">
+                    <option value="">is</option>
+                    <option value="">is not</option>
+                </select>
+                <select class="form-control">
+                    <option value="">Participant</option>
+                    <option value="">Speaker</option>
+                    <option value="">Student</option>
+                    <option value="">VIP</option>
+                </select>
+            </div>
+        </li>
+        <!-- / .list-group-item -->
+
+        <li class="list-group-item filter-rule">
+            <div class="form-group">
+                <div class="btn-group btn-group-xs">
+                    <button type="button" class="btn"><span class="icon fa fa-plus"></span></button>
+                    <button type="button" class="btn"><span class="icon fa fa-minus"></span></button>
+                </div>
+                <select class="form-control">
+                    {#                        <option value="">Registration Date</option>#}
+                    {#                        <option value="">Registration status</option>#}
+                    {#                        <option value="">Attendee Group</option>#}
+                    <option value="" selected>Attendee Tag</option>
+                    {#                        <option value="">Payment Status</option>#}
+                    {#                        <option value="">Session</option>#}
+                    {#                        <option value="">Question</option>#}
+                </select>
+                <select class="form-control">
+                    <option value="">has</option>
+                    <option value="">has not</option>
+                </select>
+                <select class="form-control">
+                    <option value="tag1">Received Invitation</option>
+                    <option value="tag2">Registred Late</option>
+                    <option value="tag3">Early Birds</option>
+                </select>
+            </div>
+        </li>
+        <!-- / .list-group-item -->
+
+        <li class="list-group-item filter-nested-rule filter-rule">
+            <div class="form-group filter-nested-rule-form-group">
+                <div class="btn-group btn-group-xs">
+                    <button type="button" class="btn"><span class="icon fa fa-plus"></span></button>
+                    <button type="button" class="btn"><span class="icon fa fa-minus"></span></button>
+                </div>
+                <select class="form-control">
+                    <option value="">Any</option>
+                    <option value="">All</option>
+                </select>
+                of the following are true
+            </div>
+            <ul class="list-group filter-rule-list">
+                <li class="list-group-item filter-rule">
+                    <div class="form-group">
+                        <div class="btn-group btn-group-xs">
+                            <button type="button" class="btn"><span class="icon fa fa-plus"></span></button>
+                            <button type="button" class="btn"><span class="icon fa fa-minus"></span></button>
+                        </div>
+                        <select class="form-control">
+                            {#                                <option value="">Registration Date</option>#}
+                            {#                                <option value="">Registration status</option>#}
+                            {#                                <option value="">Attendee Group</option>#}
+                            {#                                <option value="">Attendee Tag</option>#}
+                            <option value="" selected>Payment Status</option>
+                            {#                                <option value="">Session</option>#}
+                            {#                                <option value="">Question</option>#}
+                        </select>
+                        <select class="form-control">
+                            <option value="">is</option>
+                            <option value="">is not</option>
+                        </select>
+                        <select class="form-control">
+                            <option value="">not invoiced or paid</option>
+                            <option value="">invoiced - payment pending</option>
+                            <option value="">payment received</option>
+                            <option value="">canceled</option>
+                        </select>
+                    </div>
+                </li>
+                <!-- / .list-group-item -->
+                <li class="list-group-item filter-rule">
+                    <div class="form-group">
+                        <div class="btn-group btn-group-xs">
+                            <button type="button" class="btn"><span class="icon fa fa-plus"></span></button>
+                            <button type="button" class="btn"><span class="icon fa fa-minus"></span></button>
+                        </div>
+                        <select class="form-control">
+                            {#                                <option value="">Registration Date</option>#}
+                            {#                                <option value="">Registration status</option>#}
+                            {#                                <option value="">Attendee Group</option>#}
+                            {#                                <option value="">Attendee Tag</option>#}
+                            {#                                <option value="">Payment Status</option>#}
+                            <option value="" selected>Session</option>
+                            {#                                <option value="">Question</option>#}
+                        </select>
+                        <select class="form-control">
+                            <option value="">Attending</option>
+                            <option value="">Not attending</option>
+                            <option value="">In cue for</option>
+                        </select>
+                        <select class="form-control filter-session-selector">
+                            <option></option>
+                            <optgroup label="Learn About US States">
+                                <option value="">Learn More About Connecticut</option>
+                                <option value="">Learn More About Delaware</option>
+                                <option value="">Learn More About Florida</option>
+                                <option value="">Learn More About Georgia</option>
+                                <option value="">Learn More About Indiana</option>
+                            </optgroup>
+                            <optgroup label="Learn about countries that begins with A">
+                                <option value="">Afghanistan</option>
+                                <option value="">Albania</option>
+                                <option value="">Algeria</option>
+                                <option value="">Andorra</option>
+                                <option value="">Angola</option>
+                                <option value="">Antigua and Barbudadorra</option>
+                            </optgroup>
+                        </select>
+                    </div>
+                </li>
+                <!-- / .list-group-item -->
+            </ul>
+
+        </li>
+        <!-- / .list-group-item nested -->
+
+    </ul>
+
+</li>
+<!-- / .list-group-item -->
+<li class="list-group-item filter-rule">
+    <div class="form-group">
+        <div class="btn-group btn-group-xs">
+            <button type="button" class="btn"><span class="icon fa fa-plus"></span></button>
+            <button type="button" class="btn"><span class="icon fa fa-minus"></span></button>
+        </div>
+        <select class="form-control">
+            {#                <option value="">Registration Date</option>#}
+            {#                <option value="">Registration status</option>#}
+            {#                <option value="">Attendee Group</option>#}
+            {#                <option value="">Attendee Tag</option>#}
+            {#                <option value="">Payment Status</option>#}
+            {#                <option value="">Session</option>#}
+            <option value="" selected>Question</option>
+        </select>
+        <select class="form-control filter-question-selector">
+            <optgroup label="Contact Details">
+                <option value="" selected>First Name</option>
+                <option value="">Last Name</option>
+                <option value="">Company</option>
+                <option value="">Email</option>
+                <option value="">Phone Number</option>
+            </optgroup>
+            {#                <optgroup label="Information">#}
+            {#                    <option value="">Have you ever visited this event before?</option>#}
+            {#                    <option value="">On a scale from 1 - 5, how would you rate your colleagues?</option>#}
+            {#                    <option value="">Please select some adjectives that describes you the most</option>#}
+            {#                    <option value="">Ask us a question</option>#}
+            {#                </optgroup>#}
+            {#                <optgroup label="Food">#}
+            {#                    <option value="">Do you have any special dietary needs?</option>#}
+            {#                    <option value="">Any thing else we need to know about?</option>#}
+            {#                </optgroup>#}
+        </select>
+        <select class="form-control">
+            <option value="">contains</option>
+            <option value="">does not contain</option>
+            <option value="">is</option>
+            <option value="">is not</option>
+            <option value="">starts with</option>
+            <option value="">ends with</option>
+        </select>
+        <input type="text" class="form-control">
+    </div>
+</li>
+<li class="list-group-item filter-rule">
+    <div class="form-group">
+        <div class="btn-group btn-group-xs">
+            <button type="button" class="btn"><span class="icon fa fa-plus"></span></button>
+            <button type="button" class="btn"><span class="icon fa fa-minus"></span></button>
+        </div>
+        <select class="form-control">
+            {#                <option value="">Registration Date</option>#}
+            {#                <option value="">Registration status</option>#}
+            {#                <option value="">Attendee Group</option>#}
+            {#                <option value="">Attendee Tag</option>#}
+            {#                <option value="">Payment Status</option>#}
+            {#                <option value="">Session</option>#}
+            <option value="" selected>Question</option>
+        </select>
+        <select class="form-control filter-question-selector">
+            {#                <optgroup label="Contact Details">#}
+            {#                    <option value="">First Name</option>#}
+            {#                    <option value="">Last Name</option>#}
+            {#                    <option value="">Company</option>#}
+            {#                    <option value="">Email</option>#}
+            {#                    <option value="">Phone Number</option>#}
+            {#                </optgroup>#}
+            <optgroup label="Information">
+                <option value="" selected>Have you ever visited this event before?</option>
+                <option value="">On a scale from 1 - 5, how would you rate your colleagues?</option>
+                {#                    <option value="">Please select some adjectives that describes you the most</option>#}
+                {#                    <option value="">Ask us a question</option>#}
+            </optgroup>
+            <optgroup label="Food">
+                <option value="">Do you have any special dietary needs?</option>
+                <option value="">Any thing else we need to know about?</option>
+            </optgroup>
+        </select>
+        <select class="form-control">
+            <option value="">is</option>
+            <option value="">is not</option>
+        </select>
+        <select class="form-control">
+            <option value="">Yes</option>
+            <option value="">No</option>
+            <option value="">Unsure</option>
+        </select>
+    </div>
+</li>
+<li class="list-group-item filter-rule">
+    <div class="form-group">
+        <div class="btn-group btn-group-xs">
+            <button type="button" class="btn"><span class="icon fa fa-plus"></span></button>
+            <button type="button" class="btn"><span class="icon fa fa-minus"></span></button>
+        </div>
+        <select class="form-control">
+            {#                <option value="">Registration Date</option>#}
+            {#                <option value="">Registration status</option>#}
+            {#                <option value="">Attendee Group</option>#}
+            {#                <option value="">Attendee Tag</option>#}
+            {#                <option value="">Payment Status</option>#}
+            {#                <option value="">Session</option>#}
+            <option value="" selected>Question</option>
+        </select>
+        <select class="form-control filter-question-selector">
+            {#                <optgroup label="Contact Details">#}
+            {#                    <option value="">First Name</option>#}
+            {#                    <option value="">Last Name</option>#}
+            {#                    <option value="">Company</option>#}
+            {#                    <option value="">Email</option>#}
+            {#                    <option value="">Phone Number</option>#}
+            {#                </optgroup>#}
+            <optgroup label="Information">
+                {#                    <option value="">Have you ever visited this event before?</option>#}
+                <option value="" selected>On a scale from 1 - 5, how would you rate your colleagues?</option>
+                {#                    <option value="">Please select some adjectives that describes you the most</option>#}
+                {#                    <option value="">Ask us a question</option>#}
+            </optgroup>
+            <optgroup label="Food">
+                <option value="">Do you have any special dietary needs?</option>
+                <option value="">Any thing else we need to know about?</option>
+            </optgroup>
+        </select>
+        <select class="form-control">
+            {#                <option value="">is</option>#}
+            {#                <option value="">is not</option>#}
+            {#                <option value="">is higher than</option>#}
+            {#                <option value="">is lower than</option>#}
+            {#                <option value="">is not</option>#}
+            <option value="">is within</option>
+        </select>
+        <input type="number" step="0.1" class="form-control filter-numberpicker">
+    </div>
+</li>
+<li class="list-group-item filter-rule">
+    <div class="form-group">
+        <div class="btn-group btn-group-xs">
+            <button type="button" class="btn"><span class="icon fa fa-plus"></span></button>
+            <button type="button" class="btn"><span class="icon fa fa-minus"></span></button>
+        </div>
+        <select class="form-control">
+            {#                <option value="">Registration Date</option>#}
+            {#                <option value="">Registration status</option>#}
+            {#                <option value="">Attendee Group</option>#}
+            {#                <option value="">Attendee Tag</option>#}
+            {#                <option value="">Payment Status</option>#}
+            {#                <option value="">Session</option>#}
+            <option value="" selected>Question</option>
+        </select>
+        <select class="form-control filter-question-selector">
+            {#                <optgroup label="Contact Details">#}
+            {#                    <option value="">First Name</option>#}
+            {#                    <option value="">Last Name</option>#}
+            {#                    <option value="">Company</option>#}
+            {#                    <option value="">Email</option>#}
+            {#                    <option value="">Phone Number</option>#}
+            {#                </optgroup>#}
+            <optgroup label="Information">
+                {#                    <option value="">Have you ever visited this event before?</option>#}
+                <option value="" selected>On a scale from 1 - 5, how would you rate your colleagues?</option>
+                {#                    <option value="">Please select some adjectives that describes you the most</option>#}
+                {#                    <option value="">Ask us a question</option>#}
+            </optgroup>
+            {#                <optgroup label="Food">#}
+            {#                    <option value="">Do you have any special dietary needs?</option>#}
+            {#                    <option value="">Any thing else we need to know about?</option>#}
+            {#                </optgroup>#}
+        </select>
+        <select class="form-control">
+            <option value="">is</option>
+            <option value="">is not</option>
+            <option value="">is higher than</option>
+            <option value="">is lower than</option>
+            {#                <option value="">is not</option>#}
+            {#                <option value="" selected>is within</option>#}
+        </select>
+
+        <div class="form-group filter-number-range">
+            <div class="input-group" id="bs-datepicker-range">
+                <input type="number" step="0.1" class="input form-control" name="start" placeholder="Start">
+                <span class="input-group-addon">to</span>
+                <input type="number" step="0.1" class="input form-control" name="end" placeholder="End">
+            </div>
+        </div>
+    </div>
+</li>

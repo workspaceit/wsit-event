@@ -1,0 +1,71 @@
+{% for element in elements %}
+    <div role="tabpanel" class="tab-pane
+                                        {% if element.name.lower == 'notification' %}
+                                             active
+                                        {% endif %}" id="{{ element.name.lower }}">
+        <div class="row">
+            <div class="col-sm-12">
+                {% if element.hasText %}
+                    <h3><b>Texts</b></h3>
+                    {% for lang in element.lang %}
+                        {% if lang.type == "text" %}
+                            <div class="form-group">
+                                <label>{{ lang.name }}</label>
+                                <input class="form-control" type="text"
+                                       data-area="default"
+                                       data-id="{{ lang.id }}"
+                                       name="{{ lang.lang_key }}"
+                                       value="{{ lang.default_value }}">
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
+                {% if element.hasButton %}
+                    <h3><b>Buttons</b></h3>
+                    {% for lang in element.lang %}
+                        {% if lang.type == "button" %}
+                            <div class="form-group">
+                                <label>{{ lang.name }}</label>
+                                <input class="form-control" type="text"
+                                       data-area="default"
+                                       data-id="{{ lang.id }}"
+                                       name="{{ lang.lang_key }}"
+                                       value="{{ lang.default_value }}">
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
+                {% if element.hasNotification %}
+                    <h3><b>Notifications</b></h3>
+                    {% for lang in element.lang %}
+                        {% if lang.type == "notification" %}
+                            <div class="form-group">
+                                <label>{{ lang.name }}</label>
+                                <input class="form-control" type="text"
+                                       data-area="default"
+                                       data-id="{{ lang.id }}"
+                                       name="{{ lang.lang_key }}"
+                                       value="{{ lang.default_value }}">
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
+                {% if element.hasValidation %}
+                    <h3><b>Validation Texts</b></h3>
+                    {% for lang in element.lang %}
+                        {% if lang.type == "validation_text" %}
+                            <div class="form-group">
+                                <label>{{ lang.name }}</label>
+                                <input class="form-control" type="text"
+                                       data-area="default"
+                                       data-id="{{ lang.id }}"
+                                       name="{{ lang.lang_key }}"
+                                       value="{{ lang.default_value }}">
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
+            </div>
+        </div>
+    </div>
+{% endfor %}

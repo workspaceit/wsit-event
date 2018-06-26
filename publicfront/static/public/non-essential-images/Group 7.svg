@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="110px" height="110px" viewBox="0 0 110 110" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 41 (35326) - http://www.bohemiancoding.com/sketch -->
+    <title>Group 7</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Group-7">
+            <path d="M110,55 C110,85.376 85.376,110 55,110 C24.624,110 0,85.376 0,55 C0,24.624 24.624,0 55,0 C85.376,0 110,24.624 110,55" id="Fill-73" fill="#FABC3D"></path>
+            <g id="Group-4" transform="translate(23.000000, 23.000000)">
+                <path d="M64,16 L0,16 L0,10 C0,6.686 2.686,4 6,4 L58,4 C61.314,4 64,6.686 64,10 L64,16 Z" id="Fill-2571" fill="#DF2C2C"></path>
+                <path d="M29.452,4 L6,4 C2.686,4 0,6.687 0,10 L0,16 L17.452,16 L29.452,4 Z" id="Fill-2572" fill="#FA5655"></path>
+                <path d="M64,58 C64,61.314 61.314,64 58,64 L6,64 C2.686,64 0,61.314 0,58 L0,16 L64,16 L64,58 Z" id="Fill-2573" fill="#FFFFFF"></path>
+                <polygon id="Fill-2574" fill="#40C9E7" points="32 24 22 24 22 33 32 33"></polygon>
+                <polygon id="Fill-2575" fill="#C9F2F9" points="31 35 21 35 21 44 31 44"></polygon>
+                <polygon id="Fill-2576" fill="#C9F2F9" points="43 35 33 35 33 44 43 44"></polygon>
+                <polygon id="Fill-2577" fill="#C9F2F9" points="19 24 8 24 8 33 19 33"></polygon>
+                <polygon id="Fill-2578" fill="#C9F2F9" points="43 24 33 24 33 33 43 33"></polygon>
+                <polygon id="Fill-2579" fill="#40C9E7" points="33 56 43 56 43 46 33 46"></polygon>
+                <polygon id="Fill-2580" fill="#C9F2F9" points="55 35 45 35 45 44 55 44"></polygon>
+                <polygon id="Fill-2581" fill="#C9F2F9" points="55 24 45 24 45 33 55 33"></polygon>
+                <polygon id="Fill-2582" fill="#C9F2F9" points="45 56 55 56 55 46 45 46"></polygon>
+                <polygon id="Fill-2583" fill="#C9F2F9" points="8 44 19 44 19 35 8 35"></polygon>
+                <polygon id="Fill-2584" fill="#C9F2F9" points="8 56 19 56 19 46 8 46"></polygon>
+                <polygon id="Fill-2585" fill="#C9F2F9" points="21 56 31 56 31 46 21 46"></polygon>
+                <path d="M14,9 C14,10.65 12.65,12 11,12 C9.35,12 8,10.65 8,9 L8,3 C8,1.35 9.35,0 11,0 C12.65,0 14,1.35 14,3 L14,9 Z" id="Fill-2586" fill="#3E3E3F"></path>
+                <path d="M56,9 C56,10.65 54.65,12 53,12 C51.35,12 50,10.65 50,9 L50,3 C50,1.35 51.35,0 53,0 C54.65,0 56,1.35 56,3 L56,9 Z" id="Fill-2587" fill="#3E3E3F"></path>
+                <path d="M35,9 C35,10.65 33.65,12 32,12 C30.35,12 29,10.65 29,9 L29,3 C29,1.35 30.35,0 32,0 C33.65,0 35,1.35 35,3 L35,9 Z" id="Fill-2588" fill="#3E3E3F"></path>
+            </g>
+        </g>
+    </g>
+</svg>

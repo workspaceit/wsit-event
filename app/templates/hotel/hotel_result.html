@@ -1,0 +1,45 @@
+<div class="table-light">
+    {% for data in hotelsGroups %}
+        <div class="table-header">
+            <div class="table-caption">
+                {{ data.name }}
+            </div>
+        </div>
+
+        <table class="table table-bordered sortable hotel-table" id="group_{{ data.id }}">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Cost</th>
+                <th>Occupancy</th>
+                <th>Edit</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for room in data.rooms %}
+                <tr>
+                    <td data-id="{{ room.id }}">{{ room.id }}</td>
+                    <td>{{ room.hotel.name }}</td>
+                    <td>{{ room.description }}</td>
+                    <td>€{{ room.cost }}</td>
+                    <td>{{ room.occupancy }}%</td>
+                    <td>
+                        <a class="btn btn-xs" href="{% url 'hotels' %}match?room_id={{ room.id }}" data-toggle="tooltip"
+                           data-placement="top"
+                           title="" data-original-title="Room Matching"><i class="fa fa-link"></i></a>
+                        <a class="btn btn-xs" data-toggle="tooltip" data-placement="top" title=""
+                           href="{% url 'hotels' %}{{ room.hotel_id }}" data-original-title="Edit"><i
+                                class="fa fa-gear"></i></a>
+                        <button class="btn btn-xs btn-danger deleteRoom" data-id="{{ room.id }}" data-page="hotel"
+                                data-toggle="tooltip"
+                                data-placement="top" title="" data-original-title="Delete"><i
+                                class="fa fa-times-circle"></i></button>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    {% endfor %}
+</div>

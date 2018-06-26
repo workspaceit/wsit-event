@@ -1,0 +1,98 @@
+<!-- MODAL - ADD SEMINAR -->
+{% csrf_token %}
+<div id="admins-edit-admin" class="modal fade" tabindex="-1" role="dialog" style="display: none;">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
+                <h4 class="modal-title">Add Admin</h4>
+            </div>
+            <div class="modal-body">
+                <form action="" id="add-session-form">
+                    <input type="hidden" id="admin-id"/>
+
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group no-margin-hr">
+                                <label class="control-label">First Name</label>
+                                <input type="text" id="firstname" name="firstname" class="form-control"
+                                       placeholder="firstname">
+                            </div>
+                        </div>
+                        <!-- col-sm-6 -->
+                        <div class="col-sm-6">
+                            <div class="form-group no-margin-hr">
+                                <label class="control-label">Last Name</label>
+                                <input type="text" id="lastname" name="lastname" class="form-control"
+                                       placeholder="lastname">
+                            </div>
+                        </div>
+                        <!-- col-sm-6 -->
+                    </div>
+                    <!-- row -->
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group no-margin-hr">
+                                <label class="control-label">Email</label>
+                                <input type="text" id="email" name="email" class="form-control" placeholder="email">
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <label class="control-label">Company</label>
+                            <input type="text" id="company" name="company" class="form-control" placeholder="company">
+                        </div>
+                        <!-- col-sm-6 -->
+                    </div>
+                    <!-- row -->
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group no-margin-hr">
+                                <label class="control-label">Password</label>
+                                <input type="text" id="password" name="password" class="form-control"
+                                       placeholder="password">
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <label class="control-label">Phone number</label>
+                            <input type="text" id="phonenum" name="phonenum" class="form-control"
+                                   placeholder="phonenum">
+                        </div>
+                    </div>
+                    <!-- row -->
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <label class="control-label">Events</label>
+                            <input id="event_access" name="event_access" class="add-event-permission form-control">
+                        </div>
+                    </div>
+                    <br>
+                    <div id="permissions">
+
+                    </div>
+
+                    <div class="row">
+                        <div class="col-sm-12 text-right">
+                            <div class="btn-group">
+
+                                <button type="button" class="btn btn-lg" data-original-title="" title=""
+                                        data-dismiss="modal" aria-hidden="true"><i
+                                        class="fa fa-ban"></i>&nbsp;&nbsp;Cancel
+                                </button>
+                                <button type="button" id="btn-save-admin" class="btn btn-success btn-lg btn-save"><i
+                                        class="fa fa-check-circle"></i>&nbsp;&nbsp;Save
+                                </button>
+                                <button type="button" id="btn-update-admin" class="btn btn-success btn-lg btn-save"
+                                        style="display: none;"><i class="fa fa-check-circle"></i>&nbsp;&nbsp;Update
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <!-- / .modal-content -->
+    </div>
+    <!-- / .modal-dialog -->
+</div>
+<!-- / .modal -->
+<!-- / Large modal -->

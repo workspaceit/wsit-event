@@ -1,0 +1,15 @@
+{% extends "public/layout/layout.html" %}
+{% block content %}
+    {% load staticfiles %}
+    <link href="{% static 'public/css/elements_style.css' %}" rel="stylesheet" type="text/css"/>
+    <div class="wrapper">
+        <input type="hidden" id="filter-container" value="{{ static_page.filter }}"/>
+        <div class="container padding mainContent">
+            <div class="row gutters">
+                {{ content|safe }}
+            </div>
+        </div>
+    </div>
+    <script src="{% static 'public/js/page.js' %}"></script>
+    <script src="{% static 'public/js/session_agenda.js' %}"></script>
+{% endblock %}

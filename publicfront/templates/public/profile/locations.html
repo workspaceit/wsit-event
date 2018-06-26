@@ -1,0 +1,82 @@
+{% extends "public/layout/layout.html" %}
+{% block content %}
+    <div class="wrapper">
+        <div class="container padding mainContent">
+            <div class="container">
+
+                <h1>LOCATIONS</h1>
+
+                <div class="row gutters half">
+                    <div class="col span_6">
+                        <div class="formQuestion">
+                            <div class="searchBox">
+                                <i class="fa fa-search searchIcon"></i><input type="text" class="search search-location">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col span_6">
+                        <div class="formQuestion">
+                            <div class="searchBox">
+                                <i class="fa fa-chevron-down sortIcon"></i>
+                                <select class="sort sort-locations">
+                                    <option value="all" selected>Show all</option>
+                                    {% for group in location_groups %}
+                                        <option value="{{ group.id }}">Show only {{ group.name }}</option>
+
+                                    {% endfor %}
+                                </select>
+
+                            </div>
+                        </div>
+                    </div>
+                    {% csrf_token %}
+                </div>
+                <div class="location-show">
+
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+    <script>
+        $(document).ready(function () {
+            var csrf_token = $('input[name=csrfmiddlewaretoken]').val();
+            $.ajax(
+                    {
+                        url: base_url + '/locations/',
+                        type: "POST",
+                        data: {
+                            sort_type: "all",
+                            csrfmiddlewaretoken: csrf_token
+                        },
+                        success: function (result) {
+                            data = result;
+                            $('.location-show').html(result);
+                        }
+                    }
+            );
+
+            $('.sort').change(
+                    function () {
+                        var sort_type = $(this).val();
+                        $.ajax(
+                                {
+                                    url: base_url + '/locations/',
+                                    type: "POST",
+                                    data: {
+                                        sort_type: sort_type,
+                                        csrfmiddlewaretoken: csrf_token
+                                    },
+                                    success: function (result) {
+                                        $('.search-location').val('');
+                                        $('.location-show').html(result);
+                                    }
+                                }
+                        );
+
+                    }
+            );
+        });
+    </script>
+{% endblock %}

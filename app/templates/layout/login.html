@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+    {% load staticfiles %}
+    <!-- Open Sans font from Google CDN -->
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,400,600,700,300&subset=latin"
+          rel="stylesheet" type="text/css">
+    <!-- Pixel Admin's stylesheets -->
+    <link href="{% static 'assets/stylesheets/bootstrap.min.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'assets/stylesheets/pixel-admin.min.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'assets/stylesheets/widgets.min.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'assets/stylesheets/pages.min.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'assets/stylesheets/rtl.min.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'assets/stylesheets/themes.min.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'assets/stylesheets/bootstrap-select.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'assets/stylesheets/admin.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'assets/stylesheets/jquery.growl.css' %}" rel="stylesheet" type="text/css">
+    <script type="text/javascript"> window.jQuery || document.write('<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js">' + "<" + "/script>"); </script>
+    <script src="{% static 'assets/javascripts/jquery.growl.js' %}"></script>
+
+    <title>{% block title %}{% endblock %}</title>
+
+</head>
+<body>
+{% block content %}
+
+{% endblock %}
+
+</body>
+</html>

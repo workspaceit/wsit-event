@@ -1,0 +1,53 @@
+<div class="table-light">
+
+    {% for group in travel_groups %}
+        <div class="table-header">
+            <div class="table-caption">
+                {{ group.name|safe }}
+            </div>
+        </div>
+        <table class="table table-bordered sortable travel-table">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Attending / Max</th>
+                <th>Edit</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for travel in group.travel %}
+                <tr>
+                    <td>{{ travel.id }}</td>
+                    <td>{{ travel.name }}</td>
+                    <td>{{ travel.attending }} / {{ travel.max_attendees }}</td>
+                    {% if request.session.admin_permission.content_permission.travel_permission and request.session.admin_permission.content_permission.travel_permission.access_level == 'write' or request.session.event_auth_user.type == 'super_admin' %}
+                        <td>
+                            <button class="btn btn-xs btn-edit-travel"
+                                    data-id="{{ travel.id }}"
+                                    data-toggle="tooltip" data-placement="top" title=""
+                                    data-original-title="Edit"><i
+                                    class="dropdown-icon fa fa-cog"></i>
+                            </button>
+                            <button class="btn btn-xs btn-danger btn-delete-travel"
+                                    data-id="{{ travel.id }}" data-toggle="tooltip"
+                                    data-placement="top"
+                                    title="" data-original-title="Delete"><i
+                                    class="dropdown-icon fa fa-times-circle"></i></button>
+                        </td>
+                    {% else %}
+                        <td style="text-align: center;">
+                            <button class="btn btn-xs btn-view-travel"
+                                    data-id="{{ travel.id }}"
+                                    data-toggle="tooltip" data-placement="top" title=""
+                                    data-original-title="View"><i
+                                    class="dropdown-icon fa fa-search-plus"></i>
+                            </button>
+                        </td>
+                    {% endif %}
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    {% endfor %}
+</div>

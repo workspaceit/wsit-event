@@ -1,0 +1,65 @@
+{% if has_group %}
+    <br/>
+    <div class="row">
+        <div class="col-sm-12">
+            {% if request.session.admin_permission.content_permission.group_registration_permission and request.session.admin_permission.content_permission.group_registration_permission.access_level == 'write' or request.session.event_auth_user.type == 'super_admin' %}
+                <button type="button" class="btn btn-primary btn-add-attendee-to-group"
+                        data-group-id="{{ registration_group_owner.group.id }}" data-original-title="" title=""><i
+                        class="fa fa-plus"></i>&nbsp;&nbsp;Add to group
+                </button>
+            {% endif %}
+        </div>
+    </div>
+    <br/>
+    <div class="table-light">
+        <table class="table table-bordered">
+            <thead>
+            <tr>
+                <th>Attendee Name</th>
+                <th>Group Name</th>
+                <th>Attendee Type</th>
+                {% if request.session.admin_permission.content_permission.group_registration_permission and request.session.admin_permission.content_permission.group_registration_permission.access_level == 'write' or request.session.event_auth_user.type == 'super_admin' %}
+                    <th>Actions</th>
+                {% endif %}
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td><a href="javascript:void(0)" class="show-group-attendee"
+                       data-id="{{ registration_group_owner.owner.id }}">{{ registration_group_owner.owner.firstname }} {{ registration_group_owner.owner.lastname }}</a>
+                </td>
+                <td>{{ registration_group_owner.group.name }}</td>
+                <td>Order Owner</td>
+                {% if request.session.admin_permission.content_permission.group_registration_permission and request.session.admin_permission.content_permission.group_registration_permission.access_level == 'write' or request.session.event_auth_user.type == 'super_admin' %}
+                    <td></td>
+                {% endif %}
+            </tr>
+            {% for attendee in registration_group_attendees %}
+                <tr>
+                    <td><a href="javascript:void(0)" class="show-group-attendee"
+                           data-id="{{ attendee.id }}">{{ attendee.firstname }} {{ attendee.lastname }}</a></td>
+                    <td>{{ attendee.registration_group.name }}</td>
+                    <td>Attendee</td>
+                    {% if request.session.admin_permission.content_permission.group_registration_permission and request.session.admin_permission.content_permission.group_registration_permission.access_level == 'write' or request.session.event_auth_user.type == 'super_admin' %}
+                        <td>
+                            <button type="button" class="btn btn-danger btn-delete-from-registration-group"
+                                    data-original-title=""
+                                    title="" data-id="{{ attendee.id }}"><i class="fa fa-times-circle"></i>&nbsp;&nbsp;Delete
+                            </button>
+                        </td>
+                    {% endif %}
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% else %}
+    <br/>
+    {% if request.session.admin_permission.content_permission.group_registration_permission and request.session.admin_permission.content_permission.group_registration_permission.access_level == 'write' or request.session.event_auth_user.type == 'super_admin' %}
+        <button type="button" class="btn btn-primary btn-create-new-registration-group" data-original-title="" title="">
+            <i
+                    class="fa fa-plus"></i>&nbsp;&nbsp;Create a new group
+        </button>
+    {% endif %}
+    <br/>
+{% endif %}

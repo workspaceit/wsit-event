@@ -1,0 +1,238 @@
+{% extends "layout/main.html" %}
+{% block content %}
+    {% load staticfiles %}
+    {% csrf_token %}
+    <link href="{% static 'assets/plugin/fancytree/skin-bootstrap/ui.fancytree.css' %}" rel="stylesheet"
+          type="text/css">
+    <script src="{% static 'assets/plugin/jquery/jquery-ui-1.12.min.js' %}"></script>
+    <script src="{% static 'assets/plugin/fancytree/jquery.fancytree-all.js' %}"></script>
+
+    <div id="content-wrapper">
+        <div class="panel colourable">
+            <div class="panel-heading">
+            <span class="panel-title"><i class="fa fa-lg fa-file-o"></i></i>
+                &nbsp;&nbsp;&nbsp;<strong>Language</strong></span>
+            </div>
+            <!-- / .panel-heading -->
+            {% csrf_token %}
+            <div class="panel-body">
+                <div class="tab-pane fade in active">
+                    {{ header_lang_render }}
+                    <br>
+
+                    <div id="static-pages">
+                        <div class="row">
+                            <div class="col-lg-3">
+                                <div id="tree">
+                                    <ul class="nav nav-tabs" role="tablist">
+                                        <li data-id="preset-date">
+                                            <a data-toggle="tab" href="#preset-date">
+                                                Date
+                                            </a>
+                                        </li>
+                                        <li data-id="preset-time">
+                                            <a data-toggle="tab" href="#preset-time">
+                                                Time
+                                            </a>
+                                        </li>
+                                        <li data-id="preset-date-time">
+                                            <a data-toggle="tab" href="#preset-date-time">
+                                                Date & time
+                                            </a>
+                                        </li>
+                                        <li data-id="preset-date-time-language">
+                                            <a data-toggle="tab" href="#preset-date-time-language">
+                                                Date & time language
+                                            </a>
+                                        </li>
+                                        <li data-id="preset-date-time-buttons">
+                                            <a data-toggle="tab" href="#preset-date-time-buttons">
+                                                Buttons
+                                            </a>
+                                        </li>
+                                        <li data-id="preset-date-time-firstday">
+                                            <a data-toggle="tab" href="#preset-date-time-firstday">
+                                                Firstday
+                                            </a>
+                                        </li>
+                                        <li class="folder" data-id="preset-date-time-days">
+                                            Days
+                                            <ul>
+                                                <li data-id="day-sunday">Sunday</li>
+                                                <li data-id="day-monday">Monday</li>
+                                                <li data-id="day-tuesday">Tuesday</li>
+                                                <li data-id="day-wednesday">Wednesday</li>
+                                                <li data-id="day-thursday">Thursday</li>
+                                                <li data-id="day-friday">Friday</li>
+                                                <li data-id="day-saturday">Saturday</li>
+                                            </ul>
+                                        </li>
+                                        <li class="folder" data-id="preset-date-time-months">
+                                            Months
+                                            <ul>
+                                                <li data-id="month-january">January</li>
+                                                <li data-id="month-february">February</li>
+                                                <li data-id="month-march">March</li>
+                                                <li data-id="month-april">April</li>
+                                                <li data-id="month-may">May</li>
+                                                <li data-id="month-june">June</li>
+                                                <li data-id="month-july">July</li>
+                                                <li data-id="month-august">August</li>
+                                                <li data-id="month-september">September</li>
+                                                <li data-id="month-october">October</li>
+                                                <li data-id="month-november">November</li>
+                                                <li data-id="month-december">December</li>
+                                            </ul>
+                                        </li>
+
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="col-lg-9">
+                                <div class="tab-content" id="presetdata">
+
+                                </div>
+                            </div>
+                            <!-- row -->
+                            {% if request.session.admin_permission.content_permission.language_permission and request.session.admin_permission.content_permission.language_permission.access_level == 'write' or request.session.event_auth_user.type == 'super_admin' %}
+                                <div class="row">
+                                    <div class="col-sm-12 text-right">
+                                        <div class="form-group">
+                                            <button type="button"
+                                                    class="btn btn-success btn-lg btn-save-date-time-language" onclick="save_date_time_preset()"><i
+                                                    class="fa fa-check-circle"></i>&nbsp;&nbsp;Save
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endif %}
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        $(document).ready(function () {
+            {% if presetsEvent %}
+                $.ajax({
+                            url: base_url + '/admin/language/get-date-time-preset/?id={{ presetsEvent.preset_id }}',
+                            cache: false
+                        })
+                        .done(function (html) {
+                            $("#presetdata").append(html);
+                        });
+            {% else %}
+
+            {% endif %}
+            $('#preset').select2({
+                        placeholder: "Please select a preset"
+                    })
+                    .on("select2-selecting", function (e) {
+                        clog(e)
+                        $.ajax({
+                                    url: base_url + '/admin/language/get-date-time-preset/?id=' + e.val,
+                                    cache: false
+                                })
+                                .done(function (html) {
+                                    $("#presetdata").html(html);
+
+                                    var datanode = $("#tree").fancytree("getActiveNode");
+                                    clog(datanode);
+                                    if (datanode != null) {
+                                        var tab = datanode.data.id;
+                                        var activateTab = '#' + tab.toLowerCase();
+
+                                        $('.tab-content').children('div').attr('class', 'tab-pane');
+                                        $(activateTab).addClass('active');
+                                    }
+                                });
+                        $("#delete-preset").show();
+                        $("#rename-preset").show();
+                        $('#rename_preset_name').val($.trim($('#preset option[value="' + e.val + '"]').attr("data-value")));
+                        $('#rename_preset_name').attr('data-id', e.val);
+                        clog("change val=" + e.val);
+
+                    })
+        });
+        function save_date_time_preset() {
+            var csrfToken = $('input[name=csrfmiddlewaretoken]').val();
+            var data = {
+                csrfmiddlewaretoken: csrfToken
+            };
+            $('.preset-format').each(
+                    function () {
+                        data[$(this).attr('id')] = $(this).val();
+                    }
+            );
+
+            var weekdaysFull=[]
+            var weekdaysShort=[]
+            $("div[id^='day']").each(
+                function () {
+                    var $this = $(this);
+                    var id =$this.attr('id');
+                    var dayname = id.split("-")[1];
+                    var fullname = $this.find(".full").val();
+                    var shortname = $this.find(".short").val();
+                    weekdaysFull.push(fullname);
+                    weekdaysShort.push(shortname);
+                }
+            );
+            var monthsFull =[]
+            var monthsShort =[]
+            $("div[id^='month']").each(
+                function () {
+                    var $this = $(this);
+                    var id =$this.attr('id')
+                    var monthname = id.split("-")[1]
+                    var fullname = $this.find(".full").val();
+                    var shortname = $this.find(".short").val();
+                    monthsFull.push(fullname);
+                    monthsShort.push(shortname);
+                }
+            );
+            var today =$('#preset_date_time_button_today').val();
+            var yesterday =$('#preset_date_time_button_yesterday').val();
+            var tomorrow =$('#preset_date_time_button_tomorrow').val();
+            var clear =$('#preset_date_time_button_clear').val();
+            var close =$('#preset_date_time_button_close').val();
+            var firstDay = $('#preset_date_time_firstday').val();
+
+            var obj = {};
+            obj.monthsFull = monthsFull;
+            obj.monthsShort = monthsShort;
+            obj.weekdaysShort = weekdaysShort;
+            obj.weekdaysFull = weekdaysFull;
+            obj.today=today;
+            obj.clear=clear;
+            obj.close=close;
+            obj.firstDay=firstDay;
+            obj.yesterday=yesterday;
+            obj.tomorrow=tomorrow;
+            data['datetime_language']=JSON.stringify(obj)
+
+            data['preset_id'] = $("#preset").val();
+            var request = $.ajax({
+                url: base_url + '/admin/language/save-date-time-preset/',
+                type: "POST",
+                data: data
+            });
+
+            request.done(function (response) {
+                if (response.success) {
+                    $.growl.notice({message: response.message});
+                } else {
+                    $.growl.error({message: response.message});
+                }
+            });
+
+            request.fail(function (jqXHR, textStatus) {
+                $.growl.error({message: "Request failed: " + textStatus});
+
+            });
+        }
+    </script>
+    <script src="{% static 'assets/javascripts/language.js' %}"></script>
+{% endblock %}

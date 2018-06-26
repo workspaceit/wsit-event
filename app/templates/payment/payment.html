@@ -1,0 +1,220 @@
+{% extends "layout/main.html" %}
+{% block content %}
+{% load staticfiles %}
+     <div id="content-wrapper">
+        <div class="panel colourable">
+            <div class="panel-heading">
+                <span class="panel-title"><i class="fa fa-lg fa-credit-card"></i></i>&nbsp;&nbsp;&nbsp;<strong
+                        style="text-decoration:none">DIBS Integration</strong></span>
+
+            </div>
+            {% csrf_token %}
+            <div class="panel-body tab-content">
+                <div class="tab-pane fade in active">
+
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="form-group no-margin-hr">
+                                    <label class="control-label">Currency</label>
+                                    <select class="form-control" id="currency" name="currency">
+                                        <option value="AED" {% if payment.currency == 'AED' %} selected {% endif %}>AED</option>
+                                        <option value="AFN" {% if payment.currency == 'AFN' %} selected {% endif %}>AFN</option>
+                                        <option value="ALL" {% if payment.currency == 'ALL' %} selected {% endif %}>ALL</option>
+                                        <option value="AMD" {% if payment.currency == 'AMD' %} selected {% endif %}>AMD</option>
+                                        <option value="ANG" {% if payment.currency == 'ANG' %} selected {% endif %}>ANG</option>
+                                        <option value="AOA" {% if payment.currency == 'AOA' %} selected {% endif %}>AOA</option>
+                                        <option value="ARS" {% if payment.currency == 'ARS' %} selected {% endif %}>ARS</option>
+                                        <option value="AUD" {% if payment.currency == 'AUD' %} selected {% endif %}>AUD</option>
+                                        <option value="AWG" {% if payment.currency == 'AWG' %} selected {% endif %}>AWG</option>
+                                        <option value="AZN" {% if payment.currency == 'AZN' %} selected {% endif %}>AZN</option>
+                                        <option value="BAM" {% if payment.currency == 'BAM' %} selected {% endif %}>BAM</option>
+                                        <option value="BBD" {% if payment.currency == 'BBD' %} selected {% endif %}>BBD</option>
+                                        <option value="BDT" {% if payment.currency == 'BDT' %} selected {% endif %}>BDT</option>
+                                        <option value="BGN" {% if payment.currency == 'BGN' %} selected {% endif %}>BGN</option>
+                                        <option value="BMD" {% if payment.currency == 'BMD' %} selected {% endif %}>BMD</option>
+                                        <option value="BND" {% if payment.currency == 'BND' %} selected {% endif %}>BND</option>
+                                        <option value="BOB" {% if payment.currency == 'BOB' %} selected {% endif %}>BOB</option>
+                                        <option value="BOV" {% if payment.currency == 'BOV' %} selected {% endif %}>BOV</option>
+                                        <option value="BRL" {% if payment.currency == 'BRL' %} selected {% endif %}>BRL</option>
+                                        <option value="BSD" {% if payment.currency == 'BSD' %} selected {% endif %}>BSD</option>
+                                        <option value="BTN" {% if payment.currency == 'BTN' %} selected {% endif %}>BTN</option>
+                                        <option value="BWP" {% if payment.currency == 'BWP' %} selected {% endif %}>BWP</option>
+                                        <option value="BYN" {% if payment.currency == 'BYN' %} selected {% endif %}>BYN</option>
+                                        <option value="BZD" {% if payment.currency == 'BZD' %} selected {% endif %}>BZD</option>
+                                        <option value="CAD" {% if payment.currency == 'CAD' %} selected {% endif %}>CAD</option>
+                                        <option value="CDF" {% if payment.currency == 'CDF' %} selected {% endif %}>CDF</option>
+                                        <option value="CHE" {% if payment.currency == 'CHE' %} selected {% endif %}>CHE</option>
+                                        <option value="CHF" {% if payment.currency == 'CHF' %} selected {% endif %}>CHF</option>
+                                        <option value="CHW" {% if payment.currency == 'CHW' %} selected {% endif %}>CHW</option>
+                                        <option value="CNY" {% if payment.currency == 'CNY' %} selected {% endif %}>CNY</option>
+                                        <option value="COP" {% if payment.currency == 'COP' %} selected {% endif %}>COP</option>
+                                        <option value="COU" {% if payment.currency == 'COU' %} selected {% endif %}>COU</option>
+                                        <option value="CRC" {% if payment.currency == 'CRC' %} selected {% endif %}>CRC</option>
+                                        <option value="CUC" {% if payment.currency == 'CUC' %} selected {% endif %}>CUC</option>
+                                        <option value="CUP" {% if payment.currency == 'CUP' %} selected {% endif %}>CUP</option>
+                                        <option value="CZK" {% if payment.currency == 'CZK' %} selected {% endif %}>CZK</option>
+                                        <option value="DKK" {% if payment.currency == 'DKK' %} selected {% endif %}>DKK</option>
+                                        <option value="DOP" {% if payment.currency == 'DOP' %} selected {% endif %}>DOP</option>
+                                        <option value="DZD" {% if payment.currency == 'DZD' %} selected {% endif %}>DZD</option>
+                                        <option value="EGP" {% if payment.currency == 'EGP' %} selected {% endif %}>EGP</option>
+                                        <option value="ERN" {% if payment.currency == 'ERN' %} selected {% endif %}>ERN</option>
+                                        <option value="ETB" {% if payment.currency == 'ETB' %} selected {% endif %}>ETB</option>
+                                        <option value="EUR" {% if payment.currency == 'EUR' %} selected {% endif %}>EUR</option>
+                                        <option value="FJD" {% if payment.currency == 'FJD' %} selected {% endif %}>FJD</option>
+                                        <option value="FKP" {% if payment.currency == 'FKP' %} selected {% endif %}>FKP</option>
+                                        <option value="GBP" {% if payment.currency == 'GBP' %} selected {% endif %}>GBP</option>
+                                        <option value="GEL" {% if payment.currency == 'GEL' %} selected {% endif %}>GEL</option>
+                                        <option value="GHS" {% if payment.currency == 'GHS' %} selected {% endif %}>GHS</option>
+                                        <option value="GIP" {% if payment.currency == 'GIP' %} selected {% endif %}>GIP</option>
+                                        <option value="GMD" {% if payment.currency == 'GMD' %} selected {% endif %}>GMD</option>
+                                        <option value="GTQ" {% if payment.currency == 'GTQ' %} selected {% endif %}>GTQ</option>
+                                        <option value="GYD" {% if payment.currency == 'GYD' %} selected {% endif %}>GYD</option>
+                                        <option value="HKD" {% if payment.currency == 'HKD' %} selected {% endif %}>HKD</option>
+                                        <option value="HNL" {% if payment.currency == 'HNL' %} selected {% endif %}>HNL</option>
+                                        <option value="HRK" {% if payment.currency == 'HRK' %} selected {% endif %}>HRK</option>
+                                        <option value="HTG" {% if payment.currency == 'HTG' %} selected {% endif %}>HTG</option>
+                                        <option value="HUF" {% if payment.currency == 'HUF' %} selected {% endif %}>HUF</option>
+                                        <option value="IDR" {% if payment.currency == 'IDR' %} selected {% endif %}>IDR</option>
+                                        <option value="ILS" {% if payment.currency == 'ILS' %} selected {% endif %}>ILS</option>
+                                        <option value="INR" {% if payment.currency == 'INR' %} selected {% endif %}>INR</option>
+                                        <option value="IRR" {% if payment.currency == 'IRR' %} selected {% endif %}>IRR</option>
+                                        <option value="JMD" {% if payment.currency == 'JMD' %} selected {% endif %}>JMD</option>
+                                        <option value="KES" {% if payment.currency == 'KES' %} selected {% endif %}>KES</option>
+                                        <option value="KGS" {% if payment.currency == 'KGS' %} selected {% endif %}>KGS</option>
+                                        <option value="KHR" {% if payment.currency == 'KHR' %} selected {% endif %}>KHR</option>
+                                        <option value="KPW" {% if payment.currency == 'KPW' %} selected {% endif %}>KPW</option>
+                                        <option value="KYD" {% if payment.currency == 'KYD' %} selected {% endif %}>KYD</option>
+                                        <option value="KZT" {% if payment.currency == 'KZT' %} selected {% endif %}>KZT</option>
+                                        <option value="LAK" {% if payment.currency == 'LAK' %} selected {% endif %}>LAK</option>
+                                        <option value="LBP" {% if payment.currency == 'LBP' %} selected {% endif %}>LBP</option>
+                                        <option value="LKR" {% if payment.currency == 'LKR' %} selected {% endif %}>LKR</option>
+                                        <option value="LRD" {% if payment.currency == 'LRD' %} selected {% endif %}>LRD</option>
+                                        <option value="LSL" {% if payment.currency == 'LSL' %} selected {% endif %}>LSL</option>
+                                        <option value="MAD" {% if payment.currency == 'MAD' %} selected {% endif %}>MAD</option>
+                                        <option value="MDL" {% if payment.currency == 'MDL' %} selected {% endif %}>MDL</option>
+                                        <option value="MKD" {% if payment.currency == 'MKD' %} selected {% endif %}>MKD</option>
+                                        <option value="MMK" {% if payment.currency == 'MMK' %} selected {% endif %}>MMK</option>
+                                        <option value="MUR" {% if payment.currency == 'MUR' %} selected {% endif %}>MUR</option>
+                                        <option value="MVR" {% if payment.currency == 'MVR' %} selected {% endif %}>MVR</option>
+                                        <option value="MWK" {% if payment.currency == 'MWK' %} selected {% endif %}>MWK</option>
+                                        <option value="MXN" {% if payment.currency == 'MXN' %} selected {% endif %}>MXN</option>
+                                        <option value="MXV" {% if payment.currency == 'MXV' %} selected {% endif %}>MXV</option>
+                                        <option value="MYR" {% if payment.currency == 'MYR' %} selected {% endif %}>MYR</option>
+                                        <option value="MZN" {% if payment.currency == 'MZN' %} selected {% endif %}>MZN</option>
+                                        <option value="NAD" {% if payment.currency == 'NAD' %} selected {% endif %}>NAD</option>
+                                        <option value="NGN" {% if payment.currency == 'NGN' %} selected {% endif %}>NGN</option>
+                                        <option value="NIO" {% if payment.currency == 'NIO' %} selected {% endif %}>NIO</option>
+                                        <option value="NOK" {% if payment.currency == 'NOK' %} selected {% endif %}>NOK</option>
+                                        <option value="NPR" {% if payment.currency == 'NPR' %} selected {% endif %}>NPR</option>
+                                        <option value="NZD" {% if payment.currency == 'NZD' %} selected {% endif %}>NZD</option>
+                                        <option value="PAB" {% if payment.currency == 'PAB' %} selected {% endif %}>PAB</option>
+                                        <option value="PEN" {% if payment.currency == 'PEN' %} selected {% endif %}>PEN</option>
+                                        <option value="PGK" {% if payment.currency == 'PGK' %} selected {% endif %}>PGK</option>
+                                        <option value="PHP" {% if payment.currency == 'PHP' %} selected {% endif %}>PHP</option>
+                                        <option value="PKR" {% if payment.currency == 'PKR' %} selected {% endif %}>PKR</option>
+                                        <option value="PLN" {% if payment.currency == 'PLN' %} selected {% endif %}>PLN</option>
+                                        <option value="QAR" {% if payment.currency == 'QAR' %} selected {% endif %}>QAR</option>
+                                        <option value="RON" {% if payment.currency == 'RON' %} selected {% endif %}>RON</option>
+                                        <option value="RSD" {% if payment.currency == 'RSD' %} selected {% endif %}>RSD</option>
+                                        <option value="RUB" {% if payment.currency == 'RUB' %} selected {% endif %}>RUB</option>
+                                        <option value="SAR" {% if payment.currency == 'SAR' %} selected {% endif %}>SAR</option>
+                                        <option value="SBD" {% if payment.currency == 'SBD' %} selected {% endif %}>SBD</option>
+                                        <option value="SCR" {% if payment.currency == 'SCR' %} selected {% endif %}>SCR</option>
+                                        <option value="SDG" {% if payment.currency == 'SDG' %} selected {% endif %}>SDG</option>
+                                        <option value="SEK" {% if payment.currency == 'SEK' %} selected {% endif %}>SEK</option>
+                                        <option value="SGD" {% if payment.currency == 'SGD' %} selected {% endif %}>SGD</option>
+                                        <option value="SHP" {% if payment.currency == 'SHP' %} selected {% endif %}>SHP</option>
+                                        <option value="SLL" {% if payment.currency == 'SLL' %} selected {% endif %}>SLL</option>
+                                        <option value="SOS" {% if payment.currency == 'SOS' %} selected {% endif %}>SOS</option>
+                                        <option value="SRD" {% if payment.currency == 'SRD' %} selected {% endif %}>SRD</option>
+                                        <option value="SSP" {% if payment.currency == 'SSP' %} selected {% endif %}>SSP</option>
+                                        <option value="STD" {% if payment.currency == 'STD' %} selected {% endif %}>STD</option>
+                                        <option value="SVC" {% if payment.currency == 'SVC' %} selected {% endif %}>SVC</option>
+                                        <option value="SYP" {% if payment.currency == 'SYP' %} selected {% endif %}>SYP</option>
+                                        <option value="SZL" {% if payment.currency == 'SZL' %} selected {% endif %}>SZL</option>
+                                        <option value="THB" {% if payment.currency == 'THB' %} selected {% endif %}>THB</option>
+                                        <option value="TJS" {% if payment.currency == 'TJS' %} selected {% endif %}>TJS</option>
+                                        <option value="TMT" {% if payment.currency == 'TMT' %} selected {% endif %}>TMT</option>
+                                        <option value="TOP" {% if payment.currency == 'TOP' %} selected {% endif %}>TOP</option>
+                                        <option value="TRY" {% if payment.currency == 'TRY' %} selected {% endif %}>TRY</option>
+                                        <option value="TTD" {% if payment.currency == 'TTD' %} selected {% endif %}>TTD</option>
+                                        <option value="TWD" {% if payment.currency == 'TWD' %} selected {% endif %}>TWD</option>
+                                        <option value="TZS" {% if payment.currency == 'TZS' %} selected {% endif %}>TZS</option>
+                                        <option value="UAH" {% if payment.currency == 'UAH' %} selected {% endif %}>UAH</option>
+                                        <option value="USD" {% if payment.currency == 'USD' %} selected {% endif %}>USD</option>
+                                        <option value="USN" {% if payment.currency == 'USN' %} selected {% endif %}>USN</option>
+                                        <option value="UYI" {% if payment.currency == 'UYI' %} selected {% endif %}>UYI</option>
+                                        <option value="UYU" {% if payment.currency == 'UYU' %} selected {% endif %}>UYU</option>
+                                        <option value="UZS" {% if payment.currency == 'UZS' %} selected {% endif %}>UZS</option>
+                                        <option value="VEF" {% if payment.currency == 'VEF' %} selected {% endif %}>VEF</option>
+                                        <option value="WST" {% if payment.currency == 'WST' %} selected {% endif %}>WST</option>
+                                        <option value="XCD" {% if payment.currency == 'XCD' %} selected {% endif %}>XCD</option>
+                                        <option value="YER" {% if payment.currency == 'YER' %} selected {% endif %}>YER</option>
+                                        <option value="ZAR" {% if payment.currency == 'ZAR' %} selected {% endif %}>ZAR</option>
+                                        <option value="ZMW" {% if payment.currency == 'ZMW' %} selected {% endif %}>ZMW</option>
+                                        <option value="ZWL" {% if payment.currency == 'ZWL' %} selected {% endif %}>ZWL</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="form-group no-margin-hr">
+                                    <label class="control-label">Merchant ID</label>
+                                    <input type="text" name="merchant_id" class="form-control"
+                                           id="merchant_id" placeholder="Merchant " value="{{ payment.merchant_id }}">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="form-group no-margin-hr">
+                                    <label class="control-label">Payment Types</label>
+                                    <input type="text" name="payment_types" class="form-control"
+                                           id="payment_types" placeholder="Payment Types" value="{{ payment.payment_types }}">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="form-group no-margin-hr">
+                                    <label class="control-label">Key 1</label>
+                                    <div class="input-group">
+                                        <input type="password"  name="key1" class="form-control"
+                                           id="key1" placeholder="Key1" value="{{ payment.key1 }}">
+                                        <span class="input-group-btn">
+                                            <button class="btn btn-inverse btn-show-key" type="button">Show</button>
+                                        </span>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="form-group no-margin-hr">
+                                    <label class="control-label">Key 2</label>
+                                     <div class="input-group">
+                                        <input type="password"  name="key2" class="form-control"
+                                           id="key2" placeholder="Key2" value="{{ payment.key2 }}">
+                                        <span class="input-group-btn">
+                                            <button class="btn btn-inverse btn-show-key" type="button">Show</button>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <button type="button" id="btn-save-payment" class="btn btn-success btn-lg btn-save"
+                                    style="float:right;"><i
+                                    class="fa fa-check-circle"></i>&nbsp;&nbsp;Save
+                            </button>
+                        </div>
+                    <br>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+{% endblock %}

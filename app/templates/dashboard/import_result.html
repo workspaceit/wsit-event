@@ -1,0 +1,32 @@
+{% extends "layout/main.html" %}
+{% block content %}
+<div id="content-wrapper">
+
+    {% for result in results %}
+        <ul>
+            <li>{{ result.Attendee }}</li>
+            {% if result.errors %}
+             <ol>
+                {% for error in result.errors %}
+
+                        <li>Question : {{error.question}}, Given : {{error.given}}, Result : {{error.result}}</li>
+
+                {% endfor %}
+             </ol>
+            {% endif %}
+            {% if result.success %}
+             <ul>
+
+                        <li>{{ result.success }}</li>
+
+             </ul>
+            {% endif %}
+
+        </ul>
+
+
+    {% endfor %}
+
+</div>
+
+{% endblock %}
