@@ -20,8 +20,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # Quick-start development settings - unsuitable for master
 # See https://docs.djangoproject.com/en/1.8/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in master secret!
-SECRET_KEY = '2wako5@=t$f8g+@%#aft4yw38%f66$&(yn(_0s5gwqo$!8p6&c'
+
 
 # SECURITY WARNING: don't run with debug turned on in master!
 
