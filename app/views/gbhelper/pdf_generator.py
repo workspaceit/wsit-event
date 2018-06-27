@@ -196,9 +196,17 @@ class EconomyPDFGenerator:
             css_version_obj = StyleSheet.objects.get(event_id=attendee.event_id)
             css_version = css_version_obj.version
 
-            html_content = html_content.replace('[[file]]', "[[static]]public/[[event_url]]/files")
-            html_content = html_content.replace('[[files]]', "[[static]]public/[[event_url]]/files/")
-            html_content = html_content.replace('[[css]]', "[[static]]public/[[event_url]]/compiled_css/style.css?v="+str(css_version))
+            # html_content = html_content.replace('[[file]]', "[[static]]public/[[event_url]]/files")
+            # html_content = html_content.replace('[[files]]', "[[static]]public/[[event_url]]/files/")
+            # html_content = html_content.replace('[[css]]', "[[static]]public/[[event_url]]/compiled_css/style.css?v="+str(css_version))
+
+            # For Wsit Event
+            html_content = html_content.replace('[[file]]', "[[static]]public/files")
+            html_content = html_content.replace('[[files]]', "[[static]]public/files/")
+            html_content = html_content.replace('[[css]]',
+                                                "[[static]]public/compiled_css/style.css?v=" + str(
+                                                    css_version))
+
             html_content = html_content.replace('[[static]]', settings.STATIC_URL_ALT)
             html_content = html_content.replace('[[event_url]]', event_url)
             html_content = html_content.replace('[[parmanent]]', settings.STATIC_URL_ALT + 'public/')

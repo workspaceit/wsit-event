@@ -20,10 +20,18 @@ class DocumentDetail(generic.DetailView):
                 # get css version
                 css_version_obj = StyleSheet.objects.get(event_id=request.session['event_id'])
                 css_version = css_version_obj.version
-                template_content = template[0].content.replace('[[file]]', "[[static]]public/[[event_url]]/files")
-                template_content = template[0].content.replace('[[files]]', "[[static]]public/[[event_url]]/files/")
+                # template_content = template[0].content.replace('[[file]]', "[[static]]public/[[event_url]]/files")
+                # template_content = template[0].content.replace('[[files]]', "[[static]]public/[[event_url]]/files/")
+                # template_content = template_content.replace('[[css]]',
+                #                                             "[[static]]public/[[event_url]]/compiled_css/style.css?v="+str(css_version))
+
+                # For Wsit Event
+                template_content = template[0].content.replace('[[file]]', "[[static]]public/files")
+                template_content = template[0].content.replace('[[files]]', "[[static]]public/files/")
                 template_content = template_content.replace('[[css]]',
-                                                            "[[static]]public/[[event_url]]/compiled_css/style.css?v="+str(css_version))
+                                                            "[[static]]public/compiled_css/style.css?v=" + str(
+                                                                css_version))
+
                 template_content = template_content.replace('[[static]]', settings.STATIC_URL_ALT)
                 template_content = template_content.replace('public/js/jquery.min.js',
                                                             static('public/js/jquery.min.js'))

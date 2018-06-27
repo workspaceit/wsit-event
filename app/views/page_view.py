@@ -80,9 +80,17 @@ class PageView(generic.DetailView):
                     filter = request.POST.get('filter_list')
                     element_filter = request.POST.get('element_filters')
                     content = data['content']
-                    content = content.replace('[[file]]', "[[static]]public/[[event_url]]/files")
-                    content = content.replace('[[files]]', "[[static]]public/[[event_url]]/files/")
-                    content = content.replace('[[css]]', "[[static]]public/[[event_url]]/compiled_css/style.css?v="+str(css_version))
+                    # content = content.replace('[[file]]', "[[static]]public/[[event_url]]/files")
+                    # content = content.replace('[[files]]', "[[static]]public/[[event_url]]/files/")
+                    # content = content.replace('[[css]]', "[[static]]public/[[event_url]]/compiled_css/style.css?v="+str(css_version))
+
+                    # For Wsit Event
+                    content = content.replace('[[file]]', "[[static]]public/files")
+                    content = content.replace('[[files]]', "[[static]]public/files/")
+                    content = content.replace('[[css]]',
+                                              "[[static]]public/compiled_css/style.css?v=" + str(
+                                                  css_version))
+
                     content = content.replace(settings.STATIC_URL_ALT, '[[static]]')
                     content = content.replace(settings.STATIC_URL_ALT + 'public/', '[[parmanent]]')
                     old_page = PageContent.objects.get(id=page_id)
@@ -942,9 +950,17 @@ class PageDetailView(generic.DetailView):
                 css_version = css_version_obj.version
 
                 page_content = template.content.replace('{content}', "<div id='content'>"+pageContent+"</div>")
-                page_content = page_content.replace('[[file]]', "[[static]]public/[[event_url]]/files")
-                page_content = page_content.replace('[[files]]', "[[static]]public/[[event_url]]/files/")
-                page_content = page_content.replace('[[css]]', "[[static]]public/[[event_url]]/compiled_css/style.css?v="+str(css_version))
+                # page_content = page_content.replace('[[file]]', "[[static]]public/[[event_url]]/files")
+                # page_content = page_content.replace('[[files]]', "[[static]]public/[[event_url]]/files/")
+                # page_content = page_content.replace('[[css]]', "[[static]]public/[[event_url]]/compiled_css/style.css?v="+str(css_version))
+
+                # For Wsit Event
+                page_content = page_content.replace('[[file]]', "[[static]]public/files")
+                page_content = page_content.replace('[[files]]', "[[static]]public/files/")
+                page_content = page_content.replace('[[css]]',
+                                                    "[[static]]public/compiled_css/style.css?v=" + str(
+                                                        css_version))
+
                 page_content = page_content.replace('[[static]]', settings.STATIC_URL_ALT)
                 if '{menu}' in page_content:
                     first_level_menu = MenuItem.objects.filter(level=1, event_id=static_page.template.event_id).order_by("rank")
@@ -1603,9 +1619,16 @@ class LanguageElement(generic.DetailView):
         pageContent = PageDetailView.replace_plugin(request, pageContent)
         pageContent = CmsPageView.replace_enddiv(request,pageContent)
 
-        content = pageContent.replace('[[file]]', "[[static]]public/[[event_url]]/files")
-        content = content.replace('[[files]]', "[[static]]public/[[event_url]]/files/")
-        content = content.replace('[[css]]', "[[static]]public/[[event_url]]/compiled_css/style.css?v="+str(css_version))
+        # content = pageContent.replace('[[file]]', "[[static]]public/[[event_url]]/files")
+        # content = content.replace('[[files]]', "[[static]]public/[[event_url]]/files/")
+        # content = content.replace('[[css]]', "[[static]]public/[[event_url]]/compiled_css/style.css?v="+str(css_version))
+
+        # For Wsit Event
+        content = pageContent.replace('[[file]]', "[[static]]public/files")
+        content = content.replace('[[files]]', "[[static]]public/files/")
+        content = content.replace('[[css]]',
+                                  "[[static]]public/compiled_css/style.css?v=" + str(css_version))
+
         content = content.replace('[[static]]', settings.STATIC_URL_ALT)
         return content
 

@@ -2385,9 +2385,16 @@ class DescriptionView(generic.DetailView):
         for style in styles['css']:
             style_files += """<link rel="stylesheet" type="text/css" href='""" + style + """' />"""
         content = style_files + content
-        content = content.replace('[[file]]', "[[static]]public/[[event_url]]/files")
-        content = content.replace('[[files]]', "[[static]]public/[[event_url]]/files/")
-        content = content.replace('[[css]]', "[[static]]public/[[event_url]]/compiled_css/style.css?v="+str(css_version))
+        # content = content.replace('[[file]]', "[[static]]public/[[event_url]]/files")
+        # content = content.replace('[[files]]', "[[static]]public/[[event_url]]/files/")
+        # content = content.replace('[[css]]', "[[static]]public/[[event_url]]/compiled_css/style.css?v="+str(css_version))
+
+        # For Wsit Event
+        content = content.replace('[[file]]', "[[static]]public/files")
+        content = content.replace('[[files]]', "[[static]]public/files/")
+        content = content.replace('[[css]]',
+                                  "[[static]]public/compiled_css/style.css?v=" + str(css_version))
+
         content = content.replace('[[static]]', settings.STATIC_URL_ALT)
         content = content.replace('[[event_url]]', event_url)
         content = content.replace('[[parmanent]]', settings.STATIC_URL_ALT + 'public/')
