@@ -72,17 +72,17 @@ class MailHelper(generic.View):
         logger.debug("-----------------subject------------------------")
         # logger.debug('')
         # live
-        if os.environ['ENVIRONMENT_TYPE'] == 'master':
-            email = Mailer(subject=subject, to='support@springconf.com', from_addr=sender_mail)
-            email.send(html_content)
-            email = Mailer(subject=subject, to=to, from_addr=sender_mail)
-            email.send(html_content)
-        elif os.environ['ENVIRONMENT_TYPE'] == 'staging' or os.environ['ENVIRONMENT_TYPE'] == 'develop':
-            email = Mailer(subject=subject, to='workspaceinfotech@gmail.com', from_addr=sender_mail)
-            email.send(html_content)
-        else:
-            email = Mailer(subject=subject, to='workspaceinfotech@gmail.com', from_addr=sender_mail)
-            email.send(html_content)
+        # if os.environ['ENVIRONMENT_TYPE'] == 'master':
+        #     email = Mailer(subject=subject, to='support@springconf.com', from_addr=sender_mail)
+        #     email.send(html_content)
+        #     email = Mailer(subject=subject, to=to, from_addr=sender_mail)
+        #     email.send(html_content)
+        # elif os.environ['ENVIRONMENT_TYPE'] == 'staging' or os.environ['ENVIRONMENT_TYPE'] == 'develop':
+        #     email = Mailer(subject=subject, to='workspaceinfotech@gmail.com', from_addr=sender_mail)
+        #     email.send(html_content)
+        # else:
+        #     email = Mailer(subject=subject, to='workspaceinfotech@gmail.com', from_addr=sender_mail)
+        #     email.send(html_content)
 
     def mail_template_send(context, subject, to, sender_mail):
         html_content = context
@@ -94,19 +94,19 @@ class MailHelper(generic.View):
         logger.debug("-----------------subject------------------------")
         # logger.debug(subject)
         # live
-        if os.environ['ENVIRONMENT_TYPE'] == 'master':
-            email = Mailer(subject=subject, to='support@springconf.com', from_addr=sender_mail)
-            email.send(html_content)
-            email = Mailer(subject=subject, to=to, from_addr=sender_mail)
-            email.send(html_content)
-        elif os.environ['ENVIRONMENT_TYPE'] == 'staging' or os.environ['ENVIRONMENT_TYPE'] == 'develop':
-            email = Mailer(subject=subject, to='workspaceinfotech@gmail.com', from_addr=sender_mail)
-            # email = Mailer(subject=subject,to='joakim@springconf.com',from_addr = sender_mail)
-            email.send(html_content)
-        else:
-            # email = Mailer(subject=subject,to='wsit-LRVW@mail-tester.com',from_addr = sender_mail)
-            email = Mailer(subject=subject, to='workspaceinfotech@gmail.com', from_addr=sender_mail)
-            # email = Mailer(subject=subject,to='developerwsit@gmail.com',from_addr = sender_mail)
-            # email.send(html_content)
-            # email = Mailer(subject=subject,to='joakim@springconf.com',from_addr = sender_mail)
-            email.send(html_content)
+        # if os.environ['ENVIRONMENT_TYPE'] == 'master':
+        #     email = Mailer(subject=subject, to='support@springconf.com', from_addr=sender_mail)
+        #     email.send(html_content)
+        #     email = Mailer(subject=subject, to=to, from_addr=sender_mail)
+        #     email.send(html_content)
+        # elif os.environ['ENVIRONMENT_TYPE'] == 'staging' or os.environ['ENVIRONMENT_TYPE'] == 'develop':
+        #     email = Mailer(subject=subject, to='workspaceinfotech@gmail.com', from_addr=sender_mail)
+        #     # email = Mailer(subject=subject,to='joakim@springconf.com',from_addr = sender_mail)
+        #     email.send(html_content)
+        # else:
+        #     # email = Mailer(subject=subject,to='wsit-LRVW@mail-tester.com',from_addr = sender_mail)
+        #     email = Mailer(subject=subject, to='workspaceinfotech@gmail.com', from_addr=sender_mail)
+        #     # email = Mailer(subject=subject,to='developerwsit@gmail.com',from_addr = sender_mail)
+        #     # email.send(html_content)
+        #     # email = Mailer(subject=subject,to='joakim@springconf.com',from_addr = sender_mail)
+        #     email.send(html_content)
