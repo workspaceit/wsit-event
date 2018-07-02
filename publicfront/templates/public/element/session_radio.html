@@ -33,6 +33,11 @@
                                 <h4 class="form-plugin-title"><label
                                         for="temporary-radio-{{ box_id }}-id-{{ session.id }}-u{{ data_user_id }}">{{ session.name|safe }}</label>
                                 </h4>
+                                {% if show_details_link == 'True' %}
+                                    <div class="session-detail-link session" data-box-id="{{ box_id }}"
+                                         data-page-id="{{ page_id }}"
+                                         data-id="{{ session.id }}">{{ session_details_language.langkey.sessiondetails_txt_session_detail_link }}</div>
+                                {% endif %}
                                 <div class="status {{ session.current_status }}">
 {#                                    {% if session.current_status == "in-queue" %}#}
 {#                                        {{ session_details_language.langkey.sessiondetails_txt_status_in_queue }}#}

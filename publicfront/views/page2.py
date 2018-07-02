@@ -2323,6 +2323,7 @@ class Plugins(generic.TemplateView):
             cost = 'True'
             including_vat = 'True'
             count_attending = 'True'
+            show_details_link = 'True'
             for setting in element_settings:
                 if setting.element_question.question_key == 'session_radio_title':
                     title = setting.answer
@@ -2370,6 +2371,8 @@ class Plugins(generic.TemplateView):
                     including_vat = setting.answer
                 elif setting.element_question.question_key == 'session_radio_only_count_status_attending':
                     count_attending = setting.answer
+                elif setting.element_question.question_key == 'session_radio_show_link_to_session_details':
+                    show_details_link = setting.answer
 
             if session_groups != '':
                 # sessionGroups = Group.objects.filter(type="session", is_show=1, is_searchable=1,
@@ -2434,8 +2437,8 @@ class Plugins(generic.TemplateView):
                     "page_id": page_id,
                     "element_id": element['element_id'],
                     "data_session_id": '',
-                    "preselected_session": preselected_session
-
+                    "preselected_session": preselected_session,
+                    "show_details_link": show_details_link
                 }
 
                 if 'is_user_login' not in request.session or not request.session['is_user_login']:
@@ -4893,6 +4896,8 @@ class Plugins(generic.TemplateView):
                 plugin_lang = 'agenda'
             elif plugin_name == 'session-checkbox':
                 plugin_lang = 'checkbox'
+            elif plugin_name == 'session-radio':
+                plugin_lang = 'radio'
             if plugin_name == 'evaluations' or plugin_name == 'next-up' or plugin_name == 'messages':
                 try:
                     session_global_settings = Setting.objects.filter(name='session_global_settings',
