@@ -1,5 +1,6 @@
 @charset "utf-8";
 @import url('https://fonts.googleapis.com/css?family=Merriweather');
+@import url('https://fonts.googleapis.com/css?family=Quicksand:300,400,500,700');
 
 #content.loading-page {
     text-align: center;
@@ -70,7 +71,10 @@ input:focus, select:focus, textarea:focus, button:focus {
 
 body, html {
     width: 100%;
+    padding-top: 20px;
     font-family: 'AvenirNext-Regular', sans-serif;
+    font-family: 'Quicksand', sans-serif;
+    font-size: 16px;
 }
 
 body {
@@ -113,11 +117,10 @@ body {
 }
 
 h1, h2, h3, h4, h5, h6 {
-    font-family: 'AvenirNext-Regular', sans-serif;
     font-weight: normal;
     color: white;
     margin-top: 0;
-    text-transform: uppercase;
+    text-transform: capitalize;
 }
 
 #content {
@@ -174,15 +177,16 @@ a.button, button {
     padding: 0.75em 1em;
     border-radius: 0px;
     color: white;
-    background: #40ABDE;
+    background: #755ac3;
     border: none;
     transition: background 100ms ease-in-out;
     cursor: pointer;
-    font-size: 1em;
+    font-size: 16px;
     display: inline-block;
-    font-family: 'AvenirNext-Regular', sans-serif;
-    text-transform: uppercase;
+    font-family: 'Quicksand', sans-serif;
+    text-transform: capitalize;
     margin: 0;
+    border-radius: 5px;
 }
 
 a.button:hover, button:hover {
@@ -197,12 +201,12 @@ a.button:hover, button:hover {
 }
 
 .not-validated .error-validating {
-    background: #D0021B;
+    background: #cc173f;
     display: inline-block;
     padding: 0.25em 0.5em;
     color: white;
-    border-bottom-left-radius: 0.25em;
-    border-bottom-right-radius: 0.25em;
+    font-size: 15px;
+    border-radius: 5px;
 }
 
 .scroll-x {
@@ -230,7 +234,8 @@ a.button:hover, button:hover {
 
 .survey-wrapper .form-question-label-title {
     text-transform: none !important;
-    font-family: "AvenirNext-DemiBold";
+    font-family: 'Quicksand', sans-serif;
+    font-weight:500;
 }
 
 .survey-wrapper .row {
@@ -252,7 +257,7 @@ a.button:hover, button:hover {
     width: 100%;
     font-size: 1em;
     padding: 0.5em;
-    font-family: 'Merriweather', serif;;
+    font-family: 'Quicksand', sans-serif;
     border: 1px solid #D0D0D0;
     transition: border 100ms ease-in-out;
     margin: 0;
@@ -296,6 +301,7 @@ a.button:hover, button:hover {
 .form-plugin-list .form-plugin-item {
     background: white;
     color: #BE9E56;
+    padding: 5px;
 }
 
 .form-plugin-list .form-plugin-item h1, .form-plugin-list .form-plugin-item h2,
@@ -307,7 +313,7 @@ a.button:hover, button:hover {
 .form-plugin-table, .early-bird-table, table {
     border-collapse: collapse;
     max-width: 99.9%;
-    margin-bottom: 1em;
+    margin-bottom: 0.2em;
 }
 
 .form-plugin-table tr th, .form-plugin-table tr td, .early-bird-table tr th,
@@ -315,17 +321,21 @@ a.button:hover, button:hover {
     text-align: left;
     padding: 0.25em 0.5em;
     vertical-align: top;
+    color: #fff;
 }
 
 .form-plugin-table tr th, .early-bird-table tr th, table tr th {
-    background: #BE9E56;
-    font-family: "AvenirNext-DemiBold", sans-serif;
+    background: #d05a06;
+    font-family: 'Quicksand', sans-serif;
+    font-weight: 500;
+    font-size: 16px;
 }
 
 .form-plugin-table tr td, .early-bird-table tr td, table tr td {
     background: white;
     color: black;
-    border: 1px solid #736A4B;
+    border: 1px solid #b7b7b7;
+    font-size: 16px;
 }
 
 .form-plugin-table.form-plugin-economy-order-table,
@@ -772,12 +782,13 @@ tr.cost label.form-plugin-label {
 }
 
 .economy-order-number, .economy-status, .economy-due-date, .economy-amount-due {
-    font-family: "AvenirNext-DemiBold", sans-serif;
+      font-family: 'Quicksand', sans-serif;
+    font-weight: 500;
 }
 
 .economy-order-number span, .economy-status span, .economy-due-date span,
 .economy-amount-due span {
-    font-family: "AvenirNext-Regular", sans-serif;
+      font-family: 'Quicksand', sans-serif;
 }
 
 .form-plugin-logout span {
@@ -798,7 +809,8 @@ input[type="checkbox"] {
 }
 
 .early-bird-table td:first-child {
-    font-family: "AvenirNext-DemiBold", sans-serif;
+      font-family: 'Quicksand', sans-serif;
+    font-weight:500;
 }
 
 .early-bird-table th {
@@ -837,7 +849,7 @@ input[type="checkbox"] {
     cursor: pointer;
     font-size: 0.85em;
     display: inline-block;
-    font-family: 'AvenirNext-Regular', sans-serif;
+      font-family: 'Quicksand', sans-serif;
     text-transform: uppercase;
     margin: 0;
     top: 0;
@@ -1120,7 +1132,7 @@ a.attendee-details, a.location-details {
 
 /*Menu*/
 .section.header {
-    background-color: #7c5578;
+    background-color: #645786;
     position: fixed;
     top: 0;
     width: 100%;
@@ -1182,8 +1194,7 @@ a.attendee-details, a.location-details {
         text-decoration: none;
         color: #FFFFFF;
         transition: color 0.2s ease;
-        font-size: 1.1em;
-        font-family: 'Montserrat', sans-serif;
+        font-size: 16px;
         display: flex;
         align-items: center;
     }
@@ -1196,8 +1207,8 @@ a.attendee-details, a.location-details {
         transform: translateX(-50%);
         background: #FFFFFF;
         padding: 0;
-        border: 1px solid #BCBEC0;
-        box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2);
+        border: 0px solid #685f80;
+        box-shadow: 2px 2px 10px rgba(66, 58, 58, 0.95);
     }
 
     .section.header ul.menu li ul:after, .section.header ul.menu li ul:before {
@@ -1239,13 +1250,12 @@ a.attendee-details, a.location-details {
         width: 100%;
         white-space: nowrap;
         transition: color 0.2s ease;
-        font-family: 'Work Sans', sans-serif;
         transition: background 0.2s ease, color 0.2s ease;
     }
 
     .section.header ul.menu li ul li a:hover, .section.header ul.menu li ul li a.active {
         border-bottom: none;
-        background: #ae6686;
+        background: #685f80;
         transition: background 0.2s ease, color 0.2s ease;
         color: #FFFFFF;
     }
@@ -1352,7 +1362,7 @@ a.attendee-details, a.location-details {
         width: 100%;
         white-space: nowrap;
         transition: color 0.2s ease;
-        font-family: 'Work Sans', sans-serif;
+          font-family: 'Quicksand', sans-serif;
         transition: background 0.2s ease, color 0.2s ease;
     }
 
@@ -1361,4 +1371,40 @@ a.attendee-details, a.location-details {
         background: #ae6686;
         transition: background 0.2s ease, color 0.2s ease;
         color: #FFFFFF;
+    }
+
+    .session-detail-link{
+        font-size: 14px;
+        float: left;
+        padding: 5px;
+        background: #4542c5;
+        color: #fff;
+        margin-right: 5px;
+    }
+    .status.attending{
+        font-size: 14px;
+        float: left;
+        padding: 5px;
+        background: #4542c5;
+        color: #fff;
+        margin-right: 5px;
+    }
+    .form-plugin-description{
+        font-size: 14px;
+        float: left;
+        padding: 5px;
+        background: #4542c5;
+        color: #fff;
+        margin-right: 5px;
+    }
+    .form-plugin-description p{
+        margin-bottom: 0px;
+    }
+    .status.rsvp-ended{
+        font-size: 14px;
+        float: left;
+        padding: 5px;
+        background: #4542c5;
+        color: #fff;
+        margin-right: 5px;
     }

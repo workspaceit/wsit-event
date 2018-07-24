@@ -14,8 +14,8 @@
              data-seats-option="{{ session_option }}" data-count-attending="{% if count_attending == 'True' %}1{% else %}0{% endif %}">
             {% for session in sessionDatas %}
                 <div class="form-plugin-item">
-                    <table class="form-plugin-table session-table">
-                        <tr class="{% for session_status in session.all_status %} {{ session_status }}{% endfor %}{% for custom_class in session.custom_classes %} {{ custom_class.classname.classname }}{% endfor %}">
+                    <table class="form-plugin-table session-table" data-attendee-id="{{ data_user_id }}">
+                        <tr class="{% for session_status in session.all_status %} {{ session_status }}{% endfor %}{% for custom_class in session.custom_classes %} {{ custom_class.classname.classname }}{% endfor %}" data-session-id="{{ session.id }}">
                             <td><input type="radio"
                                        id="temporary-radio-{{ box_id }}-id-{{ session.id }}-u{{ data_user_id }}"
                                     {% if session.disable %} disabled {% endif %}

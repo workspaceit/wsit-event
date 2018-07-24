@@ -1,0 +1,2520 @@
+@charset "UTF-8";
+@import url("https://fonts.googleapis.com/css?family=Lato:400,700|Open+Sans:400,400i,600");
+@import url('https://fonts.googleapis.com/css?family=Quicksand:300,400,500,700');
+@import "https://event-manager2-prod.s3.amazonaws.com/public/default-project/files/fontawesome-pro-5.0.12/web-fonts-with-css/css/fontawesome-all.min.css";
+*, *:after, *:before {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box; }
+
+:focus {
+  outline-color: transparent;
+  outline-style: none;
+}
+
+
+::selection {
+  background: #9cc3df;
+  color: #303030; }
+
+::-moz-selection {
+  background: #9cc3df;
+  color: #303030; }
+
+html, body {
+  min-height: 100vh;
+    background: #303030;
+  color: #FFF; }
+
+body {
+  font-family: 'Quicksand', sans-serif;
+  font-size: 16px;
+}
+
+.loader {
+  width: auto;
+  height: auto; }
+
+a, .form-plugin-messages .form-plugin-list .form-plugin-item .form-plugin-messages-message-wrapper .session-detail-link, .form-plugin-archive-messages .form-plugin-list .form-plugin-item .form-plugin-messages-message-wrapper .session-detail-link {
+  color: #9cc3df;
+  transition: color 200ms ease;
+  cursor: pointer;
+  text-decoration: none; }
+  a:hover, .form-plugin-messages .form-plugin-list .form-plugin-item .form-plugin-messages-message-wrapper .session-detail-link:hover, .form-plugin-archive-messages .form-plugin-list .form-plugin-item .form-plugin-messages-message-wrapper .session-detail-link:hover {
+    color: #468fc3;
+    transition: color 200ms ease;
+    text-decoration: underline; }
+
+button, .button, .form-plugin-button, .form-plugin-button {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  background: #209f38;
+  color: #FFF;
+  display: inline-block;
+  text-decoration: none;
+  text-align: center;
+  font-size: 1em;
+  font-family: "Open Sans", sans-serif;
+  margin-bottom: 0.6em;
+  padding: 0.6em 1.8em;
+  border: none;
+  border-radius: 2px;
+  transition: background 200ms ease, color 200ms ease;
+  white-space: nowrap;
+  cursor: pointer;
+  line-height: 1;
+  margin-right: 5px;
+}
+  button:hover, button.current, button.active, .button:hover, .button.current, .button.active, .form-plugin-button:hover, .form-plugin-button.current, .form-plugin-button.active, .form-plugin-button:hover, .form-plugin-button.current, .form-plugin-button.active {
+    background: #0c803e;
+    color: #FFF;
+    transition: background 200ms ease, color 200ms ease;
+    text-decoration: none; }
+  button.small, .button.small, .form-plugin-button.small, .form-plugin-button.small {
+    font-size: 0.7em; }
+  button.disabled, .button.disabled, .form-plugin-button.disabled, .form-plugin-button.disabled {
+    background: #9cc3df;
+    color: #303030;
+    opacity: 0.5;
+    cursor: not-allowed; }
+
+p {
+  margin-bottom: 1.5em;
+  line-height: 1.45em;
+  color: #FFF; }
+
+b, strong {
+  font-weight: bold;
+  font-family: "Open Sans", sans-serif; }
+
+small {
+  font-size: 0.7em; }
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: "Lato", sans-serif;
+  color: #FFF; }
+  h1.small, h1 small, h2.small, h2 small, h3.small, h3 small, h4.small, h4 small, h5.small, h5 small, h6.small, h6 small {
+    font-size: 0.7em;
+    font-weight: normal; }
+
+h1 {
+  font-size: 2em;
+  margin-bottom: 0.67em; }
+
+h2 {
+  font-size: 1.5em;
+  margin-bottom: 0.83em; }
+
+h3 {
+  font-size: 1.17em;
+  margin-bottom: 1em; }
+
+h4 {
+  font-size: 1em;
+  margin-bottom: 1.33em; }
+
+h5 {
+  font-size: .83em;
+  margin-bottom: 1.67em; }
+
+h6 {
+  font-size: .67em;
+  margin-bottom: 2.33em; }
+
+ul, ol {
+  list-style-position: inside; }
+  ul li, ol li {
+    line-height: 1.45em;
+    color: #FFF; }
+
+img {
+  display: block;
+  width: 100%;
+  height: auto;
+  margin-bottom: 1.5em; }
+  img.no-scale {
+    width: auto; }
+
+hr {
+  border: 0;
+  margin: 1.5em 0;
+  height: 2px;
+  background: #303030; }
+
+table {
+  margin-bottom: 1.5em;
+  width: 100%;
+  border-collapse: collapse; }
+  table th, table td {
+    padding: 0.6em;
+    vertical-align: top; }
+  table th {
+    background: #424242;
+    color: #FFF;
+    font-weight: bold;
+    font-family: "Open Sans", sans-serif;
+    text-align: left;
+    white-space: nowrap; }
+  table td {
+    border-bottom: 2px solid #424242;
+    color: #FFF; }
+  table tr:last-child td {
+    border-bottom: none; }
+  table.striped tbody tr td {
+    border-bottom: none; }
+  table.striped tbody tr:nth-child(even) td {
+    background: rgba(66, 66, 66, 0.5);
+    color: #FFF; }
+  table.table-condensed th, table.table-condensed td {
+    padding: 0.3em; }
+  table.no-wrap th, table.no-wrap td {
+    white-space: nowrap; }
+
+.placeholder {
+  font-weight: bold;
+  font-family: "Open Sans", sans-serif;
+  color: #FFF;
+  border: 2px solid #424242;
+  border-radius: 2px;
+  background: #424242;
+  padding: 0.6em;
+  margin-bottom: 0.75em;
+  text-align: center; }
+
+#content.loading-page *, .loader * {
+  display: none; }
+
+#content.loading-page::before, .loader::before {
+  display: block;
+  content: "";
+  width: 4rem;
+  height: 4rem;
+  margin: 0 auto;
+  border-radius: 50%;
+  border: 6px solid #9cc3df;
+  border-top-color: rgba(48, 48, 48, 0);
+  animation: loading 0.7s linear infinite;
+  margin-top: 1.5em;
+  margin-bottom: 1.5em; }
+
+@keyframes loading {
+  to {
+    transform: rotate(360deg); } }
+
+.switch-wrapper {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  display: none;
+  margin-bottom: 1.5em; }
+  .switch-wrapper .switch {
+    width: 3.5em;
+    height: 2em;
+    border-radius: 1em;
+    position: relative;
+    background: #424242;
+    vertical-align: middle;
+    display: inline-block;
+    cursor: pointer;
+    transition: background 200ms ease; }
+    .switch-wrapper .switch.active {
+      background: #99B979;
+      transition: background 200ms ease; }
+    .switch-wrapper .switch.attending {
+      background: #99B979;
+      transition: background 200ms ease; }
+    .switch-wrapper .switch.in-queue {
+      background: #EBE0A2;
+      transition: background 200ms ease; }
+    .switch-wrapper .switch.deciding {
+      background: #EBE0A2;
+      transition: background 200ms eas; }
+    .switch-wrapper .switch input[type="checkbox"] {
+      display: none; }
+    .switch-wrapper .switch .slider {
+      display: block;
+      width: 1.6em;
+      height: 1.6em;
+      background: white;
+      border-radius: 0.8em;
+      position: absolute;
+      top: 0.2em;
+      left: 0.2em;
+      transition: left 200ms ease; }
+    .switch-wrapper .switch input[type="checkbox"]:checked + .slider {
+      left: 1.7em;
+      transition: left 200ms ease; }
+  .switch-wrapper label {
+    font-weight: bold;
+    font-family: "Open Sans", sans-serif;
+    display: inline-block;
+    cursor: pointer;
+    color: #FFF; }
+
+.scroll-x {
+  max-width: 100%;
+  overflow-x: auto;
+  margin-bottom: 1.5em; }
+  .scroll-x::-webkit-scrollbar {
+    -webkit-appearance: none;
+    width: 14px;
+    height: 14px; }
+  .scroll-x::-webkit-scrollbar-thumb {
+    border-radius: 8px;
+    border: 3px solid #303030;
+    background-color: #9cc3df; }
+  .scroll-x *:last-child {
+    margin-bottom: 0; }
+
+.pagination-info, .form-plugin-attendee-list .total-attendees-wrapper, .form-plugin-multiple-registration .form-plugin-multiple-registration-current-count, .form-plugin-photo-upload .selected-file, .dataTables_info {
+  font-size: 1em;
+  background: #424242;
+  color: #FFF;
+  padding: 0.4em;
+  border-radius: 2px;
+  display: inline-block;
+  margin-bottom: 1.5em; }
+
+.pagination, .dataTables_paginate {
+  width: 100%; }
+  .pagination::after, .dataTables_paginate::after {
+    display: block;
+    clear: both;
+    content: ""; }
+  .pagination .paginate_button, .pagination .pagination-button, .dataTables_paginate .paginate_button, .dataTables_paginate .pagination-button {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    background: #9cc3df;
+    color: #FFF;
+    display: inline-block;
+    text-decoration: none;
+    text-align: center;
+    font-size: 0.7em;
+    font-family: "Open Sans", sans-serif;
+    margin-bottom: 0.6em;
+    padding: 1.2em 1.8em;
+    border: none;
+    border-radius: 2px;
+    transition: background 200ms ease, color 200ms ease;
+    white-space: nowrap;
+    cursor: pointer;
+    line-height: 1;
+    display: block;
+    float: left;
+    margin-right: 0.3em; }
+    .pagination .paginate_button:hover, .pagination .paginate_button.current, .pagination .paginate_button.active, .pagination .pagination-button:hover, .pagination .pagination-button.current, .pagination .pagination-button.active, .dataTables_paginate .paginate_button:hover, .dataTables_paginate .paginate_button.current, .dataTables_paginate .paginate_button.active, .dataTables_paginate .pagination-button:hover, .dataTables_paginate .pagination-button.current, .dataTables_paginate .pagination-button.active {
+      background: #468fc3;
+      color: #FFF;
+      transition: background 200ms ease, color 200ms ease;
+      text-decoration: none; }
+    .pagination .paginate_button.small, .pagination .pagination-button.small, .dataTables_paginate .paginate_button.small, .dataTables_paginate .pagination-button.small {
+      font-size: 0.7em; }
+    .pagination .paginate_button.disabled, .pagination .pagination-button.disabled, .dataTables_paginate .paginate_button.disabled, .dataTables_paginate .pagination-button.disabled {
+      background: #303030;
+      color: #FFF;
+      opacity: 0.5;
+      cursor: not-allowed; }
+    .pagination .paginate_button.next::after, .pagination .pagination-button.next::after, .dataTables_paginate .paginate_button.next::after, .dataTables_paginate .pagination-button.next::after {
+      font-family: "Font Awesome 5 Pro";
+      font-weight: 500;
+      content: "";
+      margin-left: 0.6em; }
+    .pagination .paginate_button.previous::before, .pagination .paginate_button.prev::before, .pagination .pagination-button.previous::before, .pagination .pagination-button.prev::before, .dataTables_paginate .paginate_button.previous::before, .dataTables_paginate .paginate_button.prev::before, .dataTables_paginate .pagination-button.previous::before, .dataTables_paginate .pagination-button.prev::before {
+      font-family: "Font Awesome 5 Pro";
+      font-weight: 500;
+      content: "";
+      margin-right: 0.6em; }
+    .pagination .paginate_button.disabled , .pagination .pagination-button.disabled , .dataTables_paginate .paginate_button.disabled , .dataTables_paginate .pagination-button.disabled  {
+      cursor: not-allowed; }
+
+.error-validating {
+  display: none; }
+
+.not-validated .error-validating {
+  display: inline-block;
+  padding: 0.6em;
+  background: #e63e3e;
+  color: #FFF;
+  border-bottom-left-radius: 20px;
+  border-bottom-right-radius: 20px;
+  border-left: 1px solid #FFD4D4;
+  border-bottom: 1px solid #FFD4D4;
+  border-right: 1px solid #FFD4D4;
+  /*! border-top: 2px solid #B97979; */
+  margin-top: 0px;
+  margin-left: 0px !important;
+  font-size: 14px;
+}
+
+nav {
+  background: #FFF;
+  width: 100%;
+  padding: 0.6em;
+  position: fixed;
+  top: 0;
+  left: 0;
+  box-shadow: none;
+  z-index: 999; }
+  nav .logo {
+    height: 115px;
+    width: auto;
+    margin-bottom: 0;
+    padding: 0.3em 0; }
+  nav .row {
+    max-width: 60em;
+    margin: 0 auto; }
+    nav .row .menu-col {
+      text-align: right; }
+
+.menu .app-start::before {
+  font-family: "Font Awesome 5 Pro";
+  font-weight: 500;
+  content: "";
+  margin-right: 0.6em; }
+
+.menu .app-agenda::before {
+  font-family: "Font Awesome 5 Pro";
+  font-weight: 500;
+  content: "";
+  margin-right: 0.6em; }
+
+.menu .app-hotel::before {
+  font-family: "Font Awesome 5 Pro";
+  font-weight: 500;
+  content: "";
+  margin-right: 0.6em; }
+
+.menu .app-venue::before {
+  font-family: "Font Awesome 5 Pro";
+  font-weight: 500;
+  content: "";
+  margin-right: 0.6em; }
+
+.menu .app-wifi::before {
+  font-family: "Font Awesome 5 Pro";
+  font-weight: 500;
+  content: "";
+  margin-right: 0.6em; }
+
+.menu .app-map::before {
+  font-family: "Font Awesome 5 Pro";
+  font-weight: 500;
+  content: "";
+  margin-right: 0.6em; }
+
+.menu .app-info::before {
+  font-family: "Font Awesome 5 Pro";
+  font-weight: 500;
+  content: "";
+  margin-right: 0.6em; }
+
+.menu .app-contact::before {
+  font-family: "Font Awesome 5 Pro";
+  font-weight: 500;
+  content: "";
+  margin-right: 0.6em; }
+
+.menu .app-stockholm::before {
+  font-family: "Font Awesome 5 Pro";
+  font-weight: 500;
+  content: "";
+  margin-right: 0.6em; }
+
+.menu .app-mamma-mia::before {
+  font-family: "Font Awesome 5 Pro";
+  font-weight: 500;
+  content: "";
+  margin-right: 0.6em; }
+
+#content {
+  max-width: 60em;
+  margin: 0 auto;
+  padding: calc(115px + 1.5em + 0.6em * 2) 0.6em 0.6em 0.6em; }
+
+#mobile-menu-trigger, #mobile-menu-trigger-label {
+  display: none; }
+
+ul.menu {
+  display: inline-block; }
+  ul.menu li {
+    display: inline-block;
+    position: relative; }
+    ul.menu li a, ul.menu li .form-plugin-messages .form-plugin-list .form-plugin-item .form-plugin-messages-message-wrapper .session-detail-link, .form-plugin-messages .form-plugin-list .form-plugin-item .form-plugin-messages-message-wrapper ul.menu li .session-detail-link, ul.menu li .form-plugin-archive-messages .form-plugin-list .form-plugin-item .form-plugin-messages-message-wrapper .session-detail-link, .form-plugin-archive-messages .form-plugin-list .form-plugin-item .form-plugin-messages-message-wrapper ul.menu li .session-detail-link {
+      -webkit-touch-callout: none;
+      -webkit-user-select: none;
+      -khtml-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+      background: #9cc3df;
+      color: #FFF;
+      display: inline-block;
+      text-decoration: none;
+      text-align: center;
+      font-size: 1em;
+      font-family: "Open Sans", sans-serif;
+      margin-bottom: 0.6em;
+      padding: 1.2em 1.8em;
+      border: none;
+      border-radius: 2px;
+      transition: background 200ms ease, color 200ms ease;
+      white-space: nowrap;
+      cursor: pointer;
+      line-height: 1;
+      margin-bottom: 0; }
+      ul.menu li a:hover, ul.menu li .form-plugin-messages .form-plugin-list .form-plugin-item .form-plugin-messages-message-wrapper .session-detail-link:hover, .form-plugin-messages .form-plugin-list .form-plugin-item .form-plugin-messages-message-wrapper ul.menu li .session-detail-link:hover, ul.menu li .form-plugin-archive-messages .form-plugin-list .form-plugin-item .form-plugin-messages-message-wrapper .session-detail-link:hover, .form-plugin-archive-messages .form-plugin-list .form-plugin-item .form-plugin-messages-message-wrapper ul.menu li .session-detail-link:hover, ul.menu li a.current, ul.menu li .form-plugin-messages .form-plugin-list .form-plugin-item .form-plugin-messages-message-wrapper .current.session-detail-link, .form-plugin-messages .form-plugin-list .form-plugin-item .form-plugin-messages-message-wrapper ul.menu li .current.session-detail-link, ul.menu li .form-plugin-archive-messages .form-plugin-list .form-plugin-item .form-plugin-messages-message-wrapper .current.session-detail-link, .form-plugin-archive-messages .form-plugin-list .form-plugin-item .form-plugin-messages-message-wrapper ul.menu li .current.session-detail-link, ul.menu li a.active, ul.menu li .form-plugin-messages .form-plugin-list .form-plugin-item .form-plugin-messages-message-wrapper .active.session-detail-link, .form-plugin-messages .form-plugin-list .form-plugin-item .form-plugin-messages-message-wrapper ul.menu li .active.session-detail-link, ul.menu li .form-plugin-archive-messages .form-plugin-list .form-plugin-item .form-plugin-messages-message-wrapper .active.session-detail-link, .form-plugin-archive-messages .form-plugin-list .form-plugin-item .form-plugin-messages-message-wrapper ul.menu li .active.session-detail-link {
+        background: #468fc3;
+        color: #FFF;
+        transition: background 200ms ease, color 200ms ease;
+        text-decoration: none; }
+      ul.menu li a.small, ul.menu li .form-plugin-messages .form-plugin-list .form-plugin-item .form-plugin-messages-message-wrapper .small.session-detail-link, .form-plugin-messages .form-plugin-list .form-plugin-item .form-plugin-messages-message-wrapper ul.menu li .small.session-detail-link, ul.menu li .form-plugin-archive-messages .form-plugin-list .form-plugin-item .form-plugin-messages-message-wrapper .small.session-detail-link, .form-plugin-archive-messages .form-plugin-list .form-plugin-item .form-plugin-messages-message-wrapper ul.menu li .small.session-detail-link {
+        font-size: 0.7em; }
+      ul.menu li a.disabled, ul.menu li .form-plugin-messages .form-plugin-list .form-plugin-item .form-plugin-messages-message-wrapper .disabled.session-detail-link, .form-plugin-messages .form-plugin-list .form-plugin-item .form-plugin-messages-message-wrapper ul.menu li .disabled.session-detail-link, ul.menu li .form-plugin-archive-messages .form-plugin-list .form-plugin-item .form-plugin-messages-message-wrapper .disabled.session-detail-link, .form-plugin-archive-messages .form-plugin-list .form-plugin-item .form-plugin-messages-message-wrapper ul.menu li .disabled.session-detail-link {
+        background: #303030;
+        color: #FFF;
+        opacity: 0.5;
+        cursor: not-allowed; }
+      ul.menu li a.has-submenu::after, ul.menu li .form-plugin-messages .form-plugin-list .form-plugin-item .form-plugin-messages-message-wrapper .has-submenu.session-detail-link::after, .form-plugin-messages .form-plugin-list .form-plugin-item .form-plugin-messages-message-wrapper ul.menu li .has-submenu.session-detail-link::after, ul.menu li .form-plugin-archive-messages .form-plugin-list .form-plugin-item .form-plugin-messages-message-wrapper .has-submenu.session-detail-link::after, .form-plugin-archive-messages .form-plugin-list .form-plugin-item .form-plugin-messages-message-wrapper ul.menu li .has-submenu.session-detail-link::after {
+        font-family: "Font Awesome 5 Pro";
+        font-weight: 500;
+        content: "";
+        margin-left: 0.6em; }
+      ul.menu li a.has-submenu::after, ul.menu li .form-plugin-messages .form-plugin-list .form-plugin-item .form-plugin-messages-message-wrapper .has-submenu.session-detail-link::after, .form-plugin-messages .form-plugin-list .form-plugin-item .form-plugin-messages-message-wrapper ul.menu li .has-submenu.session-detail-link::after, ul.menu li .form-plugin-archive-messages .form-plugin-list .form-plugin-item .form-plugin-messages-message-wrapper .has-submenu.session-detail-link::after, .form-plugin-archive-messages .form-plugin-list .form-plugin-item .form-plugin-messages-message-wrapper ul.menu li .has-submenu.session-detail-link::after {
+        font-size: 0.7em;
+        font-weight: 900; }
+    ul.menu li:hover > ul {
+      right: 0;
+      opacity: 1;
+      transition: opacity 200ms ease; }
+    ul.menu li ul {
+      opacity: 0;
+      position: absolute;
+      right: -99999px;
+      top: 3.4em;
+      z-index: 1;
+      background: #303030;
+      border: 2px solid #424242;
+      border-radius: 2px;
+      overflow: hidden;
+      box-shadow: none;
+      cursor: pointer; }
+      ul.menu li ul li {
+        display: block; }
+        ul.menu li ul li a, ul.menu li ul li .form-plugin-messages .form-plugin-list .form-plugin-item .form-plugin-messages-message-wrapper .session-detail-link, .form-plugin-messages .form-plugin-list .form-plugin-item .form-plugin-messages-message-wrapper ul.menu li ul li .session-detail-link, ul.menu li ul li .form-plugin-archive-messages .form-plugin-list .form-plugin-item .form-plugin-messages-message-wrapper .session-detail-link, .form-plugin-archive-messages .form-plugin-list .form-plugin-item .form-plugin-messages-message-wrapper ul.menu li ul li .session-detail-link {
+          background: #9cc3df;
+          color: #FFF;
+          display: block;
+          border-radius: 0;
+          font-weight: normal;
+          width: 100%;
+          text-align: left; }
+          ul.menu li ul li a::before, ul.menu li ul li .form-plugin-messages .form-plugin-list .form-plugin-item .form-plugin-messages-message-wrapper .session-detail-link::before, .form-plugin-messages .form-plugin-list .form-plugin-item .form-plugin-messages-message-wrapper ul.menu li ul li .session-detail-link::before, ul.menu li ul li .form-plugin-archive-messages .form-plugin-list .form-plugin-item .form-plugin-messages-message-wrapper .session-detail-link::before, .form-plugin-archive-messages .form-plugin-list .form-plugin-item .form-plugin-messages-message-wrapper ul.menu li ul li .session-detail-link::before {
+            font-family: "Font Awesome 5 Pro";
+            font-weight: 500;
+            content: "";
+            margin-right: 0.6em; }
+
+.logo {
+  min-height: 3.4em !important;
+  height: 3.4em !important;
+  width: auto; }
+
+#language-select {
+  margin-right: 5em; }
+
+#content {
+  padding-top: 6.1em; }
+
+#mobile-menu-trigger-label {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  background: #9cc3df;
+  color: #FFF;
+  display: inline-block;
+  text-decoration: none;
+  text-align: center;
+  font-size: 1em;
+  font-family: "Open Sans", sans-serif;
+  margin-bottom: 0.6em;
+  padding: 1.2em 1.8em;
+  border: none;
+  border-radius: 2px;
+  transition: background 200ms ease, color 200ms ease;
+  white-space: nowrap;
+  cursor: pointer;
+  line-height: 1;
+  display: inline-block;
+  margin-bottom: 0;
+  z-index: 999;
+  position: fixed;
+  top: 0.6em;
+  right: 0.6em; }
+  #mobile-menu-trigger-label::before {
+    font-family: "Font Awesome 5 Pro";
+    font-weight: 500;
+    content: "";
+    margin-right: 0.6em; }
+  #mobile-menu-trigger-label:hover, #mobile-menu-trigger-label.current, #mobile-menu-trigger-label.active {
+    background: #468fc3;
+    color: #FFF;
+    transition: background 200ms ease, color 200ms ease;
+    text-decoration: none; }
+  #mobile-menu-trigger-label.small {
+    font-size: 0.7em; }
+  #mobile-menu-trigger-label.disabled {
+    background: #9cc3df;
+    color: #303030;
+    opacity: 0.5;
+    cursor: not-allowed; }
+  #mobile-menu-trigger-label::before {
+    margin-right: 0; }
+
+#mobile-menu-trigger:checked + #mobile-menu-trigger-label::before {
+  font-family: "Font Awesome 5 Pro";
+  font-weight: 500;
+  content: "";
+  margin-right: 0.6em; }
+
+#mobile-menu-trigger:checked + #mobile-menu-trigger-label::before {
+  margin-right: 0; }
+
+ul.menu {
+  position: fixed;
+  top: 0;
+  right: -320px;
+  width: 320px;
+  background: #424242;
+  height: 100%;
+  max-height: 100vh;
+  box-shadow: none;
+  transition: right 200ms ease, box-shadow 200ms ease;
+  overflow-y: auto; }
+  ul.menu li {
+    width: 100%; }
+    ul.menu li:first-child {
+      margin-top: 4.6em; }
+    ul.menu li a, ul.menu li .form-plugin-messages .form-plugin-list .form-plugin-item .form-plugin-messages-message-wrapper .session-detail-link, .form-plugin-messages .form-plugin-list .form-plugin-item .form-plugin-messages-message-wrapper ul.menu li .session-detail-link, ul.menu li .form-plugin-archive-messages .form-plugin-list .form-plugin-item .form-plugin-messages-message-wrapper .session-detail-link, .form-plugin-archive-messages .form-plugin-list .form-plugin-item .form-plugin-messages-message-wrapper ul.menu li .session-detail-link {
+      width: 100%;
+      border-radius: 0;
+      text-align: left; }
+      ul.menu li a.has-submenu::after, ul.menu li .form-plugin-messages .form-plugin-list .form-plugin-item .form-plugin-messages-message-wrapper .has-submenu.session-detail-link::after, .form-plugin-messages .form-plugin-list .form-plugin-item .form-plugin-messages-message-wrapper ul.menu li .has-submenu.session-detail-link::after, ul.menu li .form-plugin-archive-messages .form-plugin-list .form-plugin-item .form-plugin-messages-message-wrapper .has-submenu.session-detail-link::after, .form-plugin-archive-messages .form-plugin-list .form-plugin-item .form-plugin-messages-message-wrapper ul.menu li .has-submenu.session-detail-link::after {
+        content: ""; }
+    ul.menu li ul {
+      position: relative;
+      right: 0;
+      top: 0;
+      opacity: 1;
+      border: none;
+      border-radius: 0;
+      box-shadow: none;
+      width: 100%; }
+      ul.menu li ul li {
+        width: 100%; }
+        ul.menu li ul li:first-child {
+          margin-top: 0; }
+
+#mobile-menu-trigger:checked + #mobile-menu-trigger-label + ul.menu {
+  right: 0;
+  transition: right 200ms ease, box-shadow 200ms ease;
+  box-shadow: 0px 0px 2em rgba(0, 0, 0, 0.6); }
+
+#language-select {
+  display: inline-block; }
+  #language-select li {
+    display: inline-block;
+    position: relative; }
+    #language-select li a, #language-select li .form-plugin-messages .form-plugin-list .form-plugin-item .form-plugin-messages-message-wrapper .session-detail-link, .form-plugin-messages .form-plugin-list .form-plugin-item .form-plugin-messages-message-wrapper #language-select li .session-detail-link, #language-select li .form-plugin-archive-messages .form-plugin-list .form-plugin-item .form-plugin-messages-message-wrapper .session-detail-link, .form-plugin-archive-messages .form-plugin-list .form-plugin-item .form-plugin-messages-message-wrapper #language-select li .session-detail-link {
+      -webkit-touch-callout: none;
+      -webkit-user-select: none;
+      -khtml-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+      background: #9cc3df;
+      color: #FFF;
+      display: inline-block;
+      text-decoration: none;
+      text-align: center;
+      font-size: 1em;
+      font-family: "Open Sans", sans-serif;
+      margin-bottom: 0.6em;
+      padding: 1.2em 1.8em;
+      border: none;
+      border-radius: 2px;
+      transition: background 200ms ease, color 200ms ease;
+      white-space: nowrap;
+      cursor: pointer;
+      line-height: 1;
+      margin-bottom: 0; }
+      #language-select li a:hover, #language-select li .form-plugin-messages .form-plugin-list .form-plugin-item .form-plugin-messages-message-wrapper .session-detail-link:hover, .form-plugin-messages .form-plugin-list .form-plugin-item .form-plugin-messages-message-wrapper #language-select li .session-detail-link:hover, #language-select li .form-plugin-archive-messages .form-plugin-list .form-plugin-item .form-plugin-messages-message-wrapper .session-detail-link:hover, .form-plugin-archive-messages .form-plugin-list .form-plugin-item .form-plugin-messages-message-wrapper #language-select li .session-detail-link:hover, #language-select li a.current, #language-select li .form-plugin-messages .form-plugin-list .form-plugin-item .form-plugin-messages-message-wrapper .current.session-detail-link, .form-plugin-messages .form-plugin-list .form-plugin-item .form-plugin-messages-message-wrapper #language-select li .current.session-detail-link, #language-select li .form-plugin-archive-messages .form-plugin-list .form-plugin-item .form-plugin-messages-message-wrapper .current.session-detail-link, .form-plugin-archive-messages .form-plugin-list .form-plugin-item .form-plugin-messages-message-wrapper #language-select li .current.session-detail-link, #language-select li a.active, #language-select li .form-plugin-messages .form-plugin-list .form-plugin-item .form-plugin-messages-message-wrapper .active.session-detail-link, .form-plugin-messages .form-plugin-list .form-plugin-item .form-plugin-messages-message-wrapper #language-select li .active.session-detail-link, #language-select li .form-plugin-archive-messages .form-plugin-list .form-plugin-item .form-plugin-messages-message-wrapper .active.session-detail-link, .form-plugin-archive-messages .form-plugin-list .form-plugin-item .form-plugin-messages-message-wrapper #language-select li .active.session-detail-link {
+        background: #468fc3;
+        color: #FFF;
+        transition: background 200ms ease, color 200ms ease;
+        text-decoration: none; }
+      #language-select li a.small, #language-select li .form-plugin-messages .form-plugin-list .form-plugin-item .form-plugin-messages-message-wrapper .small.session-detail-link, .form-plugin-messages .form-plugin-list .form-plugin-item .form-plugin-messages-message-wrapper #language-select li .small.session-detail-link, #language-select li .form-plugin-archive-messages .form-plugin-list .form-plugin-item .form-plugin-messages-message-wrapper .small.session-detail-link, .form-plugin-archive-messages .form-plugin-list .form-plugin-item .form-plugin-messages-message-wrapper #language-select li .small.session-detail-link {
+        font-size: 0.7em; }
+      #language-select li a.disabled, #language-select li .form-plugin-messages .form-plugin-list .form-plugin-item .form-plugin-messages-message-wrapper .disabled.session-detail-link, .form-plugin-messages .form-plugin-list .form-plugin-item .form-plugin-messages-message-wrapper #language-select li .disabled.session-detail-link, #language-select li .form-plugin-archive-messages .form-plugin-list .form-plugin-item .form-plugin-messages-message-wrapper .disabled.session-detail-link, .form-plugin-archive-messages .form-plugin-list .form-plugin-item .form-plugin-messages-message-wrapper #language-select li .disabled.session-detail-link {
+        background: #303030;
+        color: #FFF;
+        opacity: 0.5;
+        cursor: not-allowed; }
+      #language-select li a::before, #language-select li .form-plugin-messages .form-plugin-list .form-plugin-item .form-plugin-messages-message-wrapper .session-detail-link::before, .form-plugin-messages .form-plugin-list .form-plugin-item .form-plugin-messages-message-wrapper #language-select li .session-detail-link::before, #language-select li .form-plugin-archive-messages .form-plugin-list .form-plugin-item .form-plugin-messages-message-wrapper .session-detail-link::before, .form-plugin-archive-messages .form-plugin-list .form-plugin-item .form-plugin-messages-message-wrapper #language-select li .session-detail-link::before {
+        font-family: "Font Awesome 5 Pro";
+        font-weight: 500;
+        content: "";
+        margin-right: 0.6em; }
+      #language-select li a.current, #language-select li .form-plugin-messages .form-plugin-list .form-plugin-item .form-plugin-messages-message-wrapper .current.session-detail-link, .form-plugin-messages .form-plugin-list .form-plugin-item .form-plugin-messages-message-wrapper #language-select li .current.session-detail-link, #language-select li .form-plugin-archive-messages .form-plugin-list .form-plugin-item .form-plugin-messages-message-wrapper .current.session-detail-link, .form-plugin-archive-messages .form-plugin-list .form-plugin-item .form-plugin-messages-message-wrapper #language-select li .current.session-detail-link {
+        background: #303030;
+        color: #FFF; }
+      #language-select li a:hover, #language-select li .form-plugin-messages .form-plugin-list .form-plugin-item .form-plugin-messages-message-wrapper .session-detail-link:hover, .form-plugin-messages .form-plugin-list .form-plugin-item .form-plugin-messages-message-wrapper #language-select li .session-detail-link:hover, #language-select li .form-plugin-archive-messages .form-plugin-list .form-plugin-item .form-plugin-messages-message-wrapper .session-detail-link:hover, .form-plugin-archive-messages .form-plugin-list .form-plugin-item .form-plugin-messages-message-wrapper #language-select li .session-detail-link:hover {
+        background: #222222;
+        color: #FFF; }
+    #language-select li:hover > ul {
+      right: 0;
+      opacity: 1;
+      transition: opacity 200ms ease; }
+    #language-select li ul {
+      opacity: 0;
+      position: absolute;
+      right: -99999px;
+      top: 3.4em;
+      z-index: 1;
+      background: #303030;
+      border: 2px solid #424242;
+      border-radius: 2px;
+      overflow: hidden;
+      box-shadow: none;
+      cursor: pointer; }
+      #language-select li ul li {
+        display: block; }
+        #language-select li ul li a, #language-select li ul li .form-plugin-messages .form-plugin-list .form-plugin-item .form-plugin-messages-message-wrapper .session-detail-link, .form-plugin-messages .form-plugin-list .form-plugin-item .form-plugin-messages-message-wrapper #language-select li ul li .session-detail-link, #language-select li ul li .form-plugin-archive-messages .form-plugin-list .form-plugin-item .form-plugin-messages-message-wrapper .session-detail-link, .form-plugin-archive-messages .form-plugin-list .form-plugin-item .form-plugin-messages-message-wrapper #language-select li ul li .session-detail-link {
+          background: #303030;
+          color: #FFF;
+          display: block;
+          border-radius: 0;
+          font-weight: normal;
+          width: 100%;
+          text-align: left; }
+          #language-select li ul li a::before, #language-select li ul li .form-plugin-messages .form-plugin-list .form-plugin-item .form-plugin-messages-message-wrapper .session-detail-link::before, .form-plugin-messages .form-plugin-list .form-plugin-item .form-plugin-messages-message-wrapper #language-select li ul li .session-detail-link::before, #language-select li ul li .form-plugin-archive-messages .form-plugin-list .form-plugin-item .form-plugin-messages-message-wrapper .session-detail-link::before, .form-plugin-archive-messages .form-plugin-list .form-plugin-item .form-plugin-messages-message-wrapper #language-select li ul li .session-detail-link::before {
+            content: "";
+            margin-right: 0; }
+          #language-select li ul li a.current::after, #language-select li ul li .form-plugin-messages .form-plugin-list .form-plugin-item .form-plugin-messages-message-wrapper .current.session-detail-link::after, .form-plugin-messages .form-plugin-list .form-plugin-item .form-plugin-messages-message-wrapper #language-select li ul li .current.session-detail-link::after, #language-select li ul li .form-plugin-archive-messages .form-plugin-list .form-plugin-item .form-plugin-messages-message-wrapper .current.session-detail-link::after, .form-plugin-archive-messages .form-plugin-list .form-plugin-item .form-plugin-messages-message-wrapper #language-select li ul li .current.session-detail-link::after {
+            font-family: "Font Awesome 5 Pro";
+            font-weight: 500;
+            content: "";
+            margin-left: 0.6em; }
+
+.row {
+  width: 100%; }
+  .row::after {
+    display: block;
+    clear: both;
+    content: ""; }
+  .row + .row {
+    margin-top: 3%; }
+
+.col {
+  float: left;
+  margin-right: 3%;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box; }
+  .col:last-child {
+    margin-right: 0%; }
+
+.span-1 {
+  width: 5.5833333333%; }
+
+.span-2 {
+  width: 14.1666666667%; }
+
+.span-3 {
+  width: 22.75%; }
+
+.span-4 {
+  width: 31.3333333333%; }
+
+.span-5 {
+  width: 39.9166666667%; }
+
+.span-6 {
+  width: 48.5%; }
+
+.span-7 {
+  width: 57.0833333333%; }
+
+.span-8 {
+  width: 65.6666666667%; }
+
+.span-9 {
+  width: 74.25%; }
+
+.span-10 {
+  width: 82.8333333333%; }
+
+.span-11 {
+  width: 91.4166666667%; }
+
+.span-12 {
+  width: 100%; }
+
+@media only screen and (min-width: 0) and (max-width: 45em) {
+  .row:not(.unbreakable) [class*="span-"] {
+    width: 100%; } }
+
+.form-question {
+  margin-bottom: 1.5em; }
+  .form-question.required .form-question-label {
+    color: #FFF; }
+    .form-question.required .form-question-label::before {
+      font-weight: bold;
+      font-family: "Open Sans", sans-serif;
+      content: "* ";
+      color: #B97979; }
+  .form-question.not-validated .error-validating {
+    margin-left: 2px; }
+  .form-question .form-question-label {
+    font-weight: bold;
+    font-family: "Open Sans", sans-serif;
+    display: inline-block;
+    margin-bottom: 0.6em;
+    color: #FFF;
+    font-size: 14px;
+}
+  .form-question .form-question-label-description {
+    display: block;
+    font-weight: normal;
+    margin-top: 0.3em;
+    font-style: italic; }
+  .form-question input[type="text"], .form-question input[type="password"], .form-question input[type="search"], .form-question textarea, .form-question select, .form-question .hotel-reservation-calendar {
+    width: 100%;
+    padding: 0.4em 0.7em;
+    border: 1px solid #FFF;
+    font-size: 1em;
+    font-family: "Open Sans", sans-serif;
+    border-radius: 2px;
+    transition: border 200ms ease;
+    background: #303030;
+    color: #FFF;
+    box-shadow: none; }
+    .form-question input[type="text"]:focus, .form-question input[type="password"]:focus, .form-question input[type="search"]:focus, .form-question textarea:focus, .form-question select:focus, .form-question .hotel-reservation-calendar:focus {
+      border: 1px solid #9cc3df; }
+  .form-question input[type="checkbox"] {
+    position: absolute;
+    display: none; }
+    .form-question input[type="checkbox"] + label {
+      position: relative;
+      margin-left: 0 !important;
+      padding: 0;
+      font-size: 1em;
+      cursor: pointer; }
+      .form-question input[type="checkbox"] + label::after {
+        font-family: "Font Awesome 5 Pro";
+        font-weight: 500;
+        content: "";
+        margin-left: 0.6em; }
+      .form-question input[type="checkbox"] + label::after {
+        position: absolute;
+        top: -2px;
+        left: 0.25em;
+        margin-left: 0;
+        color: #FFF;
+        opacity: 0;
+        transition: opacity 200ms ease;
+        font-size: 14px;
+}
+    .form-question input[type="checkbox"] + label:before {
+      display: inline-block;
+      margin-bottom: 0.6em;
+      width: 1.3em;
+      height: 1.3em;
+      content: "";
+      margin-right: 0.6em;
+      vertical-align: middle;
+      background: #303030;
+      border: 2px solid #FFF;
+      transition: background 200ms ease;
+      box-shadow: none; }
+    .form-question input[type="checkbox"]:hover + label:before {
+      background: #303030;
+      color: #FFF;
+      transition: background 200ms ease; }
+    .form-question input[type="checkbox"]:checked + label:before {
+      background: #303030;
+      color: #FFF;
+      transition: background 200ms ease; }
+    .form-question input[type="checkbox"]:checked + label:before {
+      background: #303030;
+      color: #FFF;
+      transition: background 200ms ease; }
+    .form-question input[type="checkbox"]:disabled + label {
+      color: #424242;
+      cursor: not-allowed; }
+      .form-question input[type="checkbox"]:disabled + label::after {
+        color: #424242 !important; }
+      .form-question input[type="checkbox"]:disabled + label::before {
+        border: 2px solid #636363; }
+    .form-question input[type="checkbox"]:disabled + label:before {
+      box-shadow: none;
+      background: #424242; }
+    .form-question input[type="checkbox"]:checked + label::after {
+      font-family: "Font Awesome 5 Pro";
+      font-weight: 500;
+      content: "";
+      margin-left: 0.6em; }
+    .form-question input[type="checkbox"]:checked + label::after {
+      margin-left: 0;
+      color: #FFF;
+      position: absolute;
+      top: 0;
+      left: 0.25em;
+      opacity: 1;
+      transition: opacity 200ms ease; }
+  .form-question input[type="radio"] {
+    position: absolute;
+    display: none; }
+    .form-question input[type="radio"] + label {
+      position: relative;
+      margin-left: 0 !important;
+      padding: 0;
+      font-size: 1em;
+      cursor: pointer; }
+      .form-question input[type="radio"] + label::after {
+        font-family: "Font Awesome 5 Pro";
+        font-weight: 500;
+        content: "";
+        margin-left: 0.6em; }
+      .form-question input[type="radio"] + label::after {
+        position: absolute;
+        top: 0;
+        left: 0.25em;
+        margin-left: 0;
+        color: #FFF;
+        opacity: 0;
+        transition: opacity 200ms ease; }
+    .form-question input[type="radio"] + label:before {
+      display: inline-block;
+      margin-bottom: 0.6em;
+      width: 1.3em;
+      height: 1.3em;
+      content: "";
+      margin-right: 0.6em;
+      vertical-align: middle;
+      background: #303030;
+      border: 2px solid #FFF;
+      transition: background 200ms ease;
+      box-shadow: none;
+      /*! margin-top: 0px; */
+}
+    .form-question input[type="radio"]:hover + label:before {
+      background: #303030;
+      color: #FFF;
+      transition: background 200ms ease; }
+    .form-question input[type="radio"]:checked + label:before {
+      background: #303030;
+      color: #FFF;
+      transition: background 200ms ease; }
+    .form-question input[type="radio"]:checked + label:before {
+      background: #303030;
+      color: #FFF;
+      transition: background 200ms ease; }
+    .form-question input[type="radio"]:disabled + label {
+      color: #424242;
+      cursor: not-allowed; }
+      .form-question input[type="radio"]:disabled + label::after {
+        color: #424242 !important; }
+      .form-question input[type="radio"]:disabled + label::before {
+        border: 2px solid #636363; }
+    .form-question input[type="radio"]:disabled + label:before {
+      box-shadow: none;
+      background: #424242; }
+    .form-question input[type="radio"]:checked + label::after {
+      font-family: "Font Awesome 5 Pro";
+      font-weight: 500;
+      content: "";
+      margin-left: 0.6em; }
+    .form-question input[type="radio"]:checked + label::after {
+      margin-left: 0;
+      color: #FFF;
+      position: absolute;
+      top: -1px;
+      left: 0.25em;
+      opacity: 1;
+      transition: opacity 200ms ease;
+      font-size: 14px;
+}
+  .form-question textarea {
+    height: 5em;
+    display: block; }
+  .form-question select {
+    width: 100%;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none; }
+    .form-question select:-moz-focusring {
+      color: transparent;
+      text-shadow: 0 0 0 #000; }
+  .form-question .form-plugin-select {
+    position: relative; }
+    .form-question .form-plugin-select::after {
+      font-family: "Font Awesome 5 Pro";
+      font-weight: 500;
+      content: "";
+      margin-left: 0.6em; }
+    .form-question .form-plugin-select::after {
+      position: absolute;
+      right: 0.6em;
+      top: 0.6em;
+      font-weight: 900;
+      pointer-events: none;
+      color: #FFF; }
+  .form-question .form-question-radio .radio-wrapper input[type="radio"] {
+    vertical-align: middle; }
+  .form-question .form-question-radio .radio-wrapper .radio-label {
+    display: inline-block;
+    margin-left: 0.6em;
+    line-height: 1.45em;
+    cursor: pointer; }
+  .form-question .form-question-radio + .error-validating {
+    border-radius: 2px;
+    margin-left: 0;
+    border: 2px solid #B97979; }
+  .form-question .form-question-checkbox .checkbox-wrapper input[type="checkbox"] {
+    vertical-align: middle; }
+  .form-question .form-question-checkbox .checkbox-wrapper .checkbox-label {
+    display: inline-block;
+    margin-left: 0.6em;
+    line-height: 1.45em;
+    cursor: pointer; }
+  .form-question .form-question-checkbox + .error-validating {
+    border-radius: 2px;
+    margin-left: 0;
+    border: 2px solid #B97979; }
+  .form-question.vertical .checkbox-wrapper {
+    display: inline-block;
+    margin-right: 1.2em;
+    white-space: nowrap; }
+    .form-question.vertical .checkbox-wrapper input[type="checkbox"] {
+      vertical-align: middle; }
+  .form-question.vertical .radio-wrapper {
+    display: inline-block;
+    margin-right: 1.2em;
+    white-space: nowrap; }
+    .form-question.vertical .radio-wrapper input[type="radio"] {
+      vertical-align: middle; }
+
+.form-plugin-label {
+  font-weight: bold;
+  font-family: "Open Sans", sans-serif; }
+
+.form-plugin-search-wrapper {
+  position: relative; }
+  .form-plugin-search-wrapper .form-plugin-search {
+    width: 100%;
+    padding: 0.6em 2.2em 0.6em 1.1em;
+    border: 2px solid #424242;
+    font-size: 1em;
+    font-family: "Open Sans", sans-serif;
+    border-radius: 2.2em;
+    transition: border 200ms ease;
+    margin-bottom: 1.5em;
+    box-shadow: none; }
+    .form-plugin-search-wrapper .form-plugin-search:focus {
+      border: 2px solid #303030; }
+  .form-plugin-search-wrapper .form-plugin-clear-search {
+    position: absolute;
+    top: 0.6em;
+    margin-top: 2px;
+    right: 0.6em;
+    margin-right: 2px;
+    color: #424242;
+    cursor: pointer;
+    transition: 200ms ease color; }
+    .form-plugin-search-wrapper .form-plugin-clear-search::after {
+      font-family: "Font Awesome 5 Pro";
+      font-weight: 500;
+      content: "";
+      margin-left: 0.6em; }
+    .form-plugin-search-wrapper .form-plugin-clear-search:hover {
+      color: #B97979;
+      transition: 200ms ease color; }
+
+.form-plugin-tags-list {
+  display: inline-block; }
+  .form-plugin-tags-list .form-plugin-tag {
+    background: #303030;
+    color: #FFF;
+    display: inline-block;
+    padding: 0.3em 0.6em;
+    font-size: 0.7em;
+    position: relative;
+    border-radius: 2px;
+    white-space: nowrap;
+    margin-bottom: 0.3em; }
+
+.form-plugin-attendee-list .attendee-list-download-spreadsheet-button::before {
+  font-family: "Font Awesome 5 Pro";
+  font-weight: 500;
+  content: "";
+  margin-right: 0.6em; }
+
+.form-plugin-attendee-list .total-attendees-wrapper .total-attendees-label {
+  font-weight: bold;
+  font-family: "Open Sans", sans-serif; }
+
+.form-plugin-attendee-list .attendee-plugin-dt-table {
+  margin-bottom: 0; }
+
+.form-plugin-attendee-list .dataTables_scrollHead th {
+  cursor: pointer; }
+  .form-plugin-attendee-list .dataTables_scrollHead th.sorting_asc::after {
+    font-family: "Font Awesome 5 Pro";
+    font-weight: 500;
+    content: "";
+    margin-left: 0.6em; }
+  .form-plugin-attendee-list .dataTables_scrollHead th.sorting_asc::after {
+    font-size: 0.7em;
+    font-weight: 900; }
+  .form-plugin-attendee-list .dataTables_scrollHead th.sorting_desc::after {
+    font-family: "Font Awesome 5 Pro";
+    font-weight: 500;
+    content: "";
+    margin-left: 0.6em; }
+  .form-plugin-attendee-list .dataTables_scrollHead th.sorting_desc::after {
+    font-size: 0.7em;
+    font-weight: 900; }
+
+.form-plugin-attendee-list .attendee-plugin-dt-table td.sorting_1::after {
+  font-family: "Font Awesome 5 Pro";
+  font-weight: 500;
+  content: "";
+  margin-left: 0.6em; }
+
+.form-plugin-attendee-list .attendee-plugin-dt-table td.sorting_1::after {
+  font-size: 0.7em;
+  font-weight: 900;
+  visibility: hidden; }
+
+.order-info {
+  background: #424242;
+  color: #FFF;
+  padding: 0.6em;
+  border-radius: 2px;
+  display: inline-block;
+  margin-bottom: 1.5em;
+  line-height: 1.45em; }
+  .order-info .economy-order-number-wrapper .economy-order-number {
+    font-weight: bold;
+    font-family: "Open Sans", sans-serif;
+    margin-right: 0.6em; }
+  .order-info .economy-status-wrapper .economy-status {
+    font-weight: bold;
+    font-family: "Open Sans", sans-serif;
+    margin-right: 0.6em; }
+  .order-info .economy-amount-due-wrapper .economy-amount-due {
+    font-weight: bold;
+    font-family: "Open Sans", sans-serif;
+    margin-right: 0.6em;
+    display: inline-block !important; }
+  .order-info .economy-due-date-wrapper .economy-due-date {
+    font-weight: bold;
+    font-family: "Open Sans", sans-serif;
+    margin-right: 0.6em; }
+
+button.settle-order-button::before {
+  font-family: "Font Awesome 5 Pro";
+  font-weight: 500;
+  content: "";
+  margin-right: 0.6em; }
+
+button.generate-invoice-button::before {
+  font-family: "Font Awesome 5 Pro";
+  font-weight: 500;
+  content: "";
+  margin-right: 0.6em; }
+
+button.generate-receipt-button::before {
+  font-family: "Font Awesome 5 Pro";
+  font-weight: 500;
+  content: "";
+  margin-right: 0.6em; }
+
+tr.summary {
+  background: #424242;
+  color: #FFF;
+  font-weight: bold;
+  font-family: "Open Sans", sans-serif; }
+
+.form-plugin-economy-balance-table tr td, .form-plugin-economy-balance-table tr th {
+  vertical-align: middle; }
+  .form-plugin-economy-balance-table tr td .form-plugin-economy-invoice-download::before, .form-plugin-economy-balance-table tr th .form-plugin-economy-invoice-download::before {
+    font-family: "Font Awesome 5 Pro";
+    font-weight: 500;
+    content: "";
+    margin-right: 0.6em; }
+  .form-plugin-economy-balance-table tr td:last-child, .form-plugin-economy-balance-table tr th:last-child {
+    text-align: right; }
+
+.form-plugin-evaluations .form-plugin-list .form-plugin-item {
+  border: 2px solid #424242;
+  margin-bottom: 0.75em;
+  border-radius: 2px;
+  overflow: hidden; }
+  .form-plugin-evaluations .form-plugin-list .form-plugin-item .form-plugin-title {
+    background: #333;
+    color: #FFF;
+    display: block;
+    padding: 0.6em;
+    margin-bottom: 0.6em; }
+
+.form-plugin-evaluations .star-evaluation-group {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  white-space: nowrap;
+  unicode-bidi: bidi-override;
+  direction: rtl;
+  font-family: "Font Awesome 5 Pro";
+  font-weight: 300;
+  display: inline-block;
+  padding: 0.6em;
+  display: flex; }
+  .form-plugin-evaluations .star-evaluation-group::after {
+    display: block;
+    clear: both;
+    content: ""; }
+  .form-plugin-evaluations .star-evaluation-group > input {
+    display: none; }
+    .form-plugin-evaluations .star-evaluation-group > input + label {
+      flex: 1;
+      overflow: hidden;
+      white-space: nowrap;
+      cursor: pointer;
+      position: relative;
+      text-align: center;
+      color: #303030; }
+      .form-plugin-evaluations .star-evaluation-group > input + label::before {
+        display: inline-block;
+        content: "";
+        color: #fff;
+        font-size: 2em;
+        width: 100%; }
+      .form-plugin-evaluations .star-evaluation-group > input + label:last-child {
+        display: none; }
+    .form-plugin-evaluations .star-evaluation-group > input:checked ~ label::before, .form-plugin-evaluations .star-evaluation-group > input + label:hover ~ label::before, .form-plugin-evaluations .star-evaluation-group > input + label:hover::before {
+      font-weight: 900;
+      content: "";
+      color: gold;
+      text-shadow: 0 0 1px gold; }
+  .form-plugin-evaluations .star-evaluation-group > .star-evaluation-clear + label {
+    text-indent: -9999px;
+    width: 0.25em;
+    margin-left: -0.5em; }
+  .form-plugin-evaluations .star-evaluation-group > .star-evaluation-clear + label::before {
+    width: 0.5em; }
+  .form-plugin-evaluations .star-evaluation-group:hover > input + label::before {
+    font-weight: 900;
+    content: "";
+    color: #424242;
+    text-shadow: none; }
+  .form-plugin-evaluations .star-evaluation-group:hover > input + label:hover ~ label::before, .form-plugin-evaluations .star-evaluation-group:hover > input + label:hover::before {
+    font-weight: 900;
+    content: "";
+    color: gold;
+    text-shadow: 0 0 1px gold; }
+
+.form-plugin-evaluations .evaluation-send-button::before {
+  font-family: "Font Awesome 5 Pro";
+  font-weight: 500;
+  content: "";
+  margin-right: 0.6em; }
+
+.form-plugin-evaluations .form-plugin-title {
+  margin-bottom: 0 !important;
+  transition: background 200ms ease, color 200ms ease; }
+  .form-plugin-evaluations .form-plugin-title.session-detail-link {
+    cursor: pointer; }
+    .form-plugin-evaluations .form-plugin-title.session-detail-link::before {
+      font-family: "Font Awesome 5 Pro";
+      font-weight: 500;
+      content: "";
+      margin-right: 0.6em; }
+    .form-plugin-evaluations .form-plugin-title.session-detail-link::before {
+      margin-right: 0;
+      float: right; }
+    .form-plugin-evaluations .form-plugin-title.session-detail-link:hover {
+      background: #222222;
+      color: #FFF;
+      transition: background 200ms ease, color 200ms ease; }
+
+.form-plugin-hotel-reservation .form-plugin-item {
+  border: none;
+  border-radius: none; }
+
+.form-plugin-hotel-reservation .hotel-reservation-add-button::before {
+  font-family: "Font Awesome 5 Pro";
+  font-weight: 500;
+  content: "";
+  margin-right: 0.6em; }
+
+.form-plugin-hotel-reservation .hotel-reservation-remove-button::before {
+  font-family: "Font Awesome 5 Pro";
+  font-weight: 500;
+  content: "";
+  margin-right: 0.6em; }
+
+.form-plugin-hotel-reservation .form-plugin-table, .form-plugin-hotel-reservation .scroll-x {
+  margin-bottom: 0; }
+
+.form-plugin-hotel-reservation tr.sold-out td {
+  text-decoration: line-through;
+  color: #424242; }
+  .form-plugin-hotel-reservation tr.sold-out td input {
+    display: none !important; }
+
+.form-plugin-hotel-reservation input {
+  display: block !important; }
+
+.form-plugin-location-list .form-plugin-item {
+  border: 2px solid #424242;
+  margin-bottom: 0.75em;
+  border-radius: 2px;
+  overflow: hidden; }
+  .form-plugin-location-list .form-plugin-item .form-plugin-title {
+    background: #303030;
+    color: #FFF;
+    display: block;
+    padding: 0.6em;
+    margin-bottom: 0.6em; }
+
+.form-plugin-location-list .form-plugin-description {
+  padding: 0 0.6em 0.6em 0.6em; }
+  .form-plugin-location-list .form-plugin-description *:last-child {
+    margin-bottom: 0; }
+
+.form-plugin-location-list .form-plugin-location-list-table {
+  margin-bottom: 0;
+  border-top: 2px solid #424242; }
+  .form-plugin-location-list .form-plugin-location-list-table td {
+    line-height: 1.45em; }
+  .form-plugin-location-list .form-plugin-location-list-table tr td:first-child {
+    background: #424242;
+    color: #FFF;
+    width: 1%;
+    text-align: center; }
+  .form-plugin-location-list .form-plugin-location-list-table tr.location .location-list-map-icon::before {
+    font-family: "Font Awesome 5 Pro";
+    font-weight: 500;
+    content: "";
+    margin-right: 0.6em; }
+  .form-plugin-location-list .form-plugin-location-list-table tr.location .location-list-map-icon::before {
+    margin-right: 0; }
+  .form-plugin-location-list .form-plugin-location-list-table tr.address .location-list-address-icon::before {
+    font-family: "Font Awesome 5 Pro";
+    font-weight: 500;
+    content: "";
+    margin-right: 0.6em; }
+  .form-plugin-location-list .form-plugin-location-list-table tr.address .location-list-address-icon::before {
+    margin-right: 0; }
+  .form-plugin-location-list .form-plugin-location-list-table tr.contact .location-list-speaker-icon::before {
+    font-family: "Font Awesome 5 Pro";
+    font-weight: 500;
+    content: "";
+    margin-right: 0.6em; }
+  .form-plugin-location-list .form-plugin-location-list-table tr.contact .location-list-speaker-icon::before {
+    margin-right: 0; }
+
+.form-plugin-log-out .form-plugin-log-out-button::before {
+  font-family: "Font Awesome 5 Pro";
+  font-weight: 500;
+  content: "";
+  margin-right: 0.6em; }
+
+.form-plugin-login-form .email-password-verification-email-label::before {
+  font-family: "Font Awesome 5 Pro";
+  font-weight: 500;
+  content: "";
+  margin-right: 0.6em; }
+
+.form-plugin-login-form .email-password-verification-password-label::before {
+  font-family: "Font Awesome 5 Pro";
+  font-weight: 500;
+  content: "";
+  margin-right: 0.6em; }
+
+.form-plugin-login-form .verification-login-send-button::before {
+  font-family: "Font Awesome 5 Pro";
+  font-weight: 500;
+  content: "";
+  margin-right: 0.6em; }
+
+.form-plugin-login-form .reset-password-link {
+  margin-left: 0.6em; }
+
+.form-plugin-messages .form-plugin-list .form-plugin-item, .form-plugin-archive-messages .form-plugin-list .form-plugin-item {
+  border: 2px solid #424242;
+  margin-bottom: 0.75em;
+  border-radius: 2px;
+  overflow: hidden; }
+  .form-plugin-messages .form-plugin-list .form-plugin-item .form-plugin-title, .form-plugin-archive-messages .form-plugin-list .form-plugin-item .form-plugin-title {
+    background: #303030;
+    color: #FFF;
+    display: block;
+    padding: 0.6em;
+    margin-bottom: 0.6em; }
+
+.form-plugin-messages .form-plugin-list .form-plugin-item .form-plugin-item-archive, .form-plugin-archive-messages .form-plugin-list .form-plugin-item .form-plugin-item-archive {
+  margin-right: 0;
+  margin-top: 0.6em;
+  background: #303030;
+  color: #FFF;
+  float: right;
+  cursor: pointer;
+  font-size: 1.17em; }
+  .form-plugin-messages .form-plugin-list .form-plugin-item .form-plugin-item-archive::before, .form-plugin-archive-messages .form-plugin-list .form-plugin-item .form-plugin-item-archive::before {
+    font-family: "Font Awesome 5 Pro";
+    font-weight: 500;
+    content: "";
+    margin-right: 0.6em; }
+
+.form-plugin-messages .form-plugin-list .form-plugin-item .form-plugin-title, .form-plugin-archive-messages .form-plugin-list .form-plugin-item .form-plugin-title {
+  margin-bottom: 0; }
+
+.form-plugin-messages .form-plugin-list .form-plugin-item .form-plugin-title-date, .form-plugin-archive-messages .form-plugin-list .form-plugin-item .form-plugin-title-date {
+  display: block;
+  padding: 0.6em;
+  background: #424242;
+  color: #FFF;
+  /*! margin-right: 0.6em; */
+  /*! background: black; */
+  /*! padding: 2px 15px; */
+  /*! border-radius: 15px; */
+  /*! background: #000; */
+}
+  .form-plugin-messages .form-plugin-list .form-plugin-item .form-plugin-title-date .time, .form-plugin-archive-messages .form-plugin-list .form-plugin-item .form-plugin-title-date .time {
+    margin-right: 0.6em;
+    background: black;
+    padding: 2px 15px;
+    border-radius: 15px;
+}
+    .form-plugin-messages .form-plugin-list .form-plugin-item .form-plugin-title-date .time::before, .form-plugin-archive-messages .form-plugin-list .form-plugin-item .form-plugin-title-date .time::before {
+      font-family: "Font Awesome 5 Pro";
+      font-weight: 500;
+      content: "";
+      margin-right: 0.6em; }
+  .form-plugin-messages .form-plugin-list .form-plugin-item .form-plugin-title-date .date::before, .form-plugin-archive-messages .form-plugin-list .form-plugin-item .form-plugin-title-date .date::before {
+    font-family: "Font Awesome 5 Pro";
+    font-weight: 500;
+    content: "";
+    margin-right: 0.6em; }
+
+.form-plugin-messages .form-plugin-list .form-plugin-item .form-plugin-messages-message-wrapper, .form-plugin-archive-messages .form-plugin-list .form-plugin-item .form-plugin-messages-message-wrapper {
+  padding: 0.6em; }
+  .form-plugin-messages .form-plugin-list .form-plugin-item .form-plugin-messages-message-wrapper .session-detail-link, .form-plugin-archive-messages .form-plugin-list .form-plugin-item .form-plugin-messages-message-wrapper .session-detail-link {
+    font-weight: normal; }
+  .form-plugin-messages .form-plugin-list .form-plugin-item .form-plugin-messages-message-wrapper *:last-child, .form-plugin-archive-messages .form-plugin-list .form-plugin-item .form-plugin-messages-message-wrapper *:last-child {
+    padding-bottom: 0;
+    margin-bottom: 0; }
+
+.form-plugin-messages .messages-read-archived-messages::before, .form-plugin-archive-messages .messages-read-archived-messages::before {
+  font-family: "Font Awesome 5 Pro";
+  font-weight: 500;
+  content: "";
+  margin-right: 0.6em; }
+
+.form-plugin-messages .messages-mark-all-button::before, .form-plugin-archive-messages .messages-mark-all-button::before {
+  font-family: "Font Awesome 5 Pro";
+  font-weight: 500;
+  content: "";
+  margin-right: 0.6em; }
+
+.form-plugin-multiple-registration .form-plugin-multiple-registration-add-attendee-button-inline::before, .form-plugin-multiple-registration .form-plugin-multiple-registration-add-attendee-button::before {
+  font-family: "Font Awesome 5 Pro";
+  font-weight: 500;
+  content: "";
+  margin-right: 0.6em; }
+
+.form-plugin-multiple-registration .form-plugin-multiple-registration-current-count {
+  font-weight: bold;
+  font-family: "Open Sans", sans-serif; }
+  .form-plugin-multiple-registration .form-plugin-multiple-registration-current-count .form-plugin-multiple-registration-current-count-number-inline, .form-plugin-multiple-registration .form-plugin-multiple-registration-current-count .form-plugin-multiple-registration-current-count-number {
+    font-weight: normal; }
+
+.form-plugin-multiple-registration .form-plugin-multiple-registration-attendee-table td {
+  vertical-align: middle; }
+  .form-plugin-multiple-registration .form-plugin-multiple-registration-attendee-table td .form-plugin-multiple-registration-edit-attendee-button {
+    margin-bottom: 0; }
+    .form-plugin-multiple-registration .form-plugin-multiple-registration-attendee-table td .form-plugin-multiple-registration-edit-attendee-button::before {
+      font-family: "Font Awesome 5 Pro";
+      font-weight: 500;
+      content: "";
+      margin-right: 0.6em; }
+  .form-plugin-multiple-registration .form-plugin-multiple-registration-attendee-table td .form-plugin-multiple-registration-delete-attendee-button {
+    margin-bottom: 0; }
+    .form-plugin-multiple-registration .form-plugin-multiple-registration-attendee-table td .form-plugin-multiple-registration-delete-attendee-button::before {
+      font-family: "Font Awesome 5 Pro";
+      font-weight: 500;
+      content: "";
+      margin-right: 0.6em; }
+  .form-plugin-multiple-registration .form-plugin-multiple-registration-attendee-table td:first-child {
+    font-weight: bold;
+    font-family: "Open Sans", sans-serif; }
+    .form-plugin-multiple-registration .form-plugin-multiple-registration-attendee-table td:first-child::after {
+      content: "."; }
+  .form-plugin-multiple-registration .form-plugin-multiple-registration-attendee-table td:first-child, .form-plugin-multiple-registration .form-plugin-multiple-registration-attendee-table td:last-child {
+    width: 1%;
+    white-space: nowrap; }
+
+.form-plugin-multiple-registration .form-plugin-multiple-registration-attendee-table tr.active td {
+  background: #99B979;
+  color: #303030; }
+
+.form-plugin-multiple-registration .form-plugin-list .form-plugin-item {
+  border: 2px solid #424242;
+  padding: 0.6em;
+  border-radius: 2px;
+  position: relative;
+  overflow: hidden;
+  margin-bottom: 0.6em; }
+  .form-plugin-multiple-registration .form-plugin-list .form-plugin-item .form-plugin-item-information {
+    background: #303030;
+    color: #FFF;
+    padding: 0.6em;
+    font-weight: bold;
+    font-family: "Open Sans", sans-serif;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0; }
+  .form-plugin-multiple-registration .form-plugin-list .form-plugin-item .section {
+    margin-top: 2.8em; }
+  .form-plugin-multiple-registration .form-plugin-list .form-plugin-item .form-plugin-multiple-registration-form-information .form-plugin-multiple-registration-form-information-number {
+    font-weight: normal; }
+  .form-plugin-multiple-registration .form-plugin-list .form-plugin-item .form-plugin-multiple-registration-delete-attendee-button-from-inline {
+    margin-bottom: 0;
+    font-size: 0.6em;
+    float: right;
+    padding: 0.5em; }
+    .form-plugin-multiple-registration .form-plugin-list .form-plugin-item .form-plugin-multiple-registration-delete-attendee-button-from-inline::before {
+      font-family: "Font Awesome 5 Pro";
+      font-weight: 500;
+      content: "";
+      margin-right: 0.6em; }
+
+.form-plugin-new-password .form-plugin-new-password-email-label::before {
+  font-family: "Font Awesome 5 Pro";
+  font-weight: 500;
+  content: "";
+  margin-right: 0.6em; }
+
+.form-plugin-new-password .form-plugin-repeat-new-password-email-label::before {
+  font-family: "Font Awesome 5 Pro";
+  font-weight: 500;
+  content: "";
+  margin-right: 0.6em; }
+
+.form-plugin-new-password .form-plugin-new-password-button::before {
+  font-family: "Font Awesome 5 Pro";
+  font-weight: 500;
+  content: "";
+  margin-right: 0.6em; }
+
+.form-plugin-next-up .form-plugin-list {
+  margin-bottom: 1.5em; }
+  .form-plugin-next-up .form-plugin-list .form-plugin-item {
+    border: 2px solid #424242;
+    margin-bottom: 0.75em;
+    border-radius: 2px;
+    overflow: hidden; }
+    .form-plugin-next-up .form-plugin-list .form-plugin-item .form-plugin-title {
+      background: #303030;
+      color: #FFF;
+      display: block;
+      padding: 0.6em;
+      margin-bottom: 0.6em; }
+  .form-plugin-next-up .form-plugin-list .form-plugin-item:last-child {
+    margin-bottom: 0; }
+
+.form-plugin-next-up .session-detail-title {
+  margin-bottom: 0 !important;
+  transition: background 200ms ease, color 200ms ease; }
+  .form-plugin-next-up .session-detail-title.session-detail-link {
+    cursor: pointer; }
+    .form-plugin-next-up .session-detail-title.session-detail-link::before {
+      font-family: "Font Awesome 5 Pro";
+      font-weight: 500;
+      content: "";
+      margin-right: 0.6em; }
+    .form-plugin-next-up .session-detail-title.session-detail-link::before {
+      margin-right: 0;
+      float: right; }
+    .form-plugin-next-up .session-detail-title.session-detail-link:hover {
+      background: #222222;
+      color: #FFF;
+      transition: background 200ms ease, color 200ms ease; }
+
+.form-plugin-next-up .form-plugin-table {
+  margin: 0; }
+  .form-plugin-next-up .form-plugin-table td:first-child {
+    width: 1%;
+    text-align: center; }
+
+.form-plugin-next-up td:first-child {
+  background: #424242;
+  color: #FFF; }
+
+.form-plugin-next-up tr.time-and-date .next-up-time-and-date-icon::before {
+  font-family: "Font Awesome 5 Pro";
+  font-weight: 500;
+  content: "";
+  margin-right: 0.6em; }
+
+.form-plugin-next-up tr.time-and-date .next-up-time-and-date-icon::before {
+  margin-right: 0; }
+
+.form-plugin-next-up tr.time-and-date .time {
+  margin-right: 0.6em; }
+  .form-plugin-next-up tr.time-and-date .time::before {
+    font-family: "Font Awesome 5 Pro";
+    font-weight: 500;
+    content: "";
+    margin-right: 0.6em; }
+
+.form-plugin-next-up tr.time-and-date .date::before {
+  font-family: "Font Awesome 5 Pro";
+  font-weight: 500;
+  content: "";
+  margin-right: 0.6em; }
+
+.form-plugin-next-up tr.location .next-up-location-icon::before {
+  font-family: "Font Awesome 5 Pro";
+  font-weight: 500;
+  content: "";
+  margin-right: 0.6em; }
+
+.form-plugin-next-up tr.location .next-up-location-icon::before {
+  margin-right: 0; }
+
+.form-plugin-next-up tr.speaker .next-up-speaker-icon::before {
+  font-family: "Font Awesome 5 Pro";
+  font-weight: 500;
+  content: "";
+  margin-right: 0.6em; }
+
+.form-plugin-next-up tr.speaker .next-up-speaker-icon::before {
+  margin-right: 0; }
+
+.form-plugin-pdf-button .form-pdf-button::before {
+  font-family: "Font Awesome 5 Pro";
+  font-weight: 500;
+  content: "";
+  margin-right: 0.6em; }
+
+.form-plugin-photo-gallery .form-plugin-list {
+  margin-bottom: 1.5em; }
+  .form-plugin-photo-gallery .form-plugin-list::after {
+    display: block;
+    clear: both;
+    content: ""; }
+  .form-plugin-photo-gallery .form-plugin-list .form-plugin-item {
+    border: none;
+    border-radius: 0;
+    margin: 0;
+    background-size: cover !important;
+    background-position: center;
+    cursor: pointer;
+    height: 30vw;
+    position: relative !important;
+    display: block;
+    float: left;
+    width: 33%;
+    transition: background-color 200ms ease; }
+    .form-plugin-photo-gallery .form-plugin-list .form-plugin-item:hover {
+      background-color: rgba(48, 48, 48, 0.3);
+      background-blend-mode: lighten;
+      transition: background-color 200ms ease; }
+    .form-plugin-photo-gallery .form-plugin-list .form-plugin-item img {
+      display: none !important; }
+    .form-plugin-photo-gallery .form-plugin-list .form-plugin-item .form-plugin-description {
+      background: rgba(255, 255, 255, 0.7);
+      color: #303030;
+      font-size: 0.7em;
+      padding: 0.6em;
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      line-height: 1.45em; }
+      .form-plugin-photo-gallery .form-plugin-list .form-plugin-item .form-plugin-description .photo-submitter label {
+        font-weight: bold;
+        font-family: "Open Sans", sans-serif; }
+      .form-plugin-photo-gallery .form-plugin-list .form-plugin-item .form-plugin-description .photo-comment label {
+        font-weight: bold;
+        font-family: "Open Sans", sans-serif; }
+
+.form-plugin-photo-upload .form-plugin-photo-upload-file-select-button {
+  margin-bottom: 0; }
+  .form-plugin-photo-upload .form-plugin-photo-upload-file-select-button::before {
+    font-family: "Font Awesome 5 Pro";
+    font-weight: 500;
+    content: "";
+    margin-right: 0.6em; }
+  .form-plugin-photo-upload .form-plugin-photo-upload-file-select-button input {
+    display: none; }
+
+.form-plugin-photo-upload .selected-file .file-name-label {
+  font-weight: bold;
+  font-family: "Open Sans", sans-serif; }
+
+.form-plugin-photo-upload .form-plugin-photo-upload-comment-label::before {
+  font-family: "Font Awesome 5 Pro";
+  font-weight: 500;
+  content: "";
+  margin-right: 0.6em; }
+
+.form-plugin-photo-upload .form-plugin-photo-upload-button::before {
+  font-family: "Font Awesome 5 Pro";
+  font-weight: 500;
+  content: "";
+  margin-right: 0.6em; }
+
+.form-plugin-request-login .request-login-email-label::before {
+  font-family: "Font Awesome 5 Pro";
+  font-weight: 500;
+  content: "";
+  margin-right: 0.6em; }
+
+.form-plugin-request-login .request-login-send-button::before {
+  font-family: "Font Awesome 5 Pro";
+  font-weight: 500;
+  content: "";
+  margin-right: 0.6em; }
+
+.form-plugin-reset-password .form-plugin-reset-password-email-label::before {
+  font-family: "Font Awesome 5 Pro";
+  font-weight: 500;
+  content: "";
+  margin-right: 0.6em; }
+
+.form-plugin-reset-password .reset-password-button::before {
+  font-family: "Font Awesome 5 Pro";
+  font-weight: 500;
+  content: "";
+  margin-right: 0.6em; }
+
+.form-plugin-session-agenda .session-agenda-group-toggle-list {
+  display: block;
+  margin-bottom: 1em;
+  background: #424242;
+  padding: 0.6em;
+  border-radius: 2px; }
+  .form-plugin-session-agenda .session-agenda-group-toggle-list::after {
+    display: block;
+    clear: both;
+    content: ""; }
+  .form-plugin-session-agenda .session-agenda-group-toggle-list .session-agenda-group-toggle-list-item {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    margin-bottom: 0.75em;
+    position: relative; }
+    .form-plugin-session-agenda .session-agenda-group-toggle-list .session-agenda-group-toggle-list-item:last-child {
+      margin-bottom: 0; }
+    .form-plugin-session-agenda .session-agenda-group-toggle-list .session-agenda-group-toggle-list-item input {
+      display: none; }
+    .form-plugin-session-agenda .session-agenda-group-toggle-list .session-agenda-group-toggle-list-item .session-agenda-group-toggle-list-item-label {
+      background: #424242;
+      color: #FFF;
+      border-radius: 2px;
+      padding: 0.5em;
+      cursor: pointer;
+      display: block;
+      font-size: 1em;
+      transition: background 200ms ease; }
+      .form-plugin-session-agenda .session-agenda-group-toggle-list .session-agenda-group-toggle-list-item .session-agenda-group-toggle-list-item-label::before {
+        font-family: "Font Awesome 5 Pro";
+        font-weight: 900;
+        content: "";
+        color: rgba(255, 255, 255, 0);
+        display: inline-block;
+        background: #303030;
+        padding: 0.3em;
+        border-radius: 2px;
+        margin-right: 0.5em; }
+      .form-plugin-session-agenda .session-agenda-group-toggle-list .session-agenda-group-toggle-list-item .session-agenda-group-toggle-list-item-label:hover {
+        background: #2e2e2e;
+        color: #FFF;
+        transition: background 200ms ease; }
+        .form-plugin-session-agenda .session-agenda-group-toggle-list .session-agenda-group-toggle-list-item .session-agenda-group-toggle-list-item-label:hover::before {
+          background: #424242; }
+    .form-plugin-session-agenda .session-agenda-group-toggle-list .session-agenda-group-toggle-list-item input:checked + .session-agenda-group-toggle-list-item-label {
+      background: #303030;
+      color: #FFF; }
+      .form-plugin-session-agenda .session-agenda-group-toggle-list .session-agenda-group-toggle-list-item input:checked + .session-agenda-group-toggle-list-item-label::before {
+        font-family: "Font Awesome 5 Pro";
+        font-weight: 900;
+        content: "";
+        color: #99B979; }
+      .form-plugin-session-agenda .session-agenda-group-toggle-list .session-agenda-group-toggle-list-item input:checked + .session-agenda-group-toggle-list-item-label:hover {
+        background: #222222;
+        color: #FFF;
+        transition: background 200ms ease; }
+
+.form-plugin-session-agenda .session-agenda-date {
+  width: 100%;
+  background: #303030;
+  border-radius: 2px;
+  overflow: hidden;
+  margin-bottom: 1.5em; }
+  .form-plugin-session-agenda .session-agenda-date::after {
+    display: block;
+    clear: both;
+    content: ""; }
+  .form-plugin-session-agenda .session-agenda-date .previous, .form-plugin-session-agenda .session-agenda-date .next, .form-plugin-session-agenda .session-agenda-date .session-agenda-date-picker {
+    background: #303030;
+    color: #FFF;
+    width: 20%;
+    display: block;
+    float: left;
+    text-align: center;
+    font-size: 1.3em;
+    font-family: "Lato", sans-serif;
+    padding: 0.75em 0;
+    cursor: pointer;
+    color: white;
+    transition: background 200ms ease; }
+    .form-plugin-session-agenda .session-agenda-date .previous:hover, .form-plugin-session-agenda .session-agenda-date .next:hover, .form-plugin-session-agenda .session-agenda-date .session-agenda-date-picker:hover {
+      background: #222222 !important;
+      color: #FFF !important;
+      transition: background 200ms ease, color 200ms ease; }
+    .form-plugin-session-agenda .session-agenda-date .previous.disabled, .form-plugin-session-agenda .session-agenda-date .next.disabled, .form-plugin-session-agenda .session-agenda-date .session-agenda-date-picker.disabled {
+      opacity: 0.2; }
+    .form-plugin-session-agenda .session-agenda-date .previous.disabled:hover, .form-plugin-session-agenda .session-agenda-date .next.disabled:hover, .form-plugin-session-agenda .session-agenda-date .session-agenda-date-picker.disabled:hover {
+      background: #303030 !important;
+      cursor: not-allowed; }
+  .form-plugin-session-agenda .session-agenda-date .previous::before {
+    font-family: "Font Awesome 5 Pro";
+    font-weight: 500;
+    content: "";
+    margin-right: 0.6em; }
+  .form-plugin-session-agenda .session-agenda-date .next::after {
+    font-family: "Font Awesome 5 Pro";
+    font-weight: 500;
+    content: "";
+    margin-left: 0.6em; }
+  .form-plugin-session-agenda .session-agenda-date .date-picker-control {
+    float: left;
+    width: 60%;
+    display: inline-block; }
+    .form-plugin-session-agenda .session-agenda-date .date-picker-control .picker__input {
+      width: 100%;
+      text-align: center;
+      background: none;
+      border: none;
+      font-family: "Open Sans", sans-serif;
+      margin: 0;
+      text-decoration: underline;
+      text-decoration-style: dotted;
+      -webkit-text-decoration-style: dotted; }
+
+.form-plugin-session-agenda .session-agenda .session-agenda-table tr.session:hover td {
+  background: #c1c1c1;
+  color: #303030;
+  transition: background 200ms ease; }
+
+.form-plugin-session-agenda .session-agenda .session-agenda-table tr.session td {
+  cursor: pointer; }
+  .form-plugin-session-agenda .session-agenda .session-agenda-table tr.session td .status {
+    display: none; }
+
+.form-plugin-session-agenda .session-agenda .session-agenda-table tr.empty-session-agenda-table td {
+  border: none; }
+
+.form-plugin-session-agenda .session-agenda .session-agenda-table .session-title {
+  font-weight: bold;
+  font-family: "Open Sans", sans-serif;
+  font-size: 1.25em;
+  display: inline-block; }
+
+.form-plugin-session-agenda .session-agenda .session-agenda-table .status {
+  background: #424242;
+  color: #FFF;
+  font-weight: bold;
+  font-family: "Open Sans", sans-serif;
+  display: inline-block;
+  font-size: 0.7em;
+  margin-bottom: 0.6em;
+  padding: 0.6em;
+  border-radius: 2px;
+  vertical-align: middle; }
+  .form-plugin-session-agenda .session-agenda .session-agenda-table .status.attending {
+    background: #99B979;
+    color: #303030; }
+  .form-plugin-session-agenda .session-agenda .session-agenda-table .status.not-attending {
+    display: none !important; }
+  .form-plugin-session-agenda .session-agenda .session-agenda-table .status.in-queue {
+    background: #EBE0A2;
+    color: #303030; }
+  .form-plugin-session-agenda .session-agenda .session-agenda-table .status.deciding {
+    background: #EBE0A2;
+    color: #303030; }
+
+.form-plugin-session-agenda .session-agenda .session-agenda-table .session-section {
+  font-size: 0.7em;
+  line-height: 1; }
+  .form-plugin-session-agenda .session-agenda .session-agenda-table .session-section .session-section-item {
+    padding: 0.6em;
+    border-bottom: 1px solid #424242;
+    position: relative; }
+    .form-plugin-session-agenda .session-agenda .session-agenda-table .session-section .session-section-item:last-child {
+      border-bottom: none; }
+    .form-plugin-session-agenda .session-agenda .session-agenda-table .session-section .session-section-item span[class*="-icon"]::before {
+      width: 1.5em;
+      display: inline-block;
+      text-align: center; }
+  .form-plugin-session-agenda .session-agenda .session-agenda-table .session-section .session-section-item.time-and-date .session-time-and-date-icon::before {
+    font-family: "Font Awesome 5 Pro";
+    font-weight: 500;
+    content: "";
+    margin-right: 0.6em; }
+  .form-plugin-session-agenda .session-agenda .session-agenda-table .session-section .session-section-item.time-and-date .date {
+    display: none; }
+  .form-plugin-session-agenda .session-agenda .session-agenda-table .session-section .session-section-item.rsvp-deadline .session-rsvp-deadline-icon::before {
+    font-family: "Font Awesome 5 Pro";
+    font-weight: 500;
+    content: "";
+    margin-right: 0.6em; }
+  .form-plugin-session-agenda .session-agenda .session-agenda-table .session-section .session-section-item.cost .session-cost-icon::before {
+    font-family: "Font Awesome 5 Pro";
+    font-weight: 500;
+    content: "";
+    margin-right: 0.6em; }
+  .form-plugin-session-agenda .session-agenda .session-agenda-table .session-section .session-section-item.speaker .session-speaker-icon::before {
+    font-family: "Font Awesome 5 Pro";
+    font-weight: 500;
+    content: "";
+    margin-right: 0.6em; }
+  .form-plugin-session-agenda .session-agenda .session-agenda-table .session-section .session-section-item.session-group .session-group-icon::before {
+    font-family: "Font Awesome 5 Pro";
+    font-weight: 500;
+    content: "";
+    margin-right: 0.6em; }
+  .form-plugin-session-agenda .session-agenda .session-agenda-table .session-section .session-section-item.tags .session-tags-icon::before {
+    font-family: "Font Awesome 5 Pro";
+    font-weight: 500;
+    content: "";
+    margin-right: 0.6em; }
+  .form-plugin-session-agenda .session-agenda .session-agenda-table .session-section .session-section-item.tags .form-plugin-tags-list {
+    display: inline-block; }
+  .form-plugin-session-agenda .session-agenda .session-agenda-table .session-section .session-section-item.seats-available .session-seats-available-icon::before {
+    font-family: "Font Awesome 5 Pro";
+    font-weight: 500;
+    content: "";
+    margin-right: 0.6em; }
+  .form-plugin-session-agenda .session-agenda .session-agenda-table .session-section .session-section-item.location .session-location-icon::before {
+    font-family: "Font Awesome 5 Pro";
+    font-weight: 500;
+    content: "";
+    margin-right: 0.6em; }
+
+.form-plugin-session-agenda .session-subscribe-to-calendar::before {
+  font-family: "Font Awesome 5 Pro";
+  font-weight: 500;
+  content: "";
+  margin-right: 0.6em; }
+
+.form-plugin-session-checkbox .form-plugin-title {
+  font-size: 1.25em;
+  margin: 0.24em 0.3em 0.3em 0;
+  display: inline-block; }
+  .form-plugin-session-checkbox .form-plugin-title label {
+    cursor: pointer; }
+
+.form-plugin-session-checkbox .session-detail-link {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  background: #9cc3df;
+  color: #FFF;
+  display: inline-block;
+  text-decoration: none;
+  text-align: center;
+  font-size: 0.7em;
+  font-family: "Open Sans", sans-serif;
+  margin-bottom: 0.6em;
+  padding: 1.2em 1.8em;
+  border: none;
+  border-radius: 2px;
+  transition: background 200ms ease, color 200ms ease;
+  white-space: nowrap;
+  cursor: pointer;
+  line-height: 1;
+  display: inline-block;
+  float: right; }
+  .form-plugin-session-checkbox .session-detail-link:hover, .form-plugin-session-checkbox .session-detail-link.current, .form-plugin-session-checkbox .session-detail-link.active {
+    background: #468fc3;
+    color: #FFF;
+    transition: background 200ms ease, color 200ms ease;
+    text-decoration: none; }
+  .form-plugin-session-checkbox .session-detail-link.small {
+    font-size: 0.7em; }
+  .form-plugin-session-checkbox .session-detail-link.disabled {
+    background: #303030;
+    color: #FFF;
+    opacity: 0.5;
+    cursor: not-allowed; }
+  .form-plugin-session-checkbox .session-detail-link::after {
+    font-family: "Font Awesome 5 Pro";
+    font-weight: 500;
+    content: "";
+    margin-left: 0.6em; }
+
+.form-plugin-session-checkbox .status {
+  background: #424242;
+  color: #FFF;
+  font-weight: bold;
+  font-family: "Open Sans", sans-serif;
+  display: inline-block;
+  font-size: 0.7em;
+  margin-bottom: 0.6em;
+  padding: 0.6em;
+  border-radius: 2px;
+  vertical-align: middle;
+  margin-bottom: 0; }
+  .form-plugin-session-checkbox .status.attending {
+    background: #99B979;
+    color: #303030; }
+  .form-plugin-session-checkbox .status.not-attending {
+    display: none !important; }
+  .form-plugin-session-checkbox .status.in-queue {
+    background: #EBE0A2;
+    color: #303030; }
+  .form-plugin-session-checkbox .status.deciding {
+    background: #EBE0A2;
+    color: #303030; }
+
+.form-plugin-session-checkbox .form-plugin-session-list-table {
+  border: 2px solid #424242;
+  border-collapse: separate;
+  border-spacing: 0;
+  border-bottom-left-radius: 2px;
+  border-bottom-right-radius: 2px;
+  overflow: hidden;
+  margin-bottom: 0; }
+  .form-plugin-session-checkbox .form-plugin-session-list-table td {
+    border-bottom: 2px solid #424242; }
+    .form-plugin-session-checkbox .form-plugin-session-list-table td:first-child {
+      background: #424242;
+      color: #A8A8A8;
+      width: 1%;
+      text-align: center;
+      font-size: 17px;
+}
+  .form-plugin-session-checkbox .form-plugin-session-list-table tr:last-child td {
+    border-bottom: none; }
+  .form-plugin-session-checkbox .form-plugin-session-list-table tr.time-and-date {
+    line-height: 1.45em; }
+    .form-plugin-session-checkbox .form-plugin-session-list-table tr.time-and-date .session-time-and-date-icon::before {
+      font-family: "Font Awesome 5 Pro";
+      font-weight: 500;
+      content: "";
+      margin-right: 0.6em; }
+    .form-plugin-session-checkbox .form-plugin-session-list-table tr.time-and-date .session-time-and-date-icon::before {
+      margin-right: 0; }
+    .form-plugin-session-checkbox .form-plugin-session-list-table tr.time-and-date .time {
+      margin-right: 0.6em; }
+      .form-plugin-session-checkbox .form-plugin-session-list-table tr.time-and-date .time::before {
+        font-family: "Font Awesome 5 Pro";
+        font-weight: 500;
+        content: "";
+        margin-right: 0.6em; }
+      .form-plugin-session-checkbox .form-plugin-session-list-table tr.time-and-date .time::before {
+        margin-right: 0; }
+    .form-plugin-session-checkbox .form-plugin-session-list-table tr.time-and-date .date::before {
+      font-family: "Font Awesome 5 Pro";
+      font-weight: 500;
+      content: "";
+      margin-right: 0.6em; }
+    .form-plugin-session-checkbox .form-plugin-session-list-table tr.time-and-date .date::before {
+      margin-right: 0; }
+  .form-plugin-session-checkbox .form-plugin-session-list-table tr.rsvp-deadline .session-rsvp-deadline-icon::before {
+    font-family: "Font Awesome 5 Pro";
+    font-weight: 500;
+    content: "";
+    margin-right: 0.6em; }
+  .form-plugin-session-checkbox .form-plugin-session-list-table tr.rsvp-deadline .session-rsvp-deadline-icon::before {
+    margin-right: 0; }
+  .form-plugin-session-checkbox .form-plugin-session-list-table tr.cost .session-cost-icon::before {
+    font-family: "Font Awesome 5 Pro";
+    font-weight: 500;
+    content: "";
+    margin-right: 0.6em; }
+  .form-plugin-session-checkbox .form-plugin-session-list-table tr.cost .session-cost-icon::before {
+    margin-right: 0; }
+  .form-plugin-session-checkbox .form-plugin-session-list-table tr.session-group .session-group-icon::before {
+    font-family: "Font Awesome 5 Pro";
+    font-weight: 500;
+    content: "";
+    margin-right: 0.6em; }
+  .form-plugin-session-checkbox .form-plugin-session-list-table tr.session-group .session-group-icon::before {
+    margin-right: 0; }
+  .form-plugin-session-checkbox .form-plugin-session-list-table tr.speaker .session-speaker-icon::before {
+    font-family: "Font Awesome 5 Pro";
+    font-weight: 500;
+    content: "";
+    margin-right: 0.6em; }
+  .form-plugin-session-checkbox .form-plugin-session-list-table tr.speaker .session-speaker-icon::before {
+    margin-right: 0; }
+  .form-plugin-session-checkbox .form-plugin-session-list-table tr.tags .session-tags-icon::before {
+    font-family: "Font Awesome 5 Pro";
+    font-weight: 500;
+    content: "";
+    margin-right: 0.6em; }
+  .form-plugin-session-checkbox .form-plugin-session-list-table tr.tags .session-tags-icon::before {
+    margin-right: 0; }
+  .form-plugin-session-checkbox .form-plugin-session-list-table .seats-available .session-seats-available-icon::before {
+    font-family: "Font Awesome 5 Pro";
+    font-weight: 500;
+    content: "";
+    margin-right: 0.6em; }
+  .form-plugin-session-checkbox .form-plugin-session-list-table .seats-available .session-seats-available-icon::before {
+    margin-right: 0; }
+  .form-plugin-session-checkbox .form-plugin-session-list-table tr.location .session-location-icon::before {
+    font-family: "Font Awesome 5 Pro";
+    font-weight: 500;
+    content: "";
+    margin-right: 0.6em; }
+  .form-plugin-session-checkbox .form-plugin-session-list-table tr.location .session-location-icon::before {
+    margin-right: 0; }
+  .form-plugin-session-checkbox .form-plugin-session-list-table td {
+    padding: 0.6em; }
+
+.form-plugin-session-checkbox .session-table td:first-child:not(.form-plugin-session-list-table td) {
+  width: 1%;
+  padding: 0 0.6em; }
+
+.form-plugin-session-checkbox .session-table td:last-child:not(.form-plugin-session-list-table td) {
+  padding: 0; }
+
+.form-plugin-session-checkbox input[type="checkbox"] {
+  position: absolute;
+  display: none; }
+  .form-plugin-session-checkbox input[type="checkbox"] + label {
+    position: relative;
+    margin-left: 0 !important;
+    padding: 0;
+    font-size: 1.25em;
+    cursor: pointer; }
+    .form-plugin-session-checkbox input[type="checkbox"] + label::after {
+      font-family: "Font Awesome 5 Pro";
+      font-weight: 500;
+      content: "";
+      margin-left: 0.6em; }
+    .form-plugin-session-checkbox input[type="checkbox"] + label::after {
+      position: absolute;
+      top: 0;
+      left: 0.25em;
+      margin-left: 0;
+      color: #FFF;
+      opacity: 0;
+      transition: opacity 200ms ease; }
+  .form-plugin-session-checkbox input[type="checkbox"] + label:before {
+    display: inline-block;
+    margin-bottom: 0.6em;
+    width: 1.5em;
+    height: 1.5em;
+    content: "";
+    margin-right: 0.6em;
+    vertical-align: middle;
+    background: #303030;
+    border: 2px solid #FFF;
+    transition: background 200ms ease;
+    box-shadow: none; }
+  .form-plugin-session-checkbox input[type="checkbox"]:hover + label:before {
+    background: #303030;
+    color: #FFF;
+    transition: background 200ms ease; }
+  .form-plugin-session-checkbox input[type="checkbox"]:checked + label:before {
+    background: #303030;
+    color: #FFF;
+    transition: background 200ms ease; }
+  .form-plugin-session-checkbox input[type="checkbox"]:checked + label:before {
+    background: #303030;
+    color: #FFF;
+    transition: background 200ms ease; }
+  .form-plugin-session-checkbox input[type="checkbox"]:disabled + label {
+    color: #424242;
+    cursor: not-allowed; }
+    .form-plugin-session-checkbox input[type="checkbox"]:disabled + label::after {
+      color: #424242 !important; }
+    .form-plugin-session-checkbox input[type="checkbox"]:disabled + label::before {
+      border: 2px solid #636363; }
+  .form-plugin-session-checkbox input[type="checkbox"]:disabled + label:before {
+    box-shadow: none;
+    background: #424242; }
+  .form-plugin-session-checkbox input[type="checkbox"]:checked + label::after {
+    font-family: "Font Awesome 5 Pro";
+    font-weight: 500;
+    content: "";
+    margin-left: 0.6em; }
+  .form-plugin-session-checkbox input[type="checkbox"]:checked + label::after {
+    margin-left: 0;
+    color: #FFF;
+    position: absolute;
+    top: 0;
+    left: 0.25em;
+    opacity: 1;
+    transition: opacity 200ms ease; }
+
+.form-plugin-session-checkbox input[type="checkbox"] + label::before {
+  margin-right: 0; }
+
+.form-plugin-session-checkbox .form-plugin-description {
+  margin-top: 0.6em;
+  border-top: 2px solid #424242;
+  border-left: 2px solid #424242;
+  border-right: 2px solid #424242;
+  border-top-left-radius: 2px;
+  border-top-right-radius: 2px;
+  padding: 0.6em;
+  line-height: 1.45em; }
+  .form-plugin-session-checkbox .form-plugin-description *:last-child {
+    padding-bottom: 0;
+    margin-bottom: 0; }
+
+.form-plugin-submit-button .form-submit-button::before {
+  font-family: "Font Awesome 5 Pro";
+  font-weight: 500;
+  content: "";
+  margin-right: 0.6em; }
+
+#dialoge {
+  display: none; }
+  #dialoge.visible {
+    display: block;
+    cursor: pointer;
+    z-index: 1001;
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    min-height: 100vh;
+    background: rgba(255, 255, 255, 0.85); }
+    #dialoge.visible .dialogue-content {
+      position: relative;
+      max-width: 45em;
+      height: auto;
+      max-height: calc(100vh - 0.6em * 2);
+      margin: 0.6em auto 0.6em auto;
+      background: #303030;
+      cursor: default;
+      box-shadow: 0 0 2em 0 black;
+      position: relative;
+      border-radius: 2px;
+      overflow-y: scroll; }
+      #dialoge.visible .dialogue-content .dialogue-menu-wrapper {
+        width: 100%;
+        background: #424242;
+        position: fixed;
+        top: 0.6em;
+        max-width: 45em;
+        border-top-left-radius: 2px;
+        border-top-right-radius: 2px; }
+        #dialoge.visible .dialogue-content .dialogue-menu-wrapper .dialoge-menu {
+          margin: 0;
+          padding: 0;
+          list-style: none;
+          border-bottom: 2px solid #424242;
+          padding: 0.6em 0.6em 0 0.6em; }
+          #dialoge.visible .dialogue-content .dialogue-menu-wrapper .dialoge-menu .active a, #dialoge.visible .dialogue-content .dialogue-menu-wrapper .dialoge-menu .active .form-plugin-messages .form-plugin-list .form-plugin-item .form-plugin-messages-message-wrapper .session-detail-link, .form-plugin-messages .form-plugin-list .form-plugin-item .form-plugin-messages-message-wrapper #dialoge.visible .dialogue-content .dialogue-menu-wrapper .dialoge-menu .active .session-detail-link, #dialoge.visible .dialogue-content .dialogue-menu-wrapper .dialoge-menu .active .form-plugin-archive-messages .form-plugin-list .form-plugin-item .form-plugin-messages-message-wrapper .session-detail-link, .form-plugin-archive-messages .form-plugin-list .form-plugin-item .form-plugin-messages-message-wrapper #dialoge.visible .dialogue-content .dialogue-menu-wrapper .dialoge-menu .active .session-detail-link {
+            background: #75acd3; }
+          #dialoge.visible .dialogue-content .dialogue-menu-wrapper .dialoge-menu li {
+            display: inline-block;
+            position: relative; }
+            #dialoge.visible .dialogue-content .dialogue-menu-wrapper .dialoge-menu li a, #dialoge.visible .dialogue-content .dialogue-menu-wrapper .dialoge-menu li .form-plugin-messages .form-plugin-list .form-plugin-item .form-plugin-messages-message-wrapper .session-detail-link, .form-plugin-messages .form-plugin-list .form-plugin-item .form-plugin-messages-message-wrapper #dialoge.visible .dialogue-content .dialogue-menu-wrapper .dialoge-menu li .session-detail-link, #dialoge.visible .dialogue-content .dialogue-menu-wrapper .dialoge-menu li .form-plugin-archive-messages .form-plugin-list .form-plugin-item .form-plugin-messages-message-wrapper .session-detail-link, .form-plugin-archive-messages .form-plugin-list .form-plugin-item .form-plugin-messages-message-wrapper #dialoge.visible .dialogue-content .dialogue-menu-wrapper .dialoge-menu li .session-detail-link {
+              background: #303030;
+              color: #FFF;
+              font-weight: bold;
+              font-family: "Open Sans", sans-serif;
+              -webkit-touch-callout: none;
+              -webkit-user-select: none;
+              -khtml-user-select: none;
+              -moz-user-select: none;
+              -ms-user-select: none;
+              user-select: none;
+              display: inline-block;
+              text-decoration: none;
+              text-align: center;
+              font-size: 0.7em;
+              font-family: "Open Sans", sans-serif;
+              padding: 1.2em 1.8em;
+              border: none;
+              border-top-left-radius: 2px;
+              border-top-right-radius: 2px;
+              transition: background 200ms ease, color 200ms ease;
+              white-space: nowrap;
+              cursor: pointer;
+              line-height: 1; }
+              #dialoge.visible .dialogue-content .dialogue-menu-wrapper .dialoge-menu li a:hover, #dialoge.visible .dialogue-content .dialogue-menu-wrapper .dialoge-menu li .form-plugin-messages .form-plugin-list .form-plugin-item .form-plugin-messages-message-wrapper .session-detail-link:hover, .form-plugin-messages .form-plugin-list .form-plugin-item .form-plugin-messages-message-wrapper #dialoge.visible .dialogue-content .dialogue-menu-wrapper .dialoge-menu li .session-detail-link:hover, #dialoge.visible .dialogue-content .dialogue-menu-wrapper .dialoge-menu li .form-plugin-archive-messages .form-plugin-list .form-plugin-item .form-plugin-messages-message-wrapper .session-detail-link:hover, .form-plugin-archive-messages .form-plugin-list .form-plugin-item .form-plugin-messages-message-wrapper #dialoge.visible .dialogue-content .dialogue-menu-wrapper .dialoge-menu li .session-detail-link:hover, #dialoge.visible .dialogue-content .dialogue-menu-wrapper .dialoge-menu li a.current, #dialoge.visible .dialogue-content .dialogue-menu-wrapper .dialoge-menu li .form-plugin-messages .form-plugin-list .form-plugin-item .form-plugin-messages-message-wrapper .current.session-detail-link, .form-plugin-messages .form-plugin-list .form-plugin-item .form-plugin-messages-message-wrapper #dialoge.visible .dialogue-content .dialogue-menu-wrapper .dialoge-menu li .current.session-detail-link, #dialoge.visible .dialogue-content .dialogue-menu-wrapper .dialoge-menu li .form-plugin-archive-messages .form-plugin-list .form-plugin-item .form-plugin-messages-message-wrapper .current.session-detail-link, .form-plugin-archive-messages .form-plugin-list .form-plugin-item .form-plugin-messages-message-wrapper #dialoge.visible .dialogue-content .dialogue-menu-wrapper .dialoge-menu li .current.session-detail-link, #dialoge.visible .dialogue-content .dialogue-menu-wrapper .dialoge-menu li a.active, #dialoge.visible .dialogue-content .dialogue-menu-wrapper .dialoge-menu li .form-plugin-messages .form-plugin-list .form-plugin-item .form-plugin-messages-message-wrapper .active.session-detail-link, .form-plugin-messages .form-plugin-list .form-plugin-item .form-plugin-messages-message-wrapper #dialoge.visible .dialogue-content .dialogue-menu-wrapper .dialoge-menu li .active.session-detail-link, #dialoge.visible .dialogue-content .dialogue-menu-wrapper .dialoge-menu li .form-plugin-archive-messages .form-plugin-list .form-plugin-item .form-plugin-messages-message-wrapper .active.session-detail-link, .form-plugin-archive-messages .form-plugin-list .form-plugin-item .form-plugin-messages-message-wrapper #dialoge.visible .dialogue-content .dialogue-menu-wrapper .dialoge-menu li .active.session-detail-link {
+                background: #468fc3;
+                color: #FFF;
+                transition: background 200ms ease, color 200ms ease; }
+      #dialoge.visible .dialogue-content .close-dialouge {
+        -webkit-touch-callout: none;
+        -webkit-user-select: none;
+        -khtml-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        background: #9cc3df;
+        color: #FFF;
+        display: inline-block;
+        text-decoration: none;
+        text-align: center;
+        font-size: 0.625em;
+        font-family: "Open Sans", sans-serif;
+        margin-bottom: 0.6em;
+        padding: 1.2em 1.8em;
+        border: none;
+        border-radius: 2px;
+        transition: background 200ms ease, color 200ms ease;
+        white-space: nowrap;
+        cursor: pointer;
+        line-height: 1;
+        position: absolute;
+        top: 0.6em;
+        right: 0.6em; }
+        #dialoge.visible .dialogue-content .close-dialouge::before {
+          font-family: "Font Awesome 5 Pro";
+          font-weight: 500;
+          content: "";
+          margin-right: 0.6em; }
+        #dialoge.visible .dialogue-content .close-dialouge:hover, #dialoge.visible .dialogue-content .close-dialouge.current, #dialoge.visible .dialogue-content .close-dialouge.active {
+          background: #468fc3;
+          color: #FFF;
+          transition: background 200ms ease, color 200ms ease;
+          text-decoration: none; }
+        #dialoge.visible .dialogue-content .close-dialouge.small {
+          font-size: 0.7em; }
+        #dialoge.visible .dialogue-content .close-dialouge.disabled {
+          background: #B97979;
+          color: #FFF;
+          opacity: 0.5;
+          cursor: not-allowed; }
+        #dialoge.visible .dialogue-content .close-dialouge::before {
+          margin-right: 0; }
+      #dialoge.visible .dialogue-content .section {
+        padding: 0;
+        margin-top: 3em; }
+        #dialoge.visible .dialogue-content .section.attendee-details-wrapper .attendee-section {
+          padding: 0.6em; }
+          #dialoge.visible .dialogue-content .section.attendee-details-wrapper .attendee-section .attendee-detail-title {
+            margin-bottom: 0; }
+        #dialoge.visible .dialogue-content .section.attendee-details-wrapper .attendee-details-section .form-plugin-table {
+          margin-bottom: 0; }
+          #dialoge.visible .dialogue-content .section.attendee-details-wrapper .attendee-details-section .form-plugin-table td:first-child {
+            font-weight: bold;
+            font-family: "Open Sans", sans-serif;
+            width: 1%; }
+        #dialoge.visible .dialogue-content .section .image-section .photo-full-size {
+          background-image: none !important;
+          background: #FFF; }
+          #dialoge.visible .dialogue-content .section .image-section .photo-full-size img {
+            margin: 0 auto;
+            width: auto;
+            max-width: 100%;
+            height: auto; }
+        #dialoge.visible .dialogue-content .section.image-details-wrapper .image-details-section {
+          padding: 0.6em; }
+          #dialoge.visible .dialogue-content .section.image-details-wrapper .image-details-section .photo-submitter {
+            line-height: 1.45em; }
+            #dialoge.visible .dialogue-content .section.image-details-wrapper .image-details-section .photo-submitter label {
+              font-weight: bold;
+              font-family: "Open Sans", sans-serif; }
+          #dialoge.visible .dialogue-content .section.image-details-wrapper .image-details-section .photo-comment {
+            line-height: 1.45em; }
+            #dialoge.visible .dialogue-content .section.image-details-wrapper .image-details-section .photo-comment label {
+              font-weight: bold;
+              font-family: "Open Sans", sans-serif; }
+        #dialoge.visible .dialogue-content .section.location-details-wrapper .location-section {
+          padding: 0.6em; }
+          #dialoge.visible .dialogue-content .section.location-details-wrapper .location-section .location-description *:last-child {
+            margin-bottom: 0;
+            padding-bottom: 0; }
+        #dialoge.visible .dialogue-content .section.location-details-wrapper .location-details-section .form-plugin-location-list-table {
+          margin-bottom: 0;
+          border-top: 2px solid #424242; }
+          #dialoge.visible .dialogue-content .section.location-details-wrapper .location-details-section .form-plugin-location-list-table td {
+            line-height: 1.45em; }
+          #dialoge.visible .dialogue-content .section.location-details-wrapper .location-details-section .form-plugin-location-list-table tr td:first-child {
+            background: #424242;
+            color: #FFF;
+            width: 1%;
+            text-align: center; }
+          #dialoge.visible .dialogue-content .section.location-details-wrapper .location-details-section .form-plugin-location-list-table tr.location .location-list-map-icon::before {
+            font-family: "Font Awesome 5 Pro";
+            font-weight: 500;
+            content: "";
+            margin-right: 0.6em; }
+          #dialoge.visible .dialogue-content .section.location-details-wrapper .location-details-section .form-plugin-location-list-table tr.location .location-list-map-icon::before {
+            margin-right: 0; }
+          #dialoge.visible .dialogue-content .section.location-details-wrapper .location-details-section .form-plugin-location-list-table tr.address .location-list-address-icon::before {
+            font-family: "Font Awesome 5 Pro";
+            font-weight: 500;
+            content: "";
+            margin-right: 0.6em; }
+          #dialoge.visible .dialogue-content .section.location-details-wrapper .location-details-section .form-plugin-location-list-table tr.address .location-list-address-icon::before {
+            margin-right: 0; }
+          #dialoge.visible .dialogue-content .section.location-details-wrapper .location-details-section .form-plugin-location-list-table tr.contact .location-list-speaker-icon::before {
+            font-family: "Font Awesome 5 Pro";
+            font-weight: 500;
+            content: "";
+            margin-right: 0.6em; }
+          #dialoge.visible .dialogue-content .section.location-details-wrapper .location-details-section .form-plugin-location-list-table tr.contact .location-list-speaker-icon::before {
+            margin-right: 0; }
+        #dialoge.visible .dialogue-content .section.session-details .session-section {
+          padding: 0.6em; }
+          #dialoge.visible .dialogue-content .section.session-details .session-section .session-detail-title {
+            display: inline-block; }
+          #dialoge.visible .dialogue-content .section.session-details .session-section .status {
+            display: none; }
+        #dialoge.visible .dialogue-content .section.session-details .session-description *:last-child {
+          margin-bottom: 0;
+          padding-bottom: 0; }
+        #dialoge.visible .dialogue-content .section.session-details .session-details-section .form-plugin-session-list-table {
+          border: 2px solid #424242;
+          border-collapse: separate;
+          border-spacing: 0;
+          border-left: none;
+          border-right: none;
+          border-bottom: 0;
+          margin-bottom: 0; }
+          #dialoge.visible .dialogue-content .section.session-details .session-details-section .form-plugin-session-list-table td {
+            border-bottom: 2px solid #424242; }
+            #dialoge.visible .dialogue-content .section.session-details .session-details-section .form-plugin-session-list-table td:first-child {
+              background: #424242;
+              color: #FFF;
+              width: 1%;
+              text-align: center; }
+          #dialoge.visible .dialogue-content .section.session-details .session-details-section .form-plugin-session-list-table tr:last-child td {
+            border-bottom: none; }
+          #dialoge.visible .dialogue-content .section.session-details .session-details-section .form-plugin-session-list-table tr.time-and-date {
+            line-height: 1.45em; }
+            #dialoge.visible .dialogue-content .section.session-details .session-details-section .form-plugin-session-list-table tr.time-and-date .session-time-and-date-icon::before {
+              font-family: "Font Awesome 5 Pro";
+              font-weight: 500;
+              content: "";
+              margin-right: 0.6em; }
+            #dialoge.visible .dialogue-content .section.session-details .session-details-section .form-plugin-session-list-table tr.time-and-date .session-time-and-date-icon::before {
+              margin-right: 0; }
+            #dialoge.visible .dialogue-content .section.session-details .session-details-section .form-plugin-session-list-table tr.time-and-date .time {
+              margin-right: 0.6em; }
+              #dialoge.visible .dialogue-content .section.session-details .session-details-section .form-plugin-session-list-table tr.time-and-date .time::before {
+                font-family: "Font Awesome 5 Pro";
+                font-weight: 500;
+                content: "";
+                margin-right: 0.6em; }
+              #dialoge.visible .dialogue-content .section.session-details .session-details-section .form-plugin-session-list-table tr.time-and-date .time::before {
+                margin-right: 0; }
+            #dialoge.visible .dialogue-content .section.session-details .session-details-section .form-plugin-session-list-table tr.time-and-date .date::before {
+              font-family: "Font Awesome 5 Pro";
+              font-weight: 500;
+              content: "";
+              margin-right: 0.6em; }
+            #dialoge.visible .dialogue-content .section.session-details .session-details-section .form-plugin-session-list-table tr.time-and-date .date::before {
+              margin-right: 0; }
+          #dialoge.visible .dialogue-content .section.session-details .session-details-section .form-plugin-session-list-table tr.rsvp-deadline .session-rsvp-deadline-icon::before {
+            font-family: "Font Awesome 5 Pro";
+            font-weight: 500;
+            content: "";
+            margin-right: 0.6em; }
+          #dialoge.visible .dialogue-content .section.session-details .session-details-section .form-plugin-session-list-table tr.rsvp-deadline .session-rsvp-deadline-icon::before {
+            margin-right: 0; }
+          #dialoge.visible .dialogue-content .section.session-details .session-details-section .form-plugin-session-list-table tr.cost .session-cost-icon::before {
+            font-family: "Font Awesome 5 Pro";
+            font-weight: 500;
+            content: "";
+            margin-right: 0.6em; }
+          #dialoge.visible .dialogue-content .section.session-details .session-details-section .form-plugin-session-list-table tr.cost .session-cost-icon::before {
+            margin-right: 0; }
+          #dialoge.visible .dialogue-content .section.session-details .session-details-section .form-plugin-session-list-table tr.session-group .session-group-icon::before {
+            font-family: "Font Awesome 5 Pro";
+            font-weight: 500;
+            content: "";
+            margin-right: 0.6em; }
+          #dialoge.visible .dialogue-content .section.session-details .session-details-section .form-plugin-session-list-table tr.session-group .session-group-icon::before {
+            margin-right: 0; }
+          #dialoge.visible .dialogue-content .section.session-details .session-details-section .form-plugin-session-list-table tr.speaker .session-speaker-icon::before {
+            font-family: "Font Awesome 5 Pro";
+            font-weight: 500;
+            content: "";
+            margin-right: 0.6em; }
+          #dialoge.visible .dialogue-content .section.session-details .session-details-section .form-plugin-session-list-table tr.speaker .session-speaker-icon::before {
+            margin-right: 0; }
+          #dialoge.visible .dialogue-content .section.session-details .session-details-section .form-plugin-session-list-table tr.tags .session-tags-icon::before {
+            font-family: "Font Awesome 5 Pro";
+            font-weight: 500;
+            content: "";
+            margin-right: 0.6em; }
+          #dialoge.visible .dialogue-content .section.session-details .session-details-section .form-plugin-session-list-table tr.tags .session-tags-icon::before {
+            margin-right: 0; }
+          #dialoge.visible .dialogue-content .section.session-details .session-details-section .form-plugin-session-list-table .seats-available .session-seats-available-icon::before {
+            font-family: "Font Awesome 5 Pro";
+            font-weight: 500;
+            content: "";
+            margin-right: 0.6em; }
+          #dialoge.visible .dialogue-content .section.session-details .session-details-section .form-plugin-session-list-table .seats-available .session-seats-available-icon::before {
+            margin-right: 0; }
+          #dialoge.visible .dialogue-content .section.session-details .session-details-section .form-plugin-session-list-table tr.location .session-location-icon::before {
+            font-family: "Font Awesome 5 Pro";
+            font-weight: 500;
+            content: "";
+            margin-right: 0.6em; }
+          #dialoge.visible .dialogue-content .section.session-details .session-details-section .form-plugin-session-list-table tr.location .session-location-icon::before {
+            margin-right: 0; }
+
+@media only screen and (min-width: 80em) {
+  body {
+    font-size: 1em; } }
+
+@media only screen and (min-width: 60em) and (max-width: 80em) {
+  body {
+    font-size: 1.1em; } }
+
+@media only screen and (min-width: 45em) and (max-width: 60em) {
+  body {
+    font-size: 1em; } }
+
+@media only screen and (min-width: 33.75em) and (max-width: 45em) {
+  body {
+    font-size: 0.9em; } }
+
+@media only screen and (min-width: 0) and (max-width: 33.75em) {
+  body {
+    font-size: 0.8em; } }

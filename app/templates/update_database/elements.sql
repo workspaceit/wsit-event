@@ -5,7 +5,6 @@ INSERT INTO `elements` (`id`, `name`, `created_at`, `created_by_id`, `last_updat
 (18, 'Location-list', '2016-08-03 00:00:00', 1, 1, '2016-08-03 00:00:00', 'plugin', 'location-list'),
 (19, 'Session-radio-button', '2016-08-05 00:00:00', 1, 1, '2016-08-05 00:00:00', 'plugin', 'session-radio-button'),
 (20, 'Session-checkbox', '2016-08-19 00:00:00', 1, 1, '2016-08-19 00:00:00', 'plugin', 'session-checkbox'),
-(21, 'Session Scheduler', '2016-09-15 00:00:00', 1, 1, '2016-09-27 00:00:00', 'plugin', 'session-scheduler'),
 (22, 'Hotel Reservation', '2016-09-15 00:00:00', 1, 1, '2016-09-08 00:00:00', 'plugin', 'hotel-reservation'),
 (23, 'Login Form', '2016-09-27 00:00:00', 1, 1, '2016-09-27 00:00:00', 'plugin', 'login-form'),
 (24, 'Submit Button', '2016-09-26 00:00:00', 1, 1, '2016-09-26 00:00:00', 'plugin', 'submit-button'),

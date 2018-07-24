@@ -227,10 +227,12 @@ $(function () {
             var json = $("#" + BoxId).find('.agenda_settings_options').val();
             var options = JSON.parse(json);
             var session_option = options.session_agenda_session_available;
-        } else {
+        } else if(plugin_name == 'session-scheduler'){
             var json = $("#" + BoxId).find('.scheduler_settings_options').val();
             var options = JSON.parse(json);
             var session_option = options.session_scheduler_session_available;
+        }else{
+            var session_option = 'x';
         }
         var csrfToken = $('input[name=csrfmiddlewaretoken]').val();
         var data = {
@@ -245,6 +247,8 @@ $(function () {
             csrfmiddlewaretoken: csrfToken
         };
         slider.prop("disabled", true);
+        var all_sessions = getAllSessionsId();
+        data['all_sessions'] = JSON.stringify(all_sessions);
         $.ajax({
             //url: base_url + '/attend-or-cancel-session/',
             url: base_url + '/check-session-availability/',
@@ -283,6 +287,9 @@ $(function () {
                     } else if (plugin_name == 'session-agenda') {
                         var $this_plugin = $("#" + BoxId).closest('.form-plugin-session-agenda');
                         getSessionAgendaReload($this_plugin);
+                    }
+                    if (response.sessions_info) {
+                        updateSessionsInfo(response.sessions_info, temp_user_id);
                     }
                 }
             }
@@ -2000,8 +2007,8 @@ function updateSessionsInfo(sessions, attendee_id) {
     for (var i = 0; i < sessions.length; i++) {
         var session_id = sessions[i]['id'];
         console.log(session_id);
+        console.log(attendee_id);
         $('body').find('.form-plugin-session-checkbox').find('.form-plugin-list .form-plugin-item .session-table[data-attendee-id='+attendee_id+'] tr[data-session-id=' + session_id + ']').each(function () {
-            console.log($(this));
             $(this).removeClass('not-attending not-answered attending in-queue time-conflict');
             $(this).find('.status').removeClass('not-attending not-answered attending in-queue time-conflict');
             $(this).addClass(sessions[i]['all_session_status'].join(" "));
@@ -2018,7 +2025,25 @@ function updateSessionsInfo(sessions, attendee_id) {
                 $(this).find('.session-selection').attr('data-checked', false);
             }
 
-        })
+        });
+        $('body').find('.form-plugin-session-radio-button').find('.form-plugin-list .form-plugin-item .session-table[data-attendee-id='+attendee_id+'] tr[data-session-id=' + session_id + ']').each(function () {
+            $(this).removeClass('not-attending not-answered attending in-queue time-conflict');
+            $(this).find('.status').removeClass('not-attending not-answered attending in-queue time-conflict');
+            $(this).addClass(sessions[i]['all_session_status'].join(" "));
+            $(this).find('.status').addClass(sessions[i]['all_session_status'].join(" "));
+            $(this).find('.status').html(sessions[i]['status_msg']);
+            if (sessions[i]['current_status'] != 'not-attending' || sessions[i]['current_status'] != 'not-answered') {
+                $(this).find('.status').show();
+            }
+            if (sessions[i]['current_status'] == 'attending' || sessions[i]['current_status'] == 'in-queue') {
+                $(this).find('.session-selection').prop('checked', true);
+                $(this).find('.session-selection').attr('data-checked', true);
+            } else {
+                $(this).find('.session-selection').prop('checked', false);
+                $(this).find('.session-selection').attr('data-checked', false);
+            }
+
+        });
         $('body').find('#dialoge .switch-wrapper').find('input[data-session-id=' + session_id + ']').each(function () {
             var $session_section = $(this).closest('.session-section');
             $session_section.find('.status').removeClass('not-attending not-answered attending in-queue time-conflict');
@@ -2039,7 +2064,7 @@ function updateSessionsInfo(sessions, attendee_id) {
                 $(this).prop('checked', false);
             }
 
-        })
+        });
 
     }
 }

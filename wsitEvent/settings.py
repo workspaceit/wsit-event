@@ -118,7 +118,7 @@ SMTP_PASSWORD = ''
 
 DATABASES = {
          'default': {
-             'NAME': 'event_prod_27_04_db',
+             'NAME': 'wsit_event_db',
              'ENGINE': 'django.db.backends.mysql',
              'USER': 'root',
              'PASSWORD': '1',
