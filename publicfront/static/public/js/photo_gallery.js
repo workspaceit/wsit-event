@@ -1,5 +1,5 @@
 $(function () {
-    $('body').find('.form-plugin-photo-gallery').each(function () {
+    $('body').find('.event-plugin-photo-gallery').each(function () {
         $(this).find('.photo-pagination a:first').addClass('disabled');
         $(this).find('.photo-pagination a:nth-child(2)').addClass('active');
         if ($(this).find('.photo-pagination a').eq(-2).hasClass('active')) {
@@ -10,7 +10,7 @@ $(function () {
 
 
     $('body').on('click', '.photo-pagination a', function (e) {
-        var $this = $(this).closest('.form-plugin-photo-gallery');
+        var $this = $(this).closest('.event-plugin-photo-gallery');
         var previous_page = parseInt($this.find('.pagination_previous_page').val());
         if ($.isNumeric($(this).text()) && previous_page != $(this).text()) {
             $(this).parent('.photo-pagination').find('a').each(function () {
@@ -65,14 +65,14 @@ $(function () {
         }
     });
 
-    $('body').find('.form-plugin-photo-gallery').each(function () {
+    $('body').find('.event-plugin-photo-gallery').each(function () {
         get_photos($(this), 1);
     });
 
     // $('body').on('click', '.photo-gallery-section img', function () {
-    // $('body').on('click', '.form-plugin-photo-gallery img', function () {
+    // $('body').on('click', '.event-plugin-photo-gallery img', function () {
     //     $('.loader').show();
-    //     var photo_id = $(this).closest('.form-plugin-item').attr('data-id');
+    //     var photo_id = $(this).closest('.event-plugin-item').attr('data-id');
     //     $.ajax({
     //         url: base_url + '/get-gallery-photo-details/',
     //         type: "GET",
@@ -85,12 +85,12 @@ $(function () {
     //                 $("#dialoge .dialoge-menu").append('<li class="active" data-section="image-details" data-id="image-details"><a>'+ lang_image_details_text +'</a><span class="dialoge-menu-close-button"></span></li>');
     //                 $("#dialoge .image-details").append("<div class='full-size-photo'><img class='photo " + result.photo_group + "' style='max-width:100%; max-height:100%;' src='" + image_src + "'></div>");
     //                 if (result.comment.length > 0 && result.uploader.length > 0) {
-    //                     $("#dialoge .image-details .full-size-photo").append('<div class="form-plugin-description"><div class="photo-submitter"><label>' + lang_uploader_text + ': </label><span>' + result.uploader + '</span></div><div class="photo-comment"><label>' + lang_comment_text + ': </label><span>' + result.comment + '</span></div></div>');
+    //                     $("#dialoge .image-details .full-size-photo").append('<div class="event-plugin-description"><div class="photo-submitter"><label>' + lang_uploader_text + ': </label><span>' + result.uploader + '</span></div><div class="photo-comment"><label>' + lang_comment_text + ': </label><span>' + result.comment + '</span></div></div>');
     //                 } else {
     //                     if (result.comment.length > 0) {
-    //                         $("#dialoge .image-details .full-size-photo").append('<div class="form-plugin-description"><div class="photo-comment"><label>' + lang_comment_text + ': </label><span>' + result.comment + '</span></div></div>');
+    //                         $("#dialoge .image-details .full-size-photo").append('<div class="event-plugin-description"><div class="photo-comment"><label>' + lang_comment_text + ': </label><span>' + result.comment + '</span></div></div>');
     //                     } else if (result.uploader.length > 0) {
-    //                         $("#dialoge .image-details .full-size-photo").append('<div class="form-plugin-description"><div class="photo-submitter"><label>' + lang_uploader_text + ': </label><span>' + result.uploader + '</span></div></div>');
+    //                         $("#dialoge .image-details .full-size-photo").append('<div class="event-plugin-description"><div class="photo-submitter"><label>' + lang_uploader_text + ': </label><span>' + result.uploader + '</span></div></div>');
     //                     }
     //                 }
     //                 $('#dialoge').removeClass("_visible").addClass("visible");
@@ -99,14 +99,14 @@ $(function () {
     //     });
     //     $('.loader').hide();
     // });
-    $('body').on('click', '.form-plugin-photo-gallery .form-plugin-item', function (e) {
+    $('body').on('click', '.event-plugin-photo-gallery .event-plugin-item', function (e) {
         $('.loader').show();
         var photo_id = $(this).attr('data-id');
-        var show_comment = $(this).closest('.form-plugin-photo-gallery').find('.pg_show_comment').val();
-        var uploader_name = $(this).closest('.form-plugin-photo-gallery').find('.pg_uploader_name').val();
-        var lang_comment_text = $(this).closest('.form-plugin-photo-gallery').find('.comment_lang_text').val();
-        var lang_uploader_text = $(this).closest('.form-plugin-photo-gallery').find('.uploader_lang_text').val();
-        var lang_image_details_text = $(this).closest('.form-plugin-photo-gallery').find('.image_details_lang_text').val();
+        var show_comment = $(this).closest('.event-plugin-photo-gallery').find('.pg_show_comment').val();
+        var uploader_name = $(this).closest('.event-plugin-photo-gallery').find('.pg_uploader_name').val();
+        var lang_comment_text = $(this).closest('.event-plugin-photo-gallery').find('.comment_lang_text').val();
+        var lang_uploader_text = $(this).closest('.event-plugin-photo-gallery').find('.uploader_lang_text').val();
+        var lang_image_details_text = $(this).closest('.event-plugin-photo-gallery').find('.image_details_lang_text').val();
         $.ajax({
             url: base_url + '/get-gallery-photo-details/',
             type: "GET",
@@ -186,7 +186,7 @@ function get_photos($this, skip) {
                     }
 
                 }
-                $this.find(".form-plugin-list").html(result.photo_items);
+                $this.find(".event-plugin-list").html(result.photo_items);
                 $this.find(".pagination-info").html(pagination_text.replace('{X}', result.from).replace('{Y}', result.to).replace('{Z}', result.all_photo_no));
             }
             $('.loader').hide();

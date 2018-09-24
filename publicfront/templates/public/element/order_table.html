@@ -68,7 +68,7 @@
 
                     <div class="scroll-x">
                         <input type="hidden" class="data-economy-attendee-id" value="{{ data_user_id }}">
-                        <table class="form-plugin-table form-plugin-economy-order-table lines"
+                        <table class="event-plugin-table event-plugin-economy-order-table lines"
                                data-order-number="{{ order.order.order_number }}"
                                data-order-status="{{ order.order.status }}"
                                data-order-attendee="{{ order.order.attendee.id }}">
@@ -202,7 +202,7 @@
                         </table>
                     </div>
                     <div class="scroll-x">
-                        <table class="form-plugin-table form-plugin-economy-vat-table lines">
+                        <table class="event-plugin-table event-plugin-economy-vat-table lines">
                             <thead>
                             <tr>
                                 <th>{{ language.langkey.economy_txt_vat }}</th>
@@ -281,7 +281,7 @@
                         {% endif %}
                     {% else %}
                         <div class="scroll-x">
-                            <table class="form-plugin-table form-plugin-economy-order-table lines group-order-{{ order.order_number }}"
+                            <table class="event-plugin-table event-plugin-economy-order-table lines group-order-{{ order.order_number }}"
                                    data-order-number="{{ order.order_number }}"
                                    data-order-status="{{ order.order_status }}">
                                 <thead>
@@ -383,7 +383,7 @@
 
             <div class="scroll-x">
                 <input type="hidden" class="data-economy-attendee-id" value="000">
-                <table class="form-plugin-table form-plugin-economy-order-table lines" data-order-status="open" data-order-attendee="000">
+                <table class="event-plugin-table event-plugin-economy-order-table lines" data-order-status="open" data-order-attendee="000">
                     <thead>
                     <tr>
                         {% if show_item_name %} <th>{{ language.langkey.economy_txt_order_table_costs }}</th> {% endif %}
@@ -407,7 +407,7 @@
                 </table>
             </div>
             <div class="scroll-x">
-                <table class="form-plugin-table form-plugin-economy-vat-table lines">
+                <table class="event-plugin-table event-plugin-economy-vat-table lines">
                     <thead>
                     <tr>
                         <th>{{ language.langkey.economy_txt_vat }}</th>

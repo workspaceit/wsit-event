@@ -1,6 +1,6 @@
-<div class="form-plugin element form-plugin-request-login box" {% if data_user_id %}id="page-{{ page_id }}-box-{{ box_id }}-u-{{ data_user_id }}" data-uid="{{ data_user_id }}"{% else %}id="page-{{ page_id }}-box-{{ box_id }}"{% endif %} data-id="{{ element_id }}"
+<div class="event-plugin element event-plugin-request-login box" {% if data_user_id %}id="page-{{ page_id }}-box-{{ box_id }}-u-{{ data_user_id }}" data-uid="{{ data_user_id }}"{% else %}id="page-{{ page_id }}-box-{{ box_id }}"{% endif %} data-id="{{ element_id }}"
      data-name="request-login">
-    <div class="form-plugin-intro">
+    <div class="event-plugin-intro">
         {#    {% if title != '' or title != None %}#}
         {#        <h3 class="text-color2">{{ title }}</h3>#}
         {#    {% endif %}#}
@@ -12,6 +12,6 @@
         <input class="request-login-email" id="" type="text">
         <div class="error-validating">{{ language.langkey.request_login_notify_request }}</div>
     </div>
-    <button class="form-plugin-button request-login-send-button"
+    <button class="event-plugin-button request-login-send-button"
             data-email-id="{{ email_id }}">{{ language.langkey.request_login_btn_request }}</button>
 </div>

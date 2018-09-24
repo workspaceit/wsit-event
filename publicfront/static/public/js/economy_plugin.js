@@ -27,7 +27,7 @@ function economy_add_to_order($element, item_type, item_id) {
                     }
                     var item_actual_cost = item_detail.cost;
                     item_detail = apply_rebate_amount(item_detail, rebates.rebates.sessions[rebate_index]);
-                    if ($('.form-plugin-economy').length == 0) {
+                    if ($('.event-plugin-economy').length == 0) {
                         return;
                     }
                     // add_order_table_row($element, item_type, item_detail, 0);
@@ -46,7 +46,7 @@ function economy_add_to_order($element, item_type, item_id) {
     } else {
         if (item_type == 'session') {
             economy_data.sessions.push(item_id);
-            if($('.form-plugin-economy').length == 0){
+            if($('.event-plugin-economy').length == 0){
                 return;
             }
             // add_order_table_row($element, item_type, item_detail, 0);
@@ -68,7 +68,7 @@ function apply_rebate_amount(item_detail, rebate) {
 
 function add_order_table_row($element, item_type, item_detail, info_for_rebate) {
     var $table, order_attendee_checker = $element.closest('.section-box').find('.economy-order-table').find('.data-economy-attendee-id').val();
-    $element.closest('.section-box').find('.form-plugin-economy-order-table').each(function () {
+    $element.closest('.section-box').find('.event-plugin-economy-order-table').each(function () {
         //// need to check which order table is for the logged in attedee's (neede when group order)
         if ($(this).attr('data-order-status') == 'open' && $(this).attr('data-order-attendee') == order_attendee_checker) {
             $table = $(this);
@@ -77,7 +77,7 @@ function add_order_table_row($element, item_type, item_detail, info_for_rebate) 
     if ($table == undefined) {
         var empty_order_table = $element.closest('.section-box').find('.empty-order-table').val();
         $element.closest('.section-box').find('.economy-order-table').append(empty_order_table);
-        $table = $element.closest('.section-box').find('.economy-order-table').find('.form-plugin-economy-order-table:last');
+        $table = $element.closest('.section-box').find('.economy-order-table').find('.event-plugin-economy-order-table:last');
         if (order_attendee_checker != undefined) {
             $table.attr('data-order-attendee', order_attendee_checker);
             $table.closest('.order-table-form-question').find('.data-economy-attendee-id').val(order_attendee_checker);
@@ -155,7 +155,7 @@ function add_order_table_row($element, item_type, item_detail, info_for_rebate) 
 
 
         var vat_adding_flag = true;
-        var $vat_table = $table.closest('.order-table-form-question').find('.form-plugin-economy-vat-table');
+        var $vat_table = $table.closest('.order-table-form-question').find('.event-plugin-economy-vat-table');
         $vat_table.find('tbody tr').each(function () {
             var vat_rate = $(this).find('td:first').attr('data-vat-rate');
             if (vat_rate == item_detail.vat_rate) {
@@ -211,7 +211,7 @@ function economy_remove_item_from_economy($element, item_type, item_to_remove) {
         return;
 
         var $table, order_attendee_checker = $element.closest('.section-box').find('.economy-order-table').find('.data-economy-attendee-id').val();
-        $element.closest('.section-box').find('.form-plugin-economy-order-table').each(function () {
+        $element.closest('.section-box').find('.event-plugin-economy-order-table').each(function () {
             //// need to check which order table is for the logged in attedee's (neede when group order)
             if ($(this).attr('data-order-status') == 'open' && $(this).attr('data-order-attendee') == order_attendee_checker) {
                 $table = $(this);
@@ -271,7 +271,7 @@ function economy_remove_item_from_economy($element, item_type, item_to_remove) {
         });
 
         if (vat_rate_to_remove != 0 && vat_rate_to_remove != '') {
-            $table.closest('.order-table-form-question').find('.form-plugin-economy-vat-table tbody tr').each(function () {
+            $table.closest('.order-table-form-question').find('.event-plugin-economy-vat-table tbody tr').each(function () {
                 if ($(this).find('td:first').attr('data-vat-rate') == vat_rate_to_remove) {
                     var remaining_vat_amount = parseFloat($(this).find('td:last').attr('data-amount')) - vat_amount_to_remove;
                     if (remaining_vat_amount == 0) {
@@ -325,9 +325,9 @@ function cleanEconomyData($section) {
     };
     // DISPLAY OFF
     // var order_table_grand_total_row = $('.order-table-grand-total-row').val();
-    // $section.find('.form-plugin-economy-order-table tbody').empty();
-    // $section.find('.form-plugin-economy-vat-table tbody').empty();
-    // $section.find('.form-plugin-economy-order-table tbody').append(order_table_grand_total_row);
+    // $section.find('.event-plugin-economy-order-table tbody').empty();
+    // $section.find('.event-plugin-economy-vat-table tbody').empty();
+    // $section.find('.event-plugin-economy-order-table tbody').append(order_table_grand_total_row);
     // DISPLAY OFF
 }
 
@@ -391,7 +391,7 @@ function rebate_for_session($element, item_id) {
 function diplay_new_order_info($section, result) {
     var econ_item_count = economy_data.sessions.length + economy_data.hotels.length + economy_data.travels.length;
     var $order_table;
-    $section.find('.form-plugin-economy-order-table').each(function () {
+    $section.find('.event-plugin-economy-order-table').each(function () {
         if ($(this).attr('data-order-status') == 'open' && (econ_item_count > 0 || $(this).attr('data-order-number') == result.order_number)) {
             $order_table = $(this);
             return false;
@@ -476,14 +476,14 @@ $(function () {
                     }
                     $this.closest('.order-table-form-question').find('.economy-amount-due-value').html(response.order_info.amount_due + ' ' + economy_currency);
                     $this.closest('.order-table-form-question').find('.economy-amount-due').show();
-                    $(response.order_info.balance_table_html).insertBefore($this.closest('.order-table-form-question').find('.form-plugin-economy-order-table').closest('.scroll-x'));
+                    $(response.order_info.balance_table_html).insertBefore($this.closest('.order-table-form-question').find('.event-plugin-economy-order-table').closest('.scroll-x'));
 
                     var data_is_group_order = $this.attr('data-is-group-order');
                     if (data_is_group_order == undefined) {
-                        $this.closest('.order-table-form-question').find('.form-plugin-economy-order-table').attr('data-order-status', response.order_info.status);
+                        $this.closest('.order-table-form-question').find('.event-plugin-economy-order-table').attr('data-order-status', response.order_info.status);
                     } else {
-                        $this.closest('.order-table-form-question').find('.form-plugin-economy-order-table').attr('data-order-status', response.order_info.status);
-                        $this.closest('.economy-order-table').find('.form-plugin-economy-order-table').each(function () {
+                        $this.closest('.order-table-form-question').find('.event-plugin-economy-order-table').attr('data-order-status', response.order_info.status);
+                        $this.closest('.economy-order-table').find('.event-plugin-economy-order-table').each(function () {
                             if ($(this).attr('data-order-number') == order_number) {
                                 $(this).attr('data-order-status', response.order_info.status);
                             }

@@ -8,7 +8,7 @@
         {% if not order.is_group_total %}
             <div class="form-question order-table-form-question">
                 <div class="scroll-x">
-                    <table class="form-plugin-table form-plugin-economy-order-table lines">
+                    <table class="event-plugin-table event-plugin-economy-order-table lines">
                         <thead>
                         <tr>
                             {% if "item_name" in order_table_visible_columns %}
@@ -133,7 +133,7 @@
                     </table>
                 </div>
                 <div class="scroll-x">
-                    <table class="form-plugin-table form-plugin-economy-vat-table lines">
+                    <table class="event-plugin-table event-plugin-economy-vat-table lines">
                         <thead>
                         <tr>
                             <th>{{ language.langkey.economy_txt_vat }}</th>
@@ -163,7 +163,7 @@
         <div class="form-question order-table-form-question">
         <div class="scroll-x">
             <input type="hidden" class="data-economy-attendee-id" value="{{ data_user_id }}">
-            <table class="form-plugin-table form-plugin-economy-order-table lines">
+            <table class="event-plugin-table event-plugin-economy-order-table lines">
                 <thead>
                 <tr>
                     {% if "item_name" in order_table_visible_columns %} <th>{{ language.langkey.economy_txt_order_table_costs }}</th> {% endif %}
@@ -276,7 +276,7 @@
             </table>
         </div>
         <div class="scroll-x">
-            <table class="form-plugin-table form-plugin-economy-vat-table lines">
+            <table class="event-plugin-table event-plugin-economy-vat-table lines">
                 <thead>
                 <tr>
                     <th>{{ language.langkey.economy_txt_vat }}</th>

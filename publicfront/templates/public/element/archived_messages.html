@@ -1,20 +1,20 @@
 {% load i18n %}
-<div class="form-plugin element form-plugin-archive-messages box"
+<div class="event-plugin element event-plugin-archive-messages box"
      {% if data_user_id %}id="page-{{ page_id }}-box-{{ box_id }}-u-{{ data_user_id }}" data-uid="{{ data_user_id }}"
      {% else %}id="page-{{ page_id }}-box-{{ box_id }}"{% endif %} data-id="{{ element_id }}"
      data-name="archive-messages">
-    <div class="form-plugin-intro">
+    <div class="event-plugin-intro">
         {{ message|safe }}
     </div>
-    <div class="form-plugin-list">
+    <div class="event-plugin-list">
         {% if archived_messages %}
             {% for notification in archived_messages %}
-                <div class="form-plugin-item">
+                <div class="event-plugin-item">
                     {% if notification.type == "session" and notification.status == 0 %}
-                        <h3 class="form-plugin-title">{{ language.langkey.archive_message_txt_session_conflict }}</h3>
-                        <span class="form-plugin-title-date">{% language language.lang_preset.language_code %}
+                        <h3 class="event-plugin-title">{{ language.langkey.archive_message_txt_session_conflict }}</h3>
+                        <span class="event-plugin-title-date">{% language language.lang_preset.language_code %}
                             <span class="time">{{ notification.time_field|date:language.lang_preset.time_format }}</span> <span class="date">{{ notification.date_field|date:language.lang_preset.date_format }}</span>{% endlanguage %}</span>
-                        <div class="form-plugin-messages-message-wrapper">{{ notification.message | safe | linebreaks }}</div>
+                        <div class="event-plugin-messages-message-wrapper">{{ notification.message | safe | linebreaks }}</div>
                         <p><a href="javascript:void(0)" class="button click-notification"
                               data-id="{{ notification.id }}" data-value="yes">{{ language.langkey.archive_messages_btn_session_conflict_yes }}</a>&nbsp;&nbsp;<a
                                 href="javascript:void(0)"
@@ -28,18 +28,18 @@
                             {{ language.langkey.archive_post_message_countdown }}
                         </p>
                     {% elif notification.type == "attendee" %}
-{#                        <div class="form-plugin-item-actions"></div>#}
-                        <h3 class="form-plugin-title">{{ notification.sender_attendee.firstname }} {{ notification.sender_attendee.lastname }}</h3>
-                        <span class="form-plugin-title-date">{% language language.lang_preset.language_code %}
+{#                        <div class="event-plugin-item-actions"></div>#}
+                        <h3 class="event-plugin-title">{{ notification.sender_attendee.firstname }} {{ notification.sender_attendee.lastname }}</h3>
+                        <span class="event-plugin-title-date">{% language language.lang_preset.language_code %}
                             <span class="time">{{ notification.time_field|date:language.lang_preset.time_format }}</span> <span class="date">{{ notification.date_field|date:language.lang_preset.date_format }}</span>{% endlanguage %}</span>
-                        <div class="form-plugin-messages-message-wrapper">{{ notification.message | safe | linebreaks }}</div>
+                        <div class="event-plugin-messages-message-wrapper">{{ notification.message | safe | linebreaks }}</div>
                     {% else %}
-                        <h3 class="form-plugin-title">{% if notification.message_content_id %}
+                        <h3 class="event-plugin-title">{% if notification.message_content_id %}
                             {{ notification.message_content.sender_name }}{% else %}
                             {{ language.langkey.archive_message_txt_organizer }}{% endif %}</h3>
-                        <span class="form-plugin-title-date">{% language language.lang_preset.language_code %}
+                        <span class="event-plugin-title-date">{% language language.lang_preset.language_code %}
                             <span class="time">{{ notification.time_field|date:language.lang_preset.time_format }}</span> <span class="date">{{ notification.date_field|date:language.lang_preset.date_format }}</span>{% endlanguage %}</span>
-                        <div class="form-plugin-messages-message-wrapper">{{ notification.message | safe | linebreaks }}</div>
+                        <div class="event-plugin-messages-message-wrapper">{{ notification.message | safe | linebreaks }}</div>
                     {% endif %}
                 </div>
             {% endfor %}

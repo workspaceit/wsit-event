@@ -1,5 +1,5 @@
-{#<div class="form-plugin element form-plugin-location-list">#}
-{#    <div class="form-plugin-list">#}
+{#<div class="event-plugin element event-plugin-location-list">#}
+{#    <div class="event-plugin-list">#}
 {#        {% include 'public/element/location_details.html' %}#}
 {#    </div>#}
 {#</div>#}
@@ -14,7 +14,7 @@
     {% endif %}
 </div>
 <div class="location-details-section">
-    <table class="form-plugin-table form-plugin-location-list-table">
+    <table class="event-plugin-table event-plugin-location-list-table">
         <tbody>
         {% if location.show_map_highlight %}
             {% if link_map == 'True' %}
@@ -40,7 +40,7 @@
                     <td><span class="location-list-address-icon"></span>
                     </td>
                     <td>
-                        <label class="form-plugin-label">{{ language.langkey.locationlist_txt_address }}:</label><br/>
+                        <label class="event-plugin-label">{{ language.langkey.locationlist_txt_address }}:</label><br/>
                         {{ location.address|safe }}
                     </td>
                 </tr>
@@ -53,7 +53,7 @@
                         <td><span class="location-list-speaker-icon"></span>
                         </td>
                         <td>
-                            <label class="form-plugin-label">{{ language.langkey.locationlist_txt_contact }}:</label><br/>
+                            <label class="event-plugin-label">{{ language.langkey.locationlist_txt_contact }}:</label><br/>
                             {% if location.contact_name and location.show_contact_name %}
                                 <span class="name">{{ location.contact_name }}<br/></span>{% endif %}
                             {% if location.contact_web and location.show_contact_web %}

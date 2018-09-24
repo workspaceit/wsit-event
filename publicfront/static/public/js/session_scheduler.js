@@ -5,12 +5,12 @@ $(function () {
             $('.session-scheduler').each(
                 function () {
                     var $this = $(this)
-                    var settings = $(this).closest('.form-plugin-session-scheduler').find('.scheduler_settings_options').val();
+                    var settings = $(this).closest('.event-plugin-session-scheduler').find('.scheduler_settings_options').val();
                     var options = JSON.parse(settings)
                     console.log("options.session_scheduler_day_starts_at");
                     console.log(options.session_scheduler_day_starts_at);
-                    var box_id = $(this).closest('.form-plugin-session-scheduler').find('.box_id').val();
-                    var page_id = $(this).closest('.form-plugin-session-scheduler').find('.page_id').val();
+                    var box_id = $(this).closest('.event-plugin-session-scheduler').find('.box_id').val();
+                    var page_id = $(this).closest('.event-plugin-session-scheduler').find('.page_id').val();
                     //Override kendo function for deciding events with
                     kendo.ui.DayView.fn._arrangeColumns = function (element, top, height, slotRange) {
                         var startSlot = slotRange.start;
@@ -192,29 +192,29 @@ $(function () {
                         $(this).find('.k-scheduler-fullday').hide();
                     }
                     if (!options.session_scheduler_show_subscribe_to_calender) {
-                        $(this).closest('.form-plugin-session-scheduler').find('.session-subscribe-to-calendar-icon').hide();
+                        $(this).closest('.event-plugin-session-scheduler').find('.session-subscribe-to-calendar-icon').hide();
                     }
                     if (!options.session_scheduler_show_all_or_my_sessions) {
-                        $(this).closest('.form-plugin-session-scheduler').find('.switch-wrapper').hide();
+                        $(this).closest('.event-plugin-session-scheduler').find('.switch-wrapper').hide();
                     }
                     if (!options.session_scheduler_show_session_group_toggle || options.session_scheduler_disable_grouping) {
-                        $(this).closest('.form-plugin-session-scheduler').find('.session-group-toggle-list').hide();
+                        $(this).closest('.event-plugin-session-scheduler').find('.session-group-toggle-list').hide();
                     }
                     if (options.session_scheduler_message) {
-                        $(this).closest('.form-plugin-session-scheduler').find('.form-plugin-intro ').find('.elm-message').html(options.session_scheduler_message)
+                        $(this).closest('.event-plugin-session-scheduler').find('.event-plugin-intro ').find('.elm-message').html(options.session_scheduler_message)
                     }
                     if (options.session_scheduler_title) {
-                        $(this).closest('.form-plugin-session-scheduler').find('.form-plugin-intro ').find('.elm-title').html(options.session_scheduler_title)
+                        $(this).closest('.event-plugin-session-scheduler').find('.event-plugin-intro ').find('.elm-title').html(options.session_scheduler_title)
                     }
 
                     // GROUP TOGGLE FUNCTIONALITY
-                    $(this).closest('.form-plugin-session-scheduler').find('.session-group-toggle-list-item').find('input[type="checkbox"]').change(function (e) {
+                    $(this).closest('.event-plugin-session-scheduler').find('.session-group-toggle-list-item').find('input[type="checkbox"]').change(function (e) {
 
-                        var checked = $.map($this.closest('.form-plugin-session-scheduler').find('.session-group-toggle-list-item').find('input[type="checkbox"]:checked'), function (checkbox) {
+                        var checked = $.map($this.closest('.event-plugin-session-scheduler').find('.session-group-toggle-list-item').find('input[type="checkbox"]:checked'), function (checkbox) {
                             return parseInt($(checkbox).val());
                         });
                         console.log(checked)
-                        var len = $this.closest('.form-plugin-session-scheduler').find('.session-group-toggle-list-item').find('input[type="checkbox"]:checked').length > 0;
+                        var len = $this.closest('.event-plugin-session-scheduler').find('.session-group-toggle-list-item').find('input[type="checkbox"]:checked').length > 0;
                         if (len) {
                             var filter = {
                                 logic: "or",
@@ -246,16 +246,16 @@ $(function () {
                     //$(this).find('.k-scheduler-views').find('[data-name="workWeek"] a').text(options.session_scheduler_session_languages.langkey.sessionscheduler_btn_work_week);
                     //$(this).find('.k-scheduler-views').find('[data-name="agenda"] a').text(options.session_scheduler_session_languages.langkey.sessionscheduler_btn_agenda);
                     //$(this).find('.k-scheduler-views').find('[data-name="day"] a').text(options.session_scheduler_session_languages.langkey.sessionscheduler_btn_day);
-                    //$(this).closest('.form-plugin-session-scheduler').find('.session-subscribe-to-calendar-icon').text(options.session_scheduler_session_languages.langkey.sessionscheduler_btn_subscribe_sessions);
+                    //$(this).closest('.event-plugin-session-scheduler').find('.session-subscribe-to-calendar-icon').text(options.session_scheduler_session_languages.langkey.sessionscheduler_btn_subscribe_sessions);
 
 
                     //Switcher
 
-                    $this.closest('.form-plugin-session-scheduler').find('#session-my-session-toggle').change(
+                    $this.closest('.event-plugin-session-scheduler').find('#session-my-session-toggle').change(
                         function () {
                             var checked = $(this).is(':checked');
-                            var box_id = $(this).closest('.form-plugin-session-scheduler').find('.box_id').val();
-                            var page_id = $(this).closest('.form-plugin-session-scheduler').find('.page_id').val();
+                            var box_id = $(this).closest('.event-plugin-session-scheduler').find('.box_id').val();
+                            var page_id = $(this).closest('.event-plugin-session-scheduler').find('.page_id').val();
                             console.log(checked);
                             console.log(box_id);
                             console.log(page_id);

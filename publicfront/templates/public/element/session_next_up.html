@@ -1,17 +1,17 @@
 {% load i18n %}
-<div class="form-plugin element form-plugin-next-up box"
+<div class="event-plugin element event-plugin-next-up box"
      {% if data_user_id %}id="page-{{ page_id }}-box-{{ box_id }}-u-{{ data_user_id }}" data-uid="{{ data_user_id }}"
      {% else %}id="page-{{ page_id }}-box-{{ box_id }}"{% endif %} data-id="{{ element_id }}"
      data-name="next-up">
-    <div class="form-plugin-intro">
+    <div class="event-plugin-intro">
         {{ message|safe }}
     </div>
-    <div class="form-plugin-list">
+    <div class="event-plugin-list">
         {% if nextUpSessions %}
             {% for session in nextUpSessions %}
-                <div class="form-plugin-item">
-                    <h3 class="form-plugin-title session-detail-title{% if session_link == 'True' %} session session-detail-link{% endif %}" data-box-id="{{ box_id }}" data-page-id="{{ page_id }}" data-id="{{ session.id }}">{{ session.title }}</h3>
-                    <table class="form-plugin-table">
+                <div class="event-plugin-item">
+                    <h3 class="event-plugin-title session-detail-title{% if session_link == 'True' %} session session-detail-link{% endif %}" data-box-id="{{ box_id }}" data-page-id="{{ page_id }}" data-id="{{ session.id }}">{{ session.title }}</h3>
+                    <table class="event-plugin-table">
                         {% if start_time_appear == 'True' or start_date_appear == 'True' %}
                             <tr class="time-and-date" title="Start time and date">
                                 <td><span class="next-up-time-and-date-icon"></span></td>

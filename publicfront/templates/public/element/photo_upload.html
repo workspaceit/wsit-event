@@ -1,12 +1,12 @@
-<div class="form-plugin element form-plugin-photo-upload box" {% if data_user_id %}id="page-{{ page_id }}-box-{{ box_id }}-u-{{ data_user_id }}" data-uid="{{ data_user_id }}"{% else %}id="page-{{ page_id }}-box-{{ box_id }}"{% endif %} data-id="{{ element_id }}"
+<div class="event-plugin element event-plugin-photo-upload box" {% if data_user_id %}id="page-{{ page_id }}-box-{{ box_id }}-u-{{ data_user_id }}" data-uid="{{ data_user_id }}"{% else %}id="page-{{ page_id }}-box-{{ box_id }}"{% endif %} data-id="{{ element_id }}"
      data-name="photo-upload" data-photo-group-id="{{ photo_group.id }}" data-photo-group-name="{{ photo_group.name }}">
-    <div class="form-plugin-intro">
+    <div class="event-plugin-intro">
         {{ message|safe }}
     </div>
     <div class="form-question">
-{#        <button class="form-plugin-button form-plugin-photo-upload-file-select-button">{{ language.langkey.photo_upload_photo_choose }}<input type="file" name="pic"#}
+{#        <button class="event-plugin-button event-plugin-photo-upload-file-select-button">{{ language.langkey.photo_upload_photo_choose }}<input type="file" name="pic"#}
 {#                                                                                                 accept="image/*"></button>#}
-        <label class="form-plugin-button form-plugin-photo-upload-file-select-button">{{ language.langkey.photo_upload_photo_choose }}<input type="file" name="pic"
+        <label class="event-plugin-button event-plugin-photo-upload-file-select-button">{{ language.langkey.photo_upload_photo_choose }}<input type="file" name="pic"
                                                                                                  accept="image/*"></label>
         <div class="selected-file" style="display: none;"><span
                 class="file-name-label">{{ language.langkey.photo_upload_filename }}</span> <span
@@ -15,17 +15,17 @@
     </div>
     {% if comment == 'True' %}
         <div class="form-question">
-            <label class="form-question-label form-plugin-photo-upload-comment-label">{{ language.langkey.photo_upload_comment_label }}</label>
-            <textarea name="comment" class="form-plugin-photo-upload-comment-textarea" placeholder="{{ language.langkey.photo_upload_comment_placeholder }}"></textarea>
+            <label class="form-question-label event-plugin-photo-upload-comment-label">{{ language.langkey.photo_upload_comment_label }}</label>
+            <textarea name="comment" class="event-plugin-photo-upload-comment-textarea" placeholder="{{ language.langkey.photo_upload_comment_placeholder }}"></textarea>
 
         </div>
     {% endif %}
-    <button class="form-plugin-button upload-image form-plugin-photo-upload-button">{{ language.langkey.photo_upload_button }}</button>
+    <button class="event-plugin-button upload-image event-plugin-photo-upload-button">{{ language.langkey.photo_upload_button }}</button>
     <div class="error-validating">{{ language.langkey.photo_upload_notification_error_general }}</div>
 </div>
 
 {#<style>#}
-{#    .form-plugin-photo-upload-file-select-button input {#}
+{#    .event-plugin-photo-upload-file-select-button input {#}
 {#        position: absolute;#}
 {#        top: 0;#}
 {#        left: 0;#}

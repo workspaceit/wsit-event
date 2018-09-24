@@ -411,7 +411,7 @@ class PageReplace(generic.View):
                                 option = empty_option + option_list
                             content = """<label for="attendee-question-""" + str(
                                 question.id) + """" class="form-question-label">""" + """<span class="form-question-label-title">""" + question.title + """</span>""" + description + """</label>
-                                        <div class="form-plugin-select">
+                                        <div class="event-plugin-select">
                                         <select data-filter-id=""" + question_filter_id + """ id=""" + question_input_id + """ data-q-id=""" + question_input_q_id + """ class="given-answer">
                                         """ + option + """
                                         </select>
@@ -429,7 +429,7 @@ class PageReplace(generic.View):
                                 default_value = question.default_answer
                             content = """<label for="attendee-question-""" + str(
                                 question.id) + """" class="form-question-label">""" + """<span class="form-question-label-title">""" + question.title + """</span>""" + description + """</label>
-                                        <div class="form-plugin-select">
+                                        <div class="event-plugin-select">
                                         <select class='form-question-country given-answer' data-filter-id=""" + question_filter_id + """ id=""" + question_input_id + """ data-q-id=""" + question_input_q_id + """ data-default='""" + default_value + """'>
                                         </select>
                                         </div>"""
@@ -581,7 +581,7 @@ class PageReplace(generic.View):
                                 option = empty_option + option_list
                             content = """<label for="attendee-question-""" + str(
                                 question.id) + """" class="form-question-label">""" + """<span class="form-question-label-title">""" + question.title + """</span>""" + description + """</label>
-                                        <div class="form-plugin-select">
+                                        <div class="event-plugin-select">
                                         <select data-filter-id=""" + question_filter_id + """  id=""" + question_input_id + """ data-q-id=""" + question_input_q_id + """ class="given-answer">
                                         """ + option + """
                                         </select>
@@ -602,7 +602,7 @@ class PageReplace(generic.View):
                                 default_value = answer[0].value
                             content = """<label for="attendee-question-""" + str(
                                 question.id) + """" class="form-question-label">""" + """<span class="form-question-label-title">""" + question.title + """</span>""" + description + """</label>
-                                        <div class="form-plugin-select">
+                                        <div class="event-plugin-select">
                                         <select class='form-question-country given-answer' data-filter-id=""" + question_filter_id + """ id=""" + question_input_id + """ data-q-id=""" + question_input_q_id +""" data-default='""" + default_value + """'>
                                         </select>
                                         </div>"""

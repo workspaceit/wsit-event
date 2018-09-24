@@ -8,20 +8,20 @@ $(function () {
         multiple_attendee_id_array.push($(this).attr("data-attendee-idz4Vv3ZLs3R"))
     });
     // Multiple Resistration Loop Add Atendee
-    $body.on('click', '.form-plugin-multiple-registration-add-attendee-button', function () {
+    $body.on('click', '.event-plugin-multiple-registration-add-attendee-button', function () {
         var $this = $(this);
-        var current_attendee_sum = $this.closest('.box').find('.form-plugin-multiple-registration-attendee-table tbody tr:not(.default-empty-attendee)').length;
+        var current_attendee_sum = $this.closest('.box').find('.event-plugin-multiple-registration-attendee-table tbody tr:not(.default-empty-attendee)').length;
 
         checkMaxMinAttendee($this, current_attendee_sum, 'append', NaN);
     });
     // Multiple Resistration Loop Delete Atendee
-    $body.on('click', '.form-plugin-multiple-registration-delete-attendee-button', function () {
+    $body.on('click', '.event-plugin-multiple-registration-delete-attendee-button', function () {
         var $this = $(this);
-        var current_attendee_sum = $this.closest('.box').find('.form-plugin-multiple-registration-attendee-table tbody tr:not(.default-empty-attendee)').length - 2;
+        var current_attendee_sum = $this.closest('.box').find('.event-plugin-multiple-registration-attendee-table tbody tr:not(.default-empty-attendee)').length - 2;
         checkMaxMinAttendee($this, current_attendee_sum, 'delete', $this.attr("data-attendee-del-idz4Vv3ZLs3R"));
     });
     // Multiple Resistration Loop Edit Atendee
-    $body.on('click', '.form-plugin-multiple-registration-edit-attendee-button', function (e) {
+    $body.on('click', '.event-plugin-multiple-registration-edit-attendee-button', function (e) {
         var is_order_owner = false;
         if ($(this).attr("data-attendee-idz4Vv3ZLs3R") != undefined) {
             multiple_attendee_id = $(this).attr("data-attendee-idz4Vv3ZLs3R");
@@ -31,17 +31,17 @@ $(function () {
         }
 
 
-        var multiple_form = $(this).closest('.form-plugin-multiple-registration');
+        var multiple_form = $(this).closest('.event-plugin-multiple-registration');
         getMultipleAttendeeForm(multiple_form, multiple_attendee_id);
 
         var attendee_serial = $(this).closest('tr').find('td:first').html();
         if(is_order_owner) {
             var order_owner_text = $('#order_owner_text').val();
-            multiple_form.find('.form-plugin-multiple-registration-form-header').html(order_owner_text);
+            multiple_form.find('.event-plugin-multiple-registration-form-header').html(order_owner_text);
         }
         else {
             var attendee_text = $('#attendee_text').val();
-            multiple_form.find('.form-plugin-multiple-registration-form-header').html(attendee_text + ' ' + attendee_serial);
+            multiple_form.find('.event-plugin-multiple-registration-form-header').html(attendee_text + ' ' + attendee_serial);
         }
     });
 });
@@ -63,19 +63,19 @@ function checkMaxMinAttendee(elem, current_attendee_sum, click_event, attendee_i
         },
         success: function (result) {
             if (result.success) {
-                var current_attendee_sum_show = parseInt(elem.closest('.box').find('.form-plugin-multiple-registration-current-count-number').html());
+                var current_attendee_sum_show = parseInt(elem.closest('.box').find('.event-plugin-multiple-registration-current-count-number').html());
                 // console.log('current_attendee_sum after:');
                 // console.log(current_attendee_sum);
                 if (click_event == 'append') {
                     appendAttendee(elem, result.attendee_id);
-                    elem.closest('.box').find('.form-plugin-multiple-registration-current-count-number').html(current_attendee_sum_show + 1);
+                    elem.closest('.box').find('.event-plugin-multiple-registration-current-count-number').html(current_attendee_sum_show + 1);
                     if(current_attendee_sum + 1 > result.max_attendees){
                         elem.hide();
                     }
                 } else {
-                    elem.closest('.box').find('.form-plugin-multiple-registration-current-count-number').html(current_attendee_sum_show - 1);
+                    elem.closest('.box').find('.event-plugin-multiple-registration-current-count-number').html(current_attendee_sum_show - 1);
                     deleteAttendee(elem, result.attendee_id);
-                    $('.form-plugin-multiple-registration-add-attendee-button').show();
+                    $('.event-plugin-multiple-registration-add-attendee-button').show();
                 }
             }
         }
@@ -83,12 +83,12 @@ function checkMaxMinAttendee(elem, current_attendee_sum, click_event, attendee_i
 }
 
 function appendAttendee(elem, attendee_id) {
-    var tbody = elem.closest('.box').find('.form-plugin-multiple-registration-attendee-table tbody');
+    var tbody = elem.closest('.box').find('.event-plugin-multiple-registration-attendee-table tbody');
     var empty_tr = tbody.find('tr.default-empty-attendee').clone();
     var new_id = tbody.find('tr:last td:first').html();
     empty_tr.find('td:first').html(parseInt(new_id) + 1);
-    empty_tr.find('td:last').find(".form-plugin-multiple-registration-edit-attendee-button").attr('data-attendee-idz4Vv3ZLs3R', attendee_id).attr('data-id', attendee_id);
-    empty_tr.find('td:last').find(".form-plugin-multiple-registration-delete-attendee-button").attr('data-attendee-del-idz4Vv3ZLs3R', attendee_id);
+    empty_tr.find('td:last').find(".event-plugin-multiple-registration-edit-attendee-button").attr('data-attendee-idz4Vv3ZLs3R', attendee_id).attr('data-id', attendee_id);
+    empty_tr.find('td:last').find(".event-plugin-multiple-registration-delete-attendee-button").attr('data-attendee-del-idz4Vv3ZLs3R', attendee_id);
     empty_tr.attr('data-multiple-attendee-id', attendee_id);
     empty_tr.removeClass('default-empty-attendee');
     empty_tr.show();

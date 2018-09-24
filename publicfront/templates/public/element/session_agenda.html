@@ -1,20 +1,20 @@
 {% load i18n %}
-<div class="form-plugin element form-plugin-session-agenda box"
+<div class="event-plugin element event-plugin-session-agenda box"
      {% if data_user_id %}id="page-{{ page_id }}-box-{{ box_id }}-u-{{ data_user_id }}" data-uid="{{ data_user_id }}"
      {% else %}id="page-{{ page_id }}-box-{{ box_id }}"{% endif %} data-id="{{ element_id }}"
      data-name="session-agenda">
     <input type="hidden" class="agenda_settings_options" value="{{ element_settings_info }} "/>
     <input type="hidden" class="page_id" value="{{ page_id }} "/>
     <input type="hidden" class="box_id" value="{{ box_id }} "/>
-    <div class="form-plugin-intro">
+    <div class="event-plugin-intro">
         <h4 class="settings-plugin-element elm-title"></h4>
         {{ session_agenda_message|safe }}
     </div>
     {% if element_settings.session_agenda_searchable %}
-        <div class="form-plugin-search-wrapper">
-            <input id="temporary-id-1" class="form-plugin-search page-search-session-agenda" type="text"
+        <div class="event-plugin-search-wrapper">
+            <input id="temporary-id-1" class="event-plugin-search page-search-session-agenda" type="text"
                    placeholder="{{ language.langkey.session_agenda_txt_placeholder_search }}"/>
-            <div class="form-plugin-clear-search"></div>
+            <div class="event-plugin-clear-search"></div>
         </div>
     {% endif %}
     {% if element_settings.session_agenda_show_session_group_toggle %}
@@ -42,7 +42,7 @@
         </div>
     {% endif %}
     {% if element_settings.session_agenda_show_subscribe_to_calender %}
-        <a class="form-plugin-button session-subscribe-to-calendar"
+        <a class="event-plugin-button session-subscribe-to-calendar"
            href="{{ request.session.webcal_url }}/webcal/?uid={{ request.session.event_user.secret_key }}">{{ language.langkey.session_agenda_btn_subscribe_sessions }}</a>
     {% endif %}
 
@@ -77,7 +77,7 @@
         </div>
     </div>
     <div class="scroll-x session-agenda">
-        <table class="form-plugin-table lines session-agenda-table" data-all-date='["{{ sdate |date:"m/d/Y" }}"]'>
+        <table class="event-plugin-table lines session-agenda-table" data-all-date='["{{ sdate |date:"m/d/Y" }}"]'>
             <thead>
             <tr>
                 {% if element_settings.session_agenda_column_session_group_available_in_agenda_view %}

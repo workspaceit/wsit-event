@@ -187,10 +187,10 @@
                                                         self.html(dHour + " Hours, " + dMinute + " Minutes, " + dSeconds + " Seconds");
                                                     }
                                                     else {
-                                                        var parentElem = self.closest('.form-plugin-messages');
-                                                        self.closest('.form-plugin-item').remove();
-                                                        if (parentElem.children('.form-plugin-list').children('.form-plugin-item').length == 0) {
-                                                            //$('.form-plugin-messages').parent().remove();
+                                                        var parentElem = self.closest('.event-plugin-messages');
+                                                        self.closest('.event-plugin-item').remove();
+                                                        if (parentElem.children('.event-plugin-list').children('.event-plugin-item').length == 0) {
+                                                            //$('.event-plugin-messages').parent().remove();
                                                             {#parentElem.find('.messages-read-archived-messages').remove();#}
                                                             parentElem.find('.messages-mark-all-button').remove();
                                                         }
@@ -199,10 +199,10 @@
                                                 /*self.countdown({
                                                  until: austDay,
                                                  onExpiry: function () {
-                                                 var parentElem = self.closest('.form-plugin-messages');
-                                                 self.closest('.form-plugin-item').remove();
-                                                 if (parentElem.children('.form-plugin-list').children('.form-plugin-item').length == 0) {
-                                                 //$('.form-plugin-messages').parent().remove();
+                                                 var parentElem = self.closest('.event-plugin-messages');
+                                                 self.closest('.event-plugin-item').remove();
+                                                 if (parentElem.children('.event-plugin-list').children('.event-plugin-item').length == 0) {
+                                                 //$('.event-plugin-messages').parent().remove();
                                                 {#                                                        parentElem.find('.messages-read-archived-messages').remove();#}
                                                  parentElem.find('.messages-mark-all-button').remove();
                                                  }
@@ -249,15 +249,15 @@
                                                         self.html(dHour + " Hours, " + dMinute + " Minutes, " + dSeconds + " Seconds");
                                                     }
                                                     else {
-                                                        var parentElem = self.closest('.form-plugin-archive-messages');
-                                                        self.closest('.form-plugin-item').remove();
+                                                        var parentElem = self.closest('.event-plugin-archive-messages');
+                                                        self.closest('.event-plugin-item').remove();
                                                     }
                                                 }, 1000);
                                                 /*self.countdown({
                                                  until: austDay,
                                                  onExpiry: function () {
-                                                 var parentElem = self.closest('.form-plugin-archive-messages');
-                                                 self.closest('.form-plugin-item').remove();
+                                                 var parentElem = self.closest('.event-plugin-archive-messages');
+                                                 self.closest('.event-plugin-item').remove();
                                                  },
                                                  layout: '{hn} {hl} ,{mn} {ml}'
                                                  });*/

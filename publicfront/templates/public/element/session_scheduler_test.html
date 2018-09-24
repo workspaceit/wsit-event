@@ -1,13 +1,13 @@
-<div class="form-plugin element form-plugin-session-scheduler box" {% if data_user_id %}id="page-{{ page_id }}-box-{{ box_id }}-u-{{ data_user_id }}" data-uid="{{ data_user_id }}"{% else %}id="page-{{ page_id }}-box-{{ box_id }}"{% endif %} data-id="{{ element_id }}"
+<div class="event-plugin element event-plugin-session-scheduler box" {% if data_user_id %}id="page-{{ page_id }}-box-{{ box_id }}-u-{{ data_user_id }}" data-uid="{{ data_user_id }}"{% else %}id="page-{{ page_id }}-box-{{ box_id }}"{% endif %} data-id="{{ element_id }}"
      data-name="session-scheduler">
     <input type="hidden" class="scheduler_settings_options" value="{{ element_settings_info }} "/>
     <input type="hidden" class="page_id" value="{{ page_id }} "/>
     <input type="hidden" class="box_id" value="{{ box_id }} "/>
-    <div class="form-plugin-intro">
+    <div class="event-plugin-intro">
         <h4 class="settings-plugin-element elm-title"></h4>
         {{ session_scheduler_messages|safe }}
     </div>
-    <div class="form-plugin-scroll-wrapper">
+    <div class="event-plugin-scroll-wrapper">
         <div class="session-group-toggle-list">
             {% for group in session_group_list %}
                 <div class="session-group-toggle-list-item">
@@ -31,7 +31,7 @@
         <div class="session-scheduler"></div>
     </div>
 
-    <a class="form-plugin-button session-subscribe-to-calendar-icon"
+    <a class="event-plugin-button session-subscribe-to-calendar-icon"
        href="{{ request.session.webcal_url }}/webcal/?uid={{ request.session.event_user.secret_key }}">{{ language.langkey.sessionscheduler_btn_subscribe_sessions }}</a>
 </div>
 {#EVENT TEMPLATE FOR SCHEDULER#}
@@ -188,11 +188,11 @@
                 <div class="session-section-item tags" title="{{ session_details_language.langkey.sessiondetails_txt_tags }}">
                     <span class="session-tags-icon"></span>
 
-                    <div class="form-plugin-tags-list">
+                    <div class="event-plugin-tags-list">
                         # for (var i = 0; i < taglist.length; i++) { #
                         # var tag= taglist[i]; #
 
-                        <div class="form-plugin-tag">
+                        <div class="event-plugin-tag">
                             #= tag #
                         </div>
                         # } #

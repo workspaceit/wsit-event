@@ -655,7 +655,7 @@ class StaticPage(generic.DeleteView):
 
                             content = """<label for="attendee-question-""" + str(
                                 question.id) + """" class="form-question-label">""" + """<span class="form-question-label-title">""" + question.title + """</span>""" + description + """</label>
-                                    <div class="form-plugin-select">
+                                    <div class="event-plugin-select">
                                     <select data-filter-id=""" + str(
                                 question.id) + """ id="attendee-question-""" + str(question.id) + """" class="given-answer">
                                     """ + option + """
@@ -789,7 +789,7 @@ class StaticPage(generic.DeleteView):
 
                             content = """<label for="attendee-question-""" + str(
                                 question.id) + """" class="form-question-label">""" + """<span class="form-question-label-title">""" + question.title + """</span>""" + description + """</label>
-                                    <div class="form-plugin-select">
+                                    <div class="event-plugin-select">
                                     <select data-filter-id=""" + str(
                                 question.id) + """  id="attendee-question-""" + str(question.id) + """" class="given-answer">
                                     """ + option + """

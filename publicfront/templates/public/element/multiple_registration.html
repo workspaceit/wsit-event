@@ -1,24 +1,24 @@
-<div class="form-plugin element form-plugin-multiple-registration box"
+<div class="event-plugin element event-plugin-multiple-registration box"
      {% if data_user_id %}id="page-{{ page_id }}-box-{{ box_id }}-u-{{ data_user_id }}" data-uid="{{ data_user_id }}"
      {% else %}id="page-{{ page_id }}-box-{{ box_id }}"{% endif %}
      data-id="{{ element_id }}"
      data-name="multiple-registration" data-page-id="{{ page_id }}" data-attendee-page="{{ attendee_page }}"
      data-min-attendees="{{ min_attendees }}" data-max-attendees="{{ max_attendees }}"
      data-default-attendees="{{ total_attendees }}">
-    <div class="form-plugin-intro">
+    <div class="event-plugin-intro">
         {{ message|safe }}
     </div>
     {% if display_form == 'loop' %}
         <div class="loop-registration-form">
             <div class="form-question">
-                <button class="form-plugin-button form-plugin-multiple-registration-add-attendee-button" {% if max_attendees  <= attendees_without_owner %}style="display: none;" {% endif %}>{{ language.langkey.multiple_registration_add_attendee }}
+                <button class="event-plugin-button event-plugin-multiple-registration-add-attendee-button" {% if max_attendees  <= attendees_without_owner %}style="display: none;" {% endif %}>{{ language.langkey.multiple_registration_add_attendee }}
                 </button>
-                <label class="form-question-label form-plugin-multiple-registration-current-count">{{ language.langkey.multiple_registration_current_no_of_attendees }}:
-                    <span class="form-plugin-multiple-registration-current-count-number">{{ total_attendees }}</span></label>
+                <label class="form-question-label event-plugin-multiple-registration-current-count">{{ language.langkey.multiple_registration_current_no_of_attendees }}:
+                    <span class="event-plugin-multiple-registration-current-count-number">{{ total_attendees }}</span></label>
             </div>
             <div class="form-question">
                 <div class="scroll-x">
-                    <table class="form-plugin-multiple-registration-attendee-table lines">
+                    <table class="event-plugin-multiple-registration-attendee-table lines">
                         <thead>
                         <tr>
                             <th>#</th>
@@ -37,10 +37,10 @@
                                 <td data-column-id="{{ column.id }}"></td>
                             {% endfor %}
                             <td>
-                                <button class="form-plugin-button form-plugin-multiple-registration-edit-attendee-button small">
+                                <button class="event-plugin-button event-plugin-multiple-registration-edit-attendee-button small">
                                     {{ language.langkey.multiple_registration_edit_button }}
                                 </button>
-                                <button class="form-plugin-button form-plugin-multiple-registration-delete-attendee-button small">
+                                <button class="event-plugin-button event-plugin-multiple-registration-delete-attendee-button small">
                                     {{ language.langkey.multiple_registration_delete_button }}
                                 </button>
                             </td>
@@ -56,7 +56,7 @@
                                     data-column-id="{{ att.question_id }}">{{ att.answer|safe }}</td>
                             {% endfor %}
                             <td>
-                                <button class="form-plugin-button form-plugin-multiple-registration-edit-attendee-button small"
+                                <button class="event-plugin-button event-plugin-multiple-registration-edit-attendee-button small"
                                         data-id="{{ owner_data.id }}" data-owner-idz4Vv3ZLs3R="{{ owner_data.id }}">
                                     {{ language.langkey.multiple_registration_edit_button }}
                                 </button>
@@ -77,12 +77,12 @@
                                         data-column-id="{{ att.question_id }}">{{ att.answer|safe }}</td>
                                 {% endfor %}
                                 <td>
-                                    <button class="form-plugin-button form-plugin-multiple-registration-edit-attendee-button small"
+                                    <button class="event-plugin-button event-plugin-multiple-registration-edit-attendee-button small"
                                             data-id="{{ attendee.id }}" data-attendee-idz4Vv3ZLs3R="{{ attendee.id }}">
                                         {{ language.langkey.multiple_registration_edit_button }}
                                     </button>
                                     {% if attendee.status == 'pending' %}
-                                        <button class="form-plugin-button form-plugin-multiple-registration-delete-attendee-button small"
+                                        <button class="event-plugin-button event-plugin-multiple-registration-delete-attendee-button small"
                                                 data-id="{{ attendee.id }}"
                                                 data-attendee-del-idz4Vv3ZLs3R="{{ attendee.id }}">
 
@@ -100,17 +100,17 @@
                 </div>
             </div>
 
-            <div class="form-plugin-list form-plugin-multiple-registration-attendee-forms">
-                <h3 class="form-plugin-multiple-registration-form-header">
+            <div class="event-plugin-list event-plugin-multiple-registration-attendee-forms">
+                <h3 class="event-plugin-multiple-registration-form-header">
                     {% if not is_owner %}{{ language.langkey.multiple_registration_text_order_owner }}{% endif %}</h3>
-                <div class="form-plugin-item form-plugin-multiple-registration-form">
+                <div class="event-plugin-item event-plugin-multiple-registration-form">
                     {% if not is_owner %}
                         <!--This is where the form starts-->
                         {{ owner_page|safe }}
                         <!--This is where the form ends-->
                     {% endif %}
                 </div>
-                {#                <div class="form-plugin-item form-plugin-multiple-registration-attendee-form">#}
+                {#                <div class="event-plugin-item event-plugin-multiple-registration-attendee-form">#}
                 {#                    <!--This is where the form starts-->#}
                 {#                    <h3>{Attendee form}</h3>#}
                 {#                    <!--This is where the form ends-->#}
@@ -120,20 +120,20 @@
     {% else %}
         <div class="inline-registration-form">
             <div class="form-question">
-                <button class="form-plugin-button form-plugin-multiple-registration-add-attendee-button-inline" {% if max_attendees  <= attendees_without_owner %}style="display: none;" {% endif %}>{{ language.langkey.multiple_registration_add_attendee }}
+                <button class="event-plugin-button event-plugin-multiple-registration-add-attendee-button-inline" {% if max_attendees  <= attendees_without_owner %}style="display: none;" {% endif %}>{{ language.langkey.multiple_registration_add_attendee }}
                 </button>
-                <label class="form-question-label form-plugin-multiple-registration-current-count">{{ language.langkey.multiple_registration_current_no_of_attendees }}:
-                    <span class="form-plugin-multiple-registration-current-count-number-inline">{{ total_attendees }}</span></label>
+                <label class="form-question-label event-plugin-multiple-registration-current-count">{{ language.langkey.multiple_registration_current_no_of_attendees }}:
+                    <span class="event-plugin-multiple-registration-current-count-number-inline">{{ total_attendees }}</span></label>
             </div>
-            <div class="form-plugin-list form-plugin-multiple-registration-attendee-forms-inline">
-                <div class="form-plugin-item form-plugin-multiple-registration-order-owner-form"
+            <div class="event-plugin-list event-plugin-multiple-registration-attendee-forms-inline">
+                <div class="event-plugin-item event-plugin-multiple-registration-order-owner-form"
                      inline-data-owner-idz4Vv3ZLs3R="{{ owner_data.id }}"
                      data-include-ownerz4Vv3ZLs3R="{% if number_of_attendees == 'include-owner' %}1{% else %}0{% endif %}">
-                    <div class="form-plugin-item-information">
-                        <label class="form-question-label form-plugin-multiple-registration-form-information">
+                    <div class="event-plugin-item-information">
+                        <label class="form-question-label event-plugin-multiple-registration-form-information">
                             {% if number_of_attendees == 'include-owner' %}
                                 {{ language.langkey.multiple_registration_text_attendee }}
-                                <span class="form-plugin-multiple-registration-form-information-number">1 / {{ total_attendees }}</span>
+                                <span class="event-plugin-multiple-registration-form-information-number">1 / {{ total_attendees }}</span>
                                 <span class="order-owner-title">({{ language.langkey.multiple_registration_text_order_owner }})</span>{% else %}
                                 {{ language.langkey.multiple_registration_text_order_owner }}{% endif %}
                         </label>
@@ -143,15 +143,15 @@
                     <!--This is where the form ends-->
                 </div>
                 {% for attendee_html in multiple_attendee_html %}
-                    <div class="form-plugin-item form-plugin-multiple-registration-attendee-form-inline"
+                    <div class="event-plugin-item event-plugin-multiple-registration-attendee-form-inline"
                          inline-data-attendee-idz4Vv3ZLs3R="{{ attendee_html.user_id }}">
-                        <div class="form-plugin-item-information">
-                            <label class="form-question-label form-plugin-multiple-registration-form-information">{{ language.langkey.multiple_registration_text_attendee }}
-                                <span class="form-plugin-multiple-registration-form-information-number">{% if number_of_attendees == 'include-owner' %}
+                        <div class="event-plugin-item-information">
+                            <label class="form-question-label event-plugin-multiple-registration-form-information">{{ language.langkey.multiple_registration_text_attendee }}
+                                <span class="event-plugin-multiple-registration-form-information-number">{% if number_of_attendees == 'include-owner' %}
                                     {{ forloop.counter|add:1 }}{% else %}
                                     {{ forloop.counter }}{% endif %} / {{ total_attendees }}</span></label>
                             {% if attendee_html.status == 'pending' %}
-                                <button class="form-plugin-button form-plugin-multiple-registration-delete-attendee-button-from-inline small"
+                                <button class="event-plugin-button event-plugin-multiple-registration-delete-attendee-button-from-inline small"
                                         inline-data-attendee-del-idz4Vv3ZLs3R="{{ attendee_html.user_id }}">
                                     {{ language.langkey.multiple_registration_delete_button }}
                                 </button>

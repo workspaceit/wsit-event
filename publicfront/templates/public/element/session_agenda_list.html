@@ -146,10 +146,10 @@
                                      title="{{ session_details_language.langkey.sessiondetails_txt_tags }}">
                                     <span class="session-tags-icon"></span>
 
-                                    <div class="form-plugin-tags-list">
+                                    <div class="event-plugin-tags-list">
 
                                         {% for tag in session.taglist %}
-                                            <div class="form-plugin-tag {% if search_tag_name %}session-agenda-searchable-property{% endif %}">
+                                            <div class="event-plugin-tag {% if search_tag_name %}session-agenda-searchable-property{% endif %}">
                                                 {{ tag }}
                                             </div>
                                         {% endfor %}

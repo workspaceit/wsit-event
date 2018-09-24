@@ -1,6 +1,6 @@
 {% load i18n %}
 <div class="section">
-    <div class="form-plugin element form-plugin-session-scheduler">
+    <div class="event-plugin element event-plugin-session-scheduler">
         <div class="session-details">
             <h3 class="session-detail-title">Session title</h3>
             {% if session.session_expire %}
@@ -86,18 +86,18 @@
             <div class="session-description">
                 {{ session.description|safe }}
             </div>
-            <table class="form-plugin-table">
+            <table class="event-plugin-table">
                 <tr class="time-and-date">
                     <td><span class="session-time-and-date-icon"></span>
                     </td>
                     <td>
-                        <label class="form-plugin-label">{{ language.langkey.sessionradiobutton_txt_starts }}: </label>
+                        <label class="event-plugin-label">{{ language.langkey.sessionradiobutton_txt_starts }}: </label>
                         <span class="time start">{% language language.lang_preset.language_code %}
                             {{ session.start |date:language.lang_preset.time_format }}{% endlanguage %}</span>
                         <span class="date start">{% language language.lang_preset.language_code %}
                             {{ session.start |date:language.lang_preset.date_format }}{% endlanguage %}</span>
                         <br/>
-                        <label class="form-plugin-label">{{ language.langkey.sessionradiobutton_txt_ends }}: </label>
+                        <label class="event-plugin-label">{{ language.langkey.sessionradiobutton_txt_ends }}: </label>
                         <span class="time end">{% language language.lang_preset.language_code %}
                             {{ session.end |date:language.lang_preset.time_format }}{% endlanguage %}</span>
                         <span class="date end">{% language language.lang_preset.language_code %}
@@ -108,7 +108,7 @@
                     <td><span class="session-rsvp-deadline-icon"></span>
                     </td>
                     <td><label
-                            class="form-plugin-label">{{ language.langkey.sessionradiobutton_txt_rsvp }}: </label><span
+                            class="event-plugin-label">{{ language.langkey.sessionradiobutton_txt_rsvp }}: </label><span
                             class="date">{% language language.lang_preset.language_code %}
                         {{ session.reg_between_end |date:language.lang_preset.date_format }}{% endlanguage %}</span>
                     </td>
@@ -117,7 +117,7 @@
                     <td><span class="session-speaker-icon"></span>
                     </td>
                     <td><label
-                            class="form-plugin-label">{{ language.langkey.sessionradiobutton_txt_speakers }}: </label>
+                            class="event-plugin-label">{{ language.langkey.sessionradiobutton_txt_speakers }}: </label>
                         {% for speaker in  session.speakers %}
                             <a href="{% url 'attendee-bio' event_url=request.session.event_url pk=speaker.speaker_id %}"
                                target="_blank">{{ speaker.speaker.firstname }} {{ speaker.speaker.lastname }}</a>{% if not forloop.last %}, {% endif %}
@@ -128,10 +128,10 @@
                     <td><span class="session-tags-icon"></span>
                     </td>
                     <td>
-                        <label class="form-plugin-label">{{ language.langkey.sessionradiobutton_txt_tags }}:</label>
-                        <div class="form-plugin-tags-list">
+                        <label class="event-plugin-label">{{ language.langkey.sessionradiobutton_txt_tags }}:</label>
+                        <div class="event-plugin-tags-list">
                             {% for tag in session.tags %}
-                                <div class="form-plugin-tag">{{ tag.tag.name }}
+                                <div class="event-plugin-tag">{{ tag.tag.name }}
                                 </div>
                             {% endfor %}
                         </div>
@@ -141,21 +141,21 @@
                     <td><span class="session-group-icon"></span>
                     </td>
                     <td><label
-                            class="form-plugin-label">{{ language.langkey.sessionradiobutton_txt_session_group }}: </label>{{ session.group.name|safe }}
+                            class="event-plugin-label">{{ language.langkey.sessionradiobutton_txt_session_group }}: </label>{{ session.group.name|safe }}
                     </td>
                 </tr>
                 <tr class="seats-available">
                     <td><span class="session-seats-available-icon"></span>
                     </td>
                     <td><label
-                            class="form-plugin-label">{{ language.langkey.sessionradiobutton_txt_seat_availability }}: </label>{{ session.availability }}
+                            class="event-plugin-label">{{ language.langkey.sessionradiobutton_txt_seat_availability }}: </label>{{ session.availability }}
                     </td>
                 </tr>
                 <tr class="location">
                     <td><span class="session-location-icon"></span>
                     </td>
                     <td><label
-                            class="form-plugin-label">{{ language.langkey.sessionradiobutton_txt_location }}: </label>
+                            class="event-plugin-label">{{ language.langkey.sessionradiobutton_txt_location }}: </label>
                         <a href="
 
 

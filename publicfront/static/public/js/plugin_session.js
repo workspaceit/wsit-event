@@ -8,15 +8,15 @@ function onLoadPluginSession() {
     csrf_token = $('input[name=csrfmiddlewaretoken]').val();
     temporary_attendee_expire_time = $('.temporary_attendee_expire_time').val();
 
-    if ($(".form-plugin-multiple-registration").length > 0) {
+    if ($(".event-plugin-multiple-registration").length > 0) {
         economy_data.multiple.is_multiple = true;
     }
 
-    $('body').find('.form-plugin-session-radio-button').each(function () {
+    $('body').find('.event-plugin-session-radio-button').each(function () {
         var $section = $(this);
         var box_id = $section.attr('id');
         previousSessions[box_id] = [];
-        $section.find('.form-plugin-item').find('td:first').find('input').each(function () {
+        $section.find('.event-plugin-item').find('td:first').find('input').each(function () {
             if ($(this).prop('checked')) {
                 var session_id = $(this).attr('data-session-id').split("_")[0];
                 if ($.inArray(session_id, previousSessions[box_id]) == -1) {
@@ -26,15 +26,15 @@ function onLoadPluginSession() {
         });
     });
 
-    $('body').find('.form-plugin-session-checkbox').each(function () {
+    $('body').find('.event-plugin-session-checkbox').each(function () {
         var $section = $(this);
         var act_like_radio = $section.attr('data-act-like-radio');
         if (act_like_radio == '1') {
             var box_id = $section.attr('id');
-            var count_attending = $(this).find('.form-plugin-list').attr('data-count-attending');
+            var count_attending = $(this).find('.event-plugin-list').attr('data-count-attending');
             previousSessionsActRadio[box_id] = [];
             previousSessionsInQueueActRadio[box_id] = [];
-            $section.find('.form-plugin-item').find('td:first').find('input').each(function () {
+            $section.find('.event-plugin-item').find('td:first').find('input').each(function () {
                 if ($(this).prop('checked')) {
                     if (count_attending == 1 && $(this).parent().parent().hasClass('in-queue')) {
                         if ($(this).attr('data-session-id')) {
@@ -65,15 +65,15 @@ $(function () {
 
     var $body = $('body');
     $body.on('change', '.session-agenda-group-toggle-list-item input[type="checkbox"]', function (e) {
-        var $this_plugin = $(this).closest('.form-plugin-session-agenda');
+        var $this_plugin = $(this).closest('.event-plugin-session-agenda');
         sessionAgendaFilter($this_plugin);
     });
     $body.on('change', '.session-agenda-my-session-toggle', function (e) {
-        var $this_plugin = $(this).closest('.form-plugin-session-agenda');
+        var $this_plugin = $(this).closest('.event-plugin-session-agenda');
         sessionAgendaFilter($this_plugin);
     });
     $body.on('keyup', '.page-search-session-agenda', function (e) {
-        var $this_plugin = $(this).closest('.form-plugin-session-agenda');
+        var $this_plugin = $(this).closest('.event-plugin-session-agenda');
         sessionAgendaFilter($this_plugin);
     });
     $body.on('click', '.session-agenda-today', function (e) {
@@ -85,7 +85,7 @@ $(function () {
     });
     $body.on('click', '.session-agenda-prev', function (e) {
         if (!$(this).hasClass('disabled')) {
-            var $this_plugin = $(this).closest('.form-plugin-session-agenda');
+            var $this_plugin = $(this).closest('.event-plugin-session-agenda');
             var date_range = $this_plugin.find('.session-agenda-date-range').attr('data-date-range');
             // date_range = date_range.split('-');
             var start_date = date_range.split("/");
@@ -98,7 +98,7 @@ $(function () {
     });
     $body.on('click', '.session-agenda-next', function (e) {
         if (!$(this).hasClass('disabled')) {
-            var $this_plugin = $(this).closest('.form-plugin-session-agenda');
+            var $this_plugin = $(this).closest('.event-plugin-session-agenda');
             var date_range = $this_plugin.find('.session-agenda-date-range').attr('data-date-range');
             var start_date = date_range.split("/");
             var date = new Date(start_date[2], start_date[0] - 1, parseInt(start_date[1]) + 1);
@@ -117,12 +117,12 @@ $(function () {
 
     $('body').on('click', '.session', function (e) {
         var id = $(this).data('id');
-        //var box_id = $this.closest('.form-plugin-session-scheduler').find('.box_id').val();
+        //var box_id = $this.closest('.event-plugin-session-scheduler').find('.box_id').val();
         var box_id = $.trim($(this).attr('data-box-id'));
-        BoxId = $(this).closest('.form-plugin').attr('id');
-        //var page_id = $this.closest('.form-plugin-session-scheduler').find('.page_id').val();
+        BoxId = $(this).closest('.event-plugin').attr('id');
+        //var page_id = $this.closest('.event-plugin-session-scheduler').find('.page_id').val();
         var page_id = $.trim($(this).attr('data-page-id'));
-        var plugin_name = $(this).closest('.form-plugin').attr('data-name');
+        var plugin_name = $(this).closest('.event-plugin').attr('data-name');
         var csrfToken = $('input[name=csrfmiddlewaretoken]').val();
         $.ajax({
             url: base_url + '/get-scheduler-session-details/',
@@ -146,8 +146,8 @@ $(function () {
     $('body').on('click', '.message-session-details', function (e) {
         var id = $(this).data('id');
         var data_status = $(this).data('status');
-        var msg_elm = $(this).closest('.form-plugin-messages-message-wrapper').clone();
-        var form_plugin_elm = $(this).closest('.form-plugin');
+        var msg_elm = $(this).closest('.event-plugin-messages-message-wrapper').clone();
+        var form_plugin_elm = $(this).closest('.event-plugin');
         var box_id = $.trim(form_plugin_elm.attr('data-box-id'));
         // BoxId = form_plugin_elm.attr('id');
         var page_id = $.trim(form_plugin_elm.attr('data-page-id'));
@@ -221,8 +221,8 @@ $(function () {
         } else if (currentStatus == "deciding") {
             type = 'unchecked';
         }
-        var plugin_name = $("#" + BoxId).closest('.form-plugin').attr('data-name');
-        var user_id = $("#" + BoxId).closest('.form-plugin').attr('data-uid');
+        var plugin_name = $("#" + BoxId).closest('.event-plugin').attr('data-name');
+        var user_id = $("#" + BoxId).closest('.event-plugin').attr('data-uid');
         if (plugin_name == 'session-agenda') {
             var json = $("#" + BoxId).find('.agenda_settings_options').val();
             var options = JSON.parse(json);
@@ -274,7 +274,7 @@ $(function () {
                     }
 
                     if (response.seats_availability != undefined) {
-                        $('#attende-or-cancel-session').closest('.session-details-wrapper').find('.form-plugin-table').find('.seats-available').find('.available-seats').html(response.seats_availability);
+                        $('#attende-or-cancel-session').closest('.session-details-wrapper').find('.event-plugin-table').find('.seats-available').find('.available-seats').html(response.seats_availability);
                     }
                     if (response.status == "attending" || response.status == "in-queue") {
                         $('#attende-or-cancel-session').addClass('active');
@@ -285,7 +285,7 @@ $(function () {
                         sc.dataSource.read();
                         sc.view(sc.view().name);
                     } else if (plugin_name == 'session-agenda') {
-                        var $this_plugin = $("#" + BoxId).closest('.form-plugin-session-agenda');
+                        var $this_plugin = $("#" + BoxId).closest('.event-plugin-session-agenda');
                         getSessionAgendaReload($this_plugin);
                     }
                     if (response.sessions_info) {
@@ -373,7 +373,7 @@ function getSessionAgendaReload($this_plugin) {
 }
 
 function onLoadDateJs() {
-    $body.find('.form-plugin-session-agenda').each(function () {
+    $body.find('.event-plugin-session-agenda').each(function () {
         var settings = $(this).find('.agenda_settings_options').val();
         var options = JSON.parse(settings);
         var range_start_date = options.session_agenda_date_range_start;
@@ -390,7 +390,7 @@ function onLoadDateJs() {
             onSet: function (e) {
                 var val = this.get();
                 var formated_val = moment(new Date(val)).format("MM/DD/YYYY");
-                var $this_plugin = this.$node.closest('.form-plugin-session-agenda');
+                var $this_plugin = this.$node.closest('.event-plugin-session-agenda');
                 $this_plugin.find('.session-agenda-date-range').attr('data-date-range', formated_val);
                 var min_range = moment(date_range_start_at).format("MM/DD/YYYY");
                 var max_range = moment(date_range_end_at).format("MM/DD/YYYY");
@@ -485,7 +485,7 @@ function getDateWithLanguage(text_date, $this_span) {
 }
 
 function sessionAgendaFilter($this_plugin) {
-    $this_plugin.find('.form-plugin-table tbody tr').hide();
+    $this_plugin.find('.event-plugin-table tbody tr').hide();
     var search_key = '';
     var search_data = $this_plugin.find('.page-search-session-agenda').val();
     if (search_data != undefined) {
@@ -501,9 +501,9 @@ function sessionAgendaFilter($this_plugin) {
         my_session = true;
         $this_plugin.find('.session-agenda-my-session-toggle').closest('.switch').addClass('active');
     }
-    var all_tr = $this_plugin.find('.form-plugin-table tbody tr');
+    var all_tr = $this_plugin.find('.event-plugin-table tbody tr');
     if (my_session) {
-        all_tr = $this_plugin.find('.form-plugin-table tbody tr.attending');
+        all_tr = $this_plugin.find('.event-plugin-table tbody tr.attending');
     }
     if ($this_plugin.find('.session-agenda-group-toggle-list').length > 0) {
         for (var i = 0; i < groups.length; i++) {
@@ -547,7 +547,7 @@ function sessionAgendaFilter($this_plugin) {
             }
         });
     }
-    if ($this_plugin.find('.form-plugin-table tbody tr:visible').length == 0) {
+    if ($this_plugin.find('.event-plugin-table tbody tr:visible').length == 0) {
         $this_plugin.find('.empty-session-agenda-table').show();
     } else {
         $this_plugin.find('.empty-session-agenda-table').hide();
@@ -746,7 +746,7 @@ function uncheck_others($this, pre_id, previous_check_value, post_id, result, bo
             // previous_elm.closest('tr').find('.status').html('');
             economy_remove_item_from_economy($this, 'session', previous_check_value[i]);
             if (previous_sessions_content_seats_availability != undefined && previous_sessions_content_seats_availability[previous_check_value[i]] != undefined) {
-                previous_elm.closest('tr').find('.form-plugin-table').find('.seats-available').find('.available-seats').html(previous_sessions_content_seats_availability[previous_check_value[i]]);
+                previous_elm.closest('tr').find('.event-plugin-table').find('.seats-available').find('.available-seats').html(previous_sessions_content_seats_availability[previous_check_value[i]]);
                 if (parseInt(previous_sessions_content_seats_availability[previous_check_value[i]]) > 0) {
                     if ($('#temporary-checkbox-' + box_id.split('-')[1] + '-id-' + previous_check_value[i]).prop('disabled')) {
                         $('#temporary-checkbox-' + box_id.split('-')[1] + '-id-' + previous_check_value[i]).prop('disabled', false);
@@ -781,10 +781,10 @@ $(function () {
             if (data_checked == 'true') {
                 target_checked = false;
             }
-            //var $this_section = $this.closest('.form-plugin-list').closest('.section-box');
+            //var $this_section = $this.closest('.event-plugin-list').closest('.section-box');
             if (validateMaxSessionCheckbox($this, target_checked)) {
-                $this.closest('.form-plugin-session-checkbox').removeClass('not-validated');
-                var seats_option = $this.closest('.form-plugin-list').attr('data-seats-option');
+                $this.closest('.event-plugin-session-checkbox').removeClass('not-validated');
+                var seats_option = $this.closest('.event-plugin-list').attr('data-seats-option');
                 var $status_elm = $this.closest('tr').find('.status');
                 // if ($('#hidden_secret').val() == undefined) {
                 temp_user_id = get_temp_user_id($this, 'checkbox');
@@ -864,7 +864,7 @@ $(function () {
                                 attendee_timeout_worker(result.temp_user_id, $this.closest('.section'));
                             }
                             if (result.seats_availability != undefined) {
-                                $this.closest('tr').find('.form-plugin-table').find('.seats-available').find('.available-seats').html(result.seats_availability);
+                                $this.closest('tr').find('.event-plugin-table').find('.seats-available').find('.available-seats').html(result.seats_availability);
                             }
                             // if (!$status_elm.is(':visible')) {
                             if (result.status != 'not-attending' && result.status != 'not-answered') {
@@ -898,7 +898,7 @@ $(function () {
         var $this = $(this);
         console.log("=================================================");
 
-        var box_id = $this.closest('.form-plugin-session-checkbox').attr('id');
+        var box_id = $this.closest('.event-plugin-session-checkbox').attr('id');
         var previous_check_value = [];
 
 
@@ -907,7 +907,7 @@ $(function () {
 
         }
 
-        var count_attending = $this.closest('.form-plugin-list').attr('data-count-attending');
+        var count_attending = $this.closest('.event-plugin-list').attr('data-count-attending');
         if (!$this.hasClass('disabled')) {
 
             var data_checked = $(this).attr('data-checked');
@@ -924,14 +924,14 @@ $(function () {
 
 
             var session_id = $this.attr('data-session-id').split("_")[0];
-            //var $this_section = $this.closest('.form-plugin-list').closest('.section-box');
+            //var $this_section = $this.closest('.event-plugin-list').closest('.section-box');
             if (must_choose_one_session($this) && !(previous_check_value.indexOf(session_id.toString()) == -1) && (previous_check_value.length == 1)) {
                 return false;
             } else {
-                $this.closest('.form-plugin-session-checkbox').removeClass('not-validated');
-                var seats_option = $this.closest('.form-plugin-list').attr('data-seats-option');
+                $this.closest('.event-plugin-session-checkbox').removeClass('not-validated');
+                var seats_option = $this.closest('.event-plugin-list').attr('data-seats-option');
                 var $status_elm = $this.closest('tr').find('.status');
-                var conflict_session_setting = $this.closest('.form-plugin-session-checkbox').attr('data-conflict-session');
+                var conflict_session_setting = $this.closest('.event-plugin-session-checkbox').attr('data-conflict-session');
                 // if ($('#hidden_secret').val() == undefined) {
                 temp_user_id = get_temp_user_id($this, 'checkbox');
                 // }
@@ -1048,10 +1048,10 @@ $(function () {
                                     attendee_timeout_worker(result.temp_user_id, $this.closest('.section'));
                                 }
                                 if (result.seats_availability != undefined) {
-                                    $this.closest('tr').find('.form-plugin-table').find('.seats-available').find('.available-seats').html(result.seats_availability);
+                                    $this.closest('tr').find('.event-plugin-table').find('.seats-available').find('.available-seats').html(result.seats_availability);
                                 }
                                 // if (result.previous_session_seats_availability != undefined) {
-                                //     $('#temporary-checkbox-' + box_id.split('-')[1] + '-id-' + previous_check_value).closest('tr').find('.form-plugin-table').find('.seats-available').find('.available-seats').html(result.previous_session_seats_availability);
+                                //     $('#temporary-checkbox-' + box_id.split('-')[1] + '-id-' + previous_check_value).closest('tr').find('.event-plugin-table').find('.seats-available').find('.available-seats').html(result.previous_session_seats_availability);
                                 //     if (result.previous_session_seats_availability > 0) {
                                 //         if ($('#temporary-checkbox-' + box_id.split('-')[1] + '-id-' + previous_check_value).prop('disabled')) {
                                 //             $('#temporary-checkbox-' + box_id.split('-')[1] + '-id-' + previous_check_value).prop('disabled', false);
@@ -1087,12 +1087,12 @@ $(function () {
 
     $('body').on('change', '.session-radio-availability', function (e) {
         var $this = $(this);
-        var box_id = $this.closest('.form-plugin-session-radio-button').attr('id');
+        var box_id = $this.closest('.event-plugin-session-radio-button').attr('id');
         var previous_radio_value = 0;
         if (previousSessions[box_id].length > 0) {
             previous_radio_value = previousSessions[box_id][0];
         }
-        var seats_option = $this.closest('.form-plugin-list').attr('data-seats-option');
+        var seats_option = $this.closest('.event-plugin-list').attr('data-seats-option');
         var $status_elm = $this.closest('tr').find('.status');
         temp_user_id = get_temp_user_id($this, 'radio');
         var session_id = $this.attr('data-session-id').split("_")[0];
@@ -1166,10 +1166,10 @@ $(function () {
                             }
                         }
                         if (result.seats_availability != undefined) {
-                            $this.closest('tr').find('.form-plugin-table').find('.seats-available').find('.available-seats').html(result.seats_availability);
+                            $this.closest('tr').find('.event-plugin-table').find('.seats-available').find('.available-seats').html(result.seats_availability);
                         }
                         if (result.previous_session_seats_availability != undefined) {
-                            $('#temporary-radio-' + box_id.split('-')[1] + '-id-' + previous_radio_value).closest('tr').find('.form-plugin-table').find('.seats-available').find('.available-seats').html(result.previous_session_seats_availability);
+                            $('#temporary-radio-' + box_id.split('-')[1] + '-id-' + previous_radio_value).closest('tr').find('.event-plugin-table').find('.seats-available').find('.available-seats').html(result.previous_session_seats_availability);
                             if (result.previous_session_seats_availability > 0) {
                                 if ($('#temporary-radio-' + box_id.split('-')[1] + '-id-' + previous_radio_value).prop('disabled')) {
                                     $('#temporary-radio-' + box_id.split('-')[1] + '-id-' + previous_radio_value).prop('disabled', false)
@@ -1224,7 +1224,7 @@ function attendee_timeout_worker(temp_att_id, $section) {
                 if (response.result) {
                     $section.find('.temporary-user-id-for-reg').val('');
 
-                    $section.find('.form-plugin-session-checkbox').each(function () {
+                    $section.find('.event-plugin-session-checkbox').each(function () {
                         $(this).find('input:checkbox').each(function () {
                             console.log($(this).is(':checked'));
                             if ($(this).is(':checked')) {
@@ -1234,7 +1234,7 @@ function attendee_timeout_worker(temp_att_id, $section) {
                         })
                     });
 
-                    $section.find('.form-plugin-session-radio-button').each(function () {
+                    $section.find('.event-plugin-session-radio-button').each(function () {
                         $(this).find('input:radio').each(function () {
                             console.log($(this).is(':checked'));
                             if ($(this).is(':checked')) {
@@ -1257,16 +1257,16 @@ function attendee_timeout_worker(temp_att_id, $section) {
 
 function validateMaxSessionCheckbox($this_plugin, $target_checked) {
     var validated = true;
-    //$this_section.find('.form-plugin-session-radio-button:visible').each(function () {
-    //    var min_attendee = $(this).find('.form-plugin-list').attr('data-session-choose');
+    //$this_section.find('.event-plugin-session-radio-button:visible').each(function () {
+    //    var min_attendee = $(this).find('.event-plugin-list').attr('data-session-choose');
     //    var $this = $(this);
     //    var session_attend = [];
     //    // this checking is for: when there is no item to show, then to ignore validation
     //    var session_radio_item_check = false;
-    //    if ($this.find('.form-plugin-item').length > 0) {
+    //    if ($this.find('.event-plugin-item').length > 0) {
     //        session_radio_item_check = true;
     //    }
-    //    $this.find('.form-plugin-item').find('td:first').find('input').each(function () {
+    //    $this.find('.event-plugin-item').find('td:first').find('input').each(function () {
     //        if ($(this).prop('checked')) {
     //            var session_id = $(this).attr('data-session-id');
     //            session_attend.push(session_id);
@@ -1278,22 +1278,22 @@ function validateMaxSessionCheckbox($this_plugin, $target_checked) {
     //    }
     //});
     if ($target_checked) {
-        $this_plugin.closest('.form-plugin-session-checkbox:visible').each(function () {
-            var max_attendee = $(this).find('.form-plugin-list').attr('data-session-choose-highest');
+        $this_plugin.closest('.event-plugin-session-checkbox:visible').each(function () {
+            var max_attendee = $(this).find('.event-plugin-list').attr('data-session-choose-highest');
             console.log(max_attendee);
             if (max_attendee == "up-to-max-available-sessions") {
                 max_attendee = 10;
             }
             var $this = $(this);
             var count_only_attending = true;
-            var count_attending = $this.find('.form-plugin-list').attr('data-count-attending');
+            var count_attending = $this.find('.event-plugin-list').attr('data-count-attending');
             console.log(count_attending);
             if (count_attending == '0') {
                 count_only_attending = false;
             }
             var session_attend = [];
             console.log(count_only_attending);
-            $this.find('.form-plugin-item').find('td:first').find('input[type=checkbox]').each(function () {
+            $this.find('.event-plugin-item').find('td:first').find('input[type=checkbox]').each(function () {
                 var is_checked = false;
                 if (count_only_attending) {
                     is_checked = $(this).prop('checked');
@@ -1322,14 +1322,14 @@ function validateMaxSessionCheckbox($this_plugin, $target_checked) {
 }
 
 function must_choose_one_session($this) {
-    if ($this.closest('.form-plugin-list').attr('data-session-choose') == '1') {
+    if ($this.closest('.event-plugin-list').attr('data-session-choose') == '1') {
         return true;
     }
     return false;
 }
 
 function get_temp_user_id($this, $type) {
-    var session_class = $type == 'radio' ? '.form-plugin-session-radio-button' : '.form-plugin-session-checkbox';
+    var session_class = $type == 'radio' ? '.event-plugin-session-radio-button' : '.event-plugin-session-checkbox';
     var temp_user_id = $this.closest('.section').find('.temporary-user-id-for-reg').val();
     var user_id = $this.closest(session_class).attr('data-uid');
 
@@ -1351,7 +1351,7 @@ function setOrUnsetSession() {
     csrf_token = $('input[name=csrfmiddlewaretoken]').val();
     var unset_sessions = [];
     var set_sessions = [];
-    $body.find('.form-plugin-session-radio-button:hidden').each(function () {
+    $body.find('.event-plugin-session-radio-button:hidden').each(function () {
         var $element = $(this);
         $element.find('input[type=radio]:checked').each(function () {
             var input_id = $(this).attr('data-session-id').split('_');
@@ -1362,7 +1362,7 @@ function setOrUnsetSession() {
                 var attendee_id = 'new';
             }
             var box_selector = $(this).attr('id');
-            var seats_option = $(this).closest('.form-plugin-list').attr('data-seats-option');
+            var seats_option = $(this).closest('.event-plugin-list').attr('data-seats-option');
             var rebate_details = rebate_for_session($element, session_id);
             var dict_info = {
                 attendee_id: attendee_id,
@@ -1377,8 +1377,8 @@ function setOrUnsetSession() {
             unset_sessions.push(dict_info);
         })
     });
-    console.log($body.find('.form-plugin-session-checkbox:hidden').length);
-    $body.find('.form-plugin-session-checkbox:hidden').each(function () {
+    console.log($body.find('.event-plugin-session-checkbox:hidden').length);
+    $body.find('.event-plugin-session-checkbox:hidden').each(function () {
         var $element = $(this);
         console.log("$element.find('input[type=checkbox]:checked').length");
         console.log($element.find('input[type=checkbox]:checked').length);
@@ -1393,7 +1393,7 @@ function setOrUnsetSession() {
                     var attendee_id = 'new';
                 }
                 var box_selector = $(this).attr('id');
-                var seats_option = $(this).closest('.form-plugin-list').attr('data-seats-option');
+                var seats_option = $(this).closest('.event-plugin-list').attr('data-seats-option');
                 var rebate_details = rebate_for_session($element, session_id);
                 var dict_info = {
                     attendee_id: attendee_id,
@@ -1411,7 +1411,7 @@ function setOrUnsetSession() {
             }
         })
     });
-    $body.find('.form-plugin-session-radio-button:visible').each(function () {
+    $body.find('.event-plugin-session-radio-button:visible').each(function () {
         console.log($(this).attr('id'));
         if ($(this).find('input[type=radio]:checked').length < 1) {
             var preselected_session = $(this).attr('preselected_session');
@@ -1427,7 +1427,7 @@ function setOrUnsetSession() {
                 } else {
                     var box_selector = 'temporary-radio-' + box_attr[3] + '-id-' + preselected_session + '-u';
                 }
-                var seats_option = $(this).find('.form-plugin-list').attr('data-seats-option');
+                var seats_option = $(this).find('.event-plugin-list').attr('data-seats-option');
                 var rebate_details = rebate_for_session($(this), preselected_session);
                 var dict_info = {
                     attendee_id: attendee_id,
@@ -1444,8 +1444,8 @@ function setOrUnsetSession() {
         }
         temp_user_id = get_temp_user_id($(this).find('input[type=radio]:first'), 'radio');
     });
-    console.log($body.find('.form-plugin-session-checkbox:visible').length);
-    $body.find('.form-plugin-session-checkbox:visible').each(function () {
+    console.log($body.find('.event-plugin-session-checkbox:visible').length);
+    $body.find('.event-plugin-session-checkbox:visible').each(function () {
         if ($(this).find('input[type=checkbox]:checked').length < 1) {
             var conflict_session_setting = '0';
             var act_like_radio = $(this).attr('data-act-like-radio');
@@ -1470,7 +1470,7 @@ function setOrUnsetSession() {
                             var box_selector = "temporary-checkbox-" + box_attr[3] + "-id-" + preselected_session[i] + "-u";
                         }
                         if (unchecked_box_elms.indexOf(box_selector) == -1) {
-                            var seats_option = $(this).find('.form-plugin-list').attr('data-seats-option');
+                            var seats_option = $(this).find('.event-plugin-list').attr('data-seats-option');
                             var rebate_details = rebate_for_session($(this), preselected_session[i]);
                             var dict_info = {
                                 attendee_id: attendee_id,
@@ -1533,7 +1533,7 @@ function setOrUnsetSession() {
                             attendee_timeout_worker(u_session.temp_user_id, $selector_u_session.closest('.section'));
                         }
                         if (u_session.seats_availability != undefined) {
-                            $selector_u_session.closest('tr').find('.form-plugin-table').find('.seats-available').find('.available-seats').html(u_session.seats_availability);
+                            $selector_u_session.closest('tr').find('.event-plugin-table').find('.seats-available').find('.available-seats').html(u_session.seats_availability);
                         }
                         if (u_session.status != 'not-attending' && u_session.status != 'not-answered') {
                             $status_elm_u_session.show();
@@ -1565,13 +1565,13 @@ function setOrUnsetSession() {
                                 }
                             }
                             if (s_session.type == 'radio') {
-                                previousSessions[$selector_s_session.closest('.form-plugin-session-radio-button').attr('id')][0] = s_session.session_id;
+                                previousSessions[$selector_s_session.closest('.event-plugin-session-radio-button').attr('id')][0] = s_session.session_id;
                                 $selector_s_session.trigger('click');
                                 $selector_s_session.trigger('change');
                             } else {
                                 if (s_session.status == 'attending') {
-                                    if ($selector_s_session.closest('.form-plugin-session-checkbox').attr('data-act-like-radio') == '1') {
-                                        var prev_radio_box_id = $selector_s_session.closest('.form-plugin-session-checkbox').attr('id');
+                                    if ($selector_s_session.closest('.event-plugin-session-checkbox').attr('data-act-like-radio') == '1') {
+                                        var prev_radio_box_id = $selector_s_session.closest('.event-plugin-session-checkbox').attr('id');
                                         previousSessionsActRadio[prev_radio_box_id][0] = s_session.session_id;
                                     }
                                 }
@@ -1594,7 +1594,7 @@ function setOrUnsetSession() {
                             attendee_timeout_worker(s_session.temp_user_id, $selector_s_session.closest('.section'));
                         }
                         if (s_session.seats_availability != undefined) {
-                            $selector_s_session.closest('tr').find('.form-plugin-table').find('.seats-available').find('.available-seats').html(s_session.seats_availability);
+                            $selector_s_session.closest('tr').find('.event-plugin-table').find('.seats-available').find('.available-seats').html(s_session.seats_availability);
                         }
                         if (s_session.status != 'not-attending' && s_session.status != 'not-answered') {
                             $status_elm_s_session.show();
@@ -1628,7 +1628,7 @@ $(function () {
     $body.on('click', '.evaluation-send-button', function (e) {
         var sessions_rating = [];
         var $this = $(this);
-        $this.closest('.form-plugin-evaluations').find('.star-evaluation-group').each(function () {
+        $this.closest('.event-plugin-evaluations').find('.star-evaluation-group').each(function () {
             var rate = $(this).find('input:checked').val();
             if (rate != '0' && rate != 0 && rate != NaN && rate != undefined) {
                 var rating = {session_id: $(this).attr('data-id'), rating: parseInt(rate)}
@@ -1636,7 +1636,7 @@ $(function () {
             }
         });
         var csrf_token = $('input[name=csrfmiddlewaretoken]').val();
-        $this.closest('.form-plugin-evaluations').removeClass('not-validated');
+        $this.closest('.event-plugin-evaluations').removeClass('not-validated');
         if (sessions_rating.length != 0) {
             $.ajax({
                 url: base_url + '/set-ratings/',
@@ -1647,15 +1647,15 @@ $(function () {
                 },
                 success: function (result) {
                     if (result.error) {
-                        $this.closest('.form-plugin-evaluations').find('.error-validating').html(result.error);
+                        $this.closest('.event-plugin-evaluations').find('.error-validating').html(result.error);
                     } else {
-                        var parentElem = $this.closest('.form-plugin-evaluations');
+                        var parentElem = $this.closest('.event-plugin-evaluations');
                         $.growl.notice({message: result.message});
                         for (var i = 0; i < sessions_rating.length; i++) {
-                            $this.parent().find('#rated_session_' + sessions_rating[i].session_id).closest('.form-plugin-item').remove();
+                            $this.parent().find('#rated_session_' + sessions_rating[i].session_id).closest('.event-plugin-item').remove();
                         }
-                        if (parentElem.children('.form-plugin-list').children('.form-plugin-item').length == 0) {
-                            //$this.closest('.form-plugin-evaluations').parent().remove();
+                        if (parentElem.children('.event-plugin-list').children('.event-plugin-item').length == 0) {
+                            //$this.closest('.event-plugin-evaluations').parent().remove();
                             parentElem.find('.evaluation-send-button').remove();
                             addEmptyDiv(parentElem, result.empty_txt_language);
                         }
@@ -1663,7 +1663,7 @@ $(function () {
                 }
             });
         } else {
-            $this.closest('.form-plugin-evaluations').addClass('not-validated');
+            $this.closest('.event-plugin-evaluations').addClass('not-validated');
         }
     });
     // Evaluation End
@@ -1677,7 +1677,7 @@ $(function () {
     $body.on('click', '.messages-mark-all-button', function (e) {
         var $this = $(this);
         var csrf_token = $('input[name=csrfmiddlewaretoken]').val();
-        $this.closest('.form-plugin-messages').removeClass('not-validated');
+        $this.closest('.event-plugin-messages').removeClass('not-validated');
         $.ajax(
             {
                 type: "Post",
@@ -1687,12 +1687,12 @@ $(function () {
                 },
                 success: function (response) {
                     if (response.error) {
-                        $this.closest('.form-plugin-messages').addClass('not-validated');
-                        $this.closest('.form-plugin-messages').find('.error-validating').html(response.message);
+                        $this.closest('.event-plugin-messages').addClass('not-validated');
+                        $this.closest('.event-plugin-messages').find('.error-validating').html(response.message);
                     } else {
                         $.growl.notice({message: response.message});
-                        var parentElem = $this.closest('.form-plugin-messages');
-                        $this.closest('.form-plugin-messages').find('.form-plugin-item').remove();
+                        var parentElem = $this.closest('.event-plugin-messages');
+                        $this.closest('.event-plugin-messages').find('.event-plugin-item').remove();
                         //parentElem.find('.messages-read-archived-messages').remove();
                         parentElem.find('.messages-mark-all-button').remove();
                         if (!parentElem.find('.messages-read-archived-messages').is(":visible")) {
@@ -1717,10 +1717,10 @@ $(function () {
         var element_id = $this.closest('.box').attr('data-id');
         var box_id = $this.closest('.box').attr('id').split('-')[3];
         if (page != undefined && box_id != undefined && page != '' && box_id != '') {
-            $this.closest('.form-plugin-location-list').find('.form-plugin-item').hide();
+            $this.closest('.event-plugin-location-list').find('.event-plugin-item').hide();
             var search_key = $.trim($(this).val());
-            $('.form-plugin-item').each(function () {
-                if ($(this).find('.form-plugin-title').text().toUpperCase().indexOf(search_key.toUpperCase()) != -1) {
+            $('.event-plugin-item').each(function () {
+                if ($(this).find('.event-plugin-title').text().toUpperCase().indexOf(search_key.toUpperCase()) != -1) {
                     $(this).show();
                 }
             });
@@ -1729,7 +1729,7 @@ $(function () {
     });
 
     $body.on('click', '.verification-login-send-button', function (e) {
-        var $form = $(this).closest('.form-plugin-login-form');
+        var $form = $(this).closest('.event-plugin-login-form');
         var email = $.trim($form.find('.email-password-verification-email').val());
         var password = $.trim($form.find('.email-password-verification-password').val());
         var csrf_token = $('input[name=csrfmiddlewaretoken]').val();
@@ -1759,7 +1759,7 @@ $(function () {
     });
 
     $body.on('click', '.request-login-send-button', function (e) {
-        var $form = $(this).closest('.form-plugin-request-login');
+        var $form = $(this).closest('.event-plugin-request-login');
         var email = $form.find('.request-login-email').val();
         var csrf_token = $('input[name=csrfmiddlewaretoken]').val();
         var send_email_id = $(this).attr("data-email-id");
@@ -1791,8 +1791,8 @@ $(function () {
     });
 
     $body.on('click', '.reset-password-button', function (e) {
-        var $form = $(this).closest('.form-plugin-reset-password');
-        var email = $.trim($form.find('.form-plugin-reset-password-email').val());
+        var $form = $(this).closest('.event-plugin-reset-password');
+        var email = $.trim($form.find('.event-plugin-reset-password-email').val());
         var email_id = $(this).attr('data-email-id');
         var csrf_token = $('input[name=csrfmiddlewaretoken]').val();
         if (email == '' || !checkEmail(email)) {
@@ -1847,10 +1847,10 @@ $(function () {
         }
     });
 
-    $body.on('click', '.form-plugin-new-password-button', function (e) {
-        var $form = $(this).closest('.form-plugin-new-password');
-        var password = $form.find('.form-plugin-new-password-email').val();
-        var repeat_password = $form.find('.form-plugin-repeat-new-password-email').val();
+    $body.on('click', '.event-plugin-new-password-button', function (e) {
+        var $form = $(this).closest('.event-plugin-new-password');
+        var password = $form.find('.event-plugin-new-password-email').val();
+        var repeat_password = $form.find('.event-plugin-repeat-new-password-email').val();
         var csrf_token = $('input[name=csrfmiddlewaretoken]').val();
         if (password == '' || repeat_password == '' || password != repeat_password || password.length < 6) {
             $form.addClass('not-validated');
@@ -1881,20 +1881,20 @@ $(function () {
         var csrf_token = $('input[name=csrfmiddlewaretoken]').val();
         var $button = $(this);
         try {
-            $button.closest(".form-plugin-photo-upload").removeClass('not-validated');
+            $button.closest(".event-plugin-photo-upload").removeClass('not-validated');
             var image = $('input[name=pic]')[0].files[0];
             if (image != undefined) {
                 var formdata = new FormData();
-                var comment = $button.closest('.form-plugin-photo-upload').find('textarea[name=comment]').val();
+                var comment = $button.closest('.event-plugin-photo-upload').find('textarea[name=comment]').val();
                 $('.submit-loader').show();
                 $button.prop("disabled", true);
                 formdata.append('pic', image);
                 if (comment != undefined) {
                     formdata.append('comment', comment);
                 }
-                var page_id = $button.closest('.form-plugin-photo-upload').attr('id').split('-')[1];
-                var box_id = $button.closest('.form-plugin-photo-upload').attr('id').split('-')[3];
-                var photo_group_id = $button.closest('.form-plugin-photo-upload').attr('data-photo-group-id');
+                var page_id = $button.closest('.event-plugin-photo-upload').attr('id').split('-')[1];
+                var box_id = $button.closest('.event-plugin-photo-upload').attr('id').split('-')[3];
+                var photo_group_id = $button.closest('.event-plugin-photo-upload').attr('data-photo-group-id');
                 formdata.append('page_id', page_id);
                 formdata.append('box_id', box_id);
                 formdata.append('photo_group_id', photo_group_id);
@@ -1913,26 +1913,26 @@ $(function () {
                         $button.prop("disabled", false);
                         if (result.success) {
                             $.growl.notice({message: result.message});
-                            $button.closest(".form-plugin-photo-upload").find('input[name=pic]').val("");
-                            $button.closest(".form-plugin-photo-upload").find('.selected-file').css("display", "none");
-                            $button.closest(".form-plugin-photo-upload").find('textarea[name=comment]').val("");
-                            if ($('body').find('.form-plugin-photo-gallery:visible').length > 0) {
-                                get_photos($('body').find('.form-plugin-photo-gallery:visible:first'), 1);
+                            $button.closest(".event-plugin-photo-upload").find('input[name=pic]').val("");
+                            $button.closest(".event-plugin-photo-upload").find('.selected-file').css("display", "none");
+                            $button.closest(".event-plugin-photo-upload").find('textarea[name=comment]').val("");
+                            if ($('body').find('.event-plugin-photo-gallery:visible').length > 0) {
+                                get_photos($('body').find('.event-plugin-photo-gallery:visible:first'), 1);
                             }
                         } else {
-                            $button.closest(".form-plugin-photo-upload").find('.error-validating').html(result.message);
-                            $button.closest(".form-plugin-photo-upload").addClass('not-validated');
+                            $button.closest(".event-plugin-photo-upload").find('.error-validating').html(result.message);
+                            $button.closest(".event-plugin-photo-upload").addClass('not-validated');
                         }
                     }
                 });
             } else {
-                $button.closest(".form-plugin-photo-upload").addClass('not-validated');
+                $button.closest(".event-plugin-photo-upload").addClass('not-validated');
             }
         }
         catch (err) {
             $('.submit-loader').hide();
             $button.prop("disabled", false);
-            $button.closest(".form-plugin-photo-upload").addClass('not-validated');
+            $button.closest(".event-plugin-photo-upload").addClass('not-validated');
         }
     });
 
@@ -1957,9 +1957,9 @@ $(function () {
             success: function (result) {
                 if (result.success) {
                     getUpdatedSessionInfo();
-                    $this.closest('.form-plugin-item[data-id="' + id + '"]').remove();
-                    $this.closest('.form-plugin-messages-message-wrapper').remove();
-                    $('.form-plugin-messages .form-plugin-item[data-id="' + id + '"]').remove();
+                    $this.closest('.event-plugin-item[data-id="' + id + '"]').remove();
+                    $this.closest('.event-plugin-messages-message-wrapper').remove();
+                    $('.event-plugin-messages .event-plugin-item[data-id="' + id + '"]').remove();
                 }
                 if (result.download_flag) {
                     window.location = base_url + "/economy-pdf-request?data=credit-invoice&order_number=" + result.order_number;
@@ -1974,20 +1974,20 @@ $(function () {
     $body.on('change', 'input[name="pic"]', function () {
         var filepath = $(this).val();
         var filename = filepath.split('\\').pop();
-        $(this).closest('.form-plugin-photo-upload').find('.file-fake-path').html(filename);
-        $(this).closest('.form-plugin-photo-upload').find('.selected-file').show();
+        $(this).closest('.event-plugin-photo-upload').find('.file-fake-path').html(filename);
+        $(this).closest('.event-plugin-photo-upload').find('.selected-file').show();
     });
 
     $('body').on('click', '.form-pdf-button', function (event) {
-        var page_id = $(this).closest('.form-plugin-pdf-button').attr('id').split('-')[1];
-        var box_id = $(this).closest('.form-plugin-pdf-button').attr('id').split('-')[3];
+        var page_id = $(this).closest('.event-plugin-pdf-button').attr('id').split('-')[1];
+        var box_id = $(this).closest('.event-plugin-pdf-button').attr('id').split('-')[3];
         window.location = base_url + "/convert-html-to-pdf/?page_id=" + page_id + "&box_id=" + box_id;
     });
 });
 
 function getAllSessionsId() {
     var all_sessions = [];
-    $('body').find('.form-plugin-session-checkbox').find('.form-plugin-list .form-plugin-item .session-table tr .session-selection').each(function () {
+    $('body').find('.event-plugin-session-checkbox').find('.event-plugin-list .event-plugin-item .session-table tr .session-selection').each(function () {
         var s_id = $(this).attr('data-session-id').split("_")[0];
         if (all_sessions.indexOf(s_id) == -1) {
             all_sessions.push(s_id);
@@ -2008,7 +2008,7 @@ function updateSessionsInfo(sessions, attendee_id) {
         var session_id = sessions[i]['id'];
         console.log(session_id);
         console.log(attendee_id);
-        $('body').find('.form-plugin-session-checkbox').find('.form-plugin-list .form-plugin-item .session-table[data-attendee-id='+attendee_id+'] tr[data-session-id=' + session_id + ']').each(function () {
+        $('body').find('.event-plugin-session-checkbox').find('.event-plugin-list .event-plugin-item .session-table[data-attendee-id='+attendee_id+'] tr[data-session-id=' + session_id + ']').each(function () {
             $(this).removeClass('not-attending not-answered attending in-queue time-conflict');
             $(this).find('.status').removeClass('not-attending not-answered attending in-queue time-conflict');
             $(this).addClass(sessions[i]['all_session_status'].join(" "));
@@ -2026,7 +2026,7 @@ function updateSessionsInfo(sessions, attendee_id) {
             }
 
         });
-        $('body').find('.form-plugin-session-radio-button').find('.form-plugin-list .form-plugin-item .session-table[data-attendee-id='+attendee_id+'] tr[data-session-id=' + session_id + ']').each(function () {
+        $('body').find('.event-plugin-session-radio-button').find('.event-plugin-list .event-plugin-item .session-table[data-attendee-id='+attendee_id+'] tr[data-session-id=' + session_id + ']').each(function () {
             $(this).removeClass('not-attending not-answered attending in-queue time-conflict');
             $(this).find('.status').removeClass('not-attending not-answered attending in-queue time-conflict');
             $(this).addClass(sessions[i]['all_session_status'].join(" "));

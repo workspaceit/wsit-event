@@ -1,8 +1,8 @@
 {% for item in items %}
-    <div class="form-plugin-item{% if item.full_size_photo %} photo-full-size{% endif %}" data-id="{{ item.photo_id }}" style="background-image: url('{{ item.src }}')">
+    <div class="event-plugin-item{% if item.full_size_photo %} photo-full-size{% endif %}" data-id="{{ item.photo_id }}" style="background-image: url('{{ item.src }}')">
         <img src="{{ item.src }}" class="photo {{ item.photo_group }}" style="cursor: pointer;"/>
         {% if item.comment or item.uploader %}
-            <div class="form-plugin-description">
+            <div class="event-plugin-description">
                 {% if item.uploader %}
                     <div class="photo-submitter">
                         <label>{{ language.langkey.photo_gallery_uploader_text }}: </label>

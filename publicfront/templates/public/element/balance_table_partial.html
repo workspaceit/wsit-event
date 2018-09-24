@@ -4,7 +4,7 @@
     {% for balance_table in order.balance_table %}
         <div class="form-question">
             <div class="scroll-x">
-                <table class="form-plugin-table form-plugin-economy-balance-table lines">
+                <table class="event-plugin-table event-plugin-economy-balance-table lines">
                     <thead>
                     <tr>
                         <th>{{ language.langkey.economy_txt_balance_table_activities }}</th>
@@ -25,7 +25,7 @@
                         {% if balance_table_pdf_button_status %}
                             <td>
                                 <button data-order-id="{{ balance_table.invoice_created.order_id }}"
-                                        class="form-plugin-button form-plugin-economy-invoice-download small economy-request-download-pdf"
+                                        class="event-plugin-button event-plugin-economy-invoice-download small economy-request-download-pdf"
                                         data-pdf="order-invoice" data-order_number="{{ balance_table.order_number }}">
                                     {{ language.langkey.economy_txt_invoice_download_button }}
                                 </button>
@@ -42,7 +42,7 @@
                             {% if balance_table_pdf_button_status %}
                                 <td>
                                     <button data-order-id="{{ balance_table.invoice_settled.order_id }}"
-                                            class="form-plugin-button form-plugin-economy-invoice-download small economy-request-download-pdf"
+                                            class="event-plugin-button event-plugin-economy-invoice-download small economy-request-download-pdf"
                                             data-pdf="receipt" data-order_number="{{ balance_table.order_number }}">
                                         {{ language.langkey.economy_txt_invoice_download_button }}
                                     </button>
@@ -59,7 +59,7 @@
                             {% if balance_table_pdf_button_status %}
                                 <td>
                                     <button data-credit-order-id="{{ credit_invoice.credit_order_id }}"
-                                            class="form-plugin-button form-plugin-economy-invoice-download small economy-request-download-pdf"
+                                            class="event-plugin-button event-plugin-economy-invoice-download small economy-request-download-pdf"
                                             data-pdf="credit-invoice" data-order_number="{{ balance_table.order_number }}">
                                         {{ language.langkey.economy_txt_invoice_download_button }}
                                     </button>

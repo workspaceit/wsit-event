@@ -27,14 +27,14 @@
 {#        float: left;#}
 {#    }#}
 {#</style>#}
-<div class="form-plugin element form-plugin-photo-gallery box"
+<div class="event-plugin element event-plugin-photo-gallery box"
      {% if data_user_id %}id="page-{{ page_id }}-box-{{ box_id }}-u-{{ data_user_id }}" data-uid="{{ data_user_id }}"
      {% else %}id="page-{{ page_id }}-box-{{ box_id }}"{% endif %} data-id="{{ element_id }}"
      data-name="photo-gallery">
-    <div class="form-plugin-intro">
+    <div class="event-plugin-intro">
         {{ message|safe }}
     </div>
-    <div class="form-plugin-list">
+    <div class="event-plugin-list">
     </div>
 
     <input type="hidden" value="{{ full_size_photo }}" class="pg_full_size_photo">

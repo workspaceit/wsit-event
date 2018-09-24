@@ -19,7 +19,7 @@
                     {% endif %}
                     <div class="scroll-x">
                         <input type="hidden" class="data-economy-attendee-id" value="{{ data_user_id }}">
-                        <table class="form-plugin-economy-order-table lines"
+                        <table class="event-plugin-economy-order-table lines"
                                data-order-number="{{ order.order.order_number }}"
                                data-order-status="{{ order.order.status }}"
                                data-order-attendee="{{ order.order.attendee.id }}">
@@ -95,7 +95,7 @@
                         </table>
                     </div>
                     <div class="scroll-x">
-                        <table class="form-plugin-economy-vat-table lines">
+                        <table class="event-plugin-economy-vat-table lines">
                             <thead>
                             <tr>
                                 <th>{{ language.langkey.economy_txt_vat }}</th>
@@ -133,7 +133,7 @@
                     </div>
                     {% else %}
                     <div class="scroll-x">
-                        <table class="form-plugin-economy-order-table lines group-order-{{ order.order_number }}"
+                        <table class="event-plugin-economy-order-table lines group-order-{{ order.order_number }}"
                                data-order-number="{{ order.order_number }}"
                                data-order-status="{{ order.order_status }}">
                             <thead>

@@ -1,22 +1,22 @@
 {% if sessionDatas %}
-    <div class="form-plugin element form-plugin-session-checkbox box"
+    <div class="event-plugin element event-plugin-session-checkbox box"
          {% if data_user_id %}id="page-{{ page_id }}-box-{{ box_id }}-u-{{ data_user_id }}"
          data-uid="{{ data_user_id }}" preselected-order-number="{{ preselected_order_number }}"
          {% else %}id="page-{{ page_id }}-box-{{ box_id }}"{% endif %}
          data-id="{{ element_id }}" preselected_session="{{ preselected_session }}"
          data-name="session-checkbox" data-act-like-radio="{% if act_like_radio_button == 'True' %}1{% else %}0{% endif %}" radio-preselected-session="{{ radio_preselected_session }}" data-conflict-session = "{% if remove_conflict_sessions == 'True' %}1{% else %}0{% endif %}">
-        <div class="form-plugin-intro">
+        <div class="event-plugin-intro">
             {% if title != '' or title != None %}
                 <h3 class="text-color2">{{ title }}</h3>
             {% endif %}
             {{ message|safe }}
         </div>
-        <div class="form-plugin-list" data-session-choose-least="{{ session_choose_least }}"
+        <div class="event-plugin-list" data-session-choose-least="{{ session_choose_least }}"
              data-session-choose-highest="{{ session_choose_heighest }}" data-seats-option="{{ session_option }}"
              data-count-attending="{% if count_attending == 'True' %}1{% else %}0{% endif %}" data-session-choose="{% if session_must_choose == 'True' %}1{% else %}0{% endif %}">
             {% for session in sessionDatas %}
-                <div class="form-plugin-item">
-                    <table class="form-plugin-table session-table" data-attendee-id="{{ data_user_id }}">
+                <div class="event-plugin-item">
+                    <table class="event-plugin-table session-table" data-attendee-id="{{ data_user_id }}">
                         <tbody>
                         <tr class="{% for session_status in session.all_status %} {{ session_status }}{% endfor %}{% for custom_class in session.custom_classes %} {{ custom_class.classname.classname }}{% endfor %}" data-session-id="{{ session.id }}">
                             <td><input
@@ -33,7 +33,7 @@
                                 <input type="hidden" class="session-cost-detail" value="{{ session.cost_detail }}">
                             </td>
                             <td>
-                                <h4 class="form-plugin-title"><label
+                                <h4 class="event-plugin-title"><label
                                         for="temporary-checkbox-{{ box_id }}-id-{{ session.id }}-u{{ data_user_id }}">{{ session.name|safe }}</label>
                                 </h4>
                                 {% if show_details_link == 'True' %}
@@ -59,7 +59,7 @@
                                     {% endif %}
                                 </div>
                                 {% if  description == 'True' %}
-                                    <div class="form-plugin-description">
+                                    <div class="event-plugin-description">
                                         {{ session.description|safe }}
                                     </div>
                                 {% endif %}

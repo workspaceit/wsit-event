@@ -171,7 +171,7 @@ $(function () {
             type: "POST",
             data: data,
             success: function (result) {
-                $this.closest('.form-plugin-item').remove();
+                $this.closest('.event-plugin-item').remove();
                 $.growl.notice({message: result.message});
             }
         });

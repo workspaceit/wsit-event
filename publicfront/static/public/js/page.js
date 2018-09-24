@@ -50,7 +50,7 @@ function onLoadJs() {
     $('body').find('#content').removeClass('loading-page');
     $body.find('.element').each(function () {
         if ($.trim($(this).html()) == '' && $.trim($(this).closest('.col').text()) == '') {
-            if ($(this).is(".form-plugin-next-up,.form-plugin-evaluations,.form-plugin-messages")) {
+            if ($(this).is(".event-plugin-next-up,.event-plugin-evaluations,.event-plugin-messages")) {
                 // $(this).closest('.col').hide();
             } else {
                 $(this).closest('.col').remove();
@@ -70,12 +70,12 @@ function onLoadJs() {
         }
     }
     addMarginForHeader();
-    $body.find('.form-plugin-multiple-registration').each(function () {
+    $body.find('.event-plugin-multiple-registration').each(function () {
         var $registration_plugin = $(this);
         if ($registration_plugin.find('.loop-registration-form').length > 0) {
-            $registration_plugin.closest('.section').find('.form-plugin-submit-button').each(function () {
-                // $registration_plugin.nextAll('.form-plugin-submit-button').each(function () {
-                if ($(this).closest('.form-plugin-multiple-registration').length < 1) {
+            $registration_plugin.closest('.section').find('.event-plugin-submit-button').each(function () {
+                // $registration_plugin.nextAll('.event-plugin-submit-button').each(function () {
+                if ($(this).closest('.event-plugin-multiple-registration').length < 1) {
                     var box_id = $(this).attr('id').split('-')[3];
                     var button_id = $(this).attr('data-submit-id');
                     $registration_plugin.attr('data-submit-button-id', button_id);
@@ -84,7 +84,7 @@ function onLoadJs() {
                 }
             });
         } else {
-            $registration_plugin.find('.form-plugin-submit-button').each(function () {
+            $registration_plugin.find('.event-plugin-submit-button').each(function () {
                 $(this).remove();
             });
         }
@@ -92,7 +92,7 @@ function onLoadJs() {
     });
 
     // hotel reservation start
-    if ($('.form-plugin-hotel-reservation').length > 0) {
+    if ($('.event-plugin-hotel-reservation').length > 0) {
         hotel_reservation_init();
     }
 
@@ -121,10 +121,10 @@ function onLoadJs() {
                     self.html(dHour + " Hours, " + dMinute + " Minutes, " + dSeconds + " Seconds");
                 }
                 else {
-                    var parentElem = self.closest('.form-plugin-messages');
-                    self.closest('.form-plugin-item').remove();
-                    if (parentElem.children('.form-plugin-list').children('.form-plugin-item').length == 0) {
-                        //$('.form-plugin-messages').parent().remove();
+                    var parentElem = self.closest('.event-plugin-messages');
+                    self.closest('.event-plugin-item').remove();
+                    if (parentElem.children('.event-plugin-list').children('.event-plugin-item').length == 0) {
+                        //$('.event-plugin-messages').parent().remove();
                         //parentElem.find('.messages-read-archived-messages').remove();
                         parentElem.find('.messages-mark-all-button').remove();
                     }
@@ -135,16 +135,16 @@ function onLoadJs() {
 
     // attendee-list-plugin
 
-    $('body').find('.form-plugin-attendee-list').each(
+    $('body').find('.event-plugin-attendee-list').each(
         function () {
 
             var $this_plugin = $(this);
-            var show_counting_column = $this_plugin.closest('.form-plugin-attendee-list').find('.attendee-plugin-counting-column').val();
-            var attendee_export_id = $this_plugin.closest('.form-plugin-attendee-list').find('.attendee-plugin-attendee-export-id').val();
-            var show_counting_column_header = $this_plugin.closest('.form-plugin-attendee-list').find('.attendee-plugin-counting-column-header').val();
+            var show_counting_column = $this_plugin.closest('.event-plugin-attendee-list').find('.attendee-plugin-counting-column').val();
+            var attendee_export_id = $this_plugin.closest('.event-plugin-attendee-list').find('.attendee-plugin-attendee-export-id').val();
+            var show_counting_column_header = $this_plugin.closest('.event-plugin-attendee-list').find('.attendee-plugin-counting-column-header').val();
             var csrf_token = $('input[name=csrfmiddlewaretoken]').val();
-            var show_entries = Math.abs($this_plugin.closest('.form-plugin-attendee-list').find('.attendee-plugin-attendee-per-page').val());
-            var display_table = $this_plugin.closest('.form-plugin-attendee-list').find('.attendee-plugin-display-attendee-table').val();
+            var show_entries = Math.abs($this_plugin.closest('.event-plugin-attendee-list').find('.attendee-plugin-attendee-per-page').val());
+            var display_table = $this_plugin.closest('.event-plugin-attendee-list').find('.attendee-plugin-display-attendee-table').val();
             var data = {
                 attendee_export_id: attendee_export_id,
                 csrfmiddlewaretoken: csrf_token,
@@ -229,7 +229,7 @@ function onLoadJs() {
     var search_timer = null;
     $("body").find(".attendee-plugin-search").on('keyup', function (e) {
         var search_data = $(this).val();
-        var attendee_table = $(this).closest('.form-plugin-attendee-list').find('.attendee-plugin-dt-table').DataTable();
+        var attendee_table = $(this).closest('.event-plugin-attendee-list').find('.attendee-plugin-dt-table').DataTable();
         clearTimeout(search_timer);
         search_timer = setTimeout(function () {
             console.log("Timer");
@@ -332,8 +332,8 @@ function onLoadJs() {
         });
     });
     // Attendee logout plugin
-    $('body').find('.form-plugin-log-out').each(function () {
-        if ($(this).find('.form-plugin-log-out-button').length == 0) {
+    $('body').find('.event-plugin-log-out').each(function () {
+        if ($(this).find('.event-plugin-log-out-button').length == 0) {
             var csrf_token = $('input[name=csrfmiddlewaretoken]').val();
             $.ajax({
                 url: base_url + '/get-logout-plugin/',
@@ -455,22 +455,22 @@ $(function () {
         var phone = '';
         var $button = $(this);
         var page_id = $(this).attr('data-page-id');
-        var btn_id = $(this).closest('.form-plugin-submit-button').attr('data-submit-id');
-        var btn_box_id = $(this).closest('.form-plugin-submit-button').attr('id').split('-')[3];
+        var btn_id = $(this).closest('.event-plugin-submit-button').attr('data-submit-id');
+        var btn_box_id = $(this).closest('.event-plugin-submit-button').attr('id').split('-')[3];
         var is_loop_multiple = false;
         var is_inline_multiple = false;
-        if ($this_section.closest('.form-plugin-multiple-registration').find(".loop-registration-form").length > 0) {
+        if ($this_section.closest('.event-plugin-multiple-registration').find(".loop-registration-form").length > 0) {
             is_loop_multiple = true;
         }
-        if ($this_section.find('.form-plugin-multiple-registration').find(".inline-registration-form").length > 0) {
+        if ($this_section.find('.event-plugin-multiple-registration').find(".inline-registration-form").length > 0) {
             is_inline_multiple = true;
         }
         $this_section.find('.form-question').removeClass('not-validated');
-        $this_section.find('.form-plugin').removeClass('not-validated');
+        $this_section.find('.event-plugin').removeClass('not-validated');
 
         var $this_sec_form_questions;
         if (is_loop_multiple) {
-            $this_sec_form_questions = $this_section.closest('.form-plugin-multiple-registration').closest('.section-box').find('.form-question');
+            $this_sec_form_questions = $this_section.closest('.event-plugin-multiple-registration').closest('.section-box').find('.form-question');
             console.log('here loop');
         }
         if ($this_sec_form_questions == undefined) {
@@ -672,7 +672,7 @@ $(function () {
                                 }
 
                             } else if (is_loop_multiple) {
-                                duid = $form_question.closest('.section').find('.form-plugin-multiple-registration-attendee-table tr:nth-child(2)').attr('data-multiple-attendee-id');
+                                duid = $form_question.closest('.section').find('.event-plugin-multiple-registration-attendee-table tr:nth-child(2)').attr('data-multiple-attendee-id');
                                 console.log('duid');
                                 console.log(duid);
                                 var ans_data = {
@@ -685,7 +685,7 @@ $(function () {
                                     ans_data['actual_defination'] = $form_question.attr('data-def');
                                 }
                             } else if (is_inline_multiple) {
-                                duid = $form_question.closest('.section').find('.inline-registration-form .form-plugin-multiple-registration-order-owner-form').attr('inline-data-owner-idz4Vv3ZLs3R');
+                                duid = $form_question.closest('.section').find('.inline-registration-form .event-plugin-multiple-registration-order-owner-form').attr('inline-data-owner-idz4Vv3ZLs3R');
                                 var ans_data = {
                                     id: id,
                                     answer: answer,
@@ -697,8 +697,8 @@ $(function () {
                                 }
                                 answers.push(ans_data);
                                 console.log('*******');
-                                console.log($form_question.closest('.section').find('.inline-registration-form .form-plugin-multiple-registration-attendee-form-inline').length);
-                                $form_question.closest('.section').find('.inline-registration-form .form-plugin-multiple-registration-attendee-form-inline').each(function () {
+                                console.log($form_question.closest('.section').find('.inline-registration-form .event-plugin-multiple-registration-attendee-form-inline').length);
+                                $form_question.closest('.section').find('.inline-registration-form .event-plugin-multiple-registration-attendee-form-inline').each(function () {
                                     duid = $(this).attr('inline-data-attendee-idz4vv3zls3r');
                                     var ans_data = {
                                         id: id,
@@ -736,7 +736,7 @@ $(function () {
 
         var h_r_validation = true;
         reservation_Data = [];
-        $this_section.find('.form-plugin-hotel-reservation:visible').each(function () {
+        $this_section.find('.event-plugin-hotel-reservation:visible').each(function () {
             h_r_validation = get_hotel_resrevation_data($(this));
             if (!h_r_validation) {
                 return false;
@@ -755,12 +755,12 @@ $(function () {
 
                 $('.submit-loader').show();
                 $button.prop("disabled", true);
-                var multiple_form = $this_section.closest('.form-plugin-multiple-registration');
-                var count_attendee = multiple_form.find('.form-plugin-multiple-registration-attendee-table tbody tr:not(.default-empty-attendee)').length;
+                var multiple_form = $this_section.closest('.event-plugin-multiple-registration');
+                var count_attendee = multiple_form.find('.event-plugin-multiple-registration-attendee-table tbody tr:not(.default-empty-attendee)').length;
                 var form_box_id = multiple_form.attr('id').split('-')[3];
                 var page_id = $(this).attr('data-page-id');
-                var btn_id = $(this).closest('.form-plugin-submit-button').attr('data-submit-id');
-                var btn_box_id = $(this).closest('.form-plugin-submit-button').attr('id').split('-')[3];
+                var btn_id = $(this).closest('.event-plugin-submit-button').attr('data-submit-id');
+                var btn_box_id = $(this).closest('.event-plugin-submit-button').attr('id').split('-')[3];
                 var main_submit_btn_id = multiple_form.attr('data-submit-button-id');
                 var main_submit_btn_box_id = multiple_form.attr('data-submit-button-box-id');
                 var main_page_id = multiple_form.attr('data-page-id');
@@ -792,9 +792,9 @@ $(function () {
                         if (value.type == 'date_range' || value.type == 'time_range') {
                             var answer_values = JSON.parse(value.answer);
                             var answer_value = answer_values[0] + ' to ' + answer_values[1];
-                            $(".form-plugin-multiple-registration-attendee-table").find("tr[class='active']").find("td[data-column-id='" + value.id + "']").html(answer_value);
+                            $(".event-plugin-multiple-registration-attendee-table").find("tr[class='active']").find("td[data-column-id='" + value.id + "']").html(answer_value);
                         } else {
-                            $(".form-plugin-multiple-registration-attendee-table").find("tr[class='active']").find("td[data-column-id='" + value.id + "']").html(value.answer);
+                            $(".event-plugin-multiple-registration-attendee-table").find("tr[class='active']").find("td[data-column-id='" + value.id + "']").html(value.answer);
                         }
                     });
                     var group_order_number = null;
@@ -820,7 +820,7 @@ $(function () {
                             $button.prop('disabled', false);
                             if (result.success) {
                                 if (result.next_page) {
-                                    multiple_form.find('.form-plugin-multiple-registration-form').html(result.attendee_page);
+                                    multiple_form.find('.event-plugin-multiple-registration-form').html(result.attendee_page);
                                     eval(result.attendee_js);
                                 } else {
                                     if (!economy_data.multiple.order_number && result.order_number) {
@@ -832,20 +832,20 @@ $(function () {
                                         multiple_attendee_id = multiple_attendee_id_array[multiple_attendee_id_array.indexOf(multiple_attendee_id) + 1];
                                         getMultipleAttendeeForm(multiple_form, multiple_attendee_id);
                                         var attendee_text = $('#attendee_text').val();
-                                        multiple_form.find('.form-plugin-multiple-registration-form-header').html(attendee_text + ' ' + $("[data-attendee-idz4Vv3ZLs3R='" + multiple_attendee_id + "']").closest('tr').find('td:first').html());
+                                        multiple_form.find('.event-plugin-multiple-registration-form-header').html(attendee_text + ' ' + $("[data-attendee-idz4Vv3ZLs3R='" + multiple_attendee_id + "']").closest('tr').find('td:first').html());
                                     } else {
-                                        multiple_form.find('.form-plugin-multiple-registration-form').html("");
-                                        multiple_form.find('.form-plugin-multiple-registration-form-header').html("");
+                                        multiple_form.find('.event-plugin-multiple-registration-form').html("");
+                                        multiple_form.find('.event-plugin-multiple-registration-form-header').html("");
                                         saveOrUpdateMultipleAttendee($button, main_submit_btn_id, main_submit_btn_box_id, main_page_id, form_box_id, language_id);
                                         console.log(multiple_registration_attendee);
                                     }
                                     $('html, body').animate({
-                                        scrollTop: $('.form-plugin-multiple-registration').offset().top
+                                        scrollTop: $('.event-plugin-multiple-registration').offset().top
                                     }, 500);
                                 }
                             } else {
-                                $button.closest('.form-plugin-submit-button').addClass('not-validated');
-                                $button.closest('.form-plugin-submit-button').find('.error-validating').text(result.message);
+                                $button.closest('.event-plugin-submit-button').addClass('not-validated');
+                                $button.closest('.event-plugin-submit-button').find('.error-validating').text(result.message);
                             }
                         }
                     });
@@ -863,9 +863,9 @@ $(function () {
                 }
             }
         } else if (is_inline_multiple) {
-            var min_attendee = $this_section.find('.form-plugin-multiple-registration').attr('data-min-attendees');
+            var min_attendee = $this_section.find('.event-plugin-multiple-registration').attr('data-min-attendees');
             var total_attendees = multiple_attendee_id_array.length;
-            if ($this_section.find('.form-plugin-multiple-registration-order-owner-form').attr('data-include-ownerz4Vv3ZLs3R') == '0') {
+            if ($this_section.find('.event-plugin-multiple-registration-order-owner-form').attr('data-include-ownerz4Vv3ZLs3R') == '0') {
                 total_attendees = multiple_attendee_id_array.length - 1;
             }
             if (total_attendees < min_attendee) {
@@ -876,11 +876,11 @@ $(function () {
             console.log(validated);
             if (validated && h_r_validation) {
                 console.log("Inline Multiple Registration");
-                var multiple_form = $this_section.find('.form-plugin-multiple-registration');
+                var multiple_form = $this_section.find('.event-plugin-multiple-registration');
                 var form_box_id = multiple_form.attr('id').split('-')[3];
-                var btn_box_id = $(this).closest('.form-plugin-submit-button').attr('id').split('-')[3];
-                var main_submit_btn_id = $(this).closest('.form-plugin-submit-button').attr('data-submit-id');
-                var main_submit_btn_box_id = $(this).closest('.form-plugin-submit-button').attr('id').split('-')[3];
+                var btn_box_id = $(this).closest('.event-plugin-submit-button').attr('id').split('-')[3];
+                var main_submit_btn_id = $(this).closest('.event-plugin-submit-button').attr('data-submit-id');
+                var main_submit_btn_box_id = $(this).closest('.event-plugin-submit-button').attr('id').split('-')[3];
                 var main_page_id = multiple_form.attr('data-page-id');
                 var csrf_token = $('input[name=csrfmiddlewaretoken]').val();
                 saveOrUpdateMultipleAttendeeInline($button, main_submit_btn_id, main_submit_btn_box_id, main_page_id, form_box_id, answers, language_id)
@@ -966,8 +966,8 @@ $(function () {
                             $button.prop('disabled', false);
                             if (!result.success) {
                                 // $.growl.error({message: result.message});
-                                $button.closest('.form-plugin-submit-button').addClass('not-validated');
-                                $button.closest('.form-plugin-submit-button').find('.error-validating').text(result.message);
+                                $button.closest('.event-plugin-submit-button').addClass('not-validated');
+                                $button.closest('.event-plugin-submit-button').find('.error-validating').text(result.message);
                             } else {
                                 $.growl.notice({message: result.message});
                                 setEmptyValueToQuestions($body);
@@ -1005,7 +1005,7 @@ $(function () {
 
     $("body").on("click", ".attendee-list-download-spreadsheet-button", function () {
         $('body').find('.loader').show();
-        var attendee_export_id = $(this).closest('.form-plugin-attendee-list').find('.attendee-plugin-attendee-export-id').val();
+        var attendee_export_id = $(this).closest('.event-plugin-attendee-list').find('.attendee-plugin-attendee-export-id').val();
         var csrf_token = $('input[name=csrfmiddlewaretoken]').val();
         $.ajax({
             url: base_url + '/export-plugin-attendee/',
@@ -1055,10 +1055,10 @@ $(function () {
      var element_id = $this.closest('.box').attr('data-id');
      var box_id = $this.closest('.box').attr('id').split('-')[3];
      if (page != undefined && box_id != undefined && page != '' && box_id != '') {
-     var listElem = $this.closest('.form-plugin-attendee-list');
-     listElem.find('.form-plugin-table tbody tr').hide();
+     var listElem = $this.closest('.event-plugin-attendee-list');
+     listElem.find('.event-plugin-table tbody tr').hide();
      var search_key = $.trim($this.val());
-     listElem.find('.form-plugin-table tbody tr').each(function () {
+     listElem.find('.event-plugin-table tbody tr').each(function () {
      var found_attendee = false;
      var $this_tr = $(this);
      var fullname = $this_tr.find('td.firstname').text().toUpperCase() + ' ' + $this_tr.find('td.lastname').text().toUpperCase();
@@ -1075,20 +1075,20 @@ $(function () {
      $this_tr.show();
      }
      });
-     listElem.find('.form-plugin-table tbody tr:visible').each(function (index) {
+     listElem.find('.event-plugin-table tbody tr:visible').each(function (index) {
      $(this).find('td.attendee-list-counting-col').html(index + 1);
      });
      }
 
      });*/
 
-    $body.on('click', '.form-plugin-attendee-list .form-plugin-table thead th', function () {
+    $body.on('click', '.event-plugin-attendee-list .event-plugin-table thead th', function () {
         if (!$(this).hasClass('attendee-list-counting-header')) {
             f_sl_att_plugin *= -1;
             var n = $(this).prevAll().length;
-            var elem_tbody = $(this).closest('.form-plugin-attendee-list').find('.form-plugin-table tbody');
+            var elem_tbody = $(this).closest('.event-plugin-attendee-list').find('.event-plugin-table tbody');
             var className = $.trim($(this).attr("class"));
-            $(this).closest('.form-plugin-attendee-list').find('.form-plugin-table thead th').removeClass('asc desc');
+            $(this).closest('.event-plugin-attendee-list').find('.event-plugin-table thead th').removeClass('asc desc');
             if (className == '' || className == undefined) {
                 $(this).addClass('desc');
             } else if (className == 'asc') {
@@ -1102,8 +1102,8 @@ $(function () {
         }
     });
 
-    $body.on('click', '.form-plugin-clear-search', function () {
-        var search_elem = $(this).prev('.form-plugin-search');
+    $body.on('click', '.event-plugin-clear-search', function () {
+        var search_elem = $(this).prev('.event-plugin-search');
         search_elem.val('');
         search_elem.keyup();
     });
@@ -1245,8 +1245,8 @@ function saveOrUpdateMultipleAttendee(button, main_submit_btn_id, main_submit_bt
                 })
 
             } else {
-                button.closest('.form-plugin-submit-button').addClass('not-validated');
-                button.closest('.form-plugin-submit-button').find('.error-validating').text(result.message);
+                button.closest('.event-plugin-submit-button').addClass('not-validated');
+                button.closest('.event-plugin-submit-button').find('.error-validating').text(result.message);
             }
         }
     });
@@ -1285,7 +1285,7 @@ function getMultipleAttendeeForm(multiple_form, attendee_id) {
         data: data,
         success: function (result) {
             if (result.success) {
-                multiple_form.find('.form-plugin-multiple-registration-form').html(result.attendee_page);
+                multiple_form.find('.event-plugin-multiple-registration-form').html(result.attendee_page);
                 eval(result.attendee_js);
             }
         }
@@ -1296,7 +1296,7 @@ function getMultipleAttendeeForm(multiple_form, attendee_id) {
 
 function addEmptyDiv($plugin, empty_message) {
     var empty_div = '<div class="placeholder empty">' + empty_message + '</div>';
-    $plugin.find(".form-plugin-list").html(empty_div);
+    $plugin.find(".event-plugin-list").html(empty_div);
 }
 
 
@@ -1446,10 +1446,10 @@ function archivedNotification(elm) {
             success: function (response) {
                 if (response.status == "success") {
                     $.growl.notice({message: response.message});
-                    var parentElem = elm.closest('.form-plugin-messages');
+                    var parentElem = elm.closest('.event-plugin-messages');
                     elm.parent().remove();
-                    if (parentElem.children('.form-plugin-list').children('.form-plugin-item').length == 0) {
-                        //$('.form-plugin-messages').parent().remove();
+                    if (parentElem.children('.event-plugin-list').children('.event-plugin-item').length == 0) {
+                        //$('.event-plugin-messages').parent().remove();
                         //parentElem.find('.messages-read-archived-messages').remove();
                         parentElem.find('.messages-mark-all-button').remove();
                         addEmptyDiv(parentElem, response.empty_txt_language);
@@ -1534,16 +1534,16 @@ Array.prototype.unique_answer = function () {
 
 function validateSession($this_section) {
     var validated = true;
-    $this_section.find('.form-plugin-session-radio-button:visible').each(function () {
-        var min_attendee = $(this).find('.form-plugin-list').attr('data-session-choose');
+    $this_section.find('.event-plugin-session-radio-button:visible').each(function () {
+        var min_attendee = $(this).find('.event-plugin-list').attr('data-session-choose');
         var $this = $(this);
         var session_attend = [];
         // this checking is for: when there is no item to show, then to ignore validation
         var session_radio_item_check = false;
-        if ($this.find('.form-plugin-item').length > 0) {
+        if ($this.find('.event-plugin-item').length > 0) {
             session_radio_item_check = true;
         }
-        $this.find('.form-plugin-item').find('td:first').find('input').each(function () {
+        $this.find('.event-plugin-item').find('td:first').find('input').each(function () {
             if ($(this).prop('checked')) {
                 var session_id = $(this).attr('data-session-id');
                 session_attend.push(session_id);
@@ -1554,20 +1554,20 @@ function validateSession($this_section) {
             $this.addClass('not-validated');
         }
     });
-    $this_section.find('.form-plugin-session-checkbox:visible').each(function () {
+    $this_section.find('.event-plugin-session-checkbox:visible').each(function () {
         var act_like_radio = $(this).attr('data-act-like-radio');
         if (act_like_radio == '1') {
-            var session_must_choose = $(this).find('.form-plugin-list').attr('data-session-choose');
+            var session_must_choose = $(this).find('.event-plugin-list').attr('data-session-choose');
             if (session_must_choose == '1') {
                 var $this = $(this);
-                var count_attending = $(this).find('.form-plugin-list').attr('data-count-attending');
+                var count_attending = $(this).find('.event-plugin-list').attr('data-count-attending');
                 var checked_session = false;
                 if (count_attending == '1') {
-                    if ($this.find('.form-plugin-item').find('tr.attending').find('td:first').find('input:checked').length > 0) {
+                    if ($this.find('.event-plugin-item').find('tr.attending').find('td:first').find('input:checked').length > 0) {
                         checked_session = true;
                     }
                 } else {
-                    if ($this.find('.form-plugin-item').find('td:first').find('input:checked').length > 0) {
+                    if ($this.find('.event-plugin-item').find('td:first').find('input:checked').length > 0) {
                         checked_session = true;
                     }
                 }
@@ -1577,8 +1577,8 @@ function validateSession($this_section) {
                 }
             }
         } else {
-            var min_attendee = $(this).find('.form-plugin-list').attr('data-session-choose-least');
-            var max_attendee = $(this).find('.form-plugin-list').attr('data-session-choose-highest');
+            var min_attendee = $(this).find('.event-plugin-list').attr('data-session-choose-least');
+            var max_attendee = $(this).find('.event-plugin-list').attr('data-session-choose-highest');
             console.log(min_attendee);
             console.log(max_attendee);
             if (min_attendee == "up-to-max-available-sessions") {
@@ -1591,10 +1591,10 @@ function validateSession($this_section) {
             var session_attend = [];
             // this checking is for: when there is no item to show, then to ignore validation
             var session_checkbox_item_count = 0;
-            $this.find('.form-plugin-item').each(function () {
+            $this.find('.event-plugin-item').each(function () {
                 session_checkbox_item_count++;
             });
-            $this.find('.form-plugin-item').find('td:first').find('input').each(function () {
+            $this.find('.event-plugin-item').find('td:first').find('input').each(function () {
                 if ($(this).prop('checked')) {
                     var session_id = $(this).attr('data-session-id');
                     session_attend.push(session_id);

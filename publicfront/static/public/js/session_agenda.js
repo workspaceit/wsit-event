@@ -2,15 +2,15 @@ $(function () {
 
     var $body = $('body');
     $body.on('change', '.session-agenda-group-toggle-list-item input[type="checkbox"]', function (e) {
-        var $this_plugin = $(this).closest('.form-plugin-session-agenda');
+        var $this_plugin = $(this).closest('.event-plugin-session-agenda');
         sessionAgendaFilter($this_plugin);
     });
     $body.on('change', '.session-agenda-my-session-toggle', function (e) {
-        var $this_plugin = $(this).closest('.form-plugin-session-agenda');
+        var $this_plugin = $(this).closest('.event-plugin-session-agenda');
         sessionAgendaFilter($this_plugin);
     });
     $body.on('keyup', '.page-search-session-agenda', function (e) {
-        var $this_plugin = $(this).closest('.form-plugin-session-agenda');
+        var $this_plugin = $(this).closest('.event-plugin-session-agenda');
         sessionAgendaFilter($this_plugin);
     });
     $body.on('click', '.session-agenda-today', function (e) {
@@ -21,7 +21,7 @@ $(function () {
         getDateWithLanguage(text, $this_span);
     });
     $body.on('click', '.session-agenda-prev', function (e) {
-        var $this_plugin = $(this).closest('.form-plugin-session-agenda');
+        var $this_plugin = $(this).closest('.event-plugin-session-agenda');
         var date_range = $this_plugin.find('.session-agenda-date-range').attr('data-date-range');
         // date_range = date_range.split('-');
         var start_date = date_range.split("/");
@@ -32,7 +32,7 @@ $(function () {
         getDateWithLanguage(text, $this_span);
     });
     $body.on('click', '.session-agenda-next', function (e) {
-        var $this_plugin = $(this).closest('.form-plugin-session-agenda');
+        var $this_plugin = $(this).closest('.event-plugin-session-agenda');
         var date_range = $this_plugin.find('.session-agenda-date-range').attr('data-date-range');
         var start_date = date_range.split("/");
         var date = new Date(start_date[2], start_date[0] - 1, parseInt(start_date[1]) + 1);
@@ -52,12 +52,12 @@ $(function () {
     $('body').on('click', '.session', function (e) {
 
         var id = $(this).data('id');
-        //var box_id = $this.closest('.form-plugin-session-scheduler').find('.box_id').val();
+        //var box_id = $this.closest('.event-plugin-session-scheduler').find('.box_id').val();
         var box_id = $.trim($(this).attr('data-box-id'));
-        BoxId = $(this).closest('.form-plugin').attr('id');
-        //var page_id = $this.closest('.form-plugin-session-scheduler').find('.page_id').val();
+        BoxId = $(this).closest('.event-plugin').attr('id');
+        //var page_id = $this.closest('.event-plugin-session-scheduler').find('.page_id').val();
         var page_id = $.trim($(this).attr('data-page-id'));
-        var plugin_name = $(this).closest('.form-plugin').attr('data-name');
+        var plugin_name = $(this).closest('.event-plugin').attr('data-name');
         var csrfToken = $('input[name=csrfmiddlewaretoken]').val();
         $.ajax({
             url: base_url + '/get-scheduler-session-details/',
@@ -98,8 +98,8 @@ $(function () {
         } else if (currentStatus == "deciding") {
             type = 'unchecked';
         }
-        var plugin_name = $("#" + BoxId).closest('.form-plugin').attr('data-name');
-        var user_id = $("#" + BoxId).closest('.form-plugin').attr('data-uid');
+        var plugin_name = $("#" + BoxId).closest('.event-plugin').attr('data-name');
+        var user_id = $("#" + BoxId).closest('.event-plugin').attr('data-uid');
         if (plugin_name == 'session-agenda') {
             var json = $("#" + BoxId).find('.agenda_settings_options').val();
             var options = JSON.parse(json);
@@ -142,7 +142,7 @@ $(function () {
                     }
 
                     if (response.seats_availability != undefined) {
-                        $('#attende-or-cancel-session').closest('.session-details').find('.form-plugin-table').find('.seats-available').find('.available-seats').html(response.seats_availability);
+                        $('#attende-or-cancel-session').closest('.session-details').find('.event-plugin-table').find('.seats-available').find('.available-seats').html(response.seats_availability);
                     }
                     $.growl.notice({message: response.message});
                     if (plugin_name == 'session-scheduler') {
@@ -150,7 +150,7 @@ $(function () {
                         sc.dataSource.read();
                         sc.view(sc.view().name);
                     } else if (plugin_name == 'session-agenda') {
-                        var $this_plugin = $("#" + BoxId).closest('.form-plugin-session-agenda');
+                        var $this_plugin = $("#" + BoxId).closest('.event-plugin-session-agenda');
                         getSessionAgendaReload($this_plugin);
                     }
                 }
@@ -235,7 +235,7 @@ function getSessionAgendaReload($this_plugin) {
 }
 
 function onLoadDateJs() {
-    $body.find('.form-plugin-session-agenda').each(function () {
+    $body.find('.event-plugin-session-agenda').each(function () {
         var settings = $(this).find('.agenda_settings_options').val();
         var options = JSON.parse(settings);
         var range_start_date = options.session_agenda_date_range_start;
@@ -253,7 +253,7 @@ function onLoadDateJs() {
             onSet: function (e) {
                 var val = this.get();
                 var formated_val = moment(val).format("MM/DD/YYYY");
-                var $this_plugin = this.$node.closest('.form-plugin-session-agenda');
+                var $this_plugin = this.$node.closest('.event-plugin-session-agenda');
                 $this_plugin.find('.session-agenda-date-range').attr('data-date-range', formated_val);
                 getSessionAgenda($this_plugin);
 
@@ -273,7 +273,7 @@ function getDateWithLanguage(text_date, $this_span) {
 }
 
 function sessionAgendaFilter($this_plugin) {
-    $this_plugin.find('.form-plugin-table tbody tr').hide();
+    $this_plugin.find('.event-plugin-table tbody tr').hide();
     var search_key = '';
     var search_data = $this_plugin.find('.page-search-session-agenda').val();
     if (search_data != undefined) {
@@ -287,9 +287,9 @@ function sessionAgendaFilter($this_plugin) {
     if ($this_plugin.find('.session-agenda-my-session-toggle').is(':checked')) {
         my_session = true;
     }
-    var all_tr = $this_plugin.find('.form-plugin-table tbody tr');
+    var all_tr = $this_plugin.find('.event-plugin-table tbody tr');
     if (my_session) {
-        all_tr = $this_plugin.find('.form-plugin-table tbody tr.attending');
+        all_tr = $this_plugin.find('.event-plugin-table tbody tr.attending');
     }
     if ($this_plugin.find('.session-agenda-group-toggle-list').length > 0) {
         for (var i = 0; i < groups.length; i++) {
@@ -333,7 +333,7 @@ function sessionAgendaFilter($this_plugin) {
             }
         });
     }
-    if ($this_plugin.find('.form-plugin-table tbody tr:visible').length == 0) {
+    if ($this_plugin.find('.event-plugin-table tbody tr:visible').length == 0) {
         $this_plugin.find('.empty-session-agenda-table').show();
     } else {
         $this_plugin.find('.empty-session-agenda-table').hide();

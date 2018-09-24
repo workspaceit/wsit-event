@@ -902,7 +902,7 @@ class Plugins(generic.TemplateView):
     def get_evaluation(request, page_id, element):
         language = LanguageKey.get_lang_key(request, element['element_id'])
         box_id = element['box_id'].split('-')[1]
-        plugin_div = """<div class="form-plugin element form-plugin-evaluations" box" id="box-""" + str(
+        plugin_div = """<div class="event-plugin element event-plugin-evaluations" box" id="box-""" + str(
             box_id) + """" data-id=""" + str(element['element_id']) + """ data-name="evaluations">"""
         try:
             if 'is_user_login' in request.session and request.session['is_user_login']:
@@ -965,7 +965,7 @@ class Plugins(generic.TemplateView):
     def get_messages(request, page_id, element):
         language = LanguageKey.get_lang_key(request, element['element_id'])
         box_id = element['box_id'].split('-')[1]
-        plugin_div = """<div class="form-plugin element form-plugin-messages" box" id="box-""" + str(
+        plugin_div = """<div class="event-plugin element event-plugin-messages" box" id="box-""" + str(
             box_id) + """" data-id=""" + str(element['element_id']) + """ data-name="messages">"""
         try:
             if 'is_user_login' in request.session and request.session['is_user_login']:
@@ -1142,7 +1142,7 @@ class Plugins(generic.TemplateView):
     def get_photo_gallery(request, page_id, element):
         language = LanguageKey.get_lang_key(request, element['element_id'])
         box_id = element['box_id'].split('-')[1]
-        plugin_div = """<div class="form-plugin element form-plugin-messages" box" id="box-""" + str(
+        plugin_div = """<div class="event-plugin element event-plugin-messages" box" id="box-""" + str(
             box_id) + """" data-id=""" + str(element['element_id']) + """ data-name="messages">"""
         try:
             if 'is_user_login' in request.session and request.session['is_user_login']:
@@ -1305,7 +1305,7 @@ class Plugins(generic.TemplateView):
     def get_session_next_up(request, page_id, element):
         language = LanguageKey.get_lang_key(request, element['element_id'])
         box_id = element['box_id'].split('-')[1]
-        plugin_div = """<div class="form-plugin element form-plugin-next-up" box" id="box-""" + str(
+        plugin_div = """<div class="event-plugin element event-plugin-next-up" box" id="box-""" + str(
             box_id) + """" data-id=""" + str(element['element_id']) + """ data-name="next-up">"""
         try:
             if 'is_user_login' in request.session and request.session['is_user_login']:
@@ -1465,7 +1465,7 @@ class Plugins(generic.TemplateView):
     def get_attendee_plugin(request, page_id, element):
         language = LanguageKey.catch_lang_key_obj(request, "attendee-list")
         box_id = element['box_id'].split('-')[1]
-        plugin_div = """<div class="form-plugin element form-plugin-attendee-list" box" id="box-""" + str(
+        plugin_div = """<div class="event-plugin element event-plugin-attendee-list" box" id="box-""" + str(
             box_id) + """" data-id=""" + str(element['element_id']) + """ data-name="attendee-list">"""
         try:
             if 'is_user_login' in request.session and request.session['is_user_login']:
@@ -1851,7 +1851,7 @@ class Plugins(generic.TemplateView):
     def get_plugin_hotel_reservation(request, page_id, element):
         language = LanguageKey.catch_lang_key_obj(request, "hotel-reservation")
         box_id = element['box_id'].split('-')[1]
-        plugin_div = """<div class="form-plugin element form-plugin-hotel-reservation" box" id="box-""" + str(
+        plugin_div = """<div class="event-plugin element event-plugin-hotel-reservation" box" id="box-""" + str(
             box_id) + """" data-id=""" + str(element['element_id']) + """ data-name="hotel-reservation">"""
         att_bookings = None
         try:
@@ -2211,7 +2211,7 @@ class Plugins(generic.TemplateView):
     def get_location_list(request, page_id, element):
         language = LanguageKey.get_lang_key(request, element['element_id'])
         box_id = element['box_id'].split('-')[1]
-        plugin_div = """<div class="form-plugin element form-plugin-location-list" box" id="box-""" + str(
+        plugin_div = """<div class="event-plugin element event-plugin-location-list" box" id="box-""" + str(
             box_id) + """" data-id=""" + str(element['element_id']) + """ data-name="location-list">"""
         try:
             # if 'is_user_login' in request.session and request.session['is_user_login']:
@@ -2294,7 +2294,7 @@ class Plugins(generic.TemplateView):
     def get_session_radio(request, page_id, element):
         language = LanguageKey.get_lang_key(request, element['element_id'])
         box_id = element['box_id'].split('-')[1]
-        plugin_div = """<div class="form-plugin element form-plugin-session-radio" box" id="box-""" + str(
+        plugin_div = """<div class="event-plugin element event-plugin-session-radio" box" id="box-""" + str(
             box_id) + """" data-id=""" + str(element['element_id']) + """ data-name="session-radio">"""
         try:
             # if 'is_user_login' in request.session and request.session['is_user_login']:
@@ -2462,7 +2462,7 @@ class Plugins(generic.TemplateView):
     def get_session_checkbox(request, page_id, element):
         language = LanguageKey.get_lang_key(request, element['element_id'])
         box_id = element['box_id'].split('-')[1]
-        plugin_div = """<div class="form-plugin element form-plugin-session-checkbox" box" id="box-""" + str(
+        plugin_div = """<div class="event-plugin element event-plugin-session-checkbox" box" id="box-""" + str(
             box_id) + """" data-id=""" + str(element['element_id']) + """ data-name="session-checkbox">"""
         try:
             event_id = request.session["event_id"]
@@ -2659,7 +2659,7 @@ class Plugins(generic.TemplateView):
     def get_login_form(request, page_id, element):
         language = LanguageKey.get_lang_key(request, element['element_id'])
         box_id = element['box_id'].split('-')[1]
-        plugin_div = """<div class="form-plugin element form-plugin-login-form" box" id="box-""" + str(
+        plugin_div = """<div class="event-plugin element event-plugin-login-form" box" id="box-""" + str(
             box_id) + """" data-id=""" + str(element['element_id']) + """ data-name="login-form">"""
         try:
             element_settings = ElementsAnswers.objects.filter(page_id=page_id, box_id=box_id).select_related(
@@ -2696,7 +2696,7 @@ class Plugins(generic.TemplateView):
     def get_request_login(request, page_id, element):
         language = LanguageKey.get_lang_key(request, element['element_id'])
         box_id = element['box_id'].split('-')[1]
-        plugin_div = """<div class="form-plugin element form-plugin-request-login" box" id="box-""" + str(
+        plugin_div = """<div class="event-plugin element event-plugin-request-login" box" id="box-""" + str(
             box_id) + """" data-id=""" + str(element['element_id']) + """ data-name="request-login">"""
         try:
             element_settings = ElementsAnswers.objects.filter(page_id=page_id, box_id=box_id).select_related(
@@ -2734,7 +2734,7 @@ class Plugins(generic.TemplateView):
         language = LanguageKey.get_lang_key(request, element['element_id'])
         language_id = request.session["language_id"]
         box_id = element['box_id'].split('-')[1]
-        plugin_div = """<div class="form-plugin element form-plugin-submit-button" box" id="box-""" + str(
+        plugin_div = """<div class="event-plugin element event-plugin-submit-button" box" id="box-""" + str(
             box_id) + """" data-id=""" + str(element['element_id']) + """ data-name="submit-button">"""
         try:
             submit_button = PluginSubmitButton.objects.get(id=int(element['button_id']))
@@ -2783,7 +2783,7 @@ class Plugins(generic.TemplateView):
             language = LanguageKey.get_lang_key(request, element['element_id'])
             language_id = request.session["language_id"]
             box_id = element['box_id'].split('-')[1]
-            plugin_div = """<div class="form-plugin element form-plugin-pdf-button" box" id="box-""" + str(
+            plugin_div = """<div class="event-plugin element event-plugin-pdf-button" box" id="box-""" + str(
                 box_id) + """" data-id=""" + str(element['element_id']) + """ data-name="pdf-button">"""
             try:
                 pdf_button = PluginPdfButton.objects.get(id=int(element['button_id']))
@@ -2861,7 +2861,7 @@ class Plugins(generic.TemplateView):
         if 'is_user_login' in request.session and request.session['is_user_login']:
             language = LanguageKey.get_lang_key(request, element['element_id'])
             box_id = element['box_id'].split('-')[1]
-            plugin_div = """<div class="form-plugin element form-plugin-photo-upload" box" id="box-""" + str(
+            plugin_div = """<div class="event-plugin element event-plugin-photo-upload" box" id="box-""" + str(
                 box_id) + """" data-id=""" + str(element['element_id']) + """ data-name="photo-upload">"""
             try:
                 photo_group = PhotoGroup.objects.get(id=int(element['button_id']))
@@ -2899,7 +2899,7 @@ class Plugins(generic.TemplateView):
     def get_logout_page(request, page_id, element):
         language = LanguageKey.get_lang_key(request, element['element_id'])
         box_id = element['box_id'].split('-')[1]
-        plugin_div = """<div class="form-plugin element form-plugin-logout" box" id="box-""" + str(
+        plugin_div = """<div class="event-plugin element event-plugin-logout" box" id="box-""" + str(
             box_id) + """" data-id=""" + str(element['element_id']) + """ data-name="logout">"""
         try:
             element_settings = ElementsAnswers.objects.filter(page_id=page_id, box_id=box_id).select_related(
@@ -2928,7 +2928,7 @@ class Plugins(generic.TemplateView):
     def get_reset_password(request, page_id, element):
         language = LanguageKey.get_lang_key(request, element['element_id'])
         box_id = element['box_id'].split('-')[1]
-        plugin_div = """<div class="form-plugin element form-plugin-reset-password" box" id="box-""" + str(
+        plugin_div = """<div class="event-plugin element event-plugin-reset-password" box" id="box-""" + str(
             box_id) + """" data-id=""" + str(element['element_id']) + """ data-name="reset-password">"""
         try:
             element_settings = ElementsAnswers.objects.filter(page_id=page_id, box_id=box_id).select_related(
@@ -2965,7 +2965,7 @@ class Plugins(generic.TemplateView):
     def get_new_password(request, page_id, element):
         language = LanguageKey.get_lang_key(request, element['element_id'])
         box_id = element['box_id'].split('-')[1]
-        plugin_div = """<div class="form-plugin element form-plugin-new-password" box" id="box-""" + str(
+        plugin_div = """<div class="event-plugin element event-plugin-new-password" box" id="box-""" + str(
             box_id) + """" data-id=""" + str(element['element_id']) + """ data-name="new-password">"""
         try:
             element_settings = ElementsAnswers.objects.filter(page_id=page_id, box_id=box_id).select_related(
@@ -3026,7 +3026,7 @@ class Plugins(generic.TemplateView):
         if has_group:
             language = LanguageKey.get_lang_key(request, element['element_id'])
             box_id = element['box_id'].split('-')[1]
-            plugin_div = """<div class="form-plugin element form-plugin-multiple-registration" box" id="box-""" + str(
+            plugin_div = """<div class="event-plugin element event-plugin-multiple-registration" box" id="box-""" + str(
                 box_id) + """" data-id=""" + str(element['element_id']) + """ data-name="multiple-registration">"""
             try:
                 with transaction.atomic():
@@ -3266,7 +3266,7 @@ class Plugins(generic.TemplateView):
     def get_session_scheduler(request, page_id, element):
         lang = LanguageKey.get_lang_key(request, element['element_id'])
         box_id = element['box_id'].split('-')[1]
-        plugin_div = """<div class="form-plugin element form-plugin-session-scheduler" box" id="box-""" + str(
+        plugin_div = """<div class="event-plugin element event-plugin-session-scheduler" box" id="box-""" + str(
             box_id) + """" data-id=""" + str(element['element_id']) + """ data-name="session-scheduler">"""
         try:
             if 'is_user_login' in request.session and request.session['is_user_login']:
@@ -3696,7 +3696,7 @@ class Plugins(generic.TemplateView):
         lang = LanguageKey.get_lang_key(request, element['element_id'])
         session_details_lang = LanguageKey.get_session_details_lang(request)
         box_id = element['box_id'].split('-')[1]
-        plugin_div = """<div class="form-plugin element form-plugin-session-agenda" box" id="box-""" + str(
+        plugin_div = """<div class="event-plugin element event-plugin-session-agenda" box" id="box-""" + str(
             box_id) + """" data-id=""" + str(element['element_id']) + """ data-name="session-agenda">"""
         try:
             if 'is_user_login' in request.session and request.session['is_user_login']:
@@ -6080,7 +6080,7 @@ class Plugins(generic.TemplateView):
     def get_economy_plugin(request, page_id, element):
         language = LanguageKey.get_lang_key(request, element['element_id'])
         box_id = element['box_id'].split('-')[1]
-        plugin_div = """<div class="form-plugin element form-plugin-economy" box" id="box-""" + str(
+        plugin_div = """<div class="event-plugin element event-plugin-economy" box" id="box-""" + str(
             box_id) + """" data-id=""" + str(element['element_id']) + """ data-name="economy">"""
         try:
             context = {

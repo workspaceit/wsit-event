@@ -1,10 +1,10 @@
 {% load thousand_filter %}
-<div class="form-plugin-list multiple-class-for-existing-booking">
-    <div class="form-plugin-item">
+<div class="event-plugin-list multiple-class-for-existing-booking">
+    <div class="event-plugin-item">
 
         <div class="row inner-gutter h-r-p-check-in-check-out" {% if not force_hotel_room_selection or hotel_info.0.occupancy %} style="display: none;" {% endif %} >
             <div class="col span-6">
-                <div class="form-question form-plugin-hotel-reservation-check-in required element">
+                <div class="form-question event-plugin-hotel-reservation-check-in required element">
                     <label for="hotel-check-in{{ partial_counter }}" class="form-question-label">
                         <span class="form-question-label-title">{{ language.langkey.hotelreservation_txt_checkin }}</span>
                     </label>
@@ -13,7 +13,7 @@
                 </div>
             </div>
             <div class="col span-6">
-                <div class="form-question form-plugin-hotel-reservation-check-out required element">
+                <div class="form-question event-plugin-hotel-reservation-check-out required element">
                     <label for="hotel-check-out{{ partial_counter }}" class="form-question-label">
                         <span class="form-question-label-title">{{ language.langkey.hotelreservation_txt_checkout }}</span>
                     </label>
@@ -29,7 +29,7 @@
             <input class="plugin-box-id" value="{{ box_id }}" type="hidden">
                 <input class="uid-text-calss" value="{{ uid_text }}" type="hidden">
                 <div class="scroll-x">
-                    <table class="form-plugin-table lines">
+                    <table class="event-plugin-table lines">
                         <thead>
                         <tr>
                             <th>&nbsp;</th>
@@ -60,7 +60,7 @@
                                 ></td>
                                 {% if optional_field_name %}
                                     <td><label for="hotel{{ box_id }}{{ room.id }}{{ partial_counter }}{{ uid_text }}"
-                                               class="form-plugin-label">{{ room.hotel }}</label></td>
+                                               class="event-plugin-label">{{ room.hotel }}</label></td>
                                 {% endif %}
                                 {% if optional_field_description %} <td>{{ room.description|safe }}</td> {% endif %}
                                 {% if optional_field_location %} <td>{{ room.location }}</td> {% endif %}
@@ -77,7 +77,7 @@
                         {% if not force_hotel_room_selection %}
                             <tr>
                                 <td><input class="class-for-date-show" type="radio" value="no-hotel" name="data-hotel-b{{ box_id }}-p{{ partial_counter }}{{ uid_text }}" id="hotel{{ box_id }}{{ partial_counter }}{{ partial_counter }}{{ uid_text }}"></td>
-                                <td colspan="7"><label for="hotel{{ box_id }}{{ partial_counter }}{{ partial_counter }}{{ uid_text }}" class="form-plugin-label">{{ language.langkey.hotelreservation_txt_no_hotel_text }}</label></td>
+                                <td colspan="7"><label for="hotel{{ box_id }}{{ partial_counter }}{{ partial_counter }}{{ uid_text }}" class="event-plugin-label">{{ language.langkey.hotelreservation_txt_no_hotel_text }}</label></td>
                                 <td style="display: none;">
                                     <input type="hidden" class="room-beds" value="0">
                                 </td>
@@ -92,7 +92,7 @@
 
         <div class="row room-buddy-hide-show" style="display: none;">
             <div class="col span-6">
-                <div class="form-question form-plugin-hotel-reservation-room-buddy required element">
+                <div class="form-question event-plugin-hotel-reservation-room-buddy required element">
                     <label for="" class="form-question-label">
                         <span class="form-question-label-title">{{ language.langkey.hotelreservation_txt_room_buddy }}</span>
                     </label>

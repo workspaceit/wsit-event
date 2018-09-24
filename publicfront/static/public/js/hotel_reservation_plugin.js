@@ -6,21 +6,21 @@ $(function () {
     $body.on("click", ".hotel-reservation-add-button", function () {
         var default_date_format = $(".default_date_format").val();
         var $element_this = $(this);
-        var max_partial_allows = parseInt($(this).closest('.form-plugin-hotel-reservation').find('.partial-data-counter').val());
+        var max_partial_allows = parseInt($(this).closest('.event-plugin-hotel-reservation').find('.partial-data-counter').val());
         // need to increase partial_allows by 1. because it's partial_allows starts with 0
-        var partial_allows = parseInt($(this).closest('.form-plugin-hotel-reservation').find('.stay-add-remove-class-for-parial-value').last().val());
+        var partial_allows = parseInt($(this).closest('.event-plugin-hotel-reservation').find('.stay-add-remove-class-for-parial-value').last().val());
         if (partial_allows + 1 >= max_partial_allows) {
             $.growl.warning({message: $('.lang_max_stay_reach').val()});
             return;
         }
         $('.loader').show();
-        var h_r_page_id = $(this).closest('.form-plugin-hotel-reservation').find('.form-plugin-intro').find(".h_r_element_page_id").val();
-        var h_r_box_id = $(this).closest('.form-plugin-hotel-reservation').find('.form-plugin-intro').find(".h_r_element_box_id").val();
+        var h_r_page_id = $(this).closest('.event-plugin-hotel-reservation').find('.event-plugin-intro').find(".h_r_element_page_id").val();
+        var h_r_box_id = $(this).closest('.event-plugin-hotel-reservation').find('.event-plugin-intro').find(".h_r_element_box_id").val();
         var csrf_token = $('input[name=csrfmiddlewaretoken]').val();
-        var force_default_dates = $(this).closest('.form-plugin-hotel-reservation').find(".force_default_dates_checker").val() == "True" ? true : false;
-        var force_hotel_room_selection = $(this).closest('.form-plugin-hotel-reservation').find(".force_hotel_room_selection_checker").val() == "True" ? true : false;
-        var hotel_Date_List = JSON.parse($(this).closest('.form-plugin-hotel-reservation').find('.hrp-available-dates').val());
-        var $main_element = $(this).closest('.form-plugin-hotel-reservation').find('.class-for-partial-append');
+        var force_default_dates = $(this).closest('.event-plugin-hotel-reservation').find(".force_default_dates_checker").val() == "True" ? true : false;
+        var force_hotel_room_selection = $(this).closest('.event-plugin-hotel-reservation').find(".force_hotel_room_selection_checker").val() == "True" ? true : false;
+        var hotel_Date_List = JSON.parse($(this).closest('.event-plugin-hotel-reservation').find('.hrp-available-dates').val());
+        var $main_element = $(this).closest('.event-plugin-hotel-reservation').find('.class-for-partial-append');
         partial_allows++;
         var user_id = $main_element.find('.uid-text-calss').val().replace('-u', '');
         $.ajax({
@@ -105,7 +105,7 @@ $(function () {
 
                     var lang_no_data_found = $(".lang_no_data_found").val();
                     init_select2($main_element.find(".hotel-r-buddy" + partial_allows), max_buddy_select_no);
-                    $element_this.closest('.form-plugin-hotel-reservation').find('.stay-add-remove-class-for-parial-value').val(partial_allows);
+                    $element_this.closest('.event-plugin-hotel-reservation').find('.stay-add-remove-class-for-parial-value').val(partial_allows);
 
                 } else {
                     console.log('Error to get partial allow');
@@ -117,30 +117,30 @@ $(function () {
     });
 
     $body.on("click", ".hotel-reservation-remove-button", function () {
-        var partial_allows = parseInt($(this).closest('.form-plugin-hotel-reservation').find('.stay-add-remove-class-for-parial-value').last().val());
+        var partial_allows = parseInt($(this).closest('.event-plugin-hotel-reservation').find('.stay-add-remove-class-for-parial-value').last().val());
         if (partial_allows > 0) {
-            var $main_element = $(this).closest('.form-plugin-hotel-reservation').find('.class-for-partial-append');
-            $main_element.find('.form-plugin-list').last().remove();
+            var $main_element = $(this).closest('.event-plugin-hotel-reservation').find('.class-for-partial-append');
+            $main_element.find('.event-plugin-list').last().remove();
             partial_allows--;
-            $(this).closest('.form-plugin-hotel-reservation').find('.stay-add-remove-class-for-parial-value').val(partial_allows);
+            $(this).closest('.event-plugin-hotel-reservation').find('.stay-add-remove-class-for-parial-value').val(partial_allows);
         }
     });
 
     $body.on('click', '.class-for-date-show', function () {
-        $(this).closest('.form-plugin-item').find('.h-r-p-check-in-check-out').show();
+        $(this).closest('.event-plugin-item').find('.h-r-p-check-in-check-out').show();
         var buddy_list_hide_show = $(this).closest('tr').find('.room-beds').val();
         if (buddy_list_hide_show == 0){
-            $(this).closest('.form-plugin-item').find('.room-buddy-hide-show').hide();
-            $(this).closest('.form-plugin-item').find('.h-r-p-check-in-check-out').hide();
+            $(this).closest('.event-plugin-item').find('.room-buddy-hide-show').hide();
+            $(this).closest('.event-plugin-item').find('.h-r-p-check-in-check-out').hide();
             return;
         }
-        $(this).closest('.form-plugin-item').find('.room-buddy-hide-show').show();
+        $(this).closest('.event-plugin-item').find('.room-buddy-hide-show').show();
         if (buddy_list_hide_show == '1') {
-            $(this).closest('.form-plugin-item').find('.room-buddy-hide-show').hide();
+            $(this).closest('.event-plugin-item').find('.room-buddy-hide-show').hide();
         }
         var hotel_Date_List = JSON.parse($(this).closest('tr').find('.hrp-available-dates').val());
         var default_date_format = $(".default_date_format").val();
-        var force_default_dates = $(this).closest('.form-plugin-hotel-reservation').find(".force_default_dates_checker").val() == "True" ? true : false;
+        var force_default_dates = $(this).closest('.event-plugin-hotel-reservation').find(".force_default_dates_checker").val() == "True" ? true : false;
         var partial_stay_value = $(this).closest('tbody').find('.date-class-for-parial-value').val();
         var check_in_date_for_select = $(".default_checkin_date_value").val();
         var check_out_date_for_select = $(".default_checkout_date_value").val();
@@ -186,14 +186,14 @@ $(function () {
             check_out_date_for_select = testDate.getFullYear() + "-" + ("0" + (testDate.getMonth() + 1)).slice(-2) + "-" + ("0" + testDate.getDate()).slice(-2);
         }
 
-        dt_check_in = $(this).closest('.form-plugin-item').find(".hotel-check-in" + partial_stay_value).pickadate();
+        dt_check_in = $(this).closest('.event-plugin-item').find(".hotel-check-in" + partial_stay_value).pickadate();
         picker_check_in = dt_check_in.pickadate('picker');
         picker_check_in.set('enable', true);
         picker_check_in.set('disable', list_of_dateList);
         picker_check_in.set('disable', 'flip');
         picker_check_in.set('select', new Date(check_in_date_for_select));
 
-        dt_check_out = $(this).closest('.form-plugin-item').find(".hotel-check-out" + partial_stay_value).pickadate();
+        dt_check_out = $(this).closest('.event-plugin-item').find(".hotel-check-out" + partial_stay_value).pickadate();
         picker_check_out = dt_check_out.pickadate('picker');
         picker_check_out.set('enable', true);
         picker_check_out.set('disable', list_of_dateList);
@@ -202,9 +202,9 @@ $(function () {
 
         if (force_default_dates) {
             picker_check_in.stop();
-            $(this).closest('.form-plugin-item').find(".hotel-check-in" + partial_stay_value).attr('readonly', true);
+            $(this).closest('.event-plugin-item').find(".hotel-check-in" + partial_stay_value).attr('readonly', true);
             picker_check_out.stop();
-            $(this).closest('.form-plugin-item').find(".hotel-check-out" + partial_stay_value).attr('readonly', true);
+            $(this).closest('.event-plugin-item').find(".hotel-check-out" + partial_stay_value).attr('readonly', true);
         }
         var max_buddy_select_no = 1;
         try{
@@ -217,9 +217,9 @@ $(function () {
             max_buddy_select_no = 1;
         }
 
-        $(this).closest('.form-plugin-item').find(".hotel-r-buddy" + partial_stay_value).val(null);
-        $(this).closest('.form-plugin-item').find(".hotel-r-buddy" + partial_stay_value).trigger('change');
-        init_select2($(this).closest('.form-plugin-item').find(".hotel-r-buddy" + partial_stay_value), max_buddy_select_no);
+        $(this).closest('.event-plugin-item').find(".hotel-r-buddy" + partial_stay_value).val(null);
+        $(this).closest('.event-plugin-item').find(".hotel-r-buddy" + partial_stay_value).trigger('change');
+        init_select2($(this).closest('.event-plugin-item').find(".hotel-r-buddy" + partial_stay_value), max_buddy_select_no);
     });
 
 });
@@ -237,7 +237,7 @@ function hotel_reservation_init() {
     var default_date_format = $(".default_date_format").val();
     var lang_no_data_found = $(".lang_no_data_found").val();
 
-    $(".form-plugin-hotel-reservation").each(function () {
+    $(".event-plugin-hotel-reservation").each(function () {
         force_hotel_room_selection = $(this).find(".force_hotel_room_selection_checker").val() == "True" ? true : false;
         var max_buddy_select_no = 1;
         if (force_hotel_room_selection) {
@@ -303,9 +303,9 @@ function hotel_reservation_init() {
                 picker_check_out.set('select', new Date(check_out_date_for_select));
             }
             var buddy_list_hide_show = $(this).find('tbody').find('.room-beds').val();
-            $(this).find('.form-plugin-item').find('.room-buddy-hide-show').show();
+            $(this).find('.event-plugin-item').find('.room-buddy-hide-show').show();
             if (buddy_list_hide_show == '1') {
-                $(this).find('.form-plugin-item').find('.room-buddy-hide-show').hide();
+                $(this).find('.event-plugin-item').find('.room-buddy-hide-show').hide();
             }
             try{
                 max_buddy_select_no = parseInt(buddy_list_hide_show) - 1;
@@ -388,7 +388,7 @@ function existing_booking(att_bookings_string, $hotel_element) {
                             picker_check_out.set('disable', 'flip');
                             picker_check_out.set('select', new Date(att_bookings[existing_booking_i].checkout));
 
-                            var force_default_dates = $this.closest('.form-plugin-hotel-reservation').find('.force_default_dates_checker').val() == "True" ? true : false;
+                            var force_default_dates = $this.closest('.event-plugin-hotel-reservation').find('.force_default_dates_checker').val() == "True" ? true : false;
                             if (force_default_dates) {
                                 picker_check_in.stop();
                                 $this.find('.hotel-reservation-calendar:input').first().attr('readonly', true);
@@ -401,14 +401,14 @@ function existing_booking(att_bookings_string, $hotel_element) {
                                 var b_ids = [];
                                 for (var i = 0; i < att_bookings[existing_booking_i].buddyids.length; i++) {
                                     var option = new Option(att_bookings[existing_booking_i].buddyids[i].text, att_bookings[existing_booking_i].buddyids[i].id);
-                                    $(this).closest('.form-plugin-list').find('.hotel-room-buddy').append(option).trigger('change');
+                                    $(this).closest('.event-plugin-list').find('.hotel-room-buddy').append(option).trigger('change');
                                     b_ids.push(att_bookings[existing_booking_i].buddyids[i].id);
                                     max_select_no = parseInt(room_beds) - 1;
                                 }
-                                init_select2($(this).closest('.form-plugin-list').find('.hotel-room-buddy'), max_select_no);
-                                $(this).closest('.form-plugin-list').find('.hotel-room-buddy').val(b_ids);
-                                $(this).closest('.form-plugin-list').find('.hotel-room-buddy').trigger('change');
-                                $(this).closest('.form-plugin-list').find('.room-buddy-hide-show').show();
+                                init_select2($(this).closest('.event-plugin-list').find('.hotel-room-buddy'), max_select_no);
+                                $(this).closest('.event-plugin-list').find('.hotel-room-buddy').val(b_ids);
+                                $(this).closest('.event-plugin-list').find('.hotel-room-buddy').trigger('change');
+                                $(this).closest('.event-plugin-list').find('.room-buddy-hide-show').show();
                             }
                             return false;
 
@@ -458,7 +458,7 @@ function get_hotel_resrevation_data($element) {
     var validation_flag = true;
     var stay_counter = 0;
     var default_date_format = $(".default_date_format").val();
-    $element.find('.form-plugin-list').each(function () {
+    $element.find('.event-plugin-list').each(function () {
         var this_box_id = $(this).find('.plugin-box-id').val();
         var user_text = $(this).find('.uid-text-calss').val();
         var user_id = $(this).find('.uid-text-calss').val().replace('-u', '');
@@ -526,7 +526,7 @@ function get_hotel_resrevation_data($element) {
             lang_hotel_validation_msg = $('.lang_fix_date').val();
             // $.growl.error({message: "Fix date for allow: " + (stay_counter + 1)});
             validation_flag = false;
-            display_error_field($(this).find(".hotel-check-out" + stay_counter).closest('.form-plugin-hotel-reservation-check-out'));
+            display_error_field($(this).find(".hotel-check-out" + stay_counter).closest('.event-plugin-hotel-reservation-check-out'));
             return false;
         }
 
@@ -543,8 +543,8 @@ function get_hotel_resrevation_data($element) {
                 lang_hotel_validation_msg = $('.lang_match_previous_date').val();
                 // $.growl.error({message: "Match previous date" + ' for allow: ' + (stay_counter + 1)});
                 validation_flag = false;
-                display_error_field($(this).find(".hotel-check-in" + stay_counter).closest('.form-plugin-hotel-reservation-check-in'));
-                display_error_field($(this).find(".hotel-check-out" + stay_counter).closest('.form-plugin-hotel-reservation-check-out'));
+                display_error_field($(this).find(".hotel-check-in" + stay_counter).closest('.event-plugin-hotel-reservation-check-in'));
+                display_error_field($(this).find(".hotel-check-out" + stay_counter).closest('.event-plugin-hotel-reservation-check-out'));
                 return false;
             } else if (current_check_in > prev_check_in) {
                 if (!(current_check_out > prev_check_out)) {
@@ -552,8 +552,8 @@ function get_hotel_resrevation_data($element) {
                     console.log('came 111');
                     // $.growl.error({message: "Date clash" + ' for allow: ' + (stay_counter + 1)});
                     validation_flag = false;
-                    display_error_field($(this).find(".hotel-check-in" + stay_counter).closest('.form-plugin-hotel-reservation-check-in'));
-                    display_error_field($(this).find(".hotel-check-out" + stay_counter).closest('.form-plugin-hotel-reservation-check-out'));
+                    display_error_field($(this).find(".hotel-check-in" + stay_counter).closest('.event-plugin-hotel-reservation-check-in'));
+                    display_error_field($(this).find(".hotel-check-out" + stay_counter).closest('.event-plugin-hotel-reservation-check-out'));
                     return false;
                 }
                 var day_difference = (prev_check_out - current_check_in) / 86400000;
@@ -562,8 +562,8 @@ function get_hotel_resrevation_data($element) {
                     console.log('came 222');
                     // $.growl.error({message: "Date clash" + ' for allow: ' + (stay_counter + 1)});
                     validation_flag = false;
-                    display_error_field($(this).find(".hotel-check-in" + stay_counter).closest('.form-plugin-hotel-reservation-check-in'));
-                    display_error_field($(this).find(".hotel-check-out" + stay_counter).closest('.form-plugin-hotel-reservation-check-out'));
+                    display_error_field($(this).find(".hotel-check-in" + stay_counter).closest('.event-plugin-hotel-reservation-check-in'));
+                    display_error_field($(this).find(".hotel-check-out" + stay_counter).closest('.event-plugin-hotel-reservation-check-out'));
                     return false;
                 }
             } else if (current_check_in < prev_check_in) {
@@ -572,8 +572,8 @@ function get_hotel_resrevation_data($element) {
                     lang_hotel_validation_msg = $('.lang_date_clash').val();
                     // $.growl.error({message: "Date clash" + ' for allow: ' + (stay_counter + 1)});
                     validation_flag = false;
-                    display_error_field($(this).find(".hotel-check-in" + stay_counter).closest('.form-plugin-hotel-reservation-check-in'));
-                    display_error_field($(this).find(".hotel-check-out" + stay_counter).closest('.form-plugin-hotel-reservation-check-out'));
+                    display_error_field($(this).find(".hotel-check-in" + stay_counter).closest('.event-plugin-hotel-reservation-check-in'));
+                    display_error_field($(this).find(".hotel-check-out" + stay_counter).closest('.event-plugin-hotel-reservation-check-out'));
                     return false;
                 }
             }
@@ -588,7 +588,7 @@ function get_hotel_resrevation_data($element) {
             lang_hotel_validation_msg = $('.lang_require_room_buddy').val();            
             // $.growl.error({message: "Require room buddy for allow: " + (stay_counter + 1)});            
             validation_flag = false;
-            display_error_field($(this).find('.form-plugin-hotel-reservation-room-buddy'));
+            display_error_field($(this).find('.event-plugin-hotel-reservation-room-buddy'));
             return false;
         }
         if (selected_room_beds == 1 || rBuddyList == null){
