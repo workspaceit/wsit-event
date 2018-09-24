@@ -1233,7 +1233,7 @@ class PageDetailView(generic.DetailView):
                             option += """<option value='""" + opt.option + """'>""" + opt.option + """</option>"""
                         content = """<label for="attendee-question-""" + str(
                             question.id) + """" class="form-question-label">""" + question.title + description + """</label>
-                                <div class="form-plugin-select">
+                                <div class="event-plugin-select">
                                 <select id="attendee-question-""" + str(question.id) + """" class="given-answer">
                                 """ + option + """
                                 </select>
@@ -1295,7 +1295,7 @@ class PageDetailView(generic.DetailView):
                         option = """<option value="">- {} -</option>""".format(select_text)
                         content = """<label for="attendee-question-""" + str(
                             question.id) + """" class="form-question-label">""" + question.title + description + """</label>
-                                <div class="form-plugin-select">
+                                <div class="event-plugin-select">
                                 <select id="attendee-question-""" + str(question.id) + """" class="form-question-country given-answer">
                                 """ + option + """
                                 </select>
@@ -1408,19 +1408,19 @@ class PageDetailView(generic.DetailView):
                     button_info = plugin_data[2]
                     button_id = button_info.split(":")[1]
                     submit_button = PluginSubmitButton.objects.get(id=int(button_id))
-                    plugin_html = """<div class="form-plugin element form-plugin-"""+element_plugin+""" box" id="box-"""+str(box_id)+"""" data-id="""+str(plugin_info.id)+""" data-name="""+element_plugin+""" data-submit-id="""+str(submit_button.id)+""" data-submit-name="""+submit_button.name+"""></div>"""
+                    plugin_html = """<div class="event-plugin element event-plugin-"""+element_plugin+""" box" id="box-"""+str(box_id)+"""" data-id="""+str(plugin_info.id)+""" data-name="""+element_plugin+""" data-submit-id="""+str(submit_button.id)+""" data-submit-name="""+submit_button.name+"""></div>"""
                 elif element_plugin == 'photo-upload':
                     button_info = plugin_data[2]
                     button_id = button_info.split(":")[1]
                     photo_group = PhotoGroup.objects.get(id=int(button_id))
-                    plugin_html = """<div class="form-plugin element form-plugin-"""+element_plugin+""" box" id="box-"""+str(box_id)+"""" data-id="""+str(plugin_info.id)+""" data-name="""+element_plugin+""" data-photo-group-id="""+str(photo_group.id)+""" data-photo-group-name="""+photo_group.name+"""></div>"""
+                    plugin_html = """<div class="event-plugin element event-plugin-"""+element_plugin+""" box" id="box-"""+str(box_id)+"""" data-id="""+str(plugin_info.id)+""" data-name="""+element_plugin+""" data-photo-group-id="""+str(photo_group.id)+""" data-photo-group-name="""+photo_group.name+"""></div>"""
                 elif element_plugin == 'pdf-button':
                     button_info = plugin_data[2]
                     button_id = button_info.split(":")[1]
                     pdf_button = PluginPdfButton.objects.get(id=int(button_id))
-                    plugin_html = """<div class="form-plugin element form-plugin-""" + element_plugin + """ box" id="box-""" + str(box_id) + """" data-id=""" + str(plugin_info.id) + """ data-name=""" + element_plugin + """ data-pdf-button-id=""" + str(pdf_button.id) + """ data-pdf-button-name=""" + pdf_button.name + """></div>"""
+                    plugin_html = """<div class="event-plugin element event-plugin-""" + element_plugin + """ box" id="box-""" + str(box_id) + """" data-id=""" + str(plugin_info.id) + """ data-name=""" + element_plugin + """ data-pdf-button-id=""" + str(pdf_button.id) + """ data-pdf-button-name=""" + pdf_button.name + """></div>"""
                 else:
-                    plugin_html = """<div class="form-plugin element form-plugin-"""+element_plugin+""" box" id="box-"""+str(box_id)+"""" data-id="""+str(plugin_info.id)+""" data-name="""+element_plugin+"""></div>"""
+                    plugin_html = """<div class="event-plugin element event-plugin-"""+element_plugin+""" box" id="box-"""+str(box_id)+"""" data-id="""+str(plugin_info.id)+""" data-name="""+element_plugin+"""></div>"""
                 pageContent = pageContent.replace('{' + plugin + '}', plugin_html)
             return pageContent
         except Exception as e:

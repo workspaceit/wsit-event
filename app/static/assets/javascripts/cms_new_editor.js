@@ -445,7 +445,7 @@ $(function () {
 // }
 
 function onLoadCmsJs() {
-    $body.find('#hidden-content').find('.form-plugin').each(function () {
+    $body.find('#hidden-content').find('.event-plugin').each(function () {
         console.log('ok');
         var element_id = "elements-" + $(this).attr('data-name');
         var element_html = $('#' + element_id).find('.element').html();
@@ -460,7 +460,7 @@ function onLoadCmsJs() {
                 $col.find('.element').each(function () {
                     var $element = $(this);
                     var html = $element.html();
-                    if ($element.hasClass("form-plugin")) {
+                    if ($element.hasClass("event-plugin")) {
                         $element.html(element_plugin_toolbox + html);
                     } else if ($element.hasClass("form-question")) {
                         $element.html(element_question_toolbox + html);
@@ -1261,7 +1261,7 @@ function getInlineEditorHtml($this_div) {
 
 function saveOrUpdate() {
     var element_filters = [];
-    $('body').find('.form-plugin:visible').each(
+    $('body').find('.event-plugin:visible').each(
         function () {
             var plugin_name = $.trim($(this).attr('data-name'));
             var box_id = $(this).attr('id');
@@ -1327,7 +1327,7 @@ function saveOrUpdate() {
         var box_id = $(this).attr('id').split('-')[1];
         $(this).replaceWith("{questionid:" + q_id + ",box:" + box_id + "}");
     });
-    hiddenDiv.find('.form-plugin.box').each(function () {
+    hiddenDiv.find('.event-plugin.box').each(function () {
         var plugin_name = $.trim($(this).attr('data-name'));
         var box_id = $(this).attr('id').split('-')[1];
         var plugin_id = $(this).attr('id').split('-')[1];
@@ -1351,7 +1351,7 @@ function saveOrUpdate() {
     //hiddenDiv.find('.form-question').each(function () {
     //    $(this).html("{qid:" + $(this).attr('data-id') + "}");
     //});
-    //hiddenDiv.find('.form-plugin').each(function () {
+    //hiddenDiv.find('.event-plugin').each(function () {
     //    var plugin_name = $(this).attr('data-name') + '-' + $(this).attr('id').split('-')[1];
     //    $(this).html("{element:" + plugin_name + "}");
     //});
@@ -1429,7 +1429,7 @@ function showPluginUsingSettings(element_settings, element_title_settings) {
         else if (element_settings[i].answer == "False" || element_settings[i].answer == false || element_settings[i].answer == "do-not-show") {
             $elem.hide();
             $elem.removeClass('visible');
-            if (!$elem.hasClass('form-plugin-description')) {
+            if (!$elem.hasClass('event-plugin-description')) {
                 if ($elem.parent().prop("tagName") == "SPAN" && $.trim($elem.parent().children(".settings-plugin-element.visible").text()) == '') {
                     $elem.parent().hide();
                     if ($elem.parent().parent().prop("tagName") == "TD" && $.trim($elem.parent().parent().find(".settings-plugin-element.visible").text()) == '') {
@@ -1454,10 +1454,10 @@ function showPluginUsingSettings(element_settings, element_title_settings) {
             $elem.show();
         }
         //else if (element_settings[i].element_question.question_key == "hotel_reservation_allow_partial_stays"){
-        //    var $item = $("#content_data").find("#box-" + element_settings[i].box_id).find(".form-plugin-list").find(".form-plugin-item:first");
-        //    $("#content_data").find("#box-" + element_settings[i].box_id).find(".form-plugin-list").find(".form-plugin-item").not('.form-plugin-item:first').remove();
+        //    var $item = $("#content_data").find("#box-" + element_settings[i].box_id).find(".event-plugin-list").find(".event-plugin-item:first");
+        //    $("#content_data").find("#box-" + element_settings[i].box_id).find(".event-plugin-list").find(".event-plugin-item").not('.event-plugin-item:first').remove();
         //    for(var item_stay = 1; item_stay<parseInt(element_settings[i].answer); item_stay++){
-        //        $item.clone().appendTo($item.closest(".form-plugin-list"));
+        //        $item.clone().appendTo($item.closest(".event-plugin-list"));
         //    }
         //}
     }

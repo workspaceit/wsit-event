@@ -1,48 +1,93 @@
-<section style="display: none;" id="elements-evaluations">
-    <div class="form-plugin element form-plugin-evaluations">
-        <div class="form-plugin-intro">
+{#<section style="display: none;" id="elements-evaluations">#}
+{#    <div class="form-plugin element form-plugin-evaluations">#}
+{#        <div class="form-plugin-intro">#}
             {#            <h3 class="settings-plugin-element plugin-evaluations-{{ plugin_settings.evaluations.evaluation_title.id }} text-color2">{{ language.evaluations.evaluation_txt_title }}</h3>#}
-            <span class="settings-plugin-element plugin-evaluations-{{ plugin_settings.evaluations.evaluation_message.id }}">This text is defined by a setting</span>
-        </div>
-        <div class="form-plugin-list">
-            <div class="form-plugin-item">
-                <h3 class="form-plugin-title">Session name 1</h3>
-                <span class="star-evaluation-group">
-                                <input type="radio" id="rating-3-5" name="rating3" value="5"/><label
-                        for="rating-3-5">5</label>
-                                <input type="radio" id="rating-3-4" name="rating3" value="4" checked="checked"/><label
-                        for="rating-3-4">4</label>
-                                <input type="radio" id="rating-3-3" name="rating3" value="3"/><label
-                        for="rating-3-3">3</label>
-                                <input type="radio" id="rating-3-2" name="rating3" value="2"/><label
-                        for="rating-3-2">2</label>
-                                <input type="radio" id="rating-3-1" name="rating3" value="1"/><label
-                        for="rating-3-1">1</label>
-                                <input type="radio" id="rating-3-0" name="rating3" value="0"
-                                       class="star-evaluation-clear"/><label for="rating-3-0">0</label>
-                            </span>
+{#            <span class="settings-plugin-element plugin-evaluations-{{ plugin_settings.evaluations.evaluation_message.id }}">This text is defined by a setting</span>#}
+{#        </div>#}
+{#        <div class="form-plugin-list">#}
+{#            <div class="form-plugin-item">#}
+{#                <h3 class="form-plugin-title">Session name 1</h3>#}
+{#                <span class="star-evaluation-group">#}
+{#                                <input type="radio" id="rating-3-5" name="rating3" value="5"/><label#}
+{#                        for="rating-3-5">5</label>#}
+{#                                <input type="radio" id="rating-3-4" name="rating3" value="4" checked="checked"/><label#}
+{#                        for="rating-3-4">4</label>#}
+{#                                <input type="radio" id="rating-3-3" name="rating3" value="3"/><label#}
+{#                        for="rating-3-3">3</label>#}
+{#                                <input type="radio" id="rating-3-2" name="rating3" value="2"/><label#}
+{#                        for="rating-3-2">2</label>#}
+{#                                <input type="radio" id="rating-3-1" name="rating3" value="1"/><label#}
+{#                        for="rating-3-1">1</label>#}
+{#                                <input type="radio" id="rating-3-0" name="rating3" value="0"#}
+{#                                       class="star-evaluation-clear"/><label for="rating-3-0">0</label>#}
+{#                            </span>#}
+{#            </div>#}
+{#            <div class="form-plugin-item">#}
+{#                <h3 class="form-plugin-title">Session name 2</h3>#}
+{#                <span class="star-evaluation-group">#}
+{#                                <input type="radio" id="rating-4-5" name="rating4" value="5"/><label#}
+{#                        for="rating-4-5">5</label>#}
+{#                                <input type="radio" id="rating-4-4" name="rating4" value="4"/><label#}
+{#                        for="rating-4-4">4</label>#}
+{#                                <input type="radio" id="rating-4-3" name="rating4" value="3"/><label#}
+{#                        for="rating-4-3">3</label>#}
+{#                                <input type="radio" id="rating-4-2" name="rating4" value="2"/><label#}
+{#                        for="rating-4-2">2</label>#}
+{#                                <input type="radio" id="rating-4-1" name="rating4" value="1"/><label#}
+{#                        for="rating-4-1">1</label>#}
+{#                                <input type="radio" id="rating-4-0" name="rating4" value="0"#}
+{#                                       class="star-evaluation-clear"/><label for="rating-4-0">0</label>#}
+{#                            </span>#}
+{#            </div>#}
+{#        </div>#}
+{#        <button class="form-plugin-button evaluation-send-button">{{ language.evaluations.evaluation_btn_send }}</button>#}
+{#    </div>#}
+{#</section>#}
+
+<section style="display: none;" id="elements-evaluations">
+    <div class="event-plugin element event-plugin-evaluations">
+        <div class="event-plugin-list">
+            <div class="event-plugin-item">
+                <h4 class="event-plugin-title">Internetdagarna arrangeras avav arrangeras Internetdagarna </h4>
+                                    <span class="evaluation-rate-group">
+                                        <input type="radio" id="rating-3-5" name="rating3" value="5"/><label
+                                            for="rating-3-5">5</label>
+                                        <input type="radio" id="rating-3-4" name="rating3" value="4" checked="checked"/><label
+                                            for="rating-3-4">4</label>
+                                        <input type="radio" id="rating-3-3" name="rating3" value="3"/><label
+                                            for="rating-3-3">3</label>
+                                        <input type="radio" id="rating-3-2" name="rating3" value="2"/><label
+                                            for="rating-3-2">2</label>
+                                        <input type="radio" id="rating-3-1" name="rating3" value="1"/><label
+                                            for="rating-3-1">1</label>
+                                        <input type="radio" id="rating-3-0" name="rating3" value="0"
+                                               class="star-evaluation-clear"/><label for="rating-3-0">0</label>
+                                    </span>
+                <div class="clear"></div>
             </div>
-            <div class="form-plugin-item">
-                <h3 class="form-plugin-title">Session name 2</h3>
-                <span class="star-evaluation-group">
-                                <input type="radio" id="rating-4-5" name="rating4" value="5"/><label
-                        for="rating-4-5">5</label>
-                                <input type="radio" id="rating-4-4" name="rating4" value="4"/><label
-                        for="rating-4-4">4</label>
-                                <input type="radio" id="rating-4-3" name="rating4" value="3"/><label
-                        for="rating-4-3">3</label>
-                                <input type="radio" id="rating-4-2" name="rating4" value="2"/><label
-                        for="rating-4-2">2</label>
-                                <input type="radio" id="rating-4-1" name="rating4" value="1"/><label
-                        for="rating-4-1">1</label>
-                                <input type="radio" id="rating-4-0" name="rating4" value="0"
-                                       class="star-evaluation-clear"/><label for="rating-4-0">0</label>
-                            </span>
+            <div class="event-plugin-item">
+                <h4 class="event-plugin-title">Internetdagarna arrangeras av Internetdagarna arrangeras av</h4>
+                                    <span class="rate-group">
+                                        <input type="radio" id="rating-4-5" name="rating4" value="5"/><label
+                                            for="rating-4-5">5</label>
+                                        <input type="radio" id="rating-4-4" name="rating4" value="4"/><label
+                                            for="rating-4-4">4</label>
+                                        <input type="radio" id="rating-4-3" name="rating4" value="3"/><label
+                                            for="rating-4-3">3</label>
+                                        <input type="radio" id="rating-4-2" name="rating4" value="2"/><label
+                                            for="rating-4-2">2</label>
+                                        <input type="radio" id="rating-4-1" name="rating4" value="1"/><label
+                                            for="rating-4-1">1</label>
+                                        <input type="radio" id="rating-4-0" name="rating4" value="0"
+                                               class="star-evaluation-clear"/><label for="rating-4-0">0</label>
+                                    </span>
+                <div class="clear"></div>
             </div>
         </div>
-        <button class="form-plugin-button evaluation-send-button">{{ language.evaluations.evaluation_btn_send }}</button>
+        <button class="event-plugin-button evaluation-send-button btn btn-solid">Send evaluation</button>
     </div>
 </section>
+
 <section style="display: none;" id="elements-messages">
     <div class="form-plugin element form-plugin-messages">
         <div class="form-plugin-intro">
@@ -67,6 +112,64 @@
         <button class="form-plugin-button messages-mark-all-button settings-plugin-element plugin-messages-{{ plugin_settings.messages.message_read_button.id }}">{{ language.messages.messages_btn_mark_all_read }}</button>
     </div>
 </section>
+
+<section style="display: none;" id="elements-messages">
+<div class="event-plugin element event-plugin-messages">
+    <div class="event-plugin-list">
+        <div class="event-plugin-item event-message-wrapper">
+            <div class="row">
+                <div class="col span-1">
+                    <div class="messenger-pic-wrap"
+                         style="background: url('https://upload.wikimedia.org/wikipedia/commons/d/d3/User_Circle.png'); background-size: cover; background-position: center; height: 70px; width: 100%">
+
+                    </div>
+                </div>
+                <div class="col span-11">
+                    <div class="event-message-header">
+                        <!-- <div class="messages-hide"></div> -->
+                        <a href="#" class="messages-hide"><i class="fa fa-times"></i></a>
+                        <div class="event-plugin-item-actions"></div>
+                        <p class="event-plugin-title pull-left no-margin">Organizer</p>
+                        <p class="event-plugin-title-date  pull-right no-margin">16:03 2016-06-23</p>
+                        <div class="clear"></div>
+                    </div>
+                    <div class="event-message-description">
+                        <p class="event-plugin-text">The session Ginger Snapping has moved to Live 1, your agenda has
+                            been updated.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="event-plugin-item event-message-wrapper">
+            <div class="row">
+                <div class="col span-1">
+                    <div class="messenger-pic-wrap"
+                         style="background: url('https://upload.wikimedia.org/wikipedia/commons/d/d3/User_Circle.png'); background-size: cover; background-position: center; height: 70px; width: 100%">
+
+                    </div>
+                </div>
+                <div class="col span-11">
+                    <div class="event-message-header">
+                        <!-- <div class="messages-hide"></div> -->
+                        <a href="#" class="messages-hide"><i class="fa fa-times"></i></a>
+                        <div class="event-plugin-item-actions"></div>
+                        <p class="event-plugin-title pull-left no-margin">Organizer</p>
+                        <p class="event-plugin-title-date  pull-right no-margin">16:03 2016-06-23</p>
+                        <div class="clear"></div>
+                    </div>
+                    <div class="event-message-description">
+                        <p class="event-plugin-text">The session Ginger Snapping has moved to Live 1, your agenda has
+                            been updated.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <button class="event-plugin-button messages-read-archived-messages btn btn-solid">Read archived messages</button>
+    <button class="event-plugin-button messages-mark-all-button btn btn-solid">Mark all as read</button>
+</div>
+
+
 <section style="display: none;" id="elements-next-up">
     <div class="form-plugin element form-plugin-next-up">
         <div class="form-plugin-intro">

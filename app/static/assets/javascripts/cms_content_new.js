@@ -289,7 +289,7 @@ $(function () {
 
                                 var plugin_content = plugin_name.replace(/ /g, "-");
                                 var plugin_html = $('#elements-' + plugin_content.toLowerCase()).find('.element').html();
-                                var plugin_element = "<div class='form-plugin element form-plugin-" + plugin_content.toLowerCase() + " box' id='box-" + idCount + "' data-id='" + plugin_id + "' data-name='" + plugin_content.toLowerCase() + "' data-submit-id='" + result.submit_button.id + "' data-submit-name='" + result.submit_button.name + "'>" + plugin_html + element_plugin_toolbox;
+                                var plugin_element = "<div class='event-plugin element event-plugin-" + plugin_content.toLowerCase() + " box' id='box-" + idCount + "' data-id='" + plugin_id + "' data-name='" + plugin_content.toLowerCase() + "' data-submit-id='" + result.submit_button.id + "' data-submit-name='" + result.submit_button.name + "'>" + plugin_html + element_plugin_toolbox;
                                 clog(plugin_element);
                                 if ($('#content_data').find('.temporary').length < 1) {
                                     createTemporarySection();
@@ -315,7 +315,7 @@ $(function () {
 
                                 var plugin_content = plugin_name.replace(/ /g, "-");
                                 var plugin_html = $('#elements-' + plugin_content.toLowerCase()).find('.element').html();
-                                var plugin_element = "<div class='form-plugin element form-plugin-" + plugin_content.toLowerCase() + " box' id='box-" + idCount + "' data-id='" + plugin_id + "' data-name='" + plugin_content.toLowerCase() + "' data-photo-group-id='" + result.photo_group.id + "' data-photo-group-name='" + result.photo_group.name + "'>" + plugin_html + element_plugin_toolbox;
+                                var plugin_element = "<div class='event-plugin element event-plugin-" + plugin_content.toLowerCase() + " box' id='box-" + idCount + "' data-id='" + plugin_id + "' data-name='" + plugin_content.toLowerCase() + "' data-photo-group-id='" + result.photo_group.id + "' data-photo-group-name='" + result.photo_group.name + "'>" + plugin_html + element_plugin_toolbox;
                                 clog(plugin_element);
                                 if ($('#content_data').find('.temporary').length < 1) {
                                     createTemporarySection();
@@ -331,7 +331,7 @@ $(function () {
                         var plugin_content = plugin_name.replace(/ /g, "-");
                         idCount++;
                         var plugin_html = $('#elements-' + plugin_content.toLowerCase()).find('.element').html();
-                        var plugin_element = "<div class='form-plugin element form-plugin-" + plugin_content.toLowerCase() + " box' id='box-" + idCount + "' data-id='" + plugin_id + "' data-name='" + plugin_content.toLowerCase() + "'>" + plugin_html + element_plugin_toolbox;
+                        var plugin_element = "<div class='event-plugin element event-plugin-" + plugin_content.toLowerCase() + " box' id='box-" + idCount + "' data-id='" + plugin_id + "' data-name='" + plugin_content.toLowerCase() + "'>" + plugin_html + element_plugin_toolbox;
                         clog(plugin_element);
                         if ($('#content_data').find('.temporary').length < 1) {
                             createTemporarySection();
@@ -416,7 +416,7 @@ $(function () {
                         var plugin_content = plugin_name.replace(/ /g, "-");
                         idCount++;
                         var plugin_html = $('#elements-' + plugin_content.toLowerCase()).find('.element').html();
-                        var plugin_element = "<div class='form-plugin element form-plugin-" + plugin_content.toLowerCase() + " box' id='box-" + idCount + "' data-id='" + plugin_id + "' data-name='" + plugin_content.toLowerCase() + "'>" + plugin_html + element_plugin_toolbox;
+                        var plugin_element = "<div class='event-plugin element event-plugin-" + plugin_content.toLowerCase() + " box' id='box-" + idCount + "' data-id='" + plugin_id + "' data-name='" + plugin_content.toLowerCase() + "'>" + plugin_html + element_plugin_toolbox;
                         clog(plugin_element);
                         if ($('#content_data').find('.temporary').length < 1) {
                             createTemporarySection();
@@ -519,7 +519,7 @@ $(function () {
 
                                 var plugin_content = plugin_name.replace(/ /g, "-");
                                 var plugin_html = $('#elements-' + plugin_content.toLowerCase()).find('.element').html();
-                                var plugin_element = "<div class='form-plugin element form-plugin-" + plugin_content.toLowerCase() + " box' id='box-" + idCount + "' data-id='" + plugin_id + "' data-name='" + plugin_content.toLowerCase() + "' data-pdf-button-id='" + result.pdf_button.id + "' data-pdf-button-name='" + result.pdf_button.name + "'>" + plugin_html + element_plugin_toolbox;
+                                var plugin_element = "<div class='event-plugin element event-plugin-" + plugin_content.toLowerCase() + " box' id='box-" + idCount + "' data-id='" + plugin_id + "' data-name='" + plugin_content.toLowerCase() + "' data-pdf-button-id='" + result.pdf_button.id + "' data-pdf-button-name='" + result.pdf_button.name + "'>" + plugin_html + element_plugin_toolbox;
                                 clog(plugin_element);
                                 if ($('#content_data').find('.temporary').length < 1) {
                                     createTemporarySection();
@@ -535,7 +535,7 @@ $(function () {
                         var plugin_content = plugin_name.replace(/ /g, "-");
                         idCount++;
                         var plugin_html = $('#elements-' + plugin_content.toLowerCase()).find('.element').html();
-                        var plugin_element = "<div class='form-plugin element form-plugin-" + plugin_content.toLowerCase() + " box' id='box-" + idCount + "' data-id='" + plugin_id + "' data-name='" + plugin_content.toLowerCase() + "'>" + plugin_html + element_plugin_toolbox;
+                        var plugin_element = "<div class='event-plugin element event-plugin-" + plugin_content.toLowerCase() + " box' id='box-" + idCount + "' data-id='" + plugin_id + "' data-name='" + plugin_content.toLowerCase() + "'>" + plugin_html + element_plugin_toolbox;
                         clog(plugin_element);
                         if ($('#content_data').find('.temporary').length < 1) {
                             createTemporarySection();
@@ -3571,7 +3571,7 @@ $(document).ready(function () {
 
     // TOOL TIP - Session Scheduler - Session
 
-    var tooltip = $(".form-plugin-next-up").kendoTooltip({
+    var tooltip = $(".event-plugin-next-up").kendoTooltip({
         filter: "tr",
         position: "top"
     }).data("kendoTooltip");
