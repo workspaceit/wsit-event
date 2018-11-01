@@ -462,7 +462,7 @@ function onLoadCmsJs() {
                     var html = $element.html();
                     if ($element.hasClass("event-plugin")) {
                         $element.html(element_plugin_toolbox + html);
-                    } else if ($element.hasClass("form-question")) {
+                    } else if ($element.hasClass("event-question")) {
                         $element.html(element_question_toolbox + html);
                     } else {
                         $element.html(element_toolbox + "<div class='editor-inline-box'>" + html + "</div>");
@@ -1322,7 +1322,7 @@ function saveOrUpdate() {
         var span_class = getSpanClass($(this).attr('class'))
         $(this).replaceWith("{col:" + span_class + ",box:" + box_id + "}" + col_content + "{end_div}");
     });
-    hiddenDiv.find('.form-question.box').each(function () {
+    hiddenDiv.find('.event-question.box').each(function () {
         var q_id = $(this).attr('data-id');
         var box_id = $(this).attr('id').split('-')[1];
         $(this).replaceWith("{questionid:" + q_id + ",box:" + box_id + "}");
@@ -1348,7 +1348,7 @@ function saveOrUpdate() {
         var box_id = $(this).attr('id').split('-')[1];
         $(this).replaceWith("{editor:html,box:" + box_id + "}");
     });
-    //hiddenDiv.find('.form-question').each(function () {
+    //hiddenDiv.find('.event-question').each(function () {
     //    $(this).html("{qid:" + $(this).attr('data-id') + "}");
     //});
     //hiddenDiv.find('.event-plugin').each(function () {

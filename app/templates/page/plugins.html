@@ -1,5 +1,5 @@
 <section style="display: none;" id="elements-evaluations">
-    <div class="event-plugin-intro">#}
+    <div class="event-plugin-intro">
         <span class="settings-plugin-element plugin-evaluations-{{ plugin_settings.evaluations.evaluation_message.id }}">This text is defined by a setting</span>
     </div>
     <div class="event-plugin element event-plugin-evaluations">
@@ -674,42 +674,6 @@
     </div>
 </section>
 
-<section style="display: none;" id="elements-session-scheduler">
-    <div class="event-plugin element event-plugin-session-scheduler">
-        <div class="event-plugin-intro">
-            {#            <h4 class="settings-plugin-element plugin-session-scheduler-{{ plugin_settings.session_scheduler.session_scheduler_title.id }}">{{ language.session_scheduler.sessionscheduler_txt_title }}</h4>#}
-            <span class="settings-plugin-element plugin-session-scheduler-{{ plugin_settings.session_scheduler.session_scheduler_message.id }}">This text is defined by a setting</span>
-        </div>
-        <div class="session-group-toggle-list settings-plugin-element plugin-session-scheduler-{{ plugin_settings.session_scheduler.session_scheduler_show_session_group_toggle.id }}">
-            <div class="session-group-toggle-list-item">
-                <input type="checkbox" id="session-group-1" checked="checked"/>
-                <label class="session-group-toggle-list-item-label" for="session-group-1">Session Group 1</label>
-            </div>
-            <div class="session-group-toggle-list-item">
-                <input type="checkbox" id="session-group-2" checked="checked"/>
-                <label class="session-group-toggle-list-item-label" for="session-group-2">Session Group 2</label>
-            </div>
-            <div class="session-group-toggle-list-item">
-                <input type="checkbox" id="session-group-3"/>
-                <label class="session-group-toggle-list-item-label" for="session-group-3">Session Group 3</label>
-            </div>
-            <div class="session-group-toggle-list-item">
-                <input type="checkbox" id="session-group-4"/>
-                <label class="session-group-toggle-list-item-label" for="session-group-4">Session Group 4</label>
-            </div>
-        </div>
-        <div class="switch-wrapper settings-plugin-element plugin-session-scheduler-{{ plugin_settings.session_scheduler.session_scheduler_show_all_or_my_sessions.id }}">
-            <label class="switch">
-                <input type="checkbox" class="session-my-session-toggle" id="session-my-session-toggle">
-                <div class="slider round"></div>
-            </label>
-            <label class="toggle-label session-my-session-toggle-label"
-                   for="session-my-session-toggle">{{ language.session_scheduler.sessionscheduler_txt_show_my_sess }}</label>
-        </div>
-        <div class="session-scheduler"></div>
-        <button class="event-plugin-button session-subscribe-to-calendar-icon settings-plugin-element plugin-session-scheduler-{{ plugin_settings.session_scheduler.session_scheduler_show_subscribe_to_calender.id }}">{{ language.session_scheduler.sessionscheduler_btn_subscribe_sessions }}</button>
-    </div>
-</section>
 <section style="display: none;" id="elements-hotel-reservation">
     <div class="event-plugin element event-plugin-hotel-reservation">
         <div class="event-plugin-intro">

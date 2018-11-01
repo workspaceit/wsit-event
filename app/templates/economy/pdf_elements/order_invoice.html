@@ -6,7 +6,7 @@
 {% if order_table_type == 'attendee-order' %}
     {% for order in orders %}
         {% if not order.is_group_total %}
-            <div class="form-question order-table-form-question">
+            <div class="event-question order-table-event-question">
                 <div class="scroll-x">
                     <table class="event-plugin-table event-plugin-economy-order-table lines">
                         <thead>
@@ -160,7 +160,7 @@
     {% endfor %}
 {% else %}
     {% for order in orders %}
-        <div class="form-question order-table-form-question">
+        <div class="event-question order-table-event-question">
         <div class="scroll-x">
             <input type="hidden" class="data-economy-attendee-id" value="{{ data_user_id }}">
             <table class="event-plugin-table event-plugin-economy-order-table lines">

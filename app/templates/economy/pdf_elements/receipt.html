@@ -40,7 +40,7 @@
                     {% if receipt.order_table_type == 'attendee-order' %}
                         {% for order in receipt.orders %}
                             {% if not order.is_group_total %}
-                                <div class="form-question order-table-form-question">
+                                <div class="event-question order-table-event-question">
 {#                                    <div class="order-info">#}
 {#                                        <span class="economy-order-number">{{ language.langkey.economy_txt_order_number }}: {{ order.order.order_number }}<br/></span>#}
 {#                                        <span class="economy-status">{{ language.langkey.economy_txt_status }}: {{ order.order.status_lang }}<br/></span>#}
@@ -228,7 +228,7 @@
                         {% endfor %}
                     {% else %}
                         {% for order in receipt.orders %}
-                            <div class="form-question order-table-form-question">
+                            <div class="event-question order-table-event-question">
 {#                            <div class="order-info">#}
 {#                                <span class="economy-order-number">{{ language.langkey.economy_txt_order_number }}: <span class="economy-order-number-value">{{ order.order.order_number }}</span><br/></span>#}
 {#                                <span class="economy-status">{{ language.langkey.economy_txt_status }}: <span class="economy-status-value">{{ order.order.order_status_lang }}</span> <br/></span>#}

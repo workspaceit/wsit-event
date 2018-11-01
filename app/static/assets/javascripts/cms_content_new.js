@@ -39,7 +39,7 @@ $(document).ready(function () {
         }
     }, 1000);
 
-    $(".form-question-country").each(function () {
+    $(".event-question-country").each(function () {
         for(var i=0;i<country_list.length;i++) {
             $(this).append($('<option>', {
                 value: country_list[i].id,
@@ -114,14 +114,14 @@ $(function () {
                             if (question.description == null) {
                                 question.description = ''
                             }
-                            var description = '<span class="form-question-label-description">' + question.description + '</span>';
+                            var description = '<span class="event-question-label-description">' + question.description + '</span>';
 
                             if (question.type == 'select') {
                                 var option = '<option value="">- Select -</option>';
                                 for (var i = 0; i < options.length; i++) {
                                     option += '<option value="' + options[i].option + '">' + options[i].option + '</option>';
                                 }
-                                var content = '<select id="attendee-question-' + question.id + '" class="given-answer form-question-select">' +
+                                var content = '<select id="attendee-question-' + question.id + '" class="given-answer event-question-select">' +
                                     '' + option + '' +
                                     '</select>';
                             } else if (question.type == 'radio_button') {
@@ -130,7 +130,7 @@ $(function () {
                                     var counter = i + 1;
                                     option += '<div class="radio-wrapper"><input type="radio" name="attendee-question-' + question.id + '" value="' + options[i].option + '" id="attendee-question-' + question.id + '-' + counter + '" class="given-answer"><label class="radio-label" for="attendee-question-' + question.id + '-' + counter + '">' + options[i].option + '</label></div>';
                                 }
-                                var content = '<div class="form-question-radio">' + option + '</div>';
+                                var content = '<div class="event-question-radio">' + option + '</div>';
 
                             } else if (question.type == 'text') {
                                 var content = '<input type="text" id="attendee-question-' + question.id + '" class="given-answer">';
@@ -140,7 +140,7 @@ $(function () {
                                     var counter = i + 1;
                                     option += '<div class="checkbox-wrapper"><input class="given-answer" type="checkbox" name="attendee-question-' + question.id + '" value="' + options[i].option + '" id="attendee-question-' + question.id + '-' + counter + '"><label for="attendee-question-' + question.id + '-' + counter + '" class="checkbox-label">' + options[i].option + '</label></div>';
                                 }
-                                var content = '<div class="form-question-checkbox">' + option + '</div>';
+                                var content = '<div class="event-question-checkbox">' + option + '</div>';
                             } else if (question.type == 'textarea') {
                                 var content = '<textarea id="attendee-question-' + question.id + '" class="given-answer"></textarea>';
                             } else if (question.type == 'date_range') {
@@ -165,19 +165,19 @@ $(function () {
                                 for (var i = 0; i < country_list.length; i++) {
                                     option += '<option value="' + country_list[i].id + '">' + country_list[i].text + '</option>';
                                 }
-                                var content = '<select id="attendee-question-' + question.id + '" class="given-answer form-question-country">' +
+                                var content = '<select id="attendee-question-' + question.id + '" class="given-answer event-question-country">' +
                                     '' + option + '' +
                                     '</select>';
                             }
                             else {
                                 var content = '<input type="text" id="attendee-question-' + question.id + '" class="given-answer">';
                             }
-                            var element = '<label for="attendee-question-' + question.id + '" class="form-question-label">' + question.title + description + '</label>' + content + '<div class="error-validating">Validation failed</div>' + element_question_toolbox;
+                            var element = '<label for="attendee-question-' + question.id + '" class="event-question-label">' + question.title + description + '</label>' + content + '<div class="error-validating">Validation failed</div>' + element_question_toolbox;
                             idCount++;
                             if (question.question_class == null) {
                                 question.question_class = '';
                             }
-                            var question_element = "<div class='form-question element box " + question.question_class + "' data-id='" + question.id + "' data-req='" + required + "' data-def='" + definition + "' id='box-" + idCount + "' type='" + question.type + "'>" + element + "</div>";
+                            var question_element = "<div class='event-question element box " + question.question_class + "' data-id='" + question.id + "' data-req='" + required + "' data-def='" + definition + "' id='box-" + idCount + "' type='" + question.type + "'>" + element + "</div>";
                             if ($('#content_data').find('.temporary').length < 1) {
                                 createTemporarySection();
                             }

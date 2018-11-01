@@ -1225,14 +1225,14 @@ class PageDetailView(generic.DetailView):
                     description = ''
                     # if question.description != '' and question.description != None:
                     if question.show_description:
-                        description = """<span class="form-question-label-description">""" + question.description + """</span>"""
+                        description = """<span class="event-question-label-description">""" + question.description + """</span>"""
                     if question.type == 'select':
                         option = """<option value="">- {} -</option>""".format(select_text)
                         for opt in options:
                             opt = LanguageElement.get_option_with_language(request,opt,language_id)
                             option += """<option value='""" + opt.option + """'>""" + opt.option + """</option>"""
                         content = """<label for="attendee-question-""" + str(
-                            question.id) + """" class="form-question-label">""" + question.title + description + """</label>
+                            question.id) + """" class="event-question-label">""" + question.title + description + """</label>
                                 <div class="event-plugin-select">
                                 <select id="attendee-question-""" + str(question.id) + """" class="given-answer">
                                 """ + option + """
@@ -1249,11 +1249,11 @@ class PageDetailView(generic.DetailView):
                                 counter) + """" class="given-answer"><label for="attendee-question-""" + str(
                                 question.id) + """-""" + str(
                                 counter) + """" class="radio-label">""" + opt.option + """</label></div>"""
-                        content = """<label class="form-question-label">""" + question.title + description + """</label>
-                                """ + """<div class="form-question-radio">""" + option + """</div>"""
+                        content = """<label class="event-question-label">""" + question.title + description + """</label>
+                                """ + """<div class="event-question-radio">""" + option + """</div>"""
                     elif question.type == 'text':
                         content = """<label for="attendee-question-""" + str(
-                            question.id) + """" class="form-question-label">""" + question.title + description + """</label>
+                            question.id) + """" class="event-question-label">""" + question.title + description + """</label>
                                   <input type="text" id="attendee-question-""" + str(
                             question.id) + """" class="given-answer">"""
                     elif question.type == 'checkbox':
@@ -1266,43 +1266,43 @@ class PageDetailView(generic.DetailView):
                                 question.id) + """-""" + str(counter) + """"><label for="attendee-question-""" + str(
                                 question.id) + """-""" + str(
                                 counter) + """" class="checkbox-label">""" + opt.option + """</label></div>"""
-                            content = """<label for="attendee-""" + slug_title + """" class="form-question-label">""" + question.title + description + """</label>
-                                """ + """<div class="form-question-checkbox">""" + option + """</div>"""
+                            content = """<label for="attendee-""" + slug_title + """" class="event-question-label">""" + question.title + description + """</label>
+                                """ + """<div class="event-question-checkbox">""" + option + """</div>"""
                     elif question.type == 'textarea':
                         content = """<label for="attendee-question-""" + str(
-                            question.id) + """" class="form-question-label">""" + question.title + description + """</label>
+                            question.id) + """" class="event-question-label">""" + question.title + description + """</label>
                                   <textarea id="attendee-question-""" + str(
                             question.id) + """" class="given-answer"></textarea>"""
                     elif question.type=='date':
                         content = """<label for="attendee-question-""" + str(
-                            question.id) + """" class="form-question-label">""" + question.title + description + """</label>
+                            question.id) + """" class="event-question-label">""" + question.title + description + """</label>
                                                           <input type="text" class="given-answer">"""
                     elif question.type=='time':
                         content = """<label for="attendee-question-""" + str(
-                            question.id) + """" class="form-question-label">""" + question.title + description + """</label>
+                            question.id) + """" class="event-question-label">""" + question.title + description + """</label>
                                                           <input type="text" class="given-answer">"""
                     elif question.type=='date_range':
-                        content = """<label for="attendee-question-""" + str(question.id) + """" class="form-question-label">""" + question.title + description + """</label>
+                        content = """<label for="attendee-question-""" + str(question.id) + """" class="event-question-label">""" + question.title + description + """</label>
                             <div style="overflow:hidden">
                             <input style="width:50%; display:inline; float:left" type="text"  class="given-answer">
                             <input style="width:50%; display:inline; float:left" type="text"  class="given-answer"></div>"""
                     elif question.type=='time_range':
-                        content = """<label for="attendee-question-""" + str(question.id) + """" class="form-question-label">""" + question.title + description + """</label>
+                        content = """<label for="attendee-question-""" + str(question.id) + """" class="event-question-label">""" + question.title + description + """</label>
                             <div style="overflow:hidden">
                             <input style="width:50%; display:inline; float:left" type="text" class="given-answer">
                             <input style="width:50%; display:inline; float:left" type="text" class="given-answer"></div>"""
                     elif question.type == 'country':
                         option = """<option value="">- {} -</option>""".format(select_text)
                         content = """<label for="attendee-question-""" + str(
-                            question.id) + """" class="form-question-label">""" + question.title + description + """</label>
+                            question.id) + """" class="event-question-label">""" + question.title + description + """</label>
                                 <div class="event-plugin-select">
-                                <select id="attendee-question-""" + str(question.id) + """" class="form-question-country given-answer">
+                                <select id="attendee-question-""" + str(question.id) + """" class="event-question-country given-answer">
                                 """ + option + """
                                 </select>
                                 </div>"""
                     else:
                         content = """<label for="attendee-question-""" + str(
-                            question.id) + """" class="form-question-label">""" + question.title + description + """</label>
+                            question.id) + """" class="event-question-label">""" + question.title + description + """</label>
                                   <input type="text" id="attendee-question-""" + str(
                             question.id) + """" class="given-answer">"""
 
@@ -1315,7 +1315,7 @@ class PageDetailView(generic.DetailView):
                         required = " required"
                     if question.actual_definition:
                         actual_def = str(question.actual_definition)
-                    element = """<div class="form-question element box""" + required + """" data-id=""" + str(question.id) + """ data-req=""" + str(question_required) + """ data-def=""" + actual_def + """ id=""" + box_data + """ type=""" + question.type + """>"""+\
+                    element = """<div class="event-question element box""" + required + """" data-id=""" + str(question.id) + """ data-req=""" + str(question_required) + """ data-def=""" + actual_def + """ id=""" + box_data + """ type=""" + question.type + """>"""+\
                               content + """<div class="error-validating">Please select your '""" + question.title + """'</div></div>"""
                     pageContent = pageContent.replace('{questionid:' + qid['qid'] + ',box:' + qid['box_id'] + '}', element)
                 except Exception as e:
