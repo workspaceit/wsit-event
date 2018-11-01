@@ -3,7 +3,7 @@
     <div class="event-plugin-intro">
         {{ message| safe }}
     </div>
-    <div class="form-question">
+    <div class="event-question">
         <span>{{ language.langkey.logout_message_text }}</span>
         <a href="{% url 'welcome' event_url=request.session.event_url %}" class="button logout-page-back-button">{{ language.langkey.logout_back_button }}</a>
     </div>

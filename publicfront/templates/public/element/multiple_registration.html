@@ -10,13 +10,13 @@
     </div>
     {% if display_form == 'loop' %}
         <div class="loop-registration-form">
-            <div class="form-question">
+            <div class="event-question">
                 <button class="event-plugin-button event-plugin-multiple-registration-add-attendee-button" {% if max_attendees  <= attendees_without_owner %}style="display: none;" {% endif %}>{{ language.langkey.multiple_registration_add_attendee }}
                 </button>
-                <label class="form-question-label event-plugin-multiple-registration-current-count">{{ language.langkey.multiple_registration_current_no_of_attendees }}:
+                <label class="event-question-label event-plugin-multiple-registration-current-count">{{ language.langkey.multiple_registration_current_no_of_attendees }}:
                     <span class="event-plugin-multiple-registration-current-count-number">{{ total_attendees }}</span></label>
             </div>
-            <div class="form-question">
+            <div class="event-question">
                 <div class="scroll-x">
                     <table class="event-plugin-multiple-registration-attendee-table lines">
                         <thead>
@@ -119,10 +119,10 @@
         </div>
     {% else %}
         <div class="inline-registration-form">
-            <div class="form-question">
+            <div class="event-question">
                 <button class="event-plugin-button event-plugin-multiple-registration-add-attendee-button-inline" {% if max_attendees  <= attendees_without_owner %}style="display: none;" {% endif %}>{{ language.langkey.multiple_registration_add_attendee }}
                 </button>
-                <label class="form-question-label event-plugin-multiple-registration-current-count">{{ language.langkey.multiple_registration_current_no_of_attendees }}:
+                <label class="event-question-label event-plugin-multiple-registration-current-count">{{ language.langkey.multiple_registration_current_no_of_attendees }}:
                     <span class="event-plugin-multiple-registration-current-count-number-inline">{{ total_attendees }}</span></label>
             </div>
             <div class="event-plugin-list event-plugin-multiple-registration-attendee-forms-inline">
@@ -130,7 +130,7 @@
                      inline-data-owner-idz4Vv3ZLs3R="{{ owner_data.id }}"
                      data-include-ownerz4Vv3ZLs3R="{% if number_of_attendees == 'include-owner' %}1{% else %}0{% endif %}">
                     <div class="event-plugin-item-information">
-                        <label class="form-question-label event-plugin-multiple-registration-form-information">
+                        <label class="event-question-label event-plugin-multiple-registration-form-information">
                             {% if number_of_attendees == 'include-owner' %}
                                 {{ language.langkey.multiple_registration_text_attendee }}
                                 <span class="event-plugin-multiple-registration-form-information-number">1 / {{ total_attendees }}</span>
@@ -146,7 +146,7 @@
                     <div class="event-plugin-item event-plugin-multiple-registration-attendee-form-inline"
                          inline-data-attendee-idz4Vv3ZLs3R="{{ attendee_html.user_id }}">
                         <div class="event-plugin-item-information">
-                            <label class="form-question-label event-plugin-multiple-registration-form-information">{{ language.langkey.multiple_registration_text_attendee }}
+                            <label class="event-question-label event-plugin-multiple-registration-form-information">{{ language.langkey.multiple_registration_text_attendee }}
                                 <span class="event-plugin-multiple-registration-form-information-number">{% if number_of_attendees == 'include-owner' %}
                                     {{ forloop.counter|add:1 }}{% else %}
                                     {{ forloop.counter }}{% endif %} / {{ total_attendees }}</span></label>

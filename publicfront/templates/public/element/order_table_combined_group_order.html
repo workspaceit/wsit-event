@@ -6,7 +6,7 @@
     <input type="hidden" class="order-table-visible-columns" value="{{ order_table_visible_columns }}">
     {% if orders %}
         {% for order in orders %}
-            <div class="form-question order-table-form-question">
+            <div class="event-question order-table-event-question">
                 <div class="order-info">
                     <div class="economy-order-number-wrapper"><span class="economy-order-number">{{ language.langkey.economy_txt_order_number }}:</span><span class="economy-order-number-value">{{ order.order.order_number }}</span></div>
                     <div class="economy-status-wrapper"><span class="economy-status">{{ language.langkey.economy_txt_status }}:</span><span class="economy-status-value">{{ order.order.order_status_lang }}</span></div>

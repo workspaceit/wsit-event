@@ -3,7 +3,7 @@
     <div class="event-plugin-intro">
         {{ message|safe }}
     </div>
-    <div class="form-question">
+    <div class="event-question">
 {#        <button class="event-plugin-button event-plugin-photo-upload-file-select-button">{{ language.langkey.photo_upload_photo_choose }}<input type="file" name="pic"#}
 {#                                                                                                 accept="image/*"></button>#}
         <label class="event-plugin-button event-plugin-photo-upload-file-select-button">{{ language.langkey.photo_upload_photo_choose }}<input type="file" name="pic"
@@ -14,8 +14,8 @@
         </div>
     </div>
     {% if comment == 'True' %}
-        <div class="form-question">
-            <label class="form-question-label event-plugin-photo-upload-comment-label">{{ language.langkey.photo_upload_comment_label }}</label>
+        <div class="event-question">
+            <label class="event-question-label event-plugin-photo-upload-comment-label">{{ language.langkey.photo_upload_comment_label }}</label>
             <textarea name="comment" class="event-plugin-photo-upload-comment-textarea" placeholder="{{ language.langkey.photo_upload_comment_placeholder }}"></textarea>
 
         </div>

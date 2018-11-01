@@ -119,12 +119,12 @@ $(function () {
                     $("#dialoge .dialoge-menu").append('<li class="active" data-section="image-details" data-id="image-details"><a>' + lang_image_details_text + '<span class="dialoge-menu-close-button"></span></a></li>');
                     $("#dialoge .image-details-wrapper").append("<div class='image-section'><div class='photo-full-size' style='background-image: url(" + image_src + ")'><img class='photo " + result.photo_group + "' style='max-width:100%; max-height:100%;' src='" + image_src + "'></div></div>");
                     if (result.comment.length > 0 && result.uploader.length > 0) {
-                        $("#dialoge .image-details-wrapper").append('<div class="image-details-section"><div class="photo-submitter"><label class="form-question-label">' + lang_uploader_text + ': </label><span class="value">' + result.uploader + '</span></div><div class="photo-comment"><label class="form-question-label">' + lang_comment_text + ': </label><span class="value">' + result.comment + '</span></div></div>');
+                        $("#dialoge .image-details-wrapper").append('<div class="image-details-section"><div class="photo-submitter"><label class="event-question-label">' + lang_uploader_text + ': </label><span class="value">' + result.uploader + '</span></div><div class="photo-comment"><label class="event-question-label">' + lang_comment_text + ': </label><span class="value">' + result.comment + '</span></div></div>');
                     } else {
                         if (result.comment.length > 0) {
-                            $("#dialoge .image-details-wrapper").append('<div class="image-details-section"><div class="photo-comment"><label class="form-question-label">' + lang_comment_text + ': </label><span class="value">' + result.comment + '</span></div></div>');
+                            $("#dialoge .image-details-wrapper").append('<div class="image-details-section"><div class="photo-comment"><label class="event-question-label">' + lang_comment_text + ': </label><span class="value">' + result.comment + '</span></div></div>');
                         } else if (result.uploader.length > 0) {
-                            $("#dialoge .image-details-wrapper").append('<div class="image-details-section"><div class="photo-submitter"><label class="form-question-label">' + lang_uploader_text + ': </label><span class="value">' + result.uploader + '</span></div></div>');
+                            $("#dialoge .image-details-wrapper").append('<div class="image-details-section"><div class="photo-submitter"><label class="event-question-label">' + lang_uploader_text + ': </label><span class="value">' + result.uploader + '</span></div></div>');
                         }
                     }
                     $('#dialoge').removeClass("_visible").addClass("visible");

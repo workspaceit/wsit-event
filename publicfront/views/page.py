@@ -641,7 +641,7 @@ class StaticPage(generic.DeleteView):
                         description = ''
                         # if question.description != '' and question.description != None:
                         if question.show_description:
-                            description = """<span class="form-question-label-description">""" + question.description + """</span>"""
+                            description = """<span class="event-question-label-description">""" + question.description + """</span>"""
                         if question.type == 'select':
                             options = Option.objects.filter(question_id=qid['qid']).order_by('option_order')
                             option = """<option value="">- {} -</option>""".format(select_text)
@@ -654,7 +654,7 @@ class StaticPage(generic.DeleteView):
                                     option += """<option value='""" + option_value + """'>""" + opt.option + """</option>"""
 
                             content = """<label for="attendee-question-""" + str(
-                                question.id) + """" class="form-question-label">""" + """<span class="form-question-label-title">""" + question.title + """</span>""" + description + """</label>
+                                question.id) + """" class="event-question-label">""" + """<span class="event-question-label-title">""" + question.title + """</span>""" + description + """</label>
                                     <div class="event-plugin-select">
                                     <select data-filter-id=""" + str(
                                 question.id) + """ id="attendee-question-""" + str(question.id) + """" class="given-answer">
@@ -685,11 +685,11 @@ class StaticPage(generic.DeleteView):
                                         question.id) + """-""" + str(
                                         counter) + """" class="radio-label">""" + opt.option + """</label></div>"""
 
-                            content = """<label class="form-question-label">""" + """<span class="form-question-label-title">""" + question.title + """</span>""" + description + """</label>
-                                    """ + """<div class="form-question-radio">""" + option + """</div>"""
+                            content = """<label class="event-question-label">""" + """<span class="event-question-label-title">""" + question.title + """</span>""" + description + """</label>
+                                    """ + """<div class="event-question-radio">""" + option + """</div>"""
                         elif question.type == 'text':
                             content = """<label for="attendee-question-""" + str(
-                                question.id) + """" class="form-question-label">""" + """<span class="form-question-label-title">""" + question.title + """</span>""" + description + """</label>
+                                question.id) + """" class="event-question-label">""" + """<span class="event-question-label-title">""" + question.title + """</span>""" + description + """</label>
                                       <input type="text" id="attendee-question-""" + str(
                                 question.id) + """" class="given-answer" data-filter-id=""" + str(
                                 question.id) + """>"""
@@ -717,17 +717,17 @@ class StaticPage(generic.DeleteView):
                                         question.id) + """-""" + str(
                                         counter) + """">""" + opt.option + """</label></div>"""
 
-                                content = """<label  class="form-question-label" for="attendee-""" + slug_title + """">""" + """<span class="form-question-label-title">""" + question.title + """</span>""" + description + """</label><br/>
-                                        """ + """<div class="form-question-checkbox">""" + option + """</div>"""
+                                content = """<label  class="event-question-label" for="attendee-""" + slug_title + """">""" + """<span class="event-question-label-title">""" + question.title + """</span>""" + description + """</label><br/>
+                                        """ + """<div class="event-question-checkbox">""" + option + """</div>"""
                         elif question.type == 'textarea':
                             content = """<label for="attendee-question-""" + str(
-                                question.id) + """" class="form-question-label">""" + """<span class="form-question-label-title">""" + question.title + """</span>""" + description + """</label>
+                                question.id) + """" class="event-question-label">""" + """<span class="event-question-label-title">""" + question.title + """</span>""" + description + """</label>
                                       <textarea  data-filter-id=""" + str(
                                 question.id) + """ id="attendee-question-""" + str(
                                 question.id) + """" class="given-answer"></textarea>"""
                         else:
                             content = """<label for="attendee-question-""" + str(
-                                question.id) + """" class="form-question-label">""" + """<span class="form-question-label-title">""" + question.title + """</span>""" + description + """</label>
+                                question.id) + """" class="event-question-label">""" + """<span class="event-question-label-title">""" + question.title + """</span>""" + description + """</label>
                                       <input type="text" data-filter-id=""" + str(
                                 question.id) + """ id="attendee-question-""" + str(
                                 question.id) + """" class="given-answer">"""
@@ -744,7 +744,7 @@ class StaticPage(generic.DeleteView):
                         if question.actual_definition:
                             actual_def = str(question.actual_definition)
                         error_text = lang.replace("{question}", question.title)
-                        element = """<div class="form-question element box""" + required + """" data-id=""" + str(
+                        element = """<div class="event-question element box""" + required + """" data-id=""" + str(
                             question.id) + """ data-req=""" + str(
                             question_required) + """ data-def=""" + actual_def + """ id=""" + box_data + """ type=""" + question.type + """>""" + \
                                   content + """
@@ -764,7 +764,7 @@ class StaticPage(generic.DeleteView):
                         description = ''
                         # if question.description != '' and question.description != None:
                         if question.show_description:
-                            description = """<span class="form-question-label-description">""" + question.description + """</span>"""
+                            description = """<span class="event-question-label-description">""" + question.description + """</span>"""
                         if question.type == 'select':
                             options = Option.objects.filter(question_id=qid['qid']).order_by('option_order')
                             option = """<option value="">- {} -</option>""".format(select_text)
@@ -788,7 +788,7 @@ class StaticPage(generic.DeleteView):
                                         option += """<option value='""" + option_value + """'>""" + opt.option + """</option>"""
 
                             content = """<label for="attendee-question-""" + str(
-                                question.id) + """" class="form-question-label">""" + """<span class="form-question-label-title">""" + question.title + """</span>""" + description + """</label>
+                                question.id) + """" class="event-question-label">""" + """<span class="event-question-label-title">""" + question.title + """</span>""" + description + """</label>
                                     <div class="event-plugin-select">
                                     <select data-filter-id=""" + str(
                                 question.id) + """  id="attendee-question-""" + str(question.id) + """" class="given-answer">
@@ -838,19 +838,19 @@ class StaticPage(generic.DeleteView):
                                             question.id) + """-""" + str(
                                             counter) + """" class="radio-label">""" + opt.option + """</label></div>"""
 
-                            content = """<label class="form-question-label">""" + """<span class="form-question-label-title">""" + question.title + """</span>""" + description + """</label><br/>
-                                    """ + """<div class="form-question-radio">""" + option + """</div>"""
+                            content = """<label class="event-question-label">""" + """<span class="event-question-label-title">""" + question.title + """</span>""" + description + """</label><br/>
+                                    """ + """<div class="event-question-radio">""" + option + """</div>"""
                         elif question.type == 'text':
                             if not answer.exists():
                                 content = """<label for="attendee-question-""" + str(
-                                    question.id) + """" class="form-question-label">""" + """<span class="form-question-label-title">""" + question.title + """</span>""" + description + """</label>
+                                    question.id) + """" class="event-question-label">""" + """<span class="event-question-label-title">""" + question.title + """</span>""" + description + """</label>
                                           <input type="text" data-filter-id=""" + str(
                                     question.id) + """  id="attendee-question-""" + str(
                                     question.id) + """" class="given-answer">"""
                             else:
                                 value = answer[0].value
                                 content = """<label for="attendee-question-""" + str(
-                                    question.id) + """" class="form-question-label">""" + """<span class="form-question-label-title">""" + question.title + """</span>""" + description + """</label>
+                                    question.id) + """" class="event-question-label">""" + """<span class="event-question-label-title">""" + question.title + """</span>""" + description + """</label>
                                           <input type="text" data-filter-id=""" + str(
                                     question.id) + """  value='""" + value + """' id="attendee-question-""" + str(
                                     question.id) + """" class="given-answer">"""
@@ -898,33 +898,33 @@ class StaticPage(generic.DeleteView):
                                             question.id) + """-""" + str(
                                             counter) + """">""" + opt.option + """</label></div>"""
 
-                                content = """<label class="form-question-label" for="attendee-""" + slug_title + """">""" + """<span class="form-question-label-title">""" + question.title + """</span>""" + description + """</label><br/>
-                                    """ + """<div class="form-question-checkbox">""" + option + """</div>"""
+                                content = """<label class="event-question-label" for="attendee-""" + slug_title + """">""" + """<span class="event-question-label-title">""" + question.title + """</span>""" + description + """</label><br/>
+                                    """ + """<div class="event-question-checkbox">""" + option + """</div>"""
                         elif question.type == 'textarea':
                             if not answer.exists():
                                 content = """<label for="attendee-question-""" + str(
-                                    question.id) + """" class="form-question-label">""" + """<span class="form-question-label-title">""" + question.title + """</span>""" + description + """</label>
+                                    question.id) + """" class="event-question-label">""" + """<span class="event-question-label-title">""" + question.title + """</span>""" + description + """</label>
                                           <textarea  data-filter-id=""" + str(
                                     question.id) + """ id="attendee-question-""" + str(
                                     question.id) + """" class="given-answer"></textarea>"""
                             else:
                                 value = answer[0].value
                                 content = """<label for="attendee-question-""" + str(
-                                    question.id) + """" class="form-question-label">""" + """<span class="form-question-label-title">""" + question.title + """</span>""" + description + """</label>
+                                    question.id) + """" class="event-question-label">""" + """<span class="event-question-label-title">""" + question.title + """</span>""" + description + """</label>
                                           <textarea data-filter-id=""" + str(
                                     question.id) + """  id="attendee-question-""" + str(
                                     question.id) + """" class="given-answer">""" + value + """</textarea>"""
                         else:
                             if not answer.exists():
                                 content = """<label for="attendee-question-""" + str(
-                                    question.id) + """" class="form-question-label">""" + """<span class="form-question-label-title">""" + question.title + """</span>""" + description + """</label>
+                                    question.id) + """" class="event-question-label">""" + """<span class="event-question-label-title">""" + question.title + """</span>""" + description + """</label>
                                           <input type="text" data-filter-id=""" + str(
                                     question.id) + """  id="attendee-question-""" + str(
                                     question.id) + """" class="given-answer">"""
                             else:
                                 value = answer[0].value
                                 content = """<label for="attendee-question-""" + str(
-                                    question.id) + """" class="form-question-label">""" + """<span class="form-question-label-title">""" + question.title + """</span>""" + description + """</label>
+                                    question.id) + """" class="event-question-label">""" + """<span class="event-question-label-title">""" + question.title + """</span>""" + description + """</label>
                                           <input type="text" data-filter-id=""" + str(
                                     question.id) + """  value=""" + value + """ id="attendee-question-""" + str(
                                     question.id) + """" class="given-answer">"""
@@ -941,7 +941,7 @@ class StaticPage(generic.DeleteView):
                             required = " required"
                         if question.actual_definition:
                             actual_def = str(question.actual_definition)
-                        element = """<div class="form-question element box""" + required + """" data-id=""" + str(
+                        element = """<div class="event-question element box""" + required + """" data-id=""" + str(
                             question.id) + """ data-req=""" + str(
                             question_required) + """ data-def=""" + actual_def + """ id=""" + box_data + """ type=""" + question.type + """>""" + \
                                   content + """

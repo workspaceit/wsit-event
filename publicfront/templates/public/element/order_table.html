@@ -7,7 +7,7 @@
     {% if orders %}
         {% for order in orders %}
             {% if not order.is_group_total %}
-                <div class="form-question order-table-form-question">
+                <div class="event-question order-table-event-question">
                     {% if order_table_type == 'attendee-order' %}
                         <div class="order-info">
                             <div class="economy-order-number-wrapper"><span class="economy-order-number">{{ language.langkey.economy_txt_order_number }}:</span><span class="economy-order-number-value">{{ order.order.order_number }}</span></div>
@@ -226,7 +226,7 @@
                     </div>
                 </div>
             {% else %}
-                <div class="form-question order-table-form-question">
+                <div class="event-question order-table-event-question">
                     {% if order.is_group_detail %}
                         <div class="order-info">
                             <span class="economy-order-number">{{ language.langkey.economy_txt_order_number }}: <span class="economy-order-number-value">{{ order.order_number }}</span><br/></span>
@@ -346,7 +346,7 @@
                         {% if show_cost_incl_vat %} <td class="total_cost_incl_vat"></td> {% endif %}
                     </tr>'>
 
-    <input class="empty-order-table" type="hidden" value='<div class="form-question order-table-form-question">
+    <input class="empty-order-table" type="hidden" value='<div class="event-question order-table-event-question">
         <div class="order-info">
             <span class="economy-order-number" style="display: none;">{{ language.langkey.economy_txt_order_number }}: <span class="economy-order-number-value"></span> <br/></span>
             <span class="economy-status" style="display: none;">{{ language.langkey.economy_txt_status }}: <span class="economy-status-value"></span> <br/></span>

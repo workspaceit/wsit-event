@@ -46,9 +46,9 @@
                 <div class="event-plugin-item">
                     <div class="row inner-gutter h-r-p-check-in-check-out" {% if not force_hotel_room_selection or hotel_info.0.occupancy %} style="display: none;" {% endif %} >
                         <div class="col span-6">
-                            <div class="form-question event-plugin-hotel-reservation-check-in required element">
-                                <label for="hotel-check-in{{ forloop.counter0 }}" class="form-question-label">
-                                    <span class="form-question-label-title">{{ language.langkey.hotelreservation_txt_checkin }}</span>
+                            <div class="event-question event-plugin-hotel-reservation-check-in required element">
+                                <label for="hotel-check-in{{ forloop.counter0 }}" class="event-question-label">
+                                    <span class="event-question-label-title">{{ language.langkey.hotelreservation_txt_checkin }}</span>
                                 </label>
                                 <input class="hotel-reservation-calendar hotel-check-in{{ forloop.counter0 }}" name="hotel-check-in{{ forloop.counter0 }}" value="{{ default_check_in_date }}" id="hotel-check-in{{ forloop.counter0 }}">
                                 <div class="error-validating"></div>
@@ -56,9 +56,9 @@
                         </div>
 
                         <div class="col span-6">
-                            <div class="form-question event-plugin-hotel-reservation-check-out required element">
-                                <label for="hotel-check-out{{ forloop.counter0 }}" class="form-question-label">
-                                    <span class="form-question-label-title">{{ language.langkey.hotelreservation_txt_checkout }}</span>
+                            <div class="event-question event-plugin-hotel-reservation-check-out required element">
+                                <label for="hotel-check-out{{ forloop.counter0 }}" class="event-question-label">
+                                    <span class="event-question-label-title">{{ language.langkey.hotelreservation_txt_checkout }}</span>
                                 </label>
                                 <input class="hotel-reservation-calendar hotel-check-out{{ forloop.counter0 }}" name="hotel-check-out{{ forloop.counter0 }}" value="{{ default_check_out_date }}" id="hotel-check-out{{ forloop.counter0 }}">
                                 <div class="error-validating"></div>
@@ -68,7 +68,7 @@
                     </div>
 
                     <div class="row inner-gutter">
-                        <div class="col span-12 err-val-class form-question element">
+                        <div class="col span-12 err-val-class event-question element">
                             <input class="plugin-box-id" value="{{ box_id }}" type="hidden">
                             <input class="uid-text-calss" value="{{ uid_text }}" type="hidden">
                             <div class="scroll-x">
@@ -138,9 +138,9 @@
 
                     <div class="row room-buddy-hide-show" style="display: none;">
                         <div class="col span-6">
-                            <div class="form-question event-plugin-hotel-reservation-room-buddy required element">
-                                <label for="" class="form-question-label">
-                                    <span class="form-question-label-title">{{ language.langkey.hotelreservation_txt_room_buddy }}</span>
+                            <div class="event-question event-plugin-hotel-reservation-room-buddy required element">
+                                <label for="" class="event-question-label">
+                                    <span class="event-question-label-title">{{ language.langkey.hotelreservation_txt_room_buddy }}</span>
                                 </label>
 {#                                <input class="hotel-room-buddy hotel-r-buddy{{ forloop.counter0 }}" data-temp="{{ box_id }}{{ forloop.counter0 }}">#}
                                 <select class="hotel-room-buddy hotel-r-buddy{{ forloop.counter0 }}" data-temp="{{ box_id }}{{ forloop.counter0 }}" style="width: 300px;"></select>

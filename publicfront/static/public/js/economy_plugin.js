@@ -80,7 +80,7 @@ function add_order_table_row($element, item_type, item_detail, info_for_rebate) 
         $table = $element.closest('.section-box').find('.economy-order-table').find('.event-plugin-economy-order-table:last');
         if (order_attendee_checker != undefined) {
             $table.attr('data-order-attendee', order_attendee_checker);
-            $table.closest('.order-table-form-question').find('.data-economy-attendee-id').val(order_attendee_checker);
+            $table.closest('.order-table-event-question').find('.data-economy-attendee-id').val(order_attendee_checker);
         }
     }
     console.log('$table');
@@ -155,7 +155,7 @@ function add_order_table_row($element, item_type, item_detail, info_for_rebate) 
 
 
         var vat_adding_flag = true;
-        var $vat_table = $table.closest('.order-table-form-question').find('.event-plugin-economy-vat-table');
+        var $vat_table = $table.closest('.order-table-event-question').find('.event-plugin-economy-vat-table');
         $vat_table.find('tbody tr').each(function () {
             var vat_rate = $(this).find('td:first').attr('data-vat-rate');
             if (vat_rate == item_detail.vat_rate) {
@@ -271,7 +271,7 @@ function economy_remove_item_from_economy($element, item_type, item_to_remove) {
         });
 
         if (vat_rate_to_remove != 0 && vat_rate_to_remove != '') {
-            $table.closest('.order-table-form-question').find('.event-plugin-economy-vat-table tbody tr').each(function () {
+            $table.closest('.order-table-event-question').find('.event-plugin-economy-vat-table tbody tr').each(function () {
                 if ($(this).find('td:first').attr('data-vat-rate') == vat_rate_to_remove) {
                     var remaining_vat_amount = parseFloat($(this).find('td:last').attr('data-amount')) - vat_amount_to_remove;
                     if (remaining_vat_amount == 0) {
@@ -400,38 +400,38 @@ function diplay_new_order_info($section, result) {
     var economy_currency = $('.economy-text-lang-currency').val();
     if ($order_table != undefined) {
         // set order values to table
-        $order_table.closest('.order-table-form-question').find('.data-economy-attendee-id').val(result.attendee_id);
+        $order_table.closest('.order-table-event-question').find('.data-economy-attendee-id').val(result.attendee_id);
         $order_table.attr('data-order-attendee', result.attendee_id);
 
-        $order_table.closest('.order-table-form-question').find('.economy-order-number-value').html(result.order_number);
-        $order_table.closest('.order-table-form-question').find('.economy-status-value').html(result.status_lang);
+        $order_table.closest('.order-table-event-question').find('.economy-order-number-value').html(result.order_number);
+        $order_table.closest('.order-table-event-question').find('.economy-status-value').html(result.status_lang);
         var converted_date = global_getDateWithLanguage(result.due_date);
-        $order_table.closest('.order-table-form-question').find('.economy-due-date-value').html(converted_date);
+        $order_table.closest('.order-table-event-question').find('.economy-due-date-value').html(converted_date);
 
-        $order_table.closest('.order-table-form-question').find('.change-order-status').attr('data-order-number', result.order_number);
-        $order_table.closest('.order-table-form-question').find('.change-order-status').attr('data-order-id', result.id);
-        $order_table.closest('.order-table-form-question').find('form').attr('id', 'form-' + result.order_id);
+        $order_table.closest('.order-table-event-question').find('.change-order-status').attr('data-order-number', result.order_number);
+        $order_table.closest('.order-table-event-question').find('.change-order-status').attr('data-order-id', result.id);
+        $order_table.closest('.order-table-event-question').find('form').attr('id', 'form-' + result.order_id);
 
-        $order_table.closest('.order-table-form-question').find('.settle-order-button').attr('data-order-number', result.order_number);
-        $order_table.closest('.order-table-form-question').find('.settle-order-button').attr('data-order-id', result.order_id);
+        $order_table.closest('.order-table-event-question').find('.settle-order-button').attr('data-order-number', result.order_number);
+        $order_table.closest('.order-table-event-question').find('.settle-order-button').attr('data-order-id', result.order_id);
 
         // show fields
-        $order_table.closest('.order-table-form-question').find('.economy-order-number').show();
-        $order_table.closest('.order-table-form-question').find('.economy-status').show();
+        $order_table.closest('.order-table-event-question').find('.economy-order-number').show();
+        $order_table.closest('.order-table-event-question').find('.economy-status').show();
         if (result.status == 'open') {
-            $order_table.closest('.order-table-form-question').find('.status-cahnge-element').show();
+            $order_table.closest('.order-table-event-question').find('.status-cahnge-element').show();
         } else if (result.status == 'pending') {
-            $order_table.closest('.order-table-form-question').find('.economy-due-date').show();
-            $order_table.closest('.order-table-form-question').find('.economy-amount-due-value').html(result.amount_due + ' ' + economy_currency);
-            $order_table.closest('.order-table-form-question').find('.economy-amount-due').show();
-            $order_table.closest('.order-table-form-question').find('.settle-order').show();
+            $order_table.closest('.order-table-event-question').find('.economy-due-date').show();
+            $order_table.closest('.order-table-event-question').find('.economy-amount-due-value').html(result.amount_due + ' ' + economy_currency);
+            $order_table.closest('.order-table-event-question').find('.economy-amount-due').show();
+            $order_table.closest('.order-table-event-question').find('.settle-order').show();
             $order_table.attr('data-order-status', result.status);
-            $order_table.closest('.order-table-form-question').find('.status-cahnge-element').hide();
+            $order_table.closest('.order-table-event-question').find('.status-cahnge-element').hide();
         }else if(result.status == 'paid') {
-            $order_table.closest('.order-table-form-question').find('.economy-amount-due-value').html(result.amount_due + ' ' + economy_currency);
-            $order_table.closest('.order-table-form-question').find('.economy-amount-due').show();
+            $order_table.closest('.order-table-event-question').find('.economy-amount-due-value').html(result.amount_due + ' ' + economy_currency);
+            $order_table.closest('.order-table-event-question').find('.economy-amount-due').show();
             $order_table.attr('data-order-status', result.status);
-            $order_table.closest('.order-table-form-question').find('.status-cahnge-element').hide();
+            $order_table.closest('.order-table-event-question').find('.status-cahnge-element').hide();
         }
     }
 }
@@ -456,40 +456,40 @@ $(function () {
             },
             success: function (response) {
                 if (response.result) {
-                    $this.closest('.order-table-form-question').find('.economy-status-value').html(response.order_info.status_lang);
+                    $this.closest('.order-table-event-question').find('.economy-status-value').html(response.order_info.status_lang);
                     if (response.order_info.status == 'pending') {
                         var converted_date = global_getDateWithLanguage(response.order_info.due_date);
-                        $this.closest('.order-table-form-question').find('.economy-due-date-value').html(converted_date);
-                        $this.closest('.order-table-form-question').find('.economy-due-date').show();
-                        $this.closest('.order-table-form-question').find('.settle-order').show();
+                        $this.closest('.order-table-event-question').find('.economy-due-date-value').html(converted_date);
+                        $this.closest('.order-table-event-question').find('.economy-due-date').show();
+                        $this.closest('.order-table-event-question').find('.settle-order').show();
                         if(download_when_change_status){
                             window.location = base_url + "/economy-pdf-request?data=order-invoice&order_number=" + order_number;
                         }
 
                         // var settle_order_btn = $this.closest('.economy-order-table').find('.settle-order-button-html').val();
-                        // $this.closest('.order-table-form-question').find('.settle-order').html(settle_order_btn);
-                        // $this.closest('.order-table-form-question').find('.settle-order').find('.settle-order-button').attr('data-order-number', order_number);
+                        // $this.closest('.order-table-event-question').find('.settle-order').html(settle_order_btn);
+                        // $this.closest('.order-table-event-question').find('.settle-order').find('.settle-order-button').attr('data-order-number', order_number);
                     } else if (response.order_info.status == 'paid') {
                         if(download_when_change_status) {
                             window.location = base_url + "/economy-pdf-request?data=receipt&order_number=" + order_number;
                         }
                     }
-                    $this.closest('.order-table-form-question').find('.economy-amount-due-value').html(response.order_info.amount_due + ' ' + economy_currency);
-                    $this.closest('.order-table-form-question').find('.economy-amount-due').show();
-                    $(response.order_info.balance_table_html).insertBefore($this.closest('.order-table-form-question').find('.event-plugin-economy-order-table').closest('.scroll-x'));
+                    $this.closest('.order-table-event-question').find('.economy-amount-due-value').html(response.order_info.amount_due + ' ' + economy_currency);
+                    $this.closest('.order-table-event-question').find('.economy-amount-due').show();
+                    $(response.order_info.balance_table_html).insertBefore($this.closest('.order-table-event-question').find('.event-plugin-economy-order-table').closest('.scroll-x'));
 
                     var data_is_group_order = $this.attr('data-is-group-order');
                     if (data_is_group_order == undefined) {
-                        $this.closest('.order-table-form-question').find('.event-plugin-economy-order-table').attr('data-order-status', response.order_info.status);
+                        $this.closest('.order-table-event-question').find('.event-plugin-economy-order-table').attr('data-order-status', response.order_info.status);
                     } else {
-                        $this.closest('.order-table-form-question').find('.event-plugin-economy-order-table').attr('data-order-status', response.order_info.status);
+                        $this.closest('.order-table-event-question').find('.event-plugin-economy-order-table').attr('data-order-status', response.order_info.status);
                         $this.closest('.economy-order-table').find('.event-plugin-economy-order-table').each(function () {
                             if ($(this).attr('data-order-number') == order_number) {
                                 $(this).attr('data-order-status', response.order_info.status);
                             }
                         })
                     }
-                    $this.closest('.order-table-form-question').find('.status-cahnge-element').remove();
+                    $this.closest('.order-table-event-question').find('.status-cahnge-element').remove();
                     $.growl.notice({message: response.message});
                 } else {
                     $.growl.warning({message: 'Something went wrong.'});

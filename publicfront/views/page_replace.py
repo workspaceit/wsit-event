@@ -388,7 +388,7 @@ class PageReplace(generic.View):
                             question.time_interval = '30'
                         # if question.description != '' and question.description != None:
                         if question.show_description:
-                            description = """<span class="form-question-label-description">""" + question.description + """</span>"""
+                            description = """<span class="event-question-label-description">""" + question.description + """</span>"""
                         if question.type == 'select':
                             options = Option.objects.filter(question_id=qid['qid']).order_by('option_order')
                             # option = """<option value="">- {} -</option>""".format(select_text)
@@ -410,7 +410,7 @@ class PageReplace(generic.View):
                             else:
                                 option = empty_option + option_list
                             content = """<label for="attendee-question-""" + str(
-                                question.id) + """" class="form-question-label">""" + """<span class="form-question-label-title">""" + question.title + """</span>""" + description + """</label>
+                                question.id) + """" class="event-question-label">""" + """<span class="event-question-label-title">""" + question.title + """</span>""" + description + """</label>
                                         <div class="event-plugin-select">
                                         <select data-filter-id=""" + question_filter_id + """ id=""" + question_input_id + """ data-q-id=""" + question_input_q_id + """ class="given-answer">
                                         """ + option + """
@@ -424,13 +424,13 @@ class PageReplace(generic.View):
                             # question_input_q_id = "attendee-question-" + str(question.id)
                             # question_filter_id = str(question.id)
                             if question.show_description:
-                                description = """<span class="form-question-label-description">""" + question.description + """</span>"""
+                                description = """<span class="event-question-label-description">""" + question.description + """</span>"""
                             if question.default_answer:
                                 default_value = question.default_answer
                             content = """<label for="attendee-question-""" + str(
-                                question.id) + """" class="form-question-label">""" + """<span class="form-question-label-title">""" + question.title + """</span>""" + description + """</label>
+                                question.id) + """" class="event-question-label">""" + """<span class="event-question-label-title">""" + question.title + """</span>""" + description + """</label>
                                         <div class="event-plugin-select">
-                                        <select class='form-question-country given-answer' data-filter-id=""" + question_filter_id + """ id=""" + question_input_id + """ data-q-id=""" + question_input_q_id + """ data-default='""" + default_value + """'>
+                                        <select class='event-question-country given-answer' data-filter-id=""" + question_filter_id + """ id=""" + question_input_id + """ data-q-id=""" + question_input_q_id + """ data-default='""" + default_value + """'>
                                         </select>
                                         </div>"""
                         elif question.type == 'radio_button':
@@ -452,11 +452,11 @@ class PageReplace(generic.View):
                                         counter) + """ class="given-answer"><label for=""" + question_input_id + """-""" + str(
                                         counter) + """ class="radio-label">""" + opt.option + """</label></div>"""
 
-                            content = """<label class="form-question-label">""" + """<span class="form-question-label-title">""" + question.title + """</span>""" + description + """</label>
-                                        """ + """<div class="form-question-radio">""" + option + """</div>"""
+                            content = """<label class="event-question-label">""" + """<span class="event-question-label-title">""" + question.title + """</span>""" + description + """</label>
+                                        """ + """<div class="event-question-radio">""" + option + """</div>"""
                         elif question.type == 'text':
                             content = """<label for="attendee-question-""" + str(
-                                question.id) + """" class="form-question-label">""" + """<span class="form-question-label-title">""" + question.title + """</span>""" + description + """</label>
+                                question.id) + """" class="event-question-label">""" + """<span class="event-question-label-title">""" + question.title + """</span>""" + description + """</label>
                                           <input type="text" id=""" + question_input_id + """ data-q-id=""" + question_input_q_id + """ class="given-answer" data-filter-id=""" + question_filter_id + """>"""
                         elif question.type == 'checkbox':
                             options = Option.objects.filter(question_id=qid['qid']).order_by('option_order')
@@ -477,36 +477,36 @@ class PageReplace(generic.View):
                                         counter) + """><label class="checkbox-label" for=""" + question_input_id + """-""" + str(
                                         counter) + """>""" + opt.option + """</label></div>"""
 
-                                content = """<label  class="form-question-label" for="attendee-""" + slug_title + """">""" + """<span class="form-question-label-title">""" + question.title + """</span>""" + description + """</label><br/>
-                                            """ + """<div class="form-question-checkbox">""" + option + """</div>"""
+                                content = """<label  class="event-question-label" for="attendee-""" + slug_title + """">""" + """<span class="event-question-label-title">""" + question.title + """</span>""" + description + """</label><br/>
+                                            """ + """<div class="event-question-checkbox">""" + option + """</div>"""
                         elif question.type == 'textarea':
                             content = """<label for="attendee-question-""" + str(
-                                question.id) + """" class="form-question-label">""" + """<span class="form-question-label-title">""" + question.title + """</span>""" + description + """</label>
+                                question.id) + """" class="event-question-label">""" + """<span class="event-question-label-title">""" + question.title + """</span>""" + description + """</label>
                                           <textarea  data-filter-id=""" + question_filter_id + """ id=""" + question_input_id + """ data-q-id=""" + question_input_q_id + """ class="given-answer"></textarea>"""
 
                         elif question.type == 'date':
                             content = """<label for="attendee-question-""" + str(
-                                question.id) + """" class="form-question-label">""" + """<span class="form-question-label-title">""" + question.title + """</span>""" + description + """</label>
+                                question.id) + """" class="event-question-label">""" + """<span class="event-question-label-title">""" + question.title + """</span>""" + description + """</label>
                                                                       <input type="text" name="date" data-filter-id=""" + question_filter_id + """ id=""" + question_input_id + """ data-q-id=""" + question_input_q_id + """ data-from-date="""+str(question.from_date)+""" data-to-date="""+str(question.to_date)+""" class="given-answer question-date">"""
                         elif question.type == 'time':
                             content = """<label for="attendee-question-""" + str(
-                                question.id) + """" class="form-question-label">""" + """<span class="form-question-label-title">""" + question.title + """</span>""" + description + """</label>
+                                question.id) + """" class="event-question-label">""" + """<span class="event-question-label-title">""" + question.title + """</span>""" + description + """</label>
                                                                                                   <input type="text" time-intervel="""+question.time_interval+"""  name="time"  data-filter-id=""" + question_filter_id + """ id=""" + question_input_id + """ data-q-id=""" + question_input_q_id + """ data-from-time=""" + str(
                                 question.from_time) + """ data-to-time=""" + str(
                                 question.to_time) + """ class="given-answer question-time">"""
                         elif question.type =='date_range':
                             content = """<label for="attendee-question-""" + str(
-                                question.id) + """" class="form-question-label">""" + """<span class="form-question-label-title">""" + question.title + """</span>""" + description + """</label><div style="overflow:hidden">
+                                question.id) + """" class="event-question-label">""" + """<span class="event-question-label-title">""" + question.title + """</span>""" + description + """</label><div style="overflow:hidden">
                                 <input name="date_range_from" style="width:49%; display:inline; float:left; margin-right:2%;" type="text" data-filter-id=""" + question_filter_id + """ id=""" + question_input_id + """ data-q-id=""" + question_input_q_id + """ data-from-date=""" + str(question.from_date) + """ data-to-date=""" + str(question.to_date) + """ data-range-type="from" class="given-answer question-date-range question-date-range-from">
                                 <input name="date_range_to" style="width:49%; display:inline; float:left" type="text" data-filter-id=""" + question_filter_id + """ id=""" + question_input_id + """ data-q-id=""" + question_input_q_id + """ data-from-date=""" + str(question.from_date) + """ data-to-date=""" + str(question.to_date) + """ data-range-type="to" class="given-answer question-date-range question-date-range-to"></div>"""
                         elif question.type == 'time_range':
                             content = """<label for="attendee-question-""" + str(
-                                question.id) + """" class="form-question-label">""" + """<span class="form-question-label-title">""" + question.title + """</span>""" + description + """</label><div style="overflow:hidden">
+                                question.id) + """" class="event-question-label">""" + """<span class="event-question-label-title">""" + question.title + """</span>""" + description + """</label><div style="overflow:hidden">
                                 <input name="time_range_from" time-intervel="""+question.time_interval+"""  style="width:49%; display:inline; float:left; margin-right:2%;" type="text" data-filter-id=""" + question_filter_id + """ id=""" + question_input_id + """ data-q-id=""" + question_input_q_id + """ data-from-time=""" + str(question.from_time) + """ data-to-time=""" + str(question.to_time) + """ data-range-type="from" class="given-answer question-time-range question-time-range-from">
                                 <input name="time_range_to" time-intervel="""+question.time_interval+""" style="width:49%; display:inline; float:left" type="text" data-filter-id=""" + question_filter_id + """ id=""" + question_input_id + """ data-q-id=""" + question_input_q_id + """ data-from-time=""" + str(question.from_time) + """ data-to-time=""" + str(question.to_time) + """ data-range-type="to" class="given-answer question-time-range question-time-range-to"></div>"""
                         else:
                             content = """<label for="attendee-question-""" + str(
-                                question.id) + """" class="form-question-label">""" + """<span class="form-question-label-title">""" + question.title + """</span>""" + description + """</label>
+                                question.id) + """" class="event-question-label">""" + """<span class="event-question-label-title">""" + question.title + """</span>""" + description + """</label>
                                           <input type="text" data-filter-id=""" + question_filter_id + """ id=""" + question_input_id + """ data-q-id=""" + question_input_q_id + """ class="given-answer">"""
 
                         lang = LanguageKey.catch_lang_key(request, "questions",
@@ -521,7 +521,7 @@ class PageReplace(generic.View):
                         if question.actual_definition:
                             actual_def = str(question.actual_definition)
                         error_text = lang.replace("{question}", question.title)
-                        element = """<div class="form-question element box""" + required + """" data-id=""" + str(
+                        element = """<div class="event-question element box""" + required + """" data-id=""" + str(
                             question.id) + """ data-req=""" + str(
                             question_required) + """ data-def=""" + actual_def + """ id=""" + box_data + """ type=""" + question.type + """>""" + \
                                   content + """
@@ -549,7 +549,7 @@ class PageReplace(generic.View):
                             question.time_interval = '30'
                         # if question.description != '' and question.description != None:
                         if question.show_description:
-                            description = """<span class="form-question-label-description">""" + question.description + """</span>"""
+                            description = """<span class="event-question-label-description">""" + question.description + """</span>"""
                         if question.type == 'select':
                             options = Option.objects.filter(question_id=qid['qid']).order_by('option_order')
                             empty_option = """<option value="">- {} -</option>""".format(select_text)
@@ -580,7 +580,7 @@ class PageReplace(generic.View):
                             else:
                                 option = empty_option + option_list
                             content = """<label for="attendee-question-""" + str(
-                                question.id) + """" class="form-question-label">""" + """<span class="form-question-label-title">""" + question.title + """</span>""" + description + """</label>
+                                question.id) + """" class="event-question-label">""" + """<span class="event-question-label-title">""" + question.title + """</span>""" + description + """</label>
                                         <div class="event-plugin-select">
                                         <select data-filter-id=""" + question_filter_id + """  id=""" + question_input_id + """ data-q-id=""" + question_input_q_id + """ class="given-answer">
                                         """ + option + """
@@ -594,16 +594,16 @@ class PageReplace(generic.View):
                             # question_input_q_id = "attendee-question-" + str(question.id)
                             # question_filter_id = str(question.id)
                             if question.show_description:
-                                description = """<span class="form-question-label-description">""" + question.description + """</span>"""
+                                description = """<span class="event-question-label-description">""" + question.description + """</span>"""
                             if not answer.exists():
                                 if question.default_answer:
                                     default_value = question.default_answer
                             else:
                                 default_value = answer[0].value
                             content = """<label for="attendee-question-""" + str(
-                                question.id) + """" class="form-question-label">""" + """<span class="form-question-label-title">""" + question.title + """</span>""" + description + """</label>
+                                question.id) + """" class="event-question-label">""" + """<span class="event-question-label-title">""" + question.title + """</span>""" + description + """</label>
                                         <div class="event-plugin-select">
-                                        <select class='form-question-country given-answer' data-filter-id=""" + question_filter_id + """ id=""" + question_input_id + """ data-q-id=""" + question_input_q_id +""" data-default='""" + default_value + """'>
+                                        <select class='event-question-country given-answer' data-filter-id=""" + question_filter_id + """ id=""" + question_input_id + """ data-q-id=""" + question_input_q_id +""" data-default='""" + default_value + """'>
                                         </select>
                                         </div>"""
                         elif question.type == 'radio_button':
@@ -640,17 +640,17 @@ class PageReplace(generic.View):
                                             counter) + """ class="given-answer"><label for=""" + question_input_id + """-""" + str(
                                             counter) + """ class="radio-label">""" + opt.option + """</label></div>"""
 
-                            content = """<label class="form-question-label">""" + """<span class="form-question-label-title">""" + question.title + """</span>""" + description + """</label><br/>
-                                        """ + """<div class="form-question-radio">""" + option + """</div>"""
+                            content = """<label class="event-question-label">""" + """<span class="event-question-label-title">""" + question.title + """</span>""" + description + """</label><br/>
+                                        """ + """<div class="event-question-radio">""" + option + """</div>"""
                         elif question.type == 'text':
                             if not answer.exists():
                                 content = """<label for="attendee-question-""" + str(
-                                    question.id) + """" class="form-question-label">""" + """<span class="form-question-label-title">""" + question.title + """</span>""" + description + """</label>
+                                    question.id) + """" class="event-question-label">""" + """<span class="event-question-label-title">""" + question.title + """</span>""" + description + """</label>
                                               <input type="text" data-filter-id=""" + question_filter_id + """  id=""" + question_input_id + """ data-q-id=""" + question_input_q_id + """ class="given-answer">"""
                             else:
                                 value = answer[0].value
                                 content = """<label for="attendee-question-""" + str(
-                                    question.id) + """" class="form-question-label">""" + """<span class="form-question-label-title">""" + question.title + """</span>""" + description + """</label>
+                                    question.id) + """" class="event-question-label">""" + """<span class="event-question-label-title">""" + question.title + """</span>""" + description + """</label>
                                               <input type="text" data-filter-id=""" + question_filter_id + """  value='""" + value + """' id=""" + question_input_id + """ data-q-id=""" + question_input_q_id + """ class="given-answer">"""
                         elif question.type == 'checkbox':
                             options = Option.objects.filter(question_id=qid['qid']).order_by('option_order')
@@ -687,73 +687,73 @@ class PageReplace(generic.View):
                                             counter) + """><label class="checkbox-label" for=""" + question_input_id + """-""" + str(
                                             counter) + """>""" + opt.option + """</label></div>"""
 
-                                content = """<label class="form-question-label" for="attendee-""" + slug_title + """">""" + """<span class="form-question-label-title">""" + question.title + """</span>""" + description + """</label><br/>
-                                        """ + """<div class="form-question-checkbox">""" + option + """</div>"""
+                                content = """<label class="event-question-label" for="attendee-""" + slug_title + """">""" + """<span class="event-question-label-title">""" + question.title + """</span>""" + description + """</label><br/>
+                                        """ + """<div class="event-question-checkbox">""" + option + """</div>"""
                         elif question.type == 'textarea':
                             if not answer.exists():
                                 content = """<label for="attendee-question-""" + str(
-                                    question.id) + """" class="form-question-label">""" + """<span class="form-question-label-title">""" + question.title + """</span>""" + description + """</label>
+                                    question.id) + """" class="event-question-label">""" + """<span class="event-question-label-title">""" + question.title + """</span>""" + description + """</label>
                                               <textarea  data-filter-id=""" + question_filter_id + """ id=""" + question_input_id + """ data-q-id=""" + question_input_q_id + """ class="given-answer"></textarea>"""
                             else:
                                 value = answer[0].value
                                 content = """<label for="attendee-question-""" + str(
-                                    question.id) + """" class="form-question-label">""" + """<span class="form-question-label-title">""" + question.title + """</span>""" + description + """</label>
+                                    question.id) + """" class="event-question-label">""" + """<span class="event-question-label-title">""" + question.title + """</span>""" + description + """</label>
                                               <textarea data-filter-id=""" + question_filter_id + """  id=""" + question_input_id + """ data-q-id=""" + question_input_q_id + """ class="given-answer">""" + value + """</textarea>"""
                         elif question.type == 'date':
                             if not answer.exists():
                                 content = """<label for="attendee-question-""" + str(
-                                    question.id) + """" class="form-question-label">""" + """<span class="form-question-label-title">""" + question.title + """</span>""" + description + """</label>
+                                    question.id) + """" class="event-question-label">""" + """<span class="event-question-label-title">""" + question.title + """</span>""" + description + """</label>
                                               <input type="text" name="date" data-filter-id=""" + question_filter_id + """  id=""" + question_input_id + """ data-q-id=""" + question_input_q_id + """  data-from-date="""+str(question.from_date)+""" data-to-date="""+str(question.to_date)+""" class="given-answer question-date">"""
                             else:
                                 value = answer[0].value
                                 content = """<label for="attendee-question-""" + str(
-                                    question.id) + """" class="form-question-label">""" + """<span class="form-question-label-title">""" + question.title + """</span>""" + description + """</label>
+                                    question.id) + """" class="event-question-label">""" + """<span class="event-question-label-title">""" + question.title + """</span>""" + description + """</label>
                                               <input type="text" name="date" data-filter-id=""" + question_filter_id + """  data-value='""" + value + """' id=""" + question_input_id + """ data-q-id=""" + question_input_q_id + """ data-from-date="""+str(question.from_date)+""" data-to-date="""+str(question.to_date)+""" class="given-answer question-date">"""
                         elif question.type == 'time':
                             if not answer.exists():
                                 content = """<label for="attendee-question-""" + str(
-                                    question.id) + """" class="form-question-label">""" + """<span class="form-question-label-title">""" + question.title + """</span>""" + description + """</label>
+                                    question.id) + """" class="event-question-label">""" + """<span class="event-question-label-title">""" + question.title + """</span>""" + description + """</label>
                                               <input type="text" name="time" time-intervel="""+question.time_interval+""" data-filter-id=""" + question_filter_id + """  id=""" + question_input_id + """ data-q-id=""" + question_input_q_id + """  data-from-time="""+str(question.from_time)+""" data-to-time="""+str(question.to_time)+""" class="given-answer question-time">"""
                             else:
                                 value = answer[0].value
                                 content = """<label for="attendee-question-""" + str(
-                                    question.id) + """" class="form-question-label">""" + """<span class="form-question-label-title">""" + question.title + """</span>""" + description + """</label>
+                                    question.id) + """" class="event-question-label">""" + """<span class="event-question-label-title">""" + question.title + """</span>""" + description + """</label>
                                               <input type="text" name="time" time-intervel="""+question.time_interval+""" data-filter-id=""" + question_filter_id + """  data-value='""" + value + """' id=""" + question_input_id + """ data-q-id=""" + question_input_q_id + """ data-from-time="""+str(question.from_time)+""" data-to-time="""+str(question.to_time)+""" class="given-answer question-time">"""
                         elif question.type == 'date_range':
                             if not answer.exists() or (answer and answer[0].value == ''):
-                                content = """<label for="attendee-question-""" + str(question.id) + """" class="form-question-label">""" + """<span class="form-question-label-title">""" + question.title + """</span>""" + description + """</label><div style="overflow:hidden">
+                                content = """<label for="attendee-question-""" + str(question.id) + """" class="event-question-label">""" + """<span class="event-question-label-title">""" + question.title + """</span>""" + description + """</label><div style="overflow:hidden">
                                 <input name="date_range_from" style="width:49%; display:inline; float:left; margin-right:2%;" type="text" data-filter-id=""" + question_filter_id + """ id=""" + question_input_id + """ data-q-id=""" + question_input_q_id + """ data-from-date=""" + str(question.from_date) + """ data-to-date=""" + str(question.to_date) + """ data-range-type="from" class="given-answer question-date-range question-date-range-from">
                                 <input name="date_range_to" style="width:49%; display:inline; float:left" type="text" data-filter-id=""" + question_filter_id + """ id=""" + question_input_id + """ data-q-id=""" + question_input_q_id + """ data-from-date=""" + str(question.from_date) + """ data-to-date=""" + str(question.to_date) + """ data-range-type="to" class="given-answer question-date-range question-date-range-to"></div>"""
                             else:
                                 value = json.loads(answer[0].value)
-                                content = """<label for="attendee-question-""" + str(question.id) + """" class="form-question-label">""" + """<span class="form-question-label-title">""" + question.title + """</span>""" + description + """</label><div style="overflow:hidden">
+                                content = """<label for="attendee-question-""" + str(question.id) + """" class="event-question-label">""" + """<span class="event-question-label-title">""" + question.title + """</span>""" + description + """</label><div style="overflow:hidden">
                                     <input name="date_range_from" style="width:49%; display:inline; float:left; margin-right:2%;" type="text" data-value='""" + value[0] + """' data-filter-id=""" + question_filter_id + """ id=""" + question_input_id + """ data-q-id=""" + question_input_q_id + """ data-from-date=""" + str(question.from_date) + """ data-to-date=""" + str(question.to_date) + """ data-range-type="from" class="given-answer question-date-range question-date-range-from">
                                     <input name="date_range_to" style="width:49%; display:inline; float:left" type="text" data-value='""" + value[1] + """' data-filter-id=""" + question_filter_id + """ id=""" + question_input_id + """ data-q-id=""" + question_input_q_id + """ data-from-date=""" + str(question.from_date) + """ data-to-date=""" + str(question.to_date) + """ data-range-type="to" class="given-answer question-date-range question-date-range-to"></div>"""
                         elif question.type == 'time_range':
                             if not answer.exists() or (answer and answer[0].value == ''):
-                                content = """<label for="attendee-question-""" + str(question.id) + """" class="form-question-label">""" + """<span class="form-question-label-title">""" + question.title + """</span>""" + description + """</label><div style="overflow:hidden">
+                                content = """<label for="attendee-question-""" + str(question.id) + """" class="event-question-label">""" + """<span class="event-question-label-title">""" + question.title + """</span>""" + description + """</label><div style="overflow:hidden">
                                 <input name="time_range_from" time-intervel="""+question.time_interval+""" style="width:49%; display:inline; float:left; margin-right:2%;" type="text" data-filter-id=""" + question_filter_id + """ id=""" + question_input_id + """ data-q-id=""" + question_input_q_id + """ data-from-time=""" + str(question.from_time) + """ data-to-time=""" + str(question.to_time) + """ data-range-type="from" class="given-answer question-time-range question-time-range-from">
                                 <input name="time_range_to" time-intervel="""+question.time_interval+""" style="width:49%; display:inline; float:left" type="text" data-filter-id=""" + question_filter_id + """ id=""" + question_input_id + """ data-q-id=""" + question_input_q_id + """ data-from-time=""" + str(question.from_time) + """ data-to-time=""" + str(question.to_time) + """ data-range-type="to" class="given-answer question-time-range question-time-range-to"></div>"""
                             else:
                                 value = json.loads(answer[0].value)
-                                content = """<label for="attendee-question-""" + str(question.id) + """" class="form-question-label">""" + """<span class="form-question-label-title">""" + question.title + """</span>""" + description + """</label><div style="overflow:hidden">
+                                content = """<label for="attendee-question-""" + str(question.id) + """" class="event-question-label">""" + """<span class="event-question-label-title">""" + question.title + """</span>""" + description + """</label><div style="overflow:hidden">
                                 <input name="time_range_from" time-intervel="""+question.time_interval+""" style="width:49%; display:inline; float:left; margin-right:2%;" type="text" value='""" + value[0] + """' data-filter-id=""" + question_filter_id + """ id=""" + question_input_id + """ data-q-id=""" + question_input_q_id + """ data-from-time=""" + str(question.from_time) + """ data-to-time=""" + str(question.to_time) + """ data-range-type="from" class="given-answer question-time-range question-time-range-from">
                                 <input name="time_range_to" time-intervel="""+question.time_interval+""" style="width:49%; display:inline; float:left" type="text" value='""" + value[1] + """' data-filter-id=""" + question_filter_id + """ id=""" + question_input_id + """ data-q-id=""" + question_input_q_id + """ data-from-time=""" + str(question.from_time) + """ data-to-time=""" + str(question.to_time) + """ data-range-type="to" class="given-answer question-time-range question-time-range-to"></div>"""
 
                         else:
                             if not answer.exists():
                                 content = """<label for="attendee-question-""" + str(
-                                    question.id) + """" class="form-question-label">""" + """<span class="form-question-label-title">""" + question.title + """</span>""" + description + """</label>
+                                    question.id) + """" class="event-question-label">""" + """<span class="event-question-label-title">""" + question.title + """</span>""" + description + """</label>
                                               <input type="text" data-filter-id=""" + question_filter_id + """  id=""" + question_input_id + """ data-q-id=""" + question_input_q_id + """ class="given-answer">"""
                             else:
                                 value = answer[0].value
                                 if value == '' or value == None:
                                     content = """<label for="attendee-question-""" + str(
-                                    question.id) + """" class="form-question-label">""" + """<span class="form-question-label-title">""" + question.title + """</span>""" + description + """</label>
+                                    question.id) + """" class="event-question-label">""" + """<span class="event-question-label-title">""" + question.title + """</span>""" + description + """</label>
                                               <input type="text" data-filter-id=""" + question_filter_id + """  id=""" + question_input_id + """ data-q-id=""" + question_input_q_id + """ class="given-answer">"""
                                 else:
                                     content = """<label for="attendee-question-""" + str(
-                                    question.id) + """" class="form-question-label">""" + """<span class="form-question-label-title">""" + question.title + """</span>""" + description + """</label>
+                                    question.id) + """" class="event-question-label">""" + """<span class="event-question-label-title">""" + question.title + """</span>""" + description + """</label>
                                               <input type="text" data-filter-id=""" + question_filter_id + """  value='""" + value + """' id=""" + question_input_id + """ data-q-id=""" + question_input_q_id + """ class="given-answer">"""
 
                         lang = LanguageKey.catch_lang_key(request, "questions",
@@ -768,7 +768,7 @@ class PageReplace(generic.View):
                             required = " required"
                         if question.actual_definition:
                             actual_def = str(question.actual_definition)
-                        element = """<div class="form-question element box""" + required + """" data-id=""" + str(
+                        element = """<div class="event-question element box""" + required + """" data-id=""" + str(
                             question.id) + """ data-uid=""" + str(
                             attendee_id) + """ data-req=""" + str(
                             question_required) + """ data-def=""" + actual_def + """ id=""" + box_data + """ type=""" + question.type + """>""" + \

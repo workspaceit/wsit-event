@@ -350,7 +350,7 @@ function onLoadJs() {
             });
         }
     });
-    $(".form-question-country").each(function () {
+    $(".event-question-country").each(function () {
         for (var i = 0; i < country_list.length; i++) {
             $(this).append($('<option>', {
                 value: country_list[i].id,
@@ -465,20 +465,20 @@ $(function () {
         if ($this_section.find('.event-plugin-multiple-registration').find(".inline-registration-form").length > 0) {
             is_inline_multiple = true;
         }
-        $this_section.find('.form-question').removeClass('not-validated');
+        $this_section.find('.event-question').removeClass('not-validated');
         $this_section.find('.event-plugin').removeClass('not-validated');
 
         var $this_sec_form_questions;
         if (is_loop_multiple) {
-            $this_sec_form_questions = $this_section.closest('.event-plugin-multiple-registration').closest('.section-box').find('.form-question');
+            $this_sec_form_questions = $this_section.closest('.event-plugin-multiple-registration').closest('.section-box').find('.event-question');
             console.log('here loop');
         }
         if ($this_sec_form_questions == undefined) {
             console.log('here common');
-            $this_sec_form_questions = $this_section.find('.form-question');
+            $this_sec_form_questions = $this_section.find('.event-question');
         }
 
-        // $this_section.find('.form-question').each(function () {
+        // $this_section.find('.event-question').each(function () {
         $this_sec_form_questions.each(function () {
             var $form_question = $(this);
             //if ($form_question.closest('.section-box').css('display') != 'none' && $form_question.closest('.row').css('display') != 'none' && $form_question.closest('.col').css('display') != 'none' && $form_question.css('display') != 'none') {
@@ -527,10 +527,10 @@ $(function () {
                             }
                         } else if ($form_question.attr('type') == 'date') {
                             var input_field_name = element.attr('name');
-                            answer = $(this).closest('.form-question').find('input[name=' + input_field_name + '_submit]').val();
+                            answer = $(this).closest('.event-question').find('input[name=' + input_field_name + '_submit]').val();
                         } else if ($form_question.attr('type') == 'time') {
                             var input_field_name = element.attr('name');
-                            answer = $(this).closest('.form-question').find('input[name=' + input_field_name + '_submit]').val();
+                            answer = $(this).closest('.event-question').find('input[name=' + input_field_name + '_submit]').val();
                         }
                         else if ($form_question.attr('type') == 'date_range') {
                             var answerList = []
@@ -538,7 +538,7 @@ $(function () {
                                 if ($(this).attr('data-range-type') == 'to') {
                                     // var ans = $(this).val();
                                     var input_field_name = $(this).attr('name');
-                                    var ans = $(this).closest('.form-question').find('input[name=' + input_field_name + '_submit]').val();
+                                    var ans = $(this).closest('.event-question').find('input[name=' + input_field_name + '_submit]').val();
                                     if (ans == '') {
                                         answerList[1] = '';
                                     }
@@ -549,7 +549,7 @@ $(function () {
                                 } else if ($(this).attr('data-range-type') == 'from') {
                                     // var ans = $(this).val();
                                     var input_field_name = $(this).attr('name');
-                                    var ans = $(this).closest('.form-question').find('input[name=' + input_field_name + '_submit]').val();
+                                    var ans = $(this).closest('.event-question').find('input[name=' + input_field_name + '_submit]').val();
                                     if (ans == '') {
                                         answerList[0] = '';
                                     }
@@ -571,7 +571,7 @@ $(function () {
                             $form_question.find('.question-time-range').each(function () {
                                 if ($(this).attr('data-range-type') == 'to') {
                                     var input_field_name = $(this).attr('name');
-                                    var ans = $(this).closest('.form-question').find('input[name=' + input_field_name + '_submit]').val();
+                                    var ans = $(this).closest('.event-question').find('input[name=' + input_field_name + '_submit]').val();
                                     if (ans == '') {
                                         answerList[1] = '';
                                     }
@@ -581,7 +581,7 @@ $(function () {
 
                                 } else if ($(this).attr('data-range-type') == 'from') {
                                     var input_field_name = $(this).attr('name');
-                                    var ans = $(this).closest('.form-question').find('input[name=' + input_field_name + '_submit]').val();
+                                    var ans = $(this).closest('.event-question').find('input[name=' + input_field_name + '_submit]').val();
                                     if (ans == '') {
                                         answerList[0] = '';
                                     }
@@ -1114,7 +1114,7 @@ $(function () {
 
             // Get Changed data
 
-            $('body').find('.form-question').each(function () {
+            $('body').find('.event-question').each(function () {
                 var $form_question = $(this);
                 var element = $form_question.find('.given-answer');
                 if (element.length > 0) {
@@ -1413,8 +1413,8 @@ function equalHeight(group) {
 
 function setEmptyValueToQuestions($elem) {
     var a = 0;
-    console.log($elem.find('.form-question:not(:visible)').length);
-    $elem.find('.form-question:not(:visible)').each(function () {
+    console.log($elem.find('.event-question:not(:visible)').length);
+    $elem.find('.event-question:not(:visible)').each(function () {
         var element = $(this).find('.given-answer');
         if (element.length > 0) {
             a++;

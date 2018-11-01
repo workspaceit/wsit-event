@@ -11,7 +11,7 @@
             {% endif %}
             {{ message|safe }}
         </div>
-        <div class="event-plugin-list" data-session-choose-least="{{ session_choose_least }}"
+        <div class="event-plugin-list checkbox-input-large" data-session-choose-least="{{ session_choose_least }}"
              data-session-choose-highest="{{ session_choose_heighest }}" data-seats-option="{{ session_option }}"
              data-count-attending="{% if count_attending == 'True' %}1{% else %}0{% endif %}" data-session-choose="{% if session_must_choose == 'True' %}1{% else %}0{% endif %}">
             {% for session in sessionDatas %}
