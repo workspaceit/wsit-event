@@ -204,7 +204,7 @@ class EconomyPDFGenerator:
             html_content = html_content.replace('[[file]]', "[[static]]public/files")
             html_content = html_content.replace('[[files]]', "[[static]]public/files/")
             html_content = html_content.replace('[[css]]',
-                                                "[[static]]public/compiled_css/style.css?v=" + str(
+                                                "[[static]]public/compiled_css/main_style.css?v=" + str(
                                                     css_version))
 
             html_content = html_content.replace('[[static]]', settings.STATIC_URL_ALT)

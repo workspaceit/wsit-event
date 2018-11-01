@@ -425,15 +425,15 @@ select {
 .checkbox-wrapper, .radio-wrapper {
   margin-bottom: 12px; }
 
-.error-validating {
+.error-on-validate {
   display: none; }
 
-.not-validated:not(.form-plugin-hotel-reservation) input[type="text"], .not-validated:not(.form-plugin-hotel-reservation) .form-plugin .form-plugin-search, .form-plugin .not-validated:not(.form-plugin-hotel-reservation) .form-plugin-search, .not-validated:not(.form-plugin-hotel-reservation) textarea {
+.validation-failed:not(.form-plugin-hotel-reservation) input[type="text"], .validation-failed:not(.form-plugin-hotel-reservation) .form-plugin .form-plugin-search, .form-plugin .validation-failed:not(.form-plugin-hotel-reservation) .form-plugin-search, .validation-failed:not(.form-plugin-hotel-reservation) textarea {
   margin: 0;
   border: 2px solid #B97979; }
-  .not-validated:not(.form-plugin-hotel-reservation) input[type="text"]:focus, .not-validated:not(.form-plugin-hotel-reservation) .form-plugin .form-plugin-search:focus, .form-plugin .not-validated:not(.form-plugin-hotel-reservation) .form-plugin-search:focus, .not-validated:not(.form-plugin-hotel-reservation) textarea:focus {
+  .validation-failed:not(.form-plugin-hotel-reservation) input[type="text"]:focus, .validation-failed:not(.form-plugin-hotel-reservation) .form-plugin .form-plugin-search:focus, .form-plugin .validation-failed:not(.form-plugin-hotel-reservation) .form-plugin-search:focus, .validation-failed:not(.form-plugin-hotel-reservation) textarea:focus {
     border: 2px solid #B97979; }
-.not-validated:not(.form-plugin-hotel-reservation) .error-validating {
+.validation-failed:not(.form-plugin-hotel-reservation) .error-on-validate {
   margin: 0 6px;
   display: inline-block;
   background: #B97979;
@@ -441,24 +441,24 @@ select {
   padding: 10px;
   border-bottom-left-radius: 6px;
   border-bottom-right-radius: 6px; }
-.not-validated:not(.form-plugin-hotel-reservation) .form-question-select, .not-validated:not(.form-plugin-hotel-reservation) .form-question-checkbox, .not-validated:not(.form-plugin-hotel-reservation) .form-question-radio {
+.validation-failed:not(.form-plugin-hotel-reservation) .form-question-select, .validation-failed:not(.form-plugin-hotel-reservation) .form-question-checkbox, .validation-failed:not(.form-plugin-hotel-reservation) .form-question-radio {
   border-radius: 6px; }
-.not-validated:not(.form-plugin-hotel-reservation) .form-question-select {
+.validation-failed:not(.form-plugin-hotel-reservation) .form-question-select {
   border: 2px solid #B97979;
   padding: 10px; }
-.not-validated:not(.form-plugin-hotel-reservation) .form-question-checkbox, .not-validated:not(.form-plugin-hotel-reservation) .form-question-select, .not-validated:not(.form-plugin-hotel-reservation) .form-question-radio {
+.validation-failed:not(.form-plugin-hotel-reservation) .form-question-checkbox, .validation-failed:not(.form-plugin-hotel-reservation) .form-question-select, .validation-failed:not(.form-plugin-hotel-reservation) .form-question-radio {
   border: 2px solid #B97979;
   padding: 10px; }
-  .not-validated:not(.form-plugin-hotel-reservation) .form-question-checkbox .checkbox-wrapper:last-child, .not-validated:not(.form-plugin-hotel-reservation) .form-question-checkbox .radio-wrapper:last-child, .not-validated:not(.form-plugin-hotel-reservation) .form-question-select .checkbox-wrapper:last-child, .not-validated:not(.form-plugin-hotel-reservation) .form-question-select .radio-wrapper:last-child, .not-validated:not(.form-plugin-hotel-reservation) .form-question-radio .checkbox-wrapper:last-child, .not-validated:not(.form-plugin-hotel-reservation) .form-question-radio .radio-wrapper:last-child {
+  .validation-failed:not(.form-plugin-hotel-reservation) .form-question-checkbox .checkbox-wrapper:last-child, .validation-failed:not(.form-plugin-hotel-reservation) .form-question-checkbox .radio-wrapper:last-child, .validation-failed:not(.form-plugin-hotel-reservation) .form-question-select .checkbox-wrapper:last-child, .validation-failed:not(.form-plugin-hotel-reservation) .form-question-select .radio-wrapper:last-child, .validation-failed:not(.form-plugin-hotel-reservation) .form-question-radio .checkbox-wrapper:last-child, .validation-failed:not(.form-plugin-hotel-reservation) .form-question-radio .radio-wrapper:last-child {
     margin-bottom: 0; }
-.not-validated:not(.form-plugin-hotel-reservation) .form-plugin-item {
+.validation-failed:not(.form-plugin-hotel-reservation) .form-plugin-item {
   border-top: 2px solid #B97979 !important;
   border-left: 2px solid #B97979 !important;
   border-right: 2px solid #B97979 !important; }
-  .not-validated:not(.form-plugin-hotel-reservation) .form-plugin-item:last-child {
+  .validation-failed:not(.form-plugin-hotel-reservation) .form-plugin-item:last-child {
     border-bottom: 2px solid #B97979 !important; }
 
-.not-validated.form-plugin-hotel-reservation .error-validating {
+.validation-failed.form-plugin-hotel-reservation .error-on-validate {
   margin: 0 6px;
   display: inline-block;
   background: #B97979;
@@ -466,11 +466,11 @@ select {
   padding: 10px;
   border-bottom-left-radius: 6px;
   border-bottom-right-radius: 6px; }
-.not-validated.form-plugin-hotel-reservation .form-plugin-item {
+.validation-failed.form-plugin-hotel-reservation .form-plugin-item {
   border-top: 2px solid #B97979 !important;
   border-left: 2px solid #B97979 !important;
   border-right: 2px solid #B97979 !important; }
-  .not-validated.form-plugin-hotel-reservation .form-plugin-item:last-of-type {
+  .validation-failed.form-plugin-hotel-reservation .form-plugin-item:last-of-type {
     border-bottom: 2px solid #B97979 !important; }
 
 .form-plugin a {

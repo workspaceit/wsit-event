@@ -59,7 +59,7 @@ img {
     display: block;
 }
 
-[data-req="1"] .form-question-label-title:after {
+[data-req="1"] .event-question-label-title:after {
     content: "*";
     margin-left: 0.25em;
     color: #D0021B;
@@ -196,11 +196,11 @@ a.button:hover, button:hover {
     transition: background 100ms ease-in-out;
 }
 
-.error-validating {
+.error-on-validate {
     display: none;
 }
 
-.not-validated .error-validating {
+.validation-failed .error-on-validate {
     background: #cc173f;
     display: inline-block;
     padding: 0.25em 0.5em;
@@ -227,12 +227,12 @@ a.button:hover, button:hover {
     background-color: #40ABDE;
 }
 
-.form-plugin-list .form-plugin-item::-webkit-scrollbar-thumb {
+.event-plugin-list .event-plugin-item::-webkit-scrollbar-thumb {
     border: 3px solid white;
     background-color: #40ABDE;
 }
 
-.survey-wrapper .form-question-label-title {
+.survey-wrapper .event-question-label-title {
     text-transform: none !important;
     font-family: 'Quicksand', sans-serif;
     font-weight:500;
@@ -242,18 +242,18 @@ a.button:hover, button:hover {
     margin-bottom: 2em;
 }
 
-.form-question {
+.event-question {
     margin-bottom: 1em;
 }
 
-.form-question .form-question-label {
+.event-question .event-question-label {
     margin-bottom: 0.25em;
     display: block;
     text-transform: uppercase;
 }
 
-.form-question input[type="text"], .form-question input[type="password"],
-.form-question textarea {
+.event-question input[type="text"], .event-question input[type="password"],
+.event-question textarea {
     width: 100%;
     font-size: 1em;
     padding: 0.5em;
@@ -263,27 +263,27 @@ a.button:hover, button:hover {
     margin: 0;
 }
 
-.form-question input[type="text"]:focus,
-.form-question input[type="password"]:focus, .form-question textarea:focus {
+.event-question input[type="text"]:focus,
+.event-question input[type="password"]:focus, .event-question textarea:focus {
     border: 1px solid #40ABDE;
     transition: border 100ms ease-in-out;
 }
 
-.form-question textarea {
+.event-question textarea {
     height: 5em;
 }
 
-.form-question select, .form-question .select2 {
+.event-question select, .event-question .select2 {
     width: 100%;
 }
 
-.form-question .form-question-radio .radio-wrapper {
+.event-question .event-question-radio .radio-wrapper {
     display: inline-block;
     margin-right: 0.75em;
     text-align: center;
 }
 
-.form-question .form-question-radio .radio-wrapper .radio-label {
+.event-question .event-question-radio .radio-wrapper .radio-label {
     display: block;
 }
 
@@ -298,25 +298,25 @@ a.button:hover, button:hover {
     margin-left: 0.75em;
 }
 
-.form-plugin-list .form-plugin-item {
+.event-plugin-list .event-plugin-item {
     background: white;
     color: #BE9E56;
     padding: 5px;
 }
 
-.form-plugin-list .form-plugin-item h1, .form-plugin-list .form-plugin-item h2,
-.form-plugin-list .form-plugin-item h3, .form-plugin-list .form-plugin-item h4,
-.form-plugin-list .form-plugin-item h5, .form-plugin-list .form-plugin-item h6 {
+.event-plugin-list .event-plugin-item h1, .event-plugin-list .event-plugin-item h2,
+.event-plugin-list .event-plugin-item h3, .event-plugin-list .event-plugin-item h4,
+.event-plugin-list .event-plugin-item h5, .event-plugin-list .event-plugin-item h6 {
     color: #907537;
 }
 
-.form-plugin-table, .early-bird-table, table {
+.event-plugin-table, .early-bird-table, table {
     border-collapse: collapse;
     max-width: 99.9%;
     margin-bottom: 0.2em;
 }
 
-.form-plugin-table tr th, .form-plugin-table tr td, .early-bird-table tr th,
+.event-plugin-table tr th, .event-plugin-table tr td, .early-bird-table tr th,
 .early-bird-table tr td, table tr th, table tr td {
     text-align: left;
     padding: 0.25em 0.5em;
@@ -324,78 +324,78 @@ a.button:hover, button:hover {
     color: #fff;
 }
 
-.form-plugin-table tr th, .early-bird-table tr th, table tr th {
+.event-plugin-table tr th, .early-bird-table tr th, table tr th {
     background: #d05a06;
     font-family: 'Quicksand', sans-serif;
     font-weight: 500;
     font-size: 16px;
 }
 
-.form-plugin-table tr td, .early-bird-table tr td, table tr td {
+.event-plugin-table tr td, .early-bird-table tr td, table tr td {
     background: white;
     color: black;
     border: 1px solid #b7b7b7;
     font-size: 16px;
 }
 
-.form-plugin-table.form-plugin-economy-order-table,
-.early-bird-table.form-plugin-economy-order-table,
-table.form-plugin-economy-order-table {
+.event-plugin-table.event-plugin-economy-order-table,
+.early-bird-table.event-plugin-economy-order-table,
+table.event-plugin-economy-order-table {
     width: 100%;
 }
 
-.form-plugin-table.form-plugin-economy-order-table tr:last-child td,
-.early-bird-table.form-plugin-economy-order-table tr:last-child td,
-table.form-plugin-economy-order-table tr:last-child td {
+.event-plugin-table.event-plugin-economy-order-table tr:last-child td,
+.early-bird-table.event-plugin-economy-order-table tr:last-child td,
+table.event-plugin-economy-order-table tr:last-child td {
     background: #736A4B;
     border: none;
     color: white;
 }
 
-.form-plugin-table.form-plugin-economy-balance-table td:last-child,
-.early-bird-table.form-plugin-economy-balance-table td:last-child,
-table.form-plugin-economy-balance-table td:last-child {
+.event-plugin-table.event-plugin-economy-balance-table td:last-child,
+.early-bird-table.event-plugin-economy-balance-table td:last-child,
+table.event-plugin-economy-balance-table td:last-child {
     vertical-align: middle;
     text-align: center;
 }
 
-.form-plugin-table.form-plugin-economy-balance-table tr:last-child td,
-.early-bird-table.form-plugin-economy-balance-table tr:last-child td,
-table.form-plugin-economy-balance-table tr:last-child td {
+.event-plugin-table.event-plugin-economy-balance-table tr:last-child td,
+.early-bird-table.event-plugin-economy-balance-table tr:last-child td,
+table.event-plugin-economy-balance-table tr:last-child td {
     background: #736A4B;
     border: none;
     color: white;
 }
 
-.form-plugin-table.form-plugin-economy-vat-table tr:last-child td,
-.early-bird-table.form-plugin-economy-vat-table tr:last-child td,
-table.form-plugin-economy-vat-table tr:last-child td {
+.event-plugin-table.event-plugin-economy-vat-table tr:last-child td,
+.early-bird-table.event-plugin-economy-vat-table tr:last-child td,
+table.event-plugin-economy-vat-table tr:last-child td {
     background: #736A4B;
     border: none;
     color: white;
 }
 
-.form-plugin-table .form-plugin-button, .early-bird-table .form-plugin-button,
-table .form-plugin-button {
+.event-plugin-table .event-plugin-button, .early-bird-table .event-plugin-button,
+table .event-plugin-button {
     font-size: 0.5em;
     width: 100%;
     display: block;
 }
 
-.form-plugin-session-checkbox input[type="checkbox"],
-.form-plugin-session-checkbox input[type="radio"],
-.form-plugin-session-radio-button input[type="checkbox"],
-.form-plugin-session-radio-button input[type="radio"] {
+.event-plugin-session-checkbox input[type="checkbox"],
+.event-plugin-session-checkbox input[type="radio"],
+.event-plugin-session-radio-button input[type="checkbox"],
+.event-plugin-session-radio-button input[type="radio"] {
     display: none;
 }
 
-.form-plugin-session-checkbox .form-plugin-title label,
-.form-plugin-session-radio-button .form-plugin-title label {
+.event-plugin-session-checkbox .event-plugin-title label,
+.event-plugin-session-radio-button .event-plugin-title label {
     cursor: pointer;
 }
 
-.form-plugin-session-checkbox input + label,
-.form-plugin-session-radio-button input + label {
+.event-plugin-session-checkbox input + label,
+.event-plugin-session-radio-button input + label {
     width: 1.25em;
     height: 1.25em;
     border: 2px solid #D0D0D0;
@@ -404,8 +404,8 @@ table .form-plugin-button {
     transition: color 100ms ease-in-out;
 }
 
-.form-plugin-session-checkbox input + label:before,
-.form-plugin-session-radio-button input + label:before {
+.event-plugin-session-checkbox input + label:before,
+.event-plugin-session-radio-button input + label:before {
     font-family: "FontAwesome";
     content: "";
     display: block;
@@ -413,8 +413,8 @@ table .form-plugin-button {
     transition: color 100ms ease-in-out;
 }
 
-.form-plugin-session-checkbox input + label:hover:before,
-.form-plugin-session-radio-button input + label:hover:before {
+.event-plugin-session-checkbox input + label:hover:before,
+.event-plugin-session-radio-button input + label:hover:before {
     font-family: "FontAwesome";
     content: "";
     display: block;
@@ -422,8 +422,8 @@ table .form-plugin-button {
     transition: color 100ms ease-in-out;
 }
 
-.form-plugin-session-checkbox input:checked + label:before,
-.form-plugin-session-radio-button input:checked + label:before {
+.event-plugin-session-checkbox input:checked + label:before,
+.event-plugin-session-radio-button input:checked + label:before {
     font-family: "FontAwesome";
     content: "";
     display: block;
@@ -431,19 +431,19 @@ table .form-plugin-button {
     transition: color 100ms ease-in-out;
 }
 
-.form-plugin-session-checkbox .form-plugin-list .form-plugin-item,
-.form-plugin-session-radio-button .form-plugin-list .form-plugin-item {
+.event-plugin-session-checkbox .event-plugin-list .event-plugin-item,
+.event-plugin-session-radio-button .event-plugin-list .event-plugin-item {
     margin-bottom: 0 !important;
 }
 
-.form-plugin-session-checkbox .form-plugin-list .form-plugin-item .form-plugin-table,
-.form-plugin-session-radio-button .form-plugin-list .form-plugin-item .form-plugin-table {
+.event-plugin-session-checkbox .event-plugin-list .event-plugin-item .event-plugin-table,
+.event-plugin-session-radio-button .event-plugin-list .event-plugin-item .event-plugin-table {
     margin-bottom: 0;
     width: 100%;
 }
 
-.form-plugin-session-checkbox .form-plugin-list .form-plugin-item .form-plugin-table td,
-.form-plugin-session-radio-button .form-plugin-list .form-plugin-item .form-plugin-table td {
+.event-plugin-session-checkbox .event-plugin-list .event-plugin-item .event-plugin-table td,
+.event-plugin-session-radio-button .event-plugin-list .event-plugin-item .event-plugin-table td {
     border: none;
     position: relative;
     font-size: 1em;
@@ -451,18 +451,18 @@ table .form-plugin-button {
     padding-top: 1em;
 }
 
-.form-plugin-session-checkbox .form-plugin-list .form-plugin-item .form-plugin-table td:first-child,
-.form-plugin-session-radio-button .form-plugin-list .form-plugin-item .form-plugin-table td:first-child {
+.event-plugin-session-checkbox .event-plugin-list .event-plugin-item .event-plugin-table td:first-child,
+.event-plugin-session-radio-button .event-plugin-list .event-plugin-item .event-plugin-table td:first-child {
     width: 1%;
 }
 
-.form-plugin-session-checkbox .form-plugin-list .form-plugin-item .form-plugin-table td table,
-.form-plugin-session-radio-button .form-plugin-list .form-plugin-item .form-plugin-table td table {
+.event-plugin-session-checkbox .event-plugin-list .event-plugin-item .event-plugin-table td table,
+.event-plugin-session-radio-button .event-plugin-list .event-plugin-item .event-plugin-table td table {
     width: auto;
 }
 
-.form-plugin-session-checkbox .form-plugin-list .form-plugin-item .form-plugin-table td table td,
-.form-plugin-session-radio-button .form-plugin-list .form-plugin-item .form-plugin-table td table td {
+.event-plugin-session-checkbox .event-plugin-list .event-plugin-item .event-plugin-table td table td,
+.event-plugin-session-radio-button .event-plugin-list .event-plugin-item .event-plugin-table td table td {
     display: block;
     position: absolute;
     top: 0;
@@ -472,47 +472,47 @@ table .form-plugin-button {
     border-bottom: none;
 }
 
-.form-plugin-session-checkbox .form-plugin-list .form-plugin-item .form-plugin-table td table td:first-child,
-.form-plugin-session-radio-button .form-plugin-list .form-plugin-item .form-plugin-table td table td:first-child {
+.event-plugin-session-checkbox .event-plugin-list .event-plugin-item .event-plugin-table td table td:first-child,
+.event-plugin-session-radio-button .event-plugin-list .event-plugin-item .event-plugin-table td table td:first-child {
     display: none;
 }
 
-.form-plugin-session-checkbox .form-plugin-list .form-plugin-item .form-plugin-table .form-plugin-title,
-.form-plugin-session-radio-button .form-plugin-list .form-plugin-item .form-plugin-table .form-plugin-title {
+.event-plugin-session-checkbox .event-plugin-list .event-plugin-item .event-plugin-table .event-plugin-title,
+.event-plugin-session-radio-button .event-plugin-list .event-plugin-item .event-plugin-table .event-plugin-title {
     font-size: 1em;
     color: black;
     font-weight: 400;
 }
 
-.form-plugin-submit-button .form-submit-button {
+.event-plugin-submit-button .form-submit-button {
     margin-top: 1em;
 }
 
-.form-plugin-multiple-registration .form-plugin-multiple-registration-current-count {
+.event-plugin-multiple-registration .event-plugin-multiple-registration-current-count {
     display: inline-block;
     font-weight: normal;
     color: white;
     border-radius: 1em;
 }
 
-.form-plugin-multiple-registration .form-plugin-list .form-plugin-item {
+.event-plugin-multiple-registration .event-plugin-list .event-plugin-item {
     margin-bottom: 1em;
 }
 
-.form-plugin-multiple-registration .form-plugin-list .form-plugin-item:last-child {
+.event-plugin-multiple-registration .event-plugin-list .event-plugin-item:last-child {
     margin-bottom: 0;
 }
 
-.form-plugin-multiple-registration .form-plugin-list .form-plugin-item .section {
+.event-plugin-multiple-registration .event-plugin-list .event-plugin-item .section {
     padding: 1em 0;
 }
 
-.form-plugin-multiple-registration .form-plugin-list .form-plugin-item .form-plugin-item-information {
+.event-plugin-multiple-registration .event-plugin-list .event-plugin-item .event-plugin-item-information {
     background: #262928;
     position: relative;
 }
 
-.form-plugin-multiple-registration .form-plugin-list .form-plugin-item .form-plugin-item-information label {
+.event-plugin-multiple-registration .event-plugin-list .event-plugin-item .event-plugin-item-information label {
     display: inline-block;
     background: #BE9E56;
     padding: 0.5em 1em;
@@ -522,7 +522,7 @@ table .form-plugin-button {
     text-transform: uppercase;
 }
 
-.form-plugin-multiple-registration .form-plugin-list .form-plugin-item .form-plugin-item-information .form-plugin-multiple-registration-delete-attendee-button-from-inline {
+.event-plugin-multiple-registration .event-plugin-list .event-plugin-item .event-plugin-item-information .event-plugin-multiple-registration-delete-attendee-button-from-inline {
     position: absolute;
     padding: 0.5em 1em;
     top: 0;
@@ -738,7 +738,7 @@ table .form-plugin-button {
 
 @media only screen and (min-width: 0px) and (max-width: 960px) {
     .button:not(.dropdown-toggle),
-    .form-plugin-button:not(.form-plugin-multiple-registration-delete-attendee-button-from-inline),
+    .event-plugin-button:not(.event-plugin-multiple-registration-delete-attendee-button-from-inline),
     .form-submit-button, ul.information, ul.information li a, ul.information a {
         width: 100%;
         display: inline-block;
@@ -777,7 +777,7 @@ table .form-plugin-button {
     margin-bottom: 1em;
 }
 
-tr.cost label.form-plugin-label {
+tr.cost label.event-plugin-label {
     display: none;
 }
 
@@ -791,7 +791,7 @@ tr.cost label.form-plugin-label {
       font-family: 'Quicksand', sans-serif;
 }
 
-.form-plugin-logout span {
+.event-plugin-logout span {
     display: block;
     margin-bottom: 1em;
 }
@@ -800,7 +800,7 @@ input[type="checkbox"] {
     margin-right: 0.5em;
 }
 
-[data-id="400"] label.form-question-label, [data-id="400"] br {
+[data-id="400"] label.event-question-label, [data-id="400"] br {
     display: none;
 }
 
@@ -1096,11 +1096,11 @@ hr {
     background: #BE9E56;
 }
 
-.form-plugin-pdf-button {
+.event-plugin-pdf-button {
     text-align: center;
 }
 
-.form-plugin-archive-messages .form-plugin-item {
+.event-plugin-archive-messages .event-plugin-item {
     padding: 0.5em;
     margin-bottom: 0.5em;
     color: black;
@@ -1389,7 +1389,7 @@ a.attendee-details, a.location-details {
         color: #fff;
         margin-right: 5px;
     }
-    .form-plugin-description{
+    .event-plugin-description{
         font-size: 14px;
         float: left;
         padding: 5px;
@@ -1397,7 +1397,7 @@ a.attendee-details, a.location-details {
         color: #fff;
         margin-right: 5px;
     }
-    .form-plugin-description p{
+    .event-plugin-description p{
         margin-bottom: 0px;
     }
     .status.rsvp-ended{

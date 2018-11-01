@@ -774,11 +774,11 @@ select {
 	margin-bottom: $margin-bottom / 2;
 }
 	
-.error-validating {
+.error-on-validate {
 	display: none;
 }
 
-.not-validated:not(.form-plugin-hotel-reservation) {
+.validation-failed:not(.form-plugin-hotel-reservation) {
 	input[type="text"], textarea {
 		margin: 0;
 		border: $border-size solid $failed-validated-color;
@@ -787,7 +787,7 @@ select {
 		}	
 	}
 	
-	.error-validating {
+	.error-on-validate {
 		margin: $validation-error-text-margin;
 		display: inline-block;
 		background: $failed-validated-color;
@@ -825,8 +825,8 @@ select {
 	}
 }
 
-.not-validated.form-plugin-hotel-reservation {
-	.error-validating {
+.validation-failed.form-plugin-hotel-reservation {
+	.error-on-validate {
 		margin: $validation-error-text-margin;
 		display: inline-block;
 		background: $failed-validated-color;

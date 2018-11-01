@@ -172,7 +172,7 @@ $(function () {
                             else {
                                 var content = '<input type="text" id="attendee-question-' + question.id + '" class="given-answer">';
                             }
-                            var element = '<label for="attendee-question-' + question.id + '" class="event-question-label">' + question.title + description + '</label>' + content + '<div class="error-validating">Validation failed</div>' + element_question_toolbox;
+                            var element = '<label for="attendee-question-' + question.id + '" class="event-question-label">' + question.title + description + '</label>' + content + '<div class="error-on-validate">Validation failed</div>' + element_question_toolbox;
                             idCount++;
                             if (question.question_class == null) {
                                 question.question_class = '';

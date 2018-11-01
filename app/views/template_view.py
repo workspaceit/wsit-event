@@ -169,7 +169,7 @@ class EmailTemplateView(generic.DetailView):
                 key = file['Key']
                 url = '{}/{}/{}'.format(s3_client.meta.endpoint_url, settings.AWS_STORAGE_BUCKET_NAME, key)
                 url = url.replace(settings.STATIC_URL_ALT, '[[static]]')
-                url = '[[static]]public/[[event_url]]/compiled_css/style.css'
+                url = '[[static]]public/[[event_url]]/compiled_css/main_style.css'
                 css_files.append(url)
                 print(url)
         return {'css':css_files}

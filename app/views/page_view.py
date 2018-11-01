@@ -88,7 +88,7 @@ class PageView(generic.DetailView):
                     content = content.replace('[[file]]', "[[static]]public/files")
                     content = content.replace('[[files]]', "[[static]]public/files/")
                     content = content.replace('[[css]]',
-                                              "[[static]]public/compiled_css/style.css?v=" + str(
+                                              "[[static]]public/compiled_css/main_style.css?v=" + str(
                                                   css_version))
 
                     content = content.replace(settings.STATIC_URL_ALT, '[[static]]')
@@ -958,7 +958,7 @@ class PageDetailView(generic.DetailView):
                 page_content = page_content.replace('[[file]]', "[[static]]public/files")
                 page_content = page_content.replace('[[files]]', "[[static]]public/files/")
                 page_content = page_content.replace('[[css]]',
-                                                    "[[static]]public/compiled_css/style.css?v=" + str(
+                                                    "[[static]]public/compiled_css/main_style.css?v=" + str(
                                                         css_version))
 
                 page_content = page_content.replace('[[static]]', settings.STATIC_URL_ALT)
@@ -1316,7 +1316,7 @@ class PageDetailView(generic.DetailView):
                     if question.actual_definition:
                         actual_def = str(question.actual_definition)
                     element = """<div class="event-question element box""" + required + """" data-id=""" + str(question.id) + """ data-req=""" + str(question_required) + """ data-def=""" + actual_def + """ id=""" + box_data + """ type=""" + question.type + """>"""+\
-                              content + """<div class="error-validating">Please select your '""" + question.title + """'</div></div>"""
+                              content + """<div class="error-on-validate">Please select your '""" + question.title + """'</div></div>"""
                     pageContent = pageContent.replace('{questionid:' + qid['qid'] + ',box:' + qid['box_id'] + '}', element)
                 except Exception as e:
                     ErrorR.efail(e)
@@ -1627,7 +1627,7 @@ class LanguageElement(generic.DetailView):
         content = pageContent.replace('[[file]]', "[[static]]public/files")
         content = content.replace('[[files]]', "[[static]]public/files/")
         content = content.replace('[[css]]',
-                                  "[[static]]public/compiled_css/style.css?v=" + str(css_version))
+                                  "[[static]]public/compiled_css/main_style.css?v=" + str(css_version))
 
         content = content.replace('[[static]]', settings.STATIC_URL_ALT)
         return content

@@ -200,8 +200,8 @@ function saveOrUpdateMultipleAttendeeInline(button, main_submit_btn_id, main_sub
                     redirectToPage(result.redirect_url);
                 }
             } else {
-                button.closest('.event-plugin-submit-button').addClass('not-validated');
-                button.closest('.event-plugin-submit-button').find('.error-validating').text(result.message);
+                button.closest('.event-plugin-submit-button').addClass('validation-failed');
+                button.closest('.event-plugin-submit-button').find('.error-on-validate').text(result.message);
             }
         }
     });

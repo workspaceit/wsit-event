@@ -45,7 +45,7 @@ class EditorHelper(generic.DetailView):
         if styles:
             css_version_obj = StyleSheet.objects.get(event_id=event_id)
             css_version = css_version_obj.version
-            event_stylesheet = str(settings.STATIC_URL_ALT)+"public/"+request.session['event_auth_user']['event_url']+"/compiled_css/style.css?v=" + str(css_version)
+            event_stylesheet = str(settings.STATIC_URL_ALT)+"public/"+request.session['event_auth_user']['event_url']+"/compiled_css/main_style.css?v=" + str(css_version)
             context['editor_event_stylesheet'] = event_stylesheet
         editor_fullpage = 'false'
         if fullpage:

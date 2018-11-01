@@ -12,7 +12,7 @@
             {% for session in sessions %}
                 <div class="event-plugin-item">
                     <h3 class="event-plugin-title{% if session_link == 'True' %} session session-detail-link{% endif %}" data-box-id="{{ box_id }}" data-page-id="{{ page_id }}" data-id="{{ session.session.id }}">{{ session.session.name|safe }}</h3>
-						<span class="star-evaluation-group" id="rated_session_{{ session.session.id }}"
+						<span class="star-rating" id="rated_session_{{ session.session.id }}"
                               data-id="{{ session.session.id }}">
 							<input type="radio" id="rating-{{ box_id }}-{{ forloop.counter }}-5"
                                    name="rating-{{ box_id }}-{{ forloop.counter }}" value="5"/><label
@@ -31,7 +31,7 @@
                                 for="rating-{{ box_id }}-{{ forloop.counter }}-1">1</label>
 							<input type="radio" id="rating-{{ box_id }}-{{ forloop.counter }}-0"
                                    name="rating-{{ box_id }}-{{ forloop.counter }}" value="0"
-                                   class="star-evaluation-clear"/><label
+                                   class="star-rating-clear"/><label
                                 for="rating-{{ box_id }}-{{ forloop.counter }}-0">0</label>
 						</span>
                 </div>
@@ -43,7 +43,7 @@
     {% if sessions %}
         <button class="event-plugin-button evaluation-send-button">{{ language.langkey.evaluation_btn_send }}</button>
     {% endif %}
-    <div class="error-validating">{{ language.langkey.evaluation_notify_validation_failed }}</div>
+    <div class="error-on-validate">{{ language.langkey.evaluation_notify_validation_failed }}</div>
     {#    </div>#}
 </div>
 {#{% endif %}#}

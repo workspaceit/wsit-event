@@ -9,7 +9,7 @@
                         <span class="event-question-label-title">{{ language.langkey.hotelreservation_txt_checkin }}</span>
                     </label>
                     <input class="hotel-reservation-calendar hotel-check-in{{ partial_counter }}" name="hotel-check-in{{ partial_counter }}" value="{{ default_check_in_date }}" id="hotel-check-in{{ partial_counter }}">
-                    <div class="error-validating"></div>
+                    <div class="error-on-validate"></div>
                 </div>
             </div>
             <div class="col span-6">
@@ -18,7 +18,7 @@
                         <span class="event-question-label-title">{{ language.langkey.hotelreservation_txt_checkout }}</span>
                     </label>
                     <input class="hotel-reservation-calendar hotel-check-out{{ partial_counter }}" name="hotel-check-out{{ partial_counter }}" value="{{ default_check_out_date }}" id="hotel-check-out{{ partial_counter }}">
-                    <div class="error-validating"></div>
+                    <div class="error-on-validate"></div>
                 </div>
             </div>
 
@@ -86,7 +86,7 @@
                         </tbody>
                     </table>
                 </div>
-                <div class="error-validating"></div>
+                <div class="error-on-validate"></div>
             </div>
         </div>
 
@@ -97,7 +97,7 @@
                         <span class="event-question-label-title">{{ language.langkey.hotelreservation_txt_room_buddy }}</span>
                     </label>
                     <select class="hotel-room-buddy hotel-r-buddy{{ partial_counter }}" data-temp="{{ box_id }}{{ partial_counter }}" style="width: 300px;"></select>
-                    <div class="error-validating"></div>
+                    <div class="error-on-validate"></div>
                 </div>
             </div>
             <div class="col span-6"></div>

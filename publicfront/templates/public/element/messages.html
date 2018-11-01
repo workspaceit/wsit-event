@@ -52,7 +52,7 @@
             <div class="placeholder empty">{{ language.langkey.messages_txt_empty }}</div>
         {% endif %}
     </div>
-    <div class="error-validating">{{ language.langkey.messages_notify_validation_failed }}</div>
+    <div class="error-on-validate">{{ language.langkey.messages_notify_validation_failed }}</div>
     {% if archive_button == 'True' %}
         <button style="{% if show_archive_button == 'True' %}display: block;{% else %}display: none;{% endif %}"
                 onclick="location='{% url 'static-pages' event_url=request.session.event_url staticPage="messages" %}'"

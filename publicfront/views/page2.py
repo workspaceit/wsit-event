@@ -510,7 +510,7 @@ class DynamicPage(generic.View):
                     page_content = page_content.replace('[[file]]', "[[static]]public/files")
                     page_content = page_content.replace('[[files]]', "[[static]]public/files/")
                     page_content = page_content.replace('[[css]]',
-                                                        "[[static]]public/compiled_css/style.css?v=" + str(
+                                                        "[[static]]public/compiled_css/main_style.css?v=" + str(
                                                             css_version))
 
                     page_content = page_content.replace('[[static]]', settings.STATIC_URL_ALT)

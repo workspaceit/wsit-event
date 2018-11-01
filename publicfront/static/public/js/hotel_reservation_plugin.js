@@ -637,6 +637,6 @@ function init_select2($element, max_select_no) {
 }
 
 function display_error_field($target) {
-    $target.addClass('not-validated');
-    $target.find('.error-validating').text(lang_hotel_validation_msg);
+    $target.addClass('validation-failed');
+    $target.find('.error-on-validate').text(lang_hotel_validation_msg);
 }

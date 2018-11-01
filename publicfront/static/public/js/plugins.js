@@ -4,7 +4,7 @@ $(function () {
     $body.on('click', '.evaluation-send-button', function (e) {
         var sessions_rating = [];
         var $this = $(this);
-        $this.closest('.event-plugin-evaluations').find('.star-evaluation-group').each(function () {
+        $this.closest('.event-plugin-evaluations').find('.star-rating').each(function () {
             var rate = $(this).find('input:checked').val();
             if (rate != '0' && rate != 0 && rate != NaN && rate != undefined) {
                 var rating = {session_id: $(this).attr('data-id'), rating: parseInt(rate)}
@@ -12,7 +12,7 @@ $(function () {
             }
         });
         var csrf_token = $('input[name=csrfmiddlewaretoken]').val();
-        $this.closest('.event-plugin-evaluations').removeClass('not-validated');
+        $this.closest('.event-plugin-evaluations').removeClass('validation-failed');
         if (sessions_rating.length != 0) {
             $.ajax({
                 url: base_url + '/set-ratings/',
@@ -23,7 +23,7 @@ $(function () {
                 },
                 success: function (result) {
                     if (result.error) {
-                        $this.closest('.event-plugin-evaluations').find('.error-validating').html(result.error);
+                        $this.closest('.event-plugin-evaluations').find('.error-on-validate').html(result.error);
                     } else {
                         var parentElem = $this.closest('.event-plugin-evaluations');
                         $.growl.notice({message: result.message});
@@ -39,7 +39,7 @@ $(function () {
                 }
             });
         } else {
-            $this.closest('.event-plugin-evaluations').addClass('not-validated');
+            $this.closest('.event-plugin-evaluations').addClass('validation-failed');
         }
     });
     // Evaluation End
@@ -53,7 +53,7 @@ $(function () {
     $body.on('click', '.messages-mark-all-button', function (e) {
         var $this = $(this);
         var csrf_token = $('input[name=csrfmiddlewaretoken]').val();
-        $this.closest('.event-plugin-messages').removeClass('not-validated');
+        $this.closest('.event-plugin-messages').removeClass('validation-failed');
         $.ajax(
             {
                 type: "Post",
@@ -63,8 +63,8 @@ $(function () {
                 },
                 success: function (response) {
                     if (response.error) {
-                        $this.closest('.event-plugin-messages').addClass('not-validated');
-                        $this.closest('.event-plugin-messages').find('.error-validating').html(response.message);
+                        $this.closest('.event-plugin-messages').addClass('validation-failed');
+                        $this.closest('.event-plugin-messages').find('.error-on-validate').html(response.message);
                     } else {
                         $.growl.notice({message: response.message});
                         var parentElem = $this.closest('.event-plugin-messages');
@@ -110,7 +110,7 @@ $(function () {
         var password = $.trim($form.find('.email-password-verification-password').val());
         var csrf_token = $('input[name=csrfmiddlewaretoken]').val();
         if (email == '' || !checkEmail(email) || password == '') {
-            $form.addClass('not-validated');
+            $form.addClass('validation-failed');
         }
         else {
             $.ajax({
@@ -126,7 +126,7 @@ $(function () {
                         $.growl.notice({message: result.message});
                         redirectToPage(result.redirect_url);
                     } else {
-                        $form.addClass('not-validated');
+                        $form.addClass('validation-failed');
                     }
                 }
             });
@@ -140,9 +140,9 @@ $(function () {
         var csrf_token = $('input[name=csrfmiddlewaretoken]').val();
         var send_email_id = $(this).attr("data-email-id");
         if (email == '' || !checkEmail(email)) {
-            $form.addClass('not-validated');
+            $form.addClass('validation-failed');
         } else {
-            $form.removeClass('not-validated');
+            $form.removeClass('validation-failed');
             var data = {
                 user_email: email,
                 csrfmiddlewaretoken: csrf_token
@@ -159,7 +159,7 @@ $(function () {
                         $.growl.notice({message: result.message});
                     } else {
                         $.growl.error({message: result.message});
-                        $form.addClass('not-validated');
+                        $form.addClass('validation-failed');
                     }
                 }
             });
@@ -172,9 +172,9 @@ $(function () {
         var email_id = $(this).attr('data-email-id');
         var csrf_token = $('input[name=csrfmiddlewaretoken]').val();
         if (email == '' || !checkEmail(email)) {
-            $form.addClass('not-validated');
+            $form.addClass('validation-failed');
         } else {
-            $form.removeClass('not-validated');
+            $form.removeClass('validation-failed');
             var data = {
                 user_email: email,
                 csrfmiddlewaretoken: csrf_token
@@ -194,7 +194,7 @@ $(function () {
                         if (result.success) {
                             $.growl.notice({message: result.message});
                         } else {
-                            $form.addClass('not-validated');
+                            $form.addClass('validation-failed');
                         }
                     }
                 });
@@ -207,7 +207,7 @@ $(function () {
                         if (result.success) {
                             $.growl.notice({message: result.message});
                         } else {
-                            $form.addClass('not-validated');
+                            $form.addClass('validation-failed');
                         }
                     }
                 });
@@ -221,9 +221,9 @@ $(function () {
         var repeat_password = $form.find('.event-plugin-repeat-new-password-email').val();
         var csrf_token = $('input[name=csrfmiddlewaretoken]').val();
         if (password == '' || repeat_password == '' || password != repeat_password || password.length < 6) {
-            $form.addClass('not-validated');
+            $form.addClass('validation-failed');
         } else {
-            $form.removeClass('not-validated');
+            $form.removeClass('validation-failed');
             var data = {
                 new_password: password,
                 csrfmiddlewaretoken: csrf_token
@@ -238,7 +238,7 @@ $(function () {
                         $.growl.notice({message: result.message});
                         window.location.replace(result.location);
                     } else {
-                        $form.addClass('not-validated');
+                        $form.addClass('validation-failed');
                     }
                 }
             });
@@ -249,7 +249,7 @@ $(function () {
         var csrf_token = $('input[name=csrfmiddlewaretoken]').val();
         var $button = $(this);
         try {
-            $button.closest(".event-plugin-photo-upload").removeClass('not-validated');
+            $button.closest(".event-plugin-photo-upload").removeClass('validation-failed');
             var image = $('input[name=pic]')[0].files[0];
             if (image != undefined) {
                 var formdata = new FormData();
@@ -285,19 +285,19 @@ $(function () {
                             $button.closest(".event-plugin-photo-upload").find('.selected-file').css("display", "none");
                             $button.closest(".event-plugin-photo-upload").find('textarea[name=comment]').val("");
                         } else {
-                            $button.closest(".event-plugin-photo-upload").find('.error-validating').html(result.message);
-                            $button.closest(".event-plugin-photo-upload").addClass('not-validated');
+                            $button.closest(".event-plugin-photo-upload").find('.error-on-validate').html(result.message);
+                            $button.closest(".event-plugin-photo-upload").addClass('validation-failed');
                         }
                     }
                 });
             } else {
-                $button.closest(".event-plugin-photo-upload").addClass('not-validated');
+                $button.closest(".event-plugin-photo-upload").addClass('validation-failed');
             }
         }
         catch (err) {
             $('.submit-loader').hide();
             $button.prop("disabled", false);
-            $button.closest(".event-plugin-photo-upload").addClass('not-validated');
+            $button.closest(".event-plugin-photo-upload").addClass('validation-failed');
         }
     });
 

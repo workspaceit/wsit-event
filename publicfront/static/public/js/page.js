@@ -465,8 +465,8 @@ $(function () {
         if ($this_section.find('.event-plugin-multiple-registration').find(".inline-registration-form").length > 0) {
             is_inline_multiple = true;
         }
-        $this_section.find('.event-question').removeClass('not-validated');
-        $this_section.find('.event-plugin').removeClass('not-validated');
+        $this_section.find('.event-question').removeClass('validation-failed');
+        $this_section.find('.event-plugin').removeClass('validation-failed');
 
         var $this_sec_form_questions;
         if (is_loop_multiple) {
@@ -653,7 +653,7 @@ $(function () {
                 }
                 if (!valid) {
                     validated = false;
-                    $form_question.addClass('not-validated');
+                    $form_question.addClass('validation-failed');
                 } else {
                     if (include) {
                         var id = $.trim($form_question.attr('data-id'));
@@ -844,8 +844,8 @@ $(function () {
                                     }, 500);
                                 }
                             } else {
-                                $button.closest('.event-plugin-submit-button').addClass('not-validated');
-                                $button.closest('.event-plugin-submit-button').find('.error-validating').text(result.message);
+                                $button.closest('.event-plugin-submit-button').addClass('validation-failed');
+                                $button.closest('.event-plugin-submit-button').find('.error-on-validate').text(result.message);
                             }
                         }
                     });
@@ -856,9 +856,9 @@ $(function () {
                     saveOrUpdateMultipleAttendee($button, main_submit_btn_id, main_submit_btn_box_id, main_page_id, form_box_id, language_id);
                 }
             } else {
-                if ($('.not-validated:visible:first').length > 0) {
+                if ($('.validation-failed:visible:first').length > 0) {
                     $('html, body').animate({
-                        scrollTop: $('.not-validated:visible:first').offset().top
+                        scrollTop: $('.validation-failed:visible:first').offset().top
                     }, 300);
                 }
             }
@@ -885,9 +885,9 @@ $(function () {
                 var csrf_token = $('input[name=csrfmiddlewaretoken]').val();
                 saveOrUpdateMultipleAttendeeInline($button, main_submit_btn_id, main_submit_btn_box_id, main_page_id, form_box_id, answers, language_id)
             } else {
-                if ($('.not-validated:visible:first').length > 0) {
+                if ($('.validation-failed:visible:first').length > 0) {
                     $('html, body').animate({
-                        scrollTop: $('.not-validated:visible:first').offset().top
+                        scrollTop: $('.validation-failed:visible:first').offset().top
                     }, 300);
                 }
             }
@@ -966,8 +966,8 @@ $(function () {
                             $button.prop('disabled', false);
                             if (!result.success) {
                                 // $.growl.error({message: result.message});
-                                $button.closest('.event-plugin-submit-button').addClass('not-validated');
-                                $button.closest('.event-plugin-submit-button').find('.error-validating').text(result.message);
+                                $button.closest('.event-plugin-submit-button').addClass('validation-failed');
+                                $button.closest('.event-plugin-submit-button').find('.error-on-validate').text(result.message);
                             } else {
                                 $.growl.notice({message: result.message});
                                 setEmptyValueToQuestions($body);
@@ -989,9 +989,9 @@ $(function () {
 
             }
             else {
-                if ($('.not-validated:visible:first').length > 0) {
+                if ($('.validation-failed:visible:first').length > 0) {
                     $('html, body').animate({
-                        scrollTop: $('.not-validated:visible:first').offset().top
+                        scrollTop: $('.validation-failed:visible:first').offset().top
                     }, 300);
                 }
             }
@@ -1245,8 +1245,8 @@ function saveOrUpdateMultipleAttendee(button, main_submit_btn_id, main_submit_bt
                 })
 
             } else {
-                button.closest('.event-plugin-submit-button').addClass('not-validated');
-                button.closest('.event-plugin-submit-button').find('.error-validating').text(result.message);
+                button.closest('.event-plugin-submit-button').addClass('validation-failed');
+                button.closest('.event-plugin-submit-button').find('.error-on-validate').text(result.message);
             }
         }
     });
@@ -1551,7 +1551,7 @@ function validateSession($this_section) {
         });
         if (session_radio_item_check && (session_attend.length < min_attendee)) {
             validated = false;
-            $this.addClass('not-validated');
+            $this.addClass('validation-failed');
         }
     });
     $this_section.find('.event-plugin-session-checkbox:visible').each(function () {
@@ -1573,7 +1573,7 @@ function validateSession($this_section) {
                 }
                 if(!checked_session){
                     validated = false;
-                    $this.addClass('not-validated');
+                    $this.addClass('validation-failed');
                 }
             }
         } else {
@@ -1605,10 +1605,10 @@ function validateSession($this_section) {
             }
             if (min_attendee != 0 && session_attend.length < min_attendee) {
                 validated = false;
-                $this.addClass('not-validated');
+                $this.addClass('validation-failed');
             } else if (max_attendee != 0 && session_attend.length > max_attendee) {
                 validated = false;
-                $this.addClass('not-validated');
+                $this.addClass('validation-failed');
             }
         }
 

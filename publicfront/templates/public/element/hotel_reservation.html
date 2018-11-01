@@ -51,7 +51,7 @@
                                     <span class="event-question-label-title">{{ language.langkey.hotelreservation_txt_checkin }}</span>
                                 </label>
                                 <input class="hotel-reservation-calendar hotel-check-in{{ forloop.counter0 }}" name="hotel-check-in{{ forloop.counter0 }}" value="{{ default_check_in_date }}" id="hotel-check-in{{ forloop.counter0 }}">
-                                <div class="error-validating"></div>
+                                <div class="error-on-validate"></div>
                             </div>
                         </div>
 
@@ -61,7 +61,7 @@
                                     <span class="event-question-label-title">{{ language.langkey.hotelreservation_txt_checkout }}</span>
                                 </label>
                                 <input class="hotel-reservation-calendar hotel-check-out{{ forloop.counter0 }}" name="hotel-check-out{{ forloop.counter0 }}" value="{{ default_check_out_date }}" id="hotel-check-out{{ forloop.counter0 }}">
-                                <div class="error-validating"></div>
+                                <div class="error-on-validate"></div>
                             </div>
                         </div>
 
@@ -132,7 +132,7 @@
                                     </tbody>
                                 </table>
                             </div>
-                            <div class="error-validating"></div>
+                            <div class="error-on-validate"></div>
                         </div>
                     </div>
 
@@ -144,7 +144,7 @@
                                 </label>
 {#                                <input class="hotel-room-buddy hotel-r-buddy{{ forloop.counter0 }}" data-temp="{{ box_id }}{{ forloop.counter0 }}">#}
                                 <select class="hotel-room-buddy hotel-r-buddy{{ forloop.counter0 }}" data-temp="{{ box_id }}{{ forloop.counter0 }}" style="width: 300px;"></select>
-                                <div class="error-validating"></div>
+                                <div class="error-on-validate"></div>
                             </div>
                         </div>
                         <div class="col span-6">
@@ -156,5 +156,5 @@
             </div>
         {% endfor %}
     </div>
-    <div class="error-validating">{{ language.langkey.hotelreservation_notify_validation_fail }}</div>
+    <div class="error-on-validate">{{ language.langkey.hotelreservation_notify_validation_fail }}</div>
 </div>

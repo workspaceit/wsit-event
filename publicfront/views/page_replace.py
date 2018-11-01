@@ -525,7 +525,7 @@ class PageReplace(generic.View):
                             question.id) + """ data-req=""" + str(
                             question_required) + """ data-def=""" + actual_def + """ id=""" + box_data + """ type=""" + question.type + """>""" + \
                                   content + """
-                                    <div class="error-validating">""" + error_text + """</div></div>"""
+                                    <div class="error-on-validate">""" + error_text + """</div></div>"""
                     else:
                         element = ""
                     pageContents = pageContents.replace('{questionid:' + qid['qid'] + ',box:' + qid['box_id'] + '}', element)
@@ -773,7 +773,7 @@ class PageReplace(generic.View):
                             attendee_id) + """ data-req=""" + str(
                             question_required) + """ data-def=""" + actual_def + """ id=""" + box_data + """ type=""" + question.type + """>""" + \
                                   content + """
-                                    <div class="error-validating">""" + error_text + """</div></div>"""
+                                    <div class="error-on-validate">""" + error_text + """</div></div>"""
                     else:
                         element = ""
                     pageContents = pageContents.replace('{questionid:' + qid['qid'] + ',box:' + qid['box_id'] + '}', element)
