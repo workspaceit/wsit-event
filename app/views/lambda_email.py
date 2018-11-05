@@ -2,13 +2,16 @@ import boto
 import boto.ses
 import boto.sqs
 import json
+from django.conf import settings
 
 
 def myfunc(event, context):
     print('----------------- Starts -----------------')
-
-    conn = boto.sqs.connect_to_region('eu-west-1', aws_access_key_id='AKIAIPRKJPCIGGK2VSYA',
-                                      aws_secret_access_key='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')
+    access_key = settings.SMTP_USERNAME
+    secret_key = settings.SMTP_PASSWORD
+    region = settings.SES_REGION
+    conn = boto.sqs.connect_to_region('eu-west-1', aws_access_key_id=access_key,
+                                      aws_secret_access_key=secret_key)
     queue = conn.get_queue('test_email_queue')
     msg = queue.get_messages()
 
@@ -64,9 +67,9 @@ class Mailer():
         self.subject = subject
         self.to = to
 
-        access_key = 'AKIAJ2O3HIU6QLNLOTZA'
-        secret_key = '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'
-        region = 'eu-west-1'
+        access_key = settings.SMTP_USERNAME
+        secret_key = settings.SMTP_PASSWORD
+        region = settings.SES_REGION
 
         self.conn = boto.ses.connect_to_region(
             region_name=region,
