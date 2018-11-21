@@ -137,7 +137,7 @@ class AttendeeProfile(generic.DetailView):
             print("ok")
 
         else:
-            conn = boto.connect_s3(settings.AWS_ACCESS_KEY_ID, settings.AWS_SECRET_ACCESS_KEY)
+            conn = boto.connect_s3(settings.AWS_ACCESS_KEY_ID, settings.AWS_SECRET_ACCESS_KEY, host=settings.AWS_STORAGE_HOST)
             bucket = conn.get_bucket(settings.AWS_STORAGE_BUCKET_NAME)
             user_id = request.session['event_user']['id']
             # filepath = settings.BASE_DIR + "/publicfront/static/public/images/attendee/"
@@ -1280,26 +1280,6 @@ class SessionDetail(generic.DetailView):
                         UserEmail.send_session_email_to_user(request, email_id, active_deciding.attendee, clash_name)
                     scheduler.add_job(SessionDetail.activeSchedule, 'date', run_date=alarm_time,
                                       args=[request, notification.id], id=str(notification.id))
-                    # subject = "Bekräftelse - Kunskapsveckan och GetTogether"
-                    # sender_mail = "registration@eventdobby.com"
-                    # template_source ='gt/email_template/conflict_session.html'
-                    # if active_deciding.attendee.event_id == 11:
-                    #     subject = "NOTIFICATION - KINGFOMARKET"
-                    #     sender_mail = "kingfomarket@eventdobby.com"
-                    #     base_url = base_url+'/kingfomarket'
-                    #     template_source = 'public/email_template/conflict_session.html'
-                    # else:
-                    #     base_url = base_url+'/gt'
-                    # context = {
-                    #     'new_session': session,
-                    #     'clash_session': clash,
-                    #     'queue_attendee': active_deciding,
-                    #     'notification_timeout': notification_timeout,
-                    #     'base_url': base_url,
-                    # }
-                    # to = active_deciding.attendee.email
-                    # MailHelper.mail_send(template_source,context,subject,to,sender_mail)
-
                 else:
                     queue_id = already_in_queue[0].id
                     s_id = already_in_queue[0].session_id

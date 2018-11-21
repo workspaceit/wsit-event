@@ -3914,7 +3914,7 @@ function removeMultipleClass(classesAlpha, $div) {
 }
 
 function clog(message) {
-    if (window.location.hostname != 'eventdobby.com') {
+    if (window.location.hostname != '192.168.1.67') {
         console.log(message);
     }
 }

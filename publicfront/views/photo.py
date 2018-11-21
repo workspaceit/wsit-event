@@ -204,7 +204,7 @@ class PhotoReel(TemplateView):
     def upload_image_to_s3(request, filename_with_path, output_image, image, language):
         response = {}
         try:
-            conn = boto.connect_s3(settings.AWS_ACCESS_KEY_ID,settings.AWS_SECRET_ACCESS_KEY)
+            conn = boto.connect_s3(settings.AWS_ACCESS_KEY_ID,settings.AWS_SECRET_ACCESS_KEY, host=settings.AWS_STORAGE_HOST)
             bucket = conn.get_bucket(settings.AWS_STORAGE_BUCKET_NAME)
             key_name = filename_with_path
             k = Key(bucket)

@@ -809,7 +809,7 @@ class ExcelView(generic.DetailView):
 
             import boto
             from boto.s3.key import Key
-            conn = boto.connect_s3(settings.AWS_ACCESS_KEY_ID, settings.AWS_SECRET_ACCESS_KEY)
+            conn = boto.connect_s3(settings.AWS_ACCESS_KEY_ID, settings.AWS_SECRET_ACCESS_KEY, host=settings.AWS_STORAGE_HOST)
             bucket = conn.get_bucket(settings.AWS_STORAGE_BUCKET_NAME)
             key_name = file_name
             k = Key(bucket)
@@ -2605,7 +2605,7 @@ class Uploader():
         # S3
         import boto
         from boto.s3.key import Key
-        conn = boto.connect_s3(settings.AWS_ACCESS_KEY_ID, settings.AWS_SECRET_ACCESS_KEY)
+        conn = boto.connect_s3(settings.AWS_ACCESS_KEY_ID, settings.AWS_SECRET_ACCESS_KEY, host=settings.AWS_STORAGE_HOST)
         bucket = conn.get_bucket(settings.AWS_STORAGE_BUCKET_NAME)
         filename_with_path = filename
         key_name = filename_with_path

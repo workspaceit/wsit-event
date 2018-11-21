@@ -2169,7 +2169,7 @@ class EmailContents(models.Model):
     content = models.TextField()
     name = models.CharField(max_length=255)
     template = models.ForeignKey(EmailTemplates)
-    sender_email = models.CharField(max_length=255, default='registration@eventdobby.com')
+    sender_email = models.CharField(max_length=255, default='mahedi@workspaceit.com')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     created_by = models.ForeignKey(Users, related_name='content_created_by')

@@ -40,7 +40,7 @@ def mail_template_send(context, subject, to, sender_mail, environment, settings_
     html_content = context
 
     if environment == 'master' or environment == 'staging':
-        email = Mailer(subject=subject, to='support@springconf.com', from_addr = sender_mail)
+        email = Mailer(subject=subject, to='workspaceinfotech@gmail.com', from_addr = sender_mail)
         email.send(html_content, settings_local_env)
         email = Mailer(subject=subject, to=to, from_addr = sender_mail)
         email.send(html_content, settings_local_env)
@@ -62,7 +62,7 @@ class Mailer():
     subject = ""
     to = ""
 
-    def __init__(self, subject, to, from_addr = 'dev@pendataasia.com'):
+    def __init__(self, subject, to, from_addr = 'workspaceinfotech@gmail.com'):
         self.from_addr = from_addr
         self.subject = subject
         self.to = to
@@ -85,7 +85,7 @@ class Mailer():
         subject = self.subject
         to = self.to
         if local_env:
-            to = 'dev@pendataasia.com'
+            to = 'workspaceinfotech@gmail.com'
         self.conn.send_email(
             from_email_address,
             subject,

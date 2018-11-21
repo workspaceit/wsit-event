@@ -39,9 +39,9 @@ class ResetPasswordREquest(TemplateView):
                 hash_code = hashlib.sha224(key).hexdigest()
 
                 # send mail
-                subject = "Event Manager::Password Reset"
+                subject = "Wsit Event::Password Reset"
                 receiver = user.email
-                sender_mail = "workspaceinfotech@gmail.com"
+                sender_mail = "mahedi@workspaceit.com"
                 base_url = settings.SITE_URL
                 context = {'base_url': base_url, 'key': hash_code}
                 template = "reset_password/email.html"

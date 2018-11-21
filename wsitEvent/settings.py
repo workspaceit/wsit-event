@@ -27,8 +27,8 @@ SECRET_KEY = '2wako5@=t$f8g+@%#aft4yw38%f66$&(yn(_0s5gwqo$!8p6&c'
 
 
 os.environ['ENVIRONMENT_TYPE'] = 'development'
-DEBUG = True
-TEMPLATE_DEBUG = True
+DEBUG = False
+TEMPLATE_DEBUG = False
 ALLOWED_HOSTS = ['*']
 
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
@@ -52,6 +52,7 @@ import djcelery
 djcelery.setup_loader()
 # Celery config ##
 BROKER_URL = "amqp://guest:guest@localhost://"
+CELERY_IMPORTS = ('wsitEvent.tasks', )
 
 MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -101,7 +102,6 @@ CRONJOBS = [
 ]
 # Internationalization
 # https://docs.djangoproject.com/en/1.8/topics/i18n/
-SASS_PROCESSOR_ROOT = 'publicfront/compiled/'
 LANGUAGE_CODE = 'en-us'
 
 TIME_ZONE = None
@@ -109,12 +109,14 @@ TIME_ZONE = None
 USE_I18N = True
 
 USE_L10N = True
-EMAIL_SENDER = 'workspaceinfotech@gmail.com'
+EMAIL_SENDER = 'mahedi@workspaceit.com'
 DEFAULT_FROM_EMAIL = EMAIL_SENDER
-AWS_ACCESS_KEY_ID = ''
-AWS_SECRET_ACCESS_KEY = ''
-SMTP_USERNAME = ''
-SMTP_PASSWORD = ''
+AWS_ACCESS_KEY_ID = 'AKIAJQF7DRAHJW36J6HA'
+AWS_SECRET_ACCESS_KEY = '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'
+SMTP_USERNAME = 'AKIAJQF7DRAHJW36J6HA'
+SMTP_PASSWORD = 'I18QoT8iFJWp0bpvVBQ0isNKzsZ81wlSZIQRMp7r'
+AWS_STORAGE_HOST = 's3.eu-west-1.amazonaws.com'
+AWS_REGION_NAME = 'eu-west-1'
 
 DATABASES = {
          'default': {
@@ -130,7 +132,6 @@ DATABASES = {
          }
      }
 
-STATIC_URL_ALT = '/static/'
 
 if DEBUG:
     import logging
@@ -143,6 +144,38 @@ STATIC_ROOT = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__fil
 STATIC_URL = '/static/'
 
 USE_TZ = False
+
+SES_REGION = 'eu-west-1'
+
+S3_BUCKET_NAME = ''
+
+# S3 Bucket name
+if os.environ['ENVIRONMENT_TYPE'] == 'master':
+    S3_BUCKET_NAME = 'wsit-event-dev'
+else:
+    S3_BUCKET_NAME = 'wsit-event-dev'
+
+AWS_STORAGE_BUCKET_NAME = S3_BUCKET_NAME
+
+STATIC_URL_ALT = 'https://s3-eu-west-1.amazonaws.com/{bucket_name}/'.format(
+        bucket_name=AWS_STORAGE_BUCKET_NAME)
+
+LOCAL_ENV = False
+
+
+
+if os.environ['ENVIRONMENT_TYPE'] == 'master':
+    SITE_URL = 'http://192.168.1.67/'
+else:
+    SITE_URL = 'http://127.0.0.1:8000'
+
+
+# DIBS_ACTION_URL = 'https://sat1.dibspayment.com/dibspaymentwindow/entrypoint'
+DIBS_ACTION_URL = ''
+DIBS_ACCEPT_URL = 'payment-callback-success/'
+DIBS_CANCEL_URL = 'payment-callback-cancel/'
+DIBS_ACCEPT_RETURN_URL = 'payment-callback-success/'
+DIBS_TEST = 0
 
 
 LOGGING = {
@@ -182,7 +215,12 @@ LOGGING = {
     },
 }
 
+try:
+    from .local_settings import *
+except ImportError:
+    pass
 
-SITE_URL = 'http://127.0.0.1:8000'
+
+
 
 

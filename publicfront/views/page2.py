@@ -499,19 +499,19 @@ class DynamicPage(generic.View):
                     # get css version
                     css_version_obj = StyleSheet.objects.get(event_id=request.session['event_id'])
                     css_version = css_version_obj.version
-
-                    # page_content = page_content.replace('[[file]]', "[[static]]public/[[event_url]]/files")
-                    # page_content = page_content.replace('[[files]]', "[[static]]public/[[event_url]]/files/")
-                    # page_content = page_content.replace('[[css]]',
-                    #                                     "[[static]]public/[[event_url]]/compiled_css/style.css?v=" + str(
-                    #                                         css_version))
+                    # For Wsit S3
+                    page_content = page_content.replace('[[file]]', "[[static]]public/[[event_url]]/files")
+                    page_content = page_content.replace('[[files]]', "[[static]]public/[[event_url]]/files/")
+                    page_content = page_content.replace('[[css]]',
+                                                        "[[static]]public/[[event_url]]/compiled_css/style.css?v=" + str(
+                                                            css_version))
 
                     # For Wsit Event
-                    page_content = page_content.replace('[[file]]', "[[static]]public/files")
-                    page_content = page_content.replace('[[files]]', "[[static]]public/files/")
-                    page_content = page_content.replace('[[css]]',
-                                                        "[[static]]public/compiled_css/main_style.css?v=" + str(
-                                                            css_version))
+                    # page_content = page_content.replace('[[file]]', "[[static]]public/files")
+                    # page_content = page_content.replace('[[files]]', "[[static]]public/files/")
+                    # page_content = page_content.replace('[[css]]',
+                    #                                     "[[static]]public/compiled_css/main_style.css?v=" + str(
+                    #                                         css_version))
 
                     page_content = page_content.replace('[[static]]', settings.STATIC_URL_ALT)
                     page_content = page_content.replace('public/js/jquery.min.js',

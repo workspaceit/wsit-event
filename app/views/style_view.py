@@ -70,26 +70,13 @@ class StyleView(generic.DetailView):
                     ErrorR.elog(e)
                     ErrorR.ilog(e)
                     pass
-
                 compiled_css = compile_string(css_data)
-
-                # directory = os.path.abspath(os.path.dirname(__name__))+"/publicfront/static/public/compiled_css/"
-                # if not os.path.exists(directory):
-                #     os.makedirs(directory)
-                # directory = directory+"style.css"
-                # fo = open(directory, "w")
-                # fo.write(compiled_css)
-                # fo.close()
-
-
-
-                conn = boto.connect_s3(settings.AWS_ACCESS_KEY_ID, settings.AWS_SECRET_ACCESS_KEY)
+                conn = boto.connect_s3(settings.AWS_ACCESS_KEY_ID, settings.AWS_SECRET_ACCESS_KEY, host=settings.AWS_STORAGE_HOST)
                 bucket = conn.get_bucket(settings.AWS_STORAGE_BUCKET_NAME)
                 extension = 'css'
                 key_name = 'public/' + event_url + '/compiled_css/' + 'style' + '.' + extension
                 k = Key(bucket)
                 k.key = key_name
-
                 if not k.exists():
                     key = bucket.new_key(key_name)
                     key.content_type = 'text/css'
@@ -97,13 +84,12 @@ class StyleView(generic.DetailView):
                 else:
                     k.content_type = 'text/css'
                     k.set_contents_from_string(compiled_css, policy='public-read')
-
                 response_data['message'] = 'Style Update Successfully'
                 response_data['success'] = True
             except Exception as e:
                 response_data['message'] = 'Parsing Error'
                 response_data['success'] = False
-                print(str(e))
+                ErrorR.efail(e)
         else:
             response_data['message'] = 'You do not have Permission to do this'
             response_data['success'] = False

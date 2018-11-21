@@ -2492,11 +2492,11 @@ class AttendeeDetailView(generic.DetailView):
 
         }
         subject = "Bekräftelse - Kunskapsveckan och GetTogether"
-        sender_mail = "registration@eventdobby.com"
+        sender_mail = "mahedi@workspaceit.com"
         if attendee_obj.event_id == 11:
             # subject = "KINGFOMARKET-REGISTRATION"
             subject = "PORTAL CALLING! You have KingfoMarket updates"
-            sender_mail = "kingfomarket@eventdobby.com"
+            sender_mail = "mahedi@workspaceit.com"
         logger.debug("-----------------sender Email------------------------")
         logger.debug(sender_mail)
         to = att_email

@@ -24,7 +24,7 @@ class FileView(TemplateView):
         return branch
 
     def newfolder(request):
-        conn = boto.connect_s3(settings.AWS_ACCESS_KEY_ID, settings.AWS_SECRET_ACCESS_KEY)
+        conn = boto.connect_s3(settings.AWS_ACCESS_KEY_ID, settings.AWS_SECRET_ACCESS_KEY, host=settings.AWS_STORAGE_HOST)
         bucket = conn.get_bucket(settings.AWS_STORAGE_BUCKET_NAME)
 
         key = request.POST.get('key') + request.POST.get('name') + '/'
@@ -40,7 +40,7 @@ class FileView(TemplateView):
         return HttpResponse(json.dumps(res), content_type="application/json")
 
     def deletefolder(request):
-        conn = boto.connect_s3(settings.AWS_ACCESS_KEY_ID, settings.AWS_SECRET_ACCESS_KEY)
+        conn = boto.connect_s3(settings.AWS_ACCESS_KEY_ID, settings.AWS_SECRET_ACCESS_KEY, host=settings.AWS_STORAGE_HOST)
         bucket = conn.get_bucket(settings.AWS_STORAGE_BUCKET_NAME)
 
         event_url = request.session['event_auth_user']['event_url']
@@ -66,7 +66,7 @@ class FileView(TemplateView):
         return HttpResponse(json.dumps(res), content_type="application/json")
 
     def getlink(request):
-        conn = boto.connect_s3(settings.AWS_ACCESS_KEY_ID, settings.AWS_SECRET_ACCESS_KEY)
+        conn = boto.connect_s3(settings.AWS_ACCESS_KEY_ID, settings.AWS_SECRET_ACCESS_KEY, host=settings.AWS_STORAGE_HOST)
         bucket = conn.get_bucket(settings.AWS_STORAGE_BUCKET_NAME)
 
         key = request.POST.get('key').replace('//', '/')
@@ -80,7 +80,7 @@ class FileView(TemplateView):
         return HttpResponse(json.dumps(res), content_type="application/json")
 
     def rename(request):
-        conn = boto.connect_s3(settings.AWS_ACCESS_KEY_ID, settings.AWS_SECRET_ACCESS_KEY)
+        conn = boto.connect_s3(settings.AWS_ACCESS_KEY_ID, settings.AWS_SECRET_ACCESS_KEY, host=settings.AWS_STORAGE_HOST)
         bucket = conn.get_bucket(settings.AWS_STORAGE_BUCKET_NAME)
         oldKey = request.POST.get('key').replace('//', '/')
         name = request.POST.get('name')
@@ -159,7 +159,7 @@ class FileView(TemplateView):
         response = {}
         filename = FileView.urlify(file.name.split('.')[0])
 
-        conn = boto.connect_s3(settings.AWS_ACCESS_KEY_ID, settings.AWS_SECRET_ACCESS_KEY)
+        conn = boto.connect_s3(settings.AWS_ACCESS_KEY_ID, settings.AWS_SECRET_ACCESS_KEY, host=settings.AWS_STORAGE_HOST)
         bucket = conn.get_bucket(settings.AWS_STORAGE_BUCKET_NAME)
 
         contentType = file.content_type
@@ -215,7 +215,7 @@ class FileView(TemplateView):
         if request.POST.get('type') != 'rootfolder':
             sourceKey = request.POST.get('sourceKey').replace('//', '/')
             destKey = request.POST.get('destKey').replace('//', '/')
-            conn = boto.connect_s3(settings.AWS_ACCESS_KEY_ID, settings.AWS_SECRET_ACCESS_KEY)
+            conn = boto.connect_s3(settings.AWS_ACCESS_KEY_ID, settings.AWS_SECRET_ACCESS_KEY, host=settings.AWS_STORAGE_HOST)
             bucket = conn.get_bucket(settings.AWS_STORAGE_BUCKET_NAME)
 
             event_url = request.session['event_auth_user']['event_url']
@@ -268,7 +268,7 @@ class FileView(TemplateView):
         if request.POST.get('type') != 'rootfolder':
             sourceKey = request.POST.get('sourceKey').replace('//', '/')
             destKey = request.POST.get('destKey').replace('//', '/')
-            conn = boto.connect_s3(settings.AWS_ACCESS_KEY_ID, settings.AWS_SECRET_ACCESS_KEY)
+            conn = boto.connect_s3(settings.AWS_ACCESS_KEY_ID, settings.AWS_SECRET_ACCESS_KEY, host=settings.AWS_STORAGE_HOST)
             bucket = conn.get_bucket(settings.AWS_STORAGE_BUCKET_NAME)
 
             event_url = request.session['event_auth_user']['event_url']
@@ -322,7 +322,7 @@ class FileView(TemplateView):
     def get_all_files(request):
         context = {}
         try:
-            conn = boto.connect_s3(settings.AWS_ACCESS_KEY_ID, settings.AWS_SECRET_ACCESS_KEY)
+            conn = boto.connect_s3(settings.AWS_ACCESS_KEY_ID, settings.AWS_SECRET_ACCESS_KEY, host=settings.AWS_STORAGE_HOST)
             bucket = conn.get_bucket(settings.AWS_STORAGE_BUCKET_NAME)
             event_url=request.session['event_auth_user']['event_url']
             #

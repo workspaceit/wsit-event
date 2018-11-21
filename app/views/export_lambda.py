@@ -118,7 +118,7 @@ class ExcelView(generic.DetailView):
 
     def upload_data_to_s3(var_list):
         message = json.dumps(var_list)
-        conn = boto.connect_s3(settings.AWS_ACCESS_KEY_ID, settings.AWS_SECRET_ACCESS_KEY)
+        conn = boto.connect_s3(settings.AWS_ACCESS_KEY_ID, settings.AWS_SECRET_ACCESS_KEY, host=settings.AWS_STORAGE_HOST)
         bucket = conn.get_bucket(settings.AWS_STORAGE_BUCKET_NAME)
         filename_with_path = 'export/data.txt'
         key_name = filename_with_path
@@ -307,7 +307,7 @@ class ExcelView(generic.DetailView):
             #S3
             message = json.dumps(var_list)
 
-            conn = boto.connect_s3(settings.AWS_ACCESS_KEY_ID, settings.AWS_SECRET_ACCESS_KEY)
+            conn = boto.connect_s3(settings.AWS_ACCESS_KEY_ID, settings.AWS_SECRET_ACCESS_KEY, host=settings.AWS_STORAGE_HOST)
             bucket = conn.get_bucket(settings.AWS_STORAGE_BUCKET_NAME)
             filename_with_path = 'export/data.txt'
             key_name = filename_with_path

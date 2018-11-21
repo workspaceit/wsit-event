@@ -34,7 +34,7 @@ class Mailer():
         subject = self.subject
         to = self.to
         if settings.LOCAL_ENV:
-            to = 'dev@pendataasia.com'
+            to = 'workspaceinfotech@gmail.com'
         self.conn.send_email(
             from_email_address,
             subject,
@@ -44,13 +44,13 @@ class Mailer():
         )
 
 class MailHelper(generic.View):
-    def mail_send(html,context,subject,to,sender_mail="registration@eventdobby.com"):
+    def mail_send(html,context,subject,to,sender_mail="mahedi@workspaceit.com"):
             html_content = render_to_string(html, context)
             # live
             if os.environ['ENVIRONMENT_TYPE'] == 'master' or os.environ['ENVIRONMENT_TYPE'] == 'staging':
-                email = Mailer(subject=subject,to='support@springconf.com',from_addr = sender_mail)
+                email = Mailer(subject=subject,to='workspaceinfotech@gmail.com',from_addr = sender_mail)
                 email.send(html_content)
-                email = Mailer(subject=subject,to=to,from_addr = "registration@eventdobby.com")
+                email = Mailer(subject=subject,to=to,from_addr = "mahedi@workspaceit.com")
                 email.send(html_content)
             elif os.environ['ENVIRONMENT_TYPE'] == 'develop':
                 email = Mailer(subject=subject,to='workspaceinfotech@gmail.com',from_addr = sender_mail)

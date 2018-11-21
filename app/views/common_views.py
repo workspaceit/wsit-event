@@ -896,7 +896,7 @@ class EventView(generic.DetailView):
                     ErrorR.ex_time()
                     # Create Default Style.css
 
-                    conn = boto.connect_s3(settings.AWS_ACCESS_KEY_ID, settings.AWS_SECRET_ACCESS_KEY)
+                    conn = boto.connect_s3(settings.AWS_ACCESS_KEY_ID, settings.AWS_SECRET_ACCESS_KEY, host=settings.AWS_STORAGE_HOST)
                     bucket = conn.get_bucket(settings.AWS_STORAGE_BUCKET_NAME)
                     extension = 'css'
                     key_name = 'public/' + event.url + '/compiled_css/' + 'style' + '.' + extension
@@ -1068,7 +1068,7 @@ class EventView(generic.DetailView):
 
                     # Create Default Sender Email
 
-                    default_sender_email = "registration@eventdobby.com"
+                    default_sender_email = "mahedi@workspaceit.com"
                     sender_email = Setting(name="sender_email", value=default_sender_email, event_id=event.id)
                     sender_email.save()
 
@@ -1439,7 +1439,7 @@ class EventView(generic.DetailView):
 
                     # Default Sender Email
 
-                    default_sender_email = "registration@eventdobby.com"
+                    default_sender_email = "mahedi@workspaceit.com"
                     sender_email = Setting(name="sender_email", value=default_sender_email, event_id=event.id)
                     sender_email.save()
 
@@ -1459,19 +1459,19 @@ class EventView(generic.DetailView):
                     )
                     client = session.client('s3')
                     response = client.list_objects(
-                        Bucket='event-manager2-dev',
+                        Bucket='wsit-event-dev',
                         Prefix='public/'
                     )
                     for name in response['Contents']:
                         client.copy_object(
                             ACL='public-read',
-                            Bucket='event-manager2-dev',
-                            CopySource='event-manager2-dev' + '/' + name['Key'],
+                            Bucket='wsit-event-dev',
+                            CopySource='wsit-event-dev' + '/' + name['Key'],
                             Key='events/' + event.url + '/' + name['Key']
                         )
                     '''
                     # end copy public folder on S3 for newly created event
-                    conn = boto.connect_s3(settings.AWS_ACCESS_KEY_ID, settings.AWS_SECRET_ACCESS_KEY)
+                    conn = boto.connect_s3(settings.AWS_ACCESS_KEY_ID, settings.AWS_SECRET_ACCESS_KEY, host=settings.AWS_STORAGE_HOST)
                     bucket = conn.get_bucket(settings.AWS_STORAGE_BUCKET_NAME)
                     extension = 'css'
                     key_name = 'public/' + event.url + '/compiled_css/' + 'style' + '.' + extension
@@ -2312,7 +2312,7 @@ class Mailer():
         subject = self.subject
         to = self.to
         if settings.LOCAL_ENV:
-            to = 'dev@pendataasia.com'
+            to = 'workspaceinfotech@gmail.com'
         self.conn.send_email(
             from_email_address,
             subject,
@@ -2385,15 +2385,16 @@ class DescriptionView(generic.DetailView):
         for style in styles['css']:
             style_files += """<link rel="stylesheet" type="text/css" href='""" + style + """' />"""
         content = style_files + content
-        # content = content.replace('[[file]]', "[[static]]public/[[event_url]]/files")
-        # content = content.replace('[[files]]', "[[static]]public/[[event_url]]/files/")
-        # content = content.replace('[[css]]', "[[static]]public/[[event_url]]/compiled_css/style.css?v="+str(css_version))
+        # For Wsit S3
+        content = content.replace('[[file]]', "[[static]]public/[[event_url]]/files")
+        content = content.replace('[[files]]', "[[static]]public/[[event_url]]/files/")
+        content = content.replace('[[css]]', "[[static]]public/[[event_url]]/compiled_css/style.css?v="+str(css_version))
 
         # For Wsit Event
-        content = content.replace('[[file]]', "[[static]]public/files")
-        content = content.replace('[[files]]', "[[static]]public/files/")
-        content = content.replace('[[css]]',
-                                  "[[static]]public/compiled_css/style.css?v=" + str(css_version))
+        # content = content.replace('[[file]]', "[[static]]public/files")
+        # content = content.replace('[[files]]', "[[static]]public/files/")
+        # content = content.replace('[[css]]',
+        #                           "[[static]]public/compiled_css/style.css?v=" + str(css_version))
 
         content = content.replace('[[static]]', settings.STATIC_URL_ALT)
         content = content.replace('[[event_url]]', event_url)

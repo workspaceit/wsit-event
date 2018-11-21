@@ -15,7 +15,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='emailcontents',
             name='sender_email',
-            field=models.CharField(default='registration@eventdobby.com', max_length=255),
+            field=models.CharField(default='mahedi@workspaceit.com', max_length=255),
         ),
         migrations.AlterField(
             model_name='messagehistory',

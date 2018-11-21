@@ -28,7 +28,7 @@ def storeDeviceToken(request):
         attendee = Attendee.objects.get(secret_key=request.GET['secret_key'])
 
         if os_type == '1':
-            arn = 'arn:aws:sns:eu-west-1:347024549639:app/GCM/Event-manager'
+            arn = 'arn:aws:sns:eu-west-1:347024549639:app/GCM/wsit-event'
         elif os_type == '2':
             if os.environ['ENVIRONMENT_TYPE'] == 'master':
                 arn = 'arn:aws:sns:eu-west-1:347024549639:app/APNS/ios-em2'

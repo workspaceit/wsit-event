@@ -129,7 +129,7 @@ class SettingView(generic.DetailView):
             if setting_email:
                 sender_email = setting_email[0].value
             else:
-                sender_email = "registration@eventdobby.com"
+                sender_email = "mahedi@workspaceit.com"
             email_confirmations = EmailContents.objects.filter(template__event_id=event_id, is_show=1)
             attendee_add_confirmation = 0
             attendee_edit_confirmation = 0

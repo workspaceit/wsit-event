@@ -543,7 +543,7 @@ class AttendeePluginList:
             response = client.get_object(Bucket=settings.AWS_STORAGE_BUCKET_NAME, Key=key)
             # print(response)
             if response:
-                conn = boto.connect_s3(settings.AWS_ACCESS_KEY_ID, settings.AWS_SECRET_ACCESS_KEY)
+                conn = boto.connect_s3(settings.AWS_ACCESS_KEY_ID, settings.AWS_SECRET_ACCESS_KEY, host=settings.AWS_STORAGE_HOST)
                 bucket = conn.get_bucket(settings.AWS_STORAGE_BUCKET_NAME)
                 newKey = 'exported_files/' + event.name + '/attendee.xlsx'
                 bucket.copy_key(newKey, settings.AWS_STORAGE_BUCKET_NAME, key)
@@ -573,7 +573,7 @@ class AttendeePluginList:
 
     def upload_data_to_s3(export_data):
         data_json = json.dumps(export_data)
-        conn = boto.connect_s3(settings.AWS_ACCESS_KEY_ID, settings.AWS_SECRET_ACCESS_KEY)
+        conn = boto.connect_s3(settings.AWS_ACCESS_KEY_ID, settings.AWS_SECRET_ACCESS_KEY, host=settings.AWS_STORAGE_HOST)
         bucket = conn.get_bucket(settings.AWS_STORAGE_BUCKET_NAME)
         filename_with_path = 'export_attendee_plugin/data.txt'
         key_name = filename_with_path

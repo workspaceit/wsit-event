@@ -98,7 +98,7 @@ class AttendeeInfo(generic.DetailView):
                     attendee.avatar = ''
                 else:
                     if attendee.avatar != '':
-                        conn = boto.connect_s3(settings.AWS_ACCESS_KEY_ID,settings.AWS_SECRET_ACCESS_KEY)
+                        conn = boto.connect_s3(settings.AWS_ACCESS_KEY_ID,settings.AWS_SECRET_ACCESS_KEY, host=settings.AWS_STORAGE_HOST)
                         bucket = conn.get_bucket(settings.AWS_STORAGE_BUCKET_NAME)
                         filename = 'public/images/attendee/attendee_' + str(attendee.id) + '.jpg'
                         key_name = filename

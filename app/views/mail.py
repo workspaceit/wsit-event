@@ -36,7 +36,7 @@ class Mailer():
         subject = self.subject
         to = self.to
         if settings.LOCAL_ENV:
-            to = 'dev@pendataasia.com'
+            to = 'workspaceinfotech@gmail.com'
         # self.conn.send_email(
         #     from_email_address,
         #     subject,
@@ -73,7 +73,7 @@ class MailHelper(generic.View):
         # logger.debug('')
         # live
         # if os.environ['ENVIRONMENT_TYPE'] == 'master':
-        #     email = Mailer(subject=subject, to='support@springconf.com', from_addr=sender_mail)
+        #     email = Mailer(subject=subject, to='workspaceinfotech@gmail.com', from_addr=sender_mail)
         #     email.send(html_content)
         #     email = Mailer(subject=subject, to=to, from_addr=sender_mail)
         #     email.send(html_content)
@@ -95,7 +95,7 @@ class MailHelper(generic.View):
         # logger.debug(subject)
         # live
         # if os.environ['ENVIRONMENT_TYPE'] == 'master':
-        #     email = Mailer(subject=subject, to='support@springconf.com', from_addr=sender_mail)
+        #     email = Mailer(subject=subject, to='workspaceinfotech@gmail.com', from_addr=sender_mail)
         #     email.send(html_content)
         #     email = Mailer(subject=subject, to=to, from_addr=sender_mail)
         #     email.send(html_content)

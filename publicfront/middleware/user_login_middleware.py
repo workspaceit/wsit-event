@@ -140,7 +140,7 @@ class UserLoginMiddleware(generic.DetailView):
                                             if user[0].avatar != '':
                                                 avatar = user[0].avatar
                                                 conn = boto.connect_s3(settings.AWS_ACCESS_KEY_ID,
-                                                                       settings.AWS_SECRET_ACCESS_KEY)
+                                                                       settings.AWS_SECRET_ACCESS_KEY, host=settings.AWS_STORAGE_HOST)
                                                 bucket = conn.get_bucket(settings.AWS_STORAGE_BUCKET_NAME)
                                                 filename = 'public/images/attendee/attendee_' + str(user[0].id) + '.jpg'
                                                 key_name = filename
@@ -195,7 +195,7 @@ class UserLoginMiddleware(generic.DetailView):
                                 else:
                                     if user[0].avatar != '':
                                         avatar = user[0].avatar
-                                        conn = boto.connect_s3(settings.AWS_ACCESS_KEY_ID, settings.AWS_SECRET_ACCESS_KEY)
+                                        conn = boto.connect_s3(settings.AWS_ACCESS_KEY_ID, settings.AWS_SECRET_ACCESS_KEY, host=settings.AWS_STORAGE_HOST)
                                         bucket = conn.get_bucket(settings.AWS_STORAGE_BUCKET_NAME)
                                         filename = 'public/images/attendee/attendee_' + str(user[0].id) + '.jpg'
                                         key_name = filename

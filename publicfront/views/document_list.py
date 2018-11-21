@@ -20,17 +20,19 @@ class DocumentDetail(generic.DetailView):
                 # get css version
                 css_version_obj = StyleSheet.objects.get(event_id=request.session['event_id'])
                 css_version = css_version_obj.version
-                # template_content = template[0].content.replace('[[file]]', "[[static]]public/[[event_url]]/files")
-                # template_content = template[0].content.replace('[[files]]', "[[static]]public/[[event_url]]/files/")
-                # template_content = template_content.replace('[[css]]',
-                #                                             "[[static]]public/[[event_url]]/compiled_css/style.css?v="+str(css_version))
+
+                # For Wsit S3
+                template_content = template[0].content.replace('[[file]]', "[[static]]public/[[event_url]]/files")
+                template_content = template[0].content.replace('[[files]]', "[[static]]public/[[event_url]]/files/")
+                template_content = template_content.replace('[[css]]',
+                                                            "[[static]]public/[[event_url]]/compiled_css/style.css?v="+str(css_version))
 
                 # For Wsit Event
-                template_content = template[0].content.replace('[[file]]', "[[static]]public/files")
-                template_content = template[0].content.replace('[[files]]', "[[static]]public/files/")
-                template_content = template_content.replace('[[css]]',
-                                                            "[[static]]public/compiled_css/style.css?v=" + str(
-                                                                css_version))
+                # template_content = template[0].content.replace('[[file]]', "[[static]]public/files")
+                # template_content = template[0].content.replace('[[files]]', "[[static]]public/files/")
+                # template_content = template_content.replace('[[css]]',
+                #                                             "[[static]]public/compiled_css/style.css?v=" + str(
+                #                                                 css_version))
 
                 template_content = template_content.replace('[[static]]', settings.STATIC_URL_ALT)
                 template_content = template_content.replace('public/js/jquery.min.js',
@@ -61,7 +63,7 @@ class DocumentDetail(generic.DetailView):
 
     def document_list(request):
         try:
-            conn = boto.connect_s3(settings.AWS_ACCESS_KEY_ID, settings.AWS_SECRET_ACCESS_KEY)
+            conn = boto.connect_s3(settings.AWS_ACCESS_KEY_ID, settings.AWS_SECRET_ACCESS_KEY, host=settings.AWS_STORAGE_HOST)
             bucket = conn.get_bucket(settings.AWS_STORAGE_BUCKET_NAME)
             event_url = request.session['event_url']
             session = boto_session(aws_access_key_id=settings.AWS_ACCESS_KEY_ID,

@@ -80,16 +80,17 @@ class PageView(generic.DetailView):
                     filter = request.POST.get('filter_list')
                     element_filter = request.POST.get('element_filters')
                     content = data['content']
-                    # content = content.replace('[[file]]', "[[static]]public/[[event_url]]/files")
-                    # content = content.replace('[[files]]', "[[static]]public/[[event_url]]/files/")
-                    # content = content.replace('[[css]]', "[[static]]public/[[event_url]]/compiled_css/style.css?v="+str(css_version))
+                    # For Wsit S3
+                    content = content.replace('[[file]]', "[[static]]public/[[event_url]]/files")
+                    content = content.replace('[[files]]', "[[static]]public/[[event_url]]/files/")
+                    content = content.replace('[[css]]', "[[static]]public/[[event_url]]/compiled_css/style.css?v="+str(css_version))
 
                     # For Wsit Event
-                    content = content.replace('[[file]]', "[[static]]public/files")
-                    content = content.replace('[[files]]', "[[static]]public/files/")
-                    content = content.replace('[[css]]',
-                                              "[[static]]public/compiled_css/main_style.css?v=" + str(
-                                                  css_version))
+                    # content = content.replace('[[file]]', "[[static]]public/files")
+                    # content = content.replace('[[files]]', "[[static]]public/files/")
+                    # content = content.replace('[[css]]',
+                    #                           "[[static]]public/compiled_css/main_style.css?v=" + str(
+                    #                               css_version))
 
                     content = content.replace(settings.STATIC_URL_ALT, '[[static]]')
                     content = content.replace(settings.STATIC_URL_ALT + 'public/', '[[parmanent]]')
@@ -257,7 +258,7 @@ class PageView(generic.DetailView):
         event = Events.objects.get(pk=event_id)
         event_url = event.url
 
-        conn = boto.connect_s3(settings.AWS_ACCESS_KEY_ID, settings.AWS_SECRET_ACCESS_KEY)
+        conn = boto.connect_s3(settings.AWS_ACCESS_KEY_ID, settings.AWS_SECRET_ACCESS_KEY, host=settings.AWS_STORAGE_HOST)
         bucket = conn.get_bucket(settings.AWS_STORAGE_BUCKET_NAME)
         extension = image.content_type.split('image/')[1]
         key_name = 'public/' + event_url + '/files/page_images/' + filename + '.' + extension
@@ -862,7 +863,7 @@ class PageDetailView(generic.DetailView):
         event_url = request.session['event_auth_user']['event_url']
         response = {}
         filename = FileView.urlify(file.name.split('.')[0])
-        conn = boto.connect_s3(settings.AWS_ACCESS_KEY_ID, settings.AWS_SECRET_ACCESS_KEY)
+        conn = boto.connect_s3(settings.AWS_ACCESS_KEY_ID, settings.AWS_SECRET_ACCESS_KEY, host=settings.AWS_STORAGE_HOST)
         bucket = conn.get_bucket(settings.AWS_STORAGE_BUCKET_NAME)
         extension = file.content_type.split('image/')[1]
         key_name = 'public/' + event_url + '/files/page_images/' + filename + '.' + extension
@@ -899,7 +900,7 @@ class PageDetailView(generic.DetailView):
         try:
             key_src = request.POST.get('src')
             print(key_src)
-            conn = boto.connect_s3(settings.AWS_ACCESS_KEY_ID, settings.AWS_SECRET_ACCESS_KEY)
+            conn = boto.connect_s3(settings.AWS_ACCESS_KEY_ID, settings.AWS_SECRET_ACCESS_KEY, host=settings.AWS_STORAGE_HOST)
             bucket = conn.get_bucket(settings.AWS_STORAGE_BUCKET_NAME)
             # key = bucket.get_key(key_src)
             get_key = key_src.split('public')
@@ -950,16 +951,17 @@ class PageDetailView(generic.DetailView):
                 css_version = css_version_obj.version
 
                 page_content = template.content.replace('{content}', "<div id='content'>"+pageContent+"</div>")
-                # page_content = page_content.replace('[[file]]', "[[static]]public/[[event_url]]/files")
-                # page_content = page_content.replace('[[files]]', "[[static]]public/[[event_url]]/files/")
-                # page_content = page_content.replace('[[css]]', "[[static]]public/[[event_url]]/compiled_css/style.css?v="+str(css_version))
+                # For Wsit S3
+                page_content = page_content.replace('[[file]]', "[[static]]public/[[event_url]]/files")
+                page_content = page_content.replace('[[files]]', "[[static]]public/[[event_url]]/files/")
+                page_content = page_content.replace('[[css]]', "[[static]]public/[[event_url]]/compiled_css/style.css?v="+str(css_version))
 
                 # For Wsit Event
-                page_content = page_content.replace('[[file]]', "[[static]]public/files")
-                page_content = page_content.replace('[[files]]', "[[static]]public/files/")
-                page_content = page_content.replace('[[css]]',
-                                                    "[[static]]public/compiled_css/main_style.css?v=" + str(
-                                                        css_version))
+                # page_content = page_content.replace('[[file]]', "[[static]]public/files")
+                # page_content = page_content.replace('[[files]]', "[[static]]public/files/")
+                # page_content = page_content.replace('[[css]]',
+                #                                     "[[static]]public/compiled_css/main_style.css?v=" + str(
+                #                                         css_version))
 
                 page_content = page_content.replace('[[static]]', settings.STATIC_URL_ALT)
                 if '{menu}' in page_content:
@@ -1618,16 +1620,16 @@ class LanguageElement(generic.DetailView):
         pageContent = PageDetailView.replace_questions(request, pageContent, language_id)
         pageContent = PageDetailView.replace_plugin(request, pageContent)
         pageContent = CmsPageView.replace_enddiv(request,pageContent)
-
-        # content = pageContent.replace('[[file]]', "[[static]]public/[[event_url]]/files")
-        # content = content.replace('[[files]]', "[[static]]public/[[event_url]]/files/")
-        # content = content.replace('[[css]]', "[[static]]public/[[event_url]]/compiled_css/style.css?v="+str(css_version))
+        # For Wsit S3
+        content = pageContent.replace('[[file]]', "[[static]]public/[[event_url]]/files")
+        content = content.replace('[[files]]', "[[static]]public/[[event_url]]/files/")
+        content = content.replace('[[css]]', "[[static]]public/[[event_url]]/compiled_css/style.css?v="+str(css_version))
 
         # For Wsit Event
-        content = pageContent.replace('[[file]]', "[[static]]public/files")
-        content = content.replace('[[files]]', "[[static]]public/files/")
-        content = content.replace('[[css]]',
-                                  "[[static]]public/compiled_css/main_style.css?v=" + str(css_version))
+        # content = pageContent.replace('[[file]]', "[[static]]public/files")
+        # content = content.replace('[[files]]', "[[static]]public/files/")
+        # content = content.replace('[[css]]',
+        #                           "[[static]]public/compiled_css/main_style.css?v=" + str(css_version))
 
         content = content.replace('[[static]]', settings.STATIC_URL_ALT)
         return content

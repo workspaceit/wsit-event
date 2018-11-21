@@ -726,10 +726,10 @@ class SessionView(generic.DetailView):
                         'base_url': base_url,
                     }
                     subject = "Bekräftelse - Kunskapsveckan och GetTogether"
-                    sender_mail = "registration@eventdobby.com"
+                    sender_mail = "mahedi@workspaceit.com"
                     if seminar_user.attendee.event_id == 11:
                         subject = "NOTIFICATION - KINGFOMARKET"
-                        sender_mail = "kingfomarket@eventdobby.com"
+                        sender_mail = "mahedi@workspaceit.com"
                     to = seminar_user.attendee.email
                     # MailHelper.mail_send('email/no_conflict_session.html',context,subject,to,sender_mail)
                 else:
@@ -804,10 +804,10 @@ class SessionView(generic.DetailView):
                         'base_url': base_url,
                     }
                     subject = "Bekräftelse - Kunskapsveckan och GetTogether"
-                    sender_mail = "registration@eventdobby.com"
+                    sender_mail = "mahedi@workspaceit.com"
                     if active_deciding.attendee.event_id == 11:
                         subject = "NOTIFICATION - KINGFOMARKET"
-                        sender_mail = "kingfomarket@eventdobby.com"
+                        sender_mail = "mahedi@workspaceit.com"
                     to = active_deciding.attendee.email
                     # MailHelper.mail_send('email/conflict_session.html',context,subject,to,sender_mail)
 

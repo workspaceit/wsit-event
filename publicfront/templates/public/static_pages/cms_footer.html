@@ -79,7 +79,7 @@
             {#            var ws = new WebSocket("ws://0.0.0.0:5678/{{ request.session.event_user.secret_key }}");#}
             var ws = new WebSocket("{{ request.session.socket_url }}:5678/{{ request.session.event_user.secret_key }}");
             ws.onopen = function () {
-                if (window.location.hostname != 'eventdobby.com') {
+                if (window.location.hostname != '192.168.1.67') {
                     console.log("Socket Connected successfully");
                 }
             };

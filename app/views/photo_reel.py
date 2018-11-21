@@ -17,7 +17,7 @@ from .common_views import EventView
 class PhotoReelView(generic.DetailView):
 
     def download_photo_reel(request):
-        conn = boto.connect_s3(settings.AWS_ACCESS_KEY_ID,settings.AWS_SECRET_ACCESS_KEY)
+        conn = boto.connect_s3(settings.AWS_ACCESS_KEY_ID,settings.AWS_SECRET_ACCESS_KEY, host=settings.AWS_STORAGE_HOST)
         bucket = conn.get_bucket(settings.AWS_STORAGE_BUCKET_NAME)
         event_id = request.session['event_auth_user']['event_id']
         approved_photos = Photo.objects.filter(is_approved=1, attendee__event_id=event_id)

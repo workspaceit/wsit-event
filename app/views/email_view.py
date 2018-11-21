@@ -44,7 +44,7 @@ class EmailView(generic.TemplateView):
             if email_setting.exists():
                 sender_email = email_setting[0].value
             else:
-                sender_email = 'registration@eventdobby.com'
+                sender_email = 'mahedi@workspaceit.com'
             context = {
                 "emails": emails,
                 "emailTemplates": emailTemplates,
@@ -197,7 +197,7 @@ class EmailView(generic.TemplateView):
             if email_content.sender_email:
                 sender_mail = email_content.sender_email
             else:
-                sender_mail = "registration@eventdobby.com"
+                sender_mail = "mahedi@workspaceit.com"
             MailHelper.mail_template_send(mail_template_content, subject, to, sender_mail)
         except Exception as e:
             ErrorR.efail(e)

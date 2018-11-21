@@ -520,11 +520,10 @@ class HotelView(generic.DetailView):
         }
         logger = logging.getLogger(__name__)
         subject = "GT-ROOM BUDDY"
-        sender_mail = "registration@eventdobby.com"
+        sender_mail = "mahedi@workspaceit.com"
         if attendee_obj['group']['event']['id'] == 11:
-            # subject = "KINGFOMARKET-REGISTRATION"
-            subject = "KingfoMarket-ROOM BUDDY"
-            sender_mail = "kingfomarket@eventdobby.com"
+            subject = "ROOM BUDDY"
+            sender_mail = "mahedi@workspaceit.com"
         logger.debug("-----------------sender Email------------------------")
         logger.debug(sender_mail)
         to = attendee_obj['email']
