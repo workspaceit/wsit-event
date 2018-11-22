@@ -1,7 +1,5 @@
 from django.db import models
 from datetime import datetime, timedelta, date
-from django.utils import timezone
-from .serializers import ChatRoomListSerializer, MessageItemSerializer
 import json, re
 
 # from pygments.lexers import get_all_lexers
@@ -1207,65 +1205,6 @@ class Setting(models.Model):
 
     class Meta:
         db_table = "settings"
-
-
-class ChatRoom(models.Model):
-    serializer_class = ChatRoomListSerializer
-    created_at = models.DateTimeField(auto_now_add=True)
-
-    def as_dict(self):
-        return dict(
-            id=self.id,
-            type=self.type,
-            session=self.session.as_dict(),
-            attendee=self.attendee.as_dict(),
-            created_at=self.created_at
-        )
-
-    class Meta:
-        db_table = "chat_rooms"
-
-
-class ChatTypes(EnumField, models.CharField):
-    def __init__(self, *args, **kwargs):
-        roles = [
-            ('session', 'Session'),
-            ('filter', 'Filter'),
-            ('private', 'Private'),
-
-        ]
-        kwargs.setdefault('choices', roles)
-        super(ChatTypes, self).__init__(*args, **kwargs)
-
-
-class ChatParticipant(models.Model):
-    chat_room = models.ForeignKey(ChatRoom)
-    type = ChatTypes(max_length=100)
-    session = models.ForeignKey(Session, null=True)
-    attendee = models.ForeignKey(Attendee, null=True)
-
-    class Meta:
-        db_table = "chat_participants"
-
-
-class Message(models.Model):
-    serializer_class = MessageItemSerializer
-    chat_room = models.ForeignKey(ChatRoom)
-    sender = models.ForeignKey(Attendee)
-    text = models.TextField(default=None)
-    created_at = models.DateTimeField(auto_now_add=True)
-
-    def as_dict(self):
-        return dict(
-            id=self.id,
-            chat_room=self.chat_room.as_dict(),
-            sender=self.sender.as_dict(),
-            text=self.text,
-            created_at=self.created_at
-        )
-
-    class Meta:
-        db_table = "messages"
 
 
 class TagType(EnumField, models.CharField):

@@ -120,7 +120,7 @@ AWS_REGION_NAME = 'eu-west-1'
 
 DATABASES = {
          'default': {
-             'NAME': 'wsit_event_db',
+             'NAME': 'wsit_event_fresh',
              'ENGINE': 'django.db.backends.mysql',
              'USER': 'root',
              'PASSWORD': '1',

@@ -1605,7 +1605,7 @@ class EconomyLibrary:
             current_invoice_ref_object.save()
         else:
             current_invoice_ref = 1000001
-            Setting(name='current_invoice_ref', event_id=13, value=str(current_invoice_ref)).save()
+            Setting(name='current_invoice_ref', event_id=1, value=str(current_invoice_ref)).save()
 
         return current_invoice_ref
 

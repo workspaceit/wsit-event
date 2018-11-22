@@ -1703,7 +1703,7 @@ class EventView(generic.DetailView):
             event_id = request.POST.get('id')
             # event = Events.objects.get(id=event_id)
             # if event.url == 'default-project':
-            if str(event_id) == '13':
+            if str(event_id) == '1':
                 response_data['warning'] = "You can't delete the Default Project"
             elif str(event_id) == str(request.session['event_auth_user']['event_id']):
                 response_data['warning'] = "You can't delete you current event. Please change your event first"
