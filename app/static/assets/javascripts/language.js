@@ -69,7 +69,6 @@ $(function () {
                 var key = $(this).attr('data-name');
                 var value = $(this).val();
                 if (value != "") {
-                    console.log(value);
                     menus[key + '_' + id] = valueWithSpecialLanguageCharacter(value);
                 }
             });
@@ -233,8 +232,6 @@ $(function () {
                 }
             });
         });
-        console.log(submit_buttons);
-        console.log(JSON.stringify(submit_buttons));
 
         var csrfToken = $('input[name=csrfmiddlewaretoken]').val();
         var preset_id = $("#preset").val();

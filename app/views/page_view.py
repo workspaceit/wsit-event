@@ -9,7 +9,7 @@ from django.db import transaction
 from app.models import PageContent, Questions, Elements, Events, EmailTemplates, Option, ElementsAnswers, CustomClasses, \
     PageContentClasses, PresetEvent, ElementPresetLang, ElementDefaultLang, RuleSet, PagePermission, Tag, Session, \
     EmailContents, PluginSubmitButton, MessageContents, \
-    ElementsQuestions, Group, Room, MenuItem, PhotoGroup, ElementHtml, Presets, Rebates, StyleSheet, ExportRule, \
+    ElementsQuestions, Room, MenuItem, PhotoGroup, ElementHtml, Presets, Rebates, StyleSheet, ExportRule, \
     PluginPdfButton, Setting
 
 from django.db.models import Q
@@ -23,9 +23,6 @@ from django.http import Http404
 import boto
 from boto.s3.key import Key
 from django.conf import settings
-import datetime
-import hashlib
-import io
 from boto3.session import Session as boto_session
 import re
 from slugify import slugify
@@ -249,8 +246,6 @@ class PageView(generic.DetailView):
     @staticmethod
     def upload_image(request):
         image = request.FILES['files']
-        # hash_object = hashlib.md5(str(datetime.datetime.now()).encode('utf-8'))
-        # filename = hash_object.hexdigest()
         response = {}
         filename = PageView.urlify(image.name.split('.')[0])
 
@@ -274,10 +269,6 @@ class PageView(generic.DetailView):
             response['success'] = True
             response['msg'] = "Successfully Uploaded"
         else:
-            # k.set_contents_from_string(image.read())
-            # k.set_metadata('Content-Type', 'image/' + image.content_type)
-            # k.set_acl('public-read')
-            # k.make_public()
             response['success'] = False
             response['msg'] = "File name already exists"
 
@@ -310,32 +301,14 @@ class PageView(generic.DetailView):
                 if alreadySavedSetting.exists():
                     if setting['type'] == 'message':
                         if setting['setting_answer'] != "":
-                            # print(setting['setting_answer'])
-                            # obj = {}
-                            # obj[str(language_id)] = setting['setting_answer']
-                            # print(str(obj).replace("'",'"'))
                             if alreadySavedSetting[0].description != '':
                                 obj = json.loads(alreadySavedSetting[0].description,strict=False)
                                 obj[str(language_id)]=setting['setting_answer']
                                 setting_form_data['description'] =  str(obj).replace("'",'"')
-                                # setting_form_data['description'] =  str(obj)
-                                # import ast
-                                # print(ast.literal_eval(setting_form_data['description']))
                             else:
                                 obj = {}
                                 obj[str(language_id)]=setting['setting_answer']
                                 setting_form_data['description'] = str(obj).replace("'",'"')
-                                # setting_form_data['description'] = str(obj)
-                        # else:
-                        #     if alreadySavedSetting[0].description != '':
-                        #         obj = json.loads(alreadySavedSetting[0].description,strict=False)
-                        #         obj[str(language_id)]=setting['setting_answer']
-                        #         setting_form_data['description'] =  str(obj).replace("'",'"')
-                        #     else:
-                        #         obj = {}
-                        #         obj[str(language_id)]=setting['setting_answer']
-                        #         setting_form_data['description'] = str(obj).replace("'",'"')
-
                     elif int(setting['setting_id']) == 69 or int(setting['setting_id']) == 343:
                         if setting['setting_answer'] != "":
                             if alreadySavedSetting[0].answer != '':
@@ -356,15 +329,6 @@ class PageView(generic.DetailView):
                     ElementsAnswers.objects.filter(id=alreadySavedSetting[0].id).update(**setting_form_data)
                     response['success'] = True
                     settings_data = alreadySavedSetting[0]
-                    # if settings_data.description != "":
-                    #     msg = json.loads(settings_data.description,strict=False)
-                    #     settings_data.description = msg[str(language_id)]
-                    # if settings_data.element_question.question_key == "submit_button_title":
-                    #     title = json.loads(settings_data.answer,strict=False)
-                    #     settings_data.answer = title[str(language_id)]
-                    # if settings_data.element_question.question_key == "pdf_button_title":
-                    #     title = json.loads(settings_data.answer, strict=False)
-                    #     settings_data.answer = title[str(language_id)]
                     setting_dict = {
                         'answer': setting_form_data['answer'],
                         'box_id': settings_data.box_id,
@@ -399,18 +363,7 @@ class PageView(generic.DetailView):
                     new_message = ElementsAnswers(**setting_form_data)
                     new_message.save()
                     response['success'] = True
-                    # settings_data = ElementsAnswers.objects.get(id=new_message.id)
                     settings_data = new_message
-                    # if settings_data.description != "":
-                    #     msg = json.loads(settings_data.description,strict=False)
-                    #     settings_data.description = msg[str(language_id)]
-                    # if settings_data.element_question.question_key == "submit_button_title":
-                    #     title = json.loads(settings_data.answer,strict=False)
-                    #     settings_data.answer = title[str(language_id)]
-                    # if settings_data.element_question.question_key == "pdf_button_title":
-                    #     title = json.loads(settings_data.answer, strict=False)
-                    #     settings_data.answer = title[str(language_id)]
-                    # element_settings_dict.append(settings_data.as_dict())
                     setting_dict = {
                         'answer': settings_data.answer,
                         'box_id': settings_data.box_id,
@@ -508,7 +461,6 @@ class PageView(generic.DetailView):
                         },
                         "answer": setting.answer
                     }
-                    # element_settings.append(setting.as_dict())
                     element_settings.append(setting_dict)
                 except Exception as e:
                     ErrorR.efail(e)
@@ -530,7 +482,6 @@ class PageView(generic.DetailView):
                                 title_new = title[str(current_language.preset_id)]
                         except:
                             pass
-                # button_setting = setting.as_dict()
                 button_setting = {
                     "id": setting.id,
                     "element_question": {
@@ -551,7 +502,6 @@ class PageView(generic.DetailView):
                     "answer": setting.answer
                 }
                 element_settings.append(setting_dict)
-                # element_settings.append(setting.as_dict())
         response['element_settings'] = element_settings
         response['message_setting'] = message
         response['success'] = True
@@ -560,8 +510,6 @@ class PageView(generic.DetailView):
     def get_custom_classes(request):
         response_data = {}
         event_id = request.session['event_auth_user']['event_id']
-        # val = request.POST.get('q')
-        # custom_classes = CustomClasses.objects.values('classname', 'id').filter(classname__startswith=val)
         custom_classes = CustomClasses.objects.values('classname', 'id').filter(event_id=event_id)
         my_data = []
         for custom_class in custom_classes:
@@ -589,23 +537,12 @@ class PageView(generic.DetailView):
                                                           classname_id=box_class['id']).exists()):
                     page_box_class = PageContentClasses(page_id=page_id, box_id=box_id, classname_id=box_class['id'])
                     page_box_class.save()
-            # if box_class.isdigit():
-            #     class_exist.append(box_class)
-            #     if not (
-            #     PageContentClasses.objects.filter(page_id=page_id, box_id=box_id, classname_id=box_class).exists()):
-            #         page_box_class = PageContentClasses(page_id=page_id, box_id=box_id, classname_id=box_class)
-            #         page_box_class.save()
             else:
                 new_class = CustomClasses(classname=box_class['text'], created_by_id=admin_id, event_id=event_id)
                 new_class.save()
                 page_box_class = PageContentClasses(page_id=page_id, box_id=box_id, classname_id=new_class.id)
                 page_box_class.save()
                 class_exist.append(new_class.id)
-                # new_class = CustomClasses(classname=box_class, created_by_id=admin_id)
-                # new_class.save()
-                # page_box_class = PageContentClasses(page_id=page_id, box_id=box_id, classname_id=new_class.id)
-                # page_box_class.save()
-                # class_exist.append(new_class.id)
         deleted_class = PageContentClasses.objects.filter(page_id=page_id, box_id=box_id).exclude(
             classname_id__in=class_exist)
         for page_class in deleted_class:
@@ -878,16 +815,12 @@ class PageDetailView(generic.DetailView):
             key.set_contents_from_string(file.read())
             key.set_acl('public-read')
             key.make_public()
-            # response['success'] = True
-            # response['msg'] = "Successfully Uploaded"
         else:
             key = bucket.new_key(key_name)
             key.set_metadata('Content-Type', contentType)
             key.set_contents_from_string(file.read())
             key.set_acl('public-read')
             key.make_public()
-            # response['success'] = True
-            # response['msg'] = "Successfully Uploaded"
 
         key_detail = bucket.get_key(key_name)
         key_url = key_detail.generate_url(0, query_auth=False)
@@ -899,13 +832,10 @@ class PageDetailView(generic.DetailView):
         response = {}
         try:
             key_src = request.POST.get('src')
-            print(key_src)
             conn = boto.connect_s3(settings.AWS_ACCESS_KEY_ID, settings.AWS_SECRET_ACCESS_KEY, host=settings.AWS_STORAGE_HOST)
             bucket = conn.get_bucket(settings.AWS_STORAGE_BUCKET_NAME)
-            # key = bucket.get_key(key_src)
             get_key = key_src.split('public')
             key = 'public'+get_key[1]
-            print(key)
             bucket.delete_key(key)
             response['success'] = True
             response['message'] = 'Deleted successfully'
@@ -946,7 +876,6 @@ class PageDetailView(generic.DetailView):
             else:
                 new_time = time.time()
                 template = EmailTemplates.objects.get(id=static_page.template_id)
-                # content = pageContent.replace('[[static]]', settings.STATIC_URL_ALT)
                 css_version_obj = StyleSheet.objects.get(event_id=request.session['event_auth_user']['event_id'])
                 css_version = css_version_obj.version
 
@@ -1050,7 +979,6 @@ class PageDetailView(generic.DetailView):
                     lang_key[lang.lang_key] = lang.default_value
                 language[plugin_slug] = lang_key
             module_settings = ElementsQuestions.objects.filter(group_id=module.id)
-            # module_settings = module.elementsquestions_set.all()
             module_key = {}
             for module_setting in module_settings:
                 module_key[module_setting.question_key] = module_setting
@@ -1093,9 +1021,6 @@ class PageDetailView(generic.DetailView):
         current_language = LanguageView.get_current_preset(request)
         languages = Presets.objects.filter(Q(event_id=event_id) | Q(event_id=None))
         pdf_templates = EmailTemplates.objects.filter(category='pdf', is_show=1, event_id=event_id)
-        # ErrorR.okblue("-------------------")
-        # ErrorR.okblue(language)
-        # ErrorR.okblue("////////////////////")
         rebates = Rebates.objects.values('name', 'id').filter(event_id=event_id)
         att_export_list = ExportRule.objects.filter(group__event_id=event_id).exclude(preset__icontains='hotel_view')
 
@@ -1136,11 +1061,8 @@ class PageDetailView(generic.DetailView):
             "pdf_templates":pdf_templates,
             "languages":languages
         }
-        # get_files = FileView.get_all_files(request)
-        # context['filelist'] = get_files['filelist']
         editor_common_context = EditorHelper.get_editor_context(request, styles=True, min_height=300, max_height=300, toolbar_inline=1)
         context.update(editor_common_context)
-        # return render_to_string('page/cms_page.html', context)
         return render_to_string('page/cms_page_new.html', context)
 
     def get_treeView_question_group(request):
@@ -1225,7 +1147,6 @@ class PageDetailView(generic.DetailView):
                     options = Option.objects.filter(question_id=qid['qid'])
                     slug_title = slugify(question.title)
                     description = ''
-                    # if question.description != '' and question.description != None:
                     if question.show_description:
                         description = """<span class="event-question-label-description">""" + question.description + """</span>"""
                     if question.type == 'select':
@@ -1640,43 +1561,12 @@ class LanguageElement(generic.DetailView):
         for setting in element_settings:
             new_setting_data = {}
             new_setting_data['answer'] = setting.answer
-            # if setting.description != "":
-            #     try:
-            #         msg = json.loads(setting.description,strict=False)
-            #         setting.description = msg[str(language_id)]
-            #     except Exception as e:
-            #         ErrorR.efail(e)
-            #         try:
-            #             current_language = LanguageView.get_current_preset(request)
-            #             setting.description = msg[str(current_language.preset_id)]
-            #         except:
-            #             setting.description = ""
-            # if setting.element_question.question_key == "submit_button_title" or setting.element_question.question_key == "pdf_button_title":
-            #     title_new = ''
-            #     if setting.answer != '':
-            #         try:
-            #             title = json.loads(setting.answer,strict=False)
-            #             if title[str(language_id)]:
-            #                 title_new = title[str(language_id)]
-            #         except ValueError:
-            #             title_new = setting.answer
-            #         except Exception as e:
-            #             try:
-            #                 current_language = LanguageView.get_current_preset(request)
-            #                 title = json.loads(setting.answer,strict=False)
-            #                 if title[str(current_language.preset_id)]:
-            #                     title_new = title[str(current_language.preset_id)]
-            #             except:
-            #                 pass
-            #     new_setting_data['answer'] = title_new
-            # new_setting_data['description'] = setting.description
             new_setting_data['box_id'] = setting.box_id
             new_setting_data['element_question'] = {
                 "id": setting.element_question.id,
                 "group_slug": setting.element_question.group.slug,
                 "question_key": setting.element_question.question_key
             }
-            # new_setting_data['element_question'] = setting.element_question.as_dict()
             element_settings_dict.append(new_setting_data)
         return element_settings_dict
 
@@ -1709,7 +1599,6 @@ class LanguageElement(generic.DetailView):
                 "group_slug": setting.element_question.group.slug,
                 "question_key": setting.element_question.question_key
             }
-            # new_setting_data['element_question'] = setting.element_question.as_dict()
             element_settings_dict.append(new_setting_data)
         return element_settings_dict
 

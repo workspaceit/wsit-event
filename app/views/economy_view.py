@@ -6,10 +6,9 @@ import json
 from openpyxl import Workbook
 from openpyxl.writer.excel import save_virtual_workbook
 from app.views.common_views import EventView
-from django.db.models import Q,Max, Sum, F
-from io import StringIO, BytesIO
-from app.views.gbhelper.error_report_helper import ErrorR
-from app.views.gbhelper.pdf_generator import EconomyPDFGenerator, EconomyPDFExport
+from django.db.models import Q, Sum, F
+from io import BytesIO
+from app.views.gbhelper.pdf_generator import EconomyPDFExport
 
 from app.views.gbhelper.language_helper import LanguageH
 
@@ -114,15 +113,6 @@ class EconomyView(generic.DetailView):
         }
         overview_data.append(obj)
 
-        # ----------------------------- settled order
-        # settled_orders = Orders.objects.filter(attendee__event_id=event_id,
-        #                                        status__in=['paid']).values('order_number').distinct().count()
-        # obj = {
-        #     'name': 'Settled orders',
-        #     'value': settled_orders,
-        # }
-        # overview_data.append(obj)
-
         # ----------------------------- open order
         open_orders = Orders.objects.filter(attendee__event_id=event_id,
                                                status__in=['open']).values('order_number').distinct().count()
@@ -157,16 +147,6 @@ class EconomyView(generic.DetailView):
     def get_overview_data(request):
         overview_data = []
         event_id = request.session['event_auth_user']['event_id']
-        # --------------------------total orders
-        # total_orders = Orders.objects.filter(~Q(status='cancelled'), attendee__event_id=event_id).values(
-        #     'order_number').distinct().count()
-        # obj = {
-        #     'name': 'Orders',
-        #     'sum_incl_vat': total_orders,
-        #     'sum_excl_vat': total_orders,
-        #     'percentage': ''
-        # }
-        # overview_data.append(obj)
 
         # ---------------------------calculated turnover
         calculated_turned_over_excl_vat = Orders.objects.filter(attendee__event_id=event_id,
@@ -432,8 +412,6 @@ class EconomyView(generic.DetailView):
             rebate_type = request.POST.get('rebate_type')
             value = request.POST.get('value')
             rebate_id = request.POST.get('rebate_id')
-            print('rebate_id type: {}'.format(type(rebate_id)))
-
             try:
                 if rebate_id and rebate_id.isdigit():
                     rebate = Rebates.objects.get(id=rebate_id)
@@ -495,21 +473,6 @@ class EconomyView(generic.DetailView):
             dict(name="Credit invoices", type="credit-invoice")
         ]
         return render(request, 'economy/export.html', context)
-
-    # def economy_export_download(request):
-    #     response = HttpResponse('Something went wrong.')
-    #     try:
-    #         event_id = request.session['event_auth_user']['event_id']
-    #         pdf_type = request.GET.get('pdf_type')
-    #         if pdf_type == 'invoice':
-    #             response = EconomyPDFExport.get_all_event_invoices(request, event_id)
-    #         elif pdf_type == 'receipt':
-    #             response = EconomyPDFGenerator.get_all_event_invoices(request, event_id)
-    #         elif pdf_type == 'credit-invoice':
-    #             response = EconomyPDFGenerator.get_all_event_invoices(request, event_id)
-    #     except Exception as ex:
-    #         ErrorR.efail(ex)
-    #     return response
 
     def economy_export_check_status(request):
         return EconomyPDFExport.check_economy_pdf_export_status(request)

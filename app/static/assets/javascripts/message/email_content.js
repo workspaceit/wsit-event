@@ -512,7 +512,6 @@ $(document).ready(function () {
     })
         .on("change", function (e) {
             clog(e);
-            console.log('oh')
             var content_id = $('#btn-save-email-content').attr('data-id');
             var language_id = e.val;
             clog(language_id)

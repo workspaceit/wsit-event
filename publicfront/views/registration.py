@@ -1,5 +1,3 @@
-from django.core.exceptions import ObjectDoesNotExist
-from django.template.loader import render_to_string
 from app.views.gbhelper.error_report_helper import ErrorR
 from publicfront.views.lang_key import LanguageKey
 from publicfront.views.profile import SessionDetail
@@ -24,19 +22,16 @@ else:
     bytes = str
     basestring = basestring
 
-from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from app.models import Attendee, Session, SeminarsUsers, Questions, \
-    ActivityHistory, AttendeeSubmitButton, ElementsAnswers, PageContent, RuleSet, MenuItem, Setting, PresetEvent, \
-    EmailContents, EmailLanguageContents, MessageContents, MessageLanguageContents, RegistrationGroups, \
+    ActivityHistory, AttendeeSubmitButton, ElementsAnswers, PageContent, RuleSet, MenuItem, Setting, RegistrationGroups, \
     RegistrationGroupOwner, \
-    AttendeeGroups, Answers, Elements, ElementHtml,Orders, Events, EmailTemplates, Presets
-import json, os, sys, time, string, random
+    AttendeeGroups, Answers, ElementHtml,Orders, Presets
+import json, os, string, random
 from django.db import transaction
 from django.views.generic import TemplateView
 from publicfront.views.attendee import AttendeeRegistration as AttRegistration
 from django.contrib.auth.hashers import make_password
-from django.contrib.auth.hashers import check_password
 from publicfront.views.user_login import UserLogin
 from django.db.models import Q
 from datetime import datetime
@@ -66,7 +61,6 @@ class Registration(TemplateView):
             form_data = {}
 
             answers = json.loads(request.POST.get('answers'))
-            # attendee_session = json.loads(request.POST.get('sessions'))
             hotel_reservation = json.loads(request.POST.get('hotel_reservation'))
             economy_data = json.loads(request.POST.get('economy_data'))
 
@@ -100,7 +94,6 @@ class Registration(TemplateView):
                                                        event_id=event_id)
                             activity.save()
                             Registration.setAttendeeAnswers(answers, attendee, event_id)
-                            # Registration.setAttendeeSessions(attendee_session, attendee, event_id)
                             if hotel_reservation:
                                 hotel_result = HotelReservationPlugin.make_reservation('exist', attendee.id,
                                                                                        request.session['event_id'],
@@ -128,11 +121,6 @@ class Registration(TemplateView):
                                 if order_id:
                                     Registration.check_and_apply_rebate(request, economy_data, attendee.id, order_id)
                                     EconomyLibrary.delete_empty_order(order_id)
-
-                            # if 'deleted_sessions' in request.POST:
-                            #     deletedSession = json.loads(request.POST.get('deleted_sessions'))
-                            #     for del_session in deletedSession:
-                            #         SeminarsUsers.objects.filter(attendee_id=attendee.id, session_id=del_session).delete()
                             settings_data = Registration.submit_button_settings(request, button_id, page_id, box_id,
                                                                                 attendee.id)
 
@@ -180,7 +168,6 @@ class Registration(TemplateView):
 
             else:
                 form_data["event_id"] = event_id
-                print('######## New user found #########')
                 exist_email = request.POST.get('email')
                 form_data['email'] = request.POST.get('email')
                 form_data['firstname'] = request.POST.get('firstname')
@@ -244,7 +231,6 @@ class Registration(TemplateView):
                                                        event_id=event_id)
                             activity.save()
                             Registration.setAttendeeAnswers(answers, attendee, event_id)
-                            # Registration.setAttendeeSessions(attendee_session, attendee, event_id)
 
                             if hotel_reservation:
                                 hotel_result = HotelReservationPlugin.make_reservation('new', attendee.id,
@@ -406,7 +392,6 @@ class Registration(TemplateView):
                 if question[0].actual_definition == "phone":
                     Attendee.objects.filter(id=attendee.id).update(phonenumber=answer['answer'])
                 AttRegistration.saveAnswers(attendee.id, answer)
-        print("--- %s seconds ---" % (time.time() - start_time))
         return True
 
     def setAttendeeSessions(attendee_session, attendee, event_id):
@@ -517,7 +502,6 @@ class Registration(TemplateView):
                         if btn_email_answer['state'] == 1:
                             response['result'] = True
                         elif btn_email_answer['state'] == 2:
-                            # queue = UserEmail.email_connection(request)
                             user_att = Attendee.objects.get(id=user_id)
                             ErrorR.okblue(attendee_owner_id)
                             if attendee_owner_id is None:
@@ -527,7 +511,7 @@ class Registration(TemplateView):
                             response['email']['attendee'] = btn_email_answer['data']['email_id']
                             response['email']['owner'] = btn_email_answer['data']['email_id']
                         elif btn_email_answer['state'] == 3:
-                            # queue = UserEmail.email_connection(request)
+
                             if type(btn_email_answer['data']) is list:
                                 # for previous submit button settings, where both share same email
                                 response['result'] = True
@@ -651,59 +635,6 @@ class Registration(TemplateView):
                 custom_query = "?" + custom_query
             return page_url + custom_query
 
-    # def get_outbound_sessions(request, *args, **kwargs):
-    #     city = request.POST.get('city')
-    #     group_list = []
-    #     travel_group = Group.objects.filter(travel__departure_city=city, travel__travel_bound='outbound').distinct()
-    #     print(travel_group.count())
-    #     for group in travel_group:
-    #         travels = Travel.objects.filter(departure_city=city, travel_bound='outbound', group_id=group.id)
-    #         travels_list = []
-    #         for travel in travels:
-    #             booked = TravelAttendee.objects.filter(travel_id=travel.id).count()
-    #             outTravel = travel.as_dict()
-    #             outTravel['full'] = True
-    #             if travel.max_attendees > booked:
-    #                 outTravel['full'] = False
-    #             travels_list.append(outTravel)
-    #         travel_obj = {
-    #             'group': group.as_dict(),
-    #             'travels': travels_list
-    #         }
-    #         group_list.append(travel_obj)
-    #     data = {
-    #         'travel_groups': group_list
-    #     }
-    #     return HttpResponse(json.dumps(data), content_type="application/json")
-
-    # def get_homebound_sessions(request, *args, **kwargs):
-    #     outbound_id = request.POST.get('outbound_id')
-    #     group_list = []
-    #     homebound_list = []
-    #     homebound_travel = TravelBoundRelation.objects.filter(travel_outbound_id=outbound_id)
-    #     for h_travel in homebound_travel:
-    #         homebound_list.append(h_travel.travel_homebound_id)
-    #     travel_group = Group.objects.filter(travel__id__in=homebound_list).distinct()
-    #     for group in travel_group:
-    #         travels = Travel.objects.filter(id__in=homebound_list, group_id=group.id)
-    #         travels_list = []
-    #         for travel in travels:
-    #             booked = TravelAttendee.objects.filter(travel_id=travel.id).count()
-    #             homeTravel = travel.as_dict()
-    #             homeTravel['full'] = True
-    #             if travel.max_attendees > booked:
-    #                 homeTravel['full'] = False
-    #             travels_list.append(homeTravel)
-    #         travel_obj = {
-    #             'group': group.as_dict(),
-    #             'travels': travels_list
-    #         }
-    #         group_list.append(travel_obj)
-    #     data = {
-    #         'travel_groups': group_list
-    #     }
-    #     return HttpResponse(json.dumps(data), content_type="application/json")
-
     def add_default_session(attendee_id, *args, **kwargs):
         if os.environ['ENVIRONMENT_TYPE'] == 'master':
             group_id = 161
@@ -810,9 +741,6 @@ class Registration(TemplateView):
                                 group_owner = RegistrationGroupOwner(group_id=group_id, owner_id=attendee_owner_id)
                                 group_owner.save()
                                 multiple_group_id = group_id
-                        # settings_data = Registration.submit_button_settings(request, button_id, page_id, box_id,
-                        #                                                     attendee_owner_id)
-
                         attendee_session = UserLogin.add_attendee_to_session(request, attendee_owner)
                         request.session['event_user'] = attendee_session
                         request.session['event_id'] = attendee_session['event_id']
@@ -873,29 +801,16 @@ class Registration(TemplateView):
                                                    value="").update(value=ques.value)
                         AttendeeGroups.objects.bulk_create(multiple_attendee_groups)
                         ErrorR.ex_time_init()
-                        print('email_gt')
-                        print(email_id)
-                        print('att len')
-                        print(len(attendees))
                         if len(attendees) > 0 and email_id.get('attendee'):
                             # email_id{'attendee', 'owner'} will be both
                             all_multi_attendees = []
                             all_multi_attendees += multiple_attendees
-                            # queue = UserEmail.email_connection(request)
-                            print("confirmations")
-                            print(confirmations)
                             if confirmations == 'send-to-all':
-                                print('email')
-                                print(email_id)
+
                                 if email_id['attendee'] == email_id['owner']:
                                     all_multi_attendees.append(attendee_owner_id)
-                                    print('if')
-                                    print(all_multi_attendees)
                                     UserEmail.send_email_to_multiple_user(request, email_id['attendee'], all_multi_attendees)
                                 else:
-                                    print('else')
-                                    print('atts:')
-                                    print(all_multi_attendees)
                                     UserEmail.send_email_to_multiple_user(request, email_id['attendee'], all_multi_attendees)
                                     UserEmail.send_email_to_multiple_user(request, email_id['owner'], [], attendee_owner_id)
                             else:
@@ -905,7 +820,6 @@ class Registration(TemplateView):
                                 else:
                                     UserEmail.send_email_to_multiple_user(request, email_id['owner'], all_multi_attendees, attendee_owner_id, email_id['attendee'])
                         elif email_id.get('attendee'):
-                            # queue = UserEmail.email_connection(request)
                             UserEmail.send_email_to_multiple_user(request, email_id['owner'], [], attendee_owner_id)
 
                         # print('*** Merge Order Number ***')
@@ -1032,7 +946,6 @@ class Registration(TemplateView):
             if not Presets.objects.filter(id=language_id, event_id=event_id).exists():
                 language_id = 0
         form_data = {}
-        # economy_data = json.loads(request.POST.get('economy_data'))
         owner_answers = multiple_attendee['answers']
         owner_hotel_reservations = None
         if "hotel_reservation" in multiple_attendee:
@@ -1069,7 +982,6 @@ class Registration(TemplateView):
                         Registration.setAttendeeAnswers(owner_answers, attendee, event_id)
                         if owner_hotel_reservations:
                             order_number = request.POST.get('order_number')
-                            print('ORDER NUMBER {}'.format(order_number))
                             hotel_result = HotelReservationPlugin.make_reservation('exist', attendee.id,
                                                                                    request.session['event_id'], owner_hotel_reservations, order_number)
                             if hotel_result and hotel_result.get('result') and hotel_result.get('order_number'):
@@ -1104,7 +1016,6 @@ class Registration(TemplateView):
                 response_data['message'] = message
         else:
             form_data['event_id'] = event_id
-            print('######## Attendee Owner found #########')
             if "email" in multiple_attendee:
                 form_data['email'] = multiple_attendee['email']
             else:
@@ -1119,7 +1030,6 @@ class Registration(TemplateView):
                 form_data['language_id'] = language_id
             exist_email = form_data['email']
             run = True
-            # if not (Attendee.objects.filter(email=form_data['email'], event_id=event_id).exists()):
             if run:
                 form_data["type"] = "user"
                 flag = True
@@ -1174,7 +1084,6 @@ class Registration(TemplateView):
 
                         if owner_hotel_reservations:
                             order_number = request.POST.get('order_number')
-                            print('ORDER NUMBER {}'.format(order_number))
                             hotel_result = HotelReservationPlugin.make_reservation('new', attendee.id, request.session['event_id'], owner_hotel_reservations, order_number)
                             if hotel_result and hotel_result.get('result') and hotel_result.get('order_number'):
                                 response_data['order_number'] = hotel_result.get('order_number')
@@ -1261,146 +1170,6 @@ class Registration(TemplateView):
         return response
 
 class AutoLoginView(TemplateView):
-    # def auto_login_user(request, user_key, *args, **kwargs):
-    #     from publicfront.gt_views.login import UserLogin
-    #     login_user = UserLogin.loginUser(request, user_key)
-    #     return login_user
-
-    # def update_tags(request, *args, **kwargs):
-    #     from django.db import connection
-    #     from app.models import Tag, GeneralTag
-    #     sql = "SELECT attendees.event_id, attendee_tags.tag_id FROM attendees,  `attendee_tags` WHERE attendee_tags.attendee_id = attendees.id GROUP BY attendee_tags.tag_id"
-    #     cursor = connection.cursor()
-    #
-    #     cursor.execute(sql)
-    #     rows = cursor.fetchall()
-    #     data = []
-    #     for row in rows:
-    #         event_id = row[0]
-    #         tag_id = row[1]
-    #         data.append({'event_id':event_id,'tag_id':tag_id})
-    #     for d in data:
-    #         Tag.objects.filter(id=d['tag_id']).update(event_id=d['event_id'])
-    #
-    #     general_sql = "SELECT groups.event_id,session_has_tags.tag_id from groups,sessions,session_has_tags where sessions.id=session_has_tags.session_id and groups.id=sessions.group_id GROUP BY session_has_tags.tag_id"
-    #     cursor.execute(general_sql)
-    #     general_rows = cursor.fetchall()
-    #     general_data = []
-    #     for general_row in general_rows:
-    #         event_id = general_row[0]
-    #         tag_id = general_row[1]
-    #         general_data.append({'event_id':event_id,'tag_id':tag_id})
-    #     for g_d in general_data:
-    #         GeneralTag.objects.filter(id=d['tag_id']).update(event_id=d['event_id'])
-    #
-    #     response_data = {
-    #         'data': data,
-    #         'general_data': general_data
-    #     }
-    #     return HttpResponse(json.dumps(response_data), content_type="application/json")
-
-    # def insert_ques(request, *args, **kwargs):
-    #     import time
-    #     from app.models import Answers
-    #     total_time= time.time()
-    #     answers_array = []
-    #     question_277_attendees_1 = [3229,3245,3258,3267,3273,3278,3284,3293,3316,3317,3325,3345,3348,3350,3363,3388,3390,3391,3392,3393]
-    #     question_277_attendees_2 = [3241,3253,3272,3280,3286,3291,3297,3301,3305,3319,3343,3352,3366,3367,3370,3372,3418]
-    #     question_277_attendees_3 = [3232,3254,3287,3323,3327,3328,3329,3330,3331,3332,3334,3335,3336,3337,3338,3339,3341,3342,3344,3346,3347,3349,3353,3355,3356,3357,3358,3359,3362,3364,3365,3368,3369,3373,3374,3375,3376,3377,3378,3379,3381,3382,3383,3384,3385,3389,3398,3399,3401,3403,3405,3407,3408,3410,3412,3413,3414,3417,3422]
-    #     question_277_attendees_4 = [3230,3233,3234,3235,3236,3237,3238,3239,3240,3242,3243,3244,3246,3247,3248,3249,3251,3252,3255,3256,3257,3259,3260,3262,3263,3264,3265,3266,3268,3270,3271,3274,3275,3277,3279,3281,3282,3283,3285,3288,3290,3292,3294,3295,3296,3298,3299,3300,3302,3303,3304,3306,3307,3308,3310,3311,3312,3313,3314,3315,3318,3320,3321,3322,3424]
-    #     question_277_attendees_Egen_utresa = [3269,3289,3361,3380,3386,3423]
-    #
-    #     answers_277_1 = AutoLoginView.set_ques_answers(question_277_attendees_1,277,'1',answers_array)
-    #     answers_277_2 = AutoLoginView.set_ques_answers(question_277_attendees_2,277,'2',answers_277_1)
-    #     answers_277_3 = AutoLoginView.set_ques_answers(question_277_attendees_3,277,'3',answers_277_2)
-    #     answers_277_4 = AutoLoginView.set_ques_answers(question_277_attendees_4,277,'4',answers_277_3)
-    #     answers_277_5 = AutoLoginView.set_ques_answers(question_277_attendees_Egen_utresa,277,'Egen utresa',answers_277_4)
-    #
-    #
-    #     question_278_attendees_1 = [3229,3258,3267,3269,3273,3278,3284,3289,3316,3317,3325,3345,3361,3363,3380,3388,3390,3391,3392,3393]
-    #     question_278_attendees_2 = [3241,3253,3272,3280,3286,3291,3297,3301,3305,3319,3343,3366,3367,3370,3372]
-    #     question_278_attendees_3 = [3232,3254,3287,3323,3327,3328,3329,3330,3331,3332,3334,3335,3336,3337,3338,3339,3341,3342,3344,3346,3347,3349,3353,3355,3356,3357,3358,3359,3362,3364,3365,3368,3369,3373,3374,3375,3376,3377,3378,3379,3381,3382,3383,3384,3385,3389,3398,3399,3401,3403,3405,3407,3408,3410,3412,3413,3414,3417,3422,3423]
-    #     question_278_attendees_4 = [3230,3233,3234,3235,3236,3237,3238,3239,3240,3242,3243,3244,3246,3247,3248,3249,3251,3252,3255,3256,3257,3259,3260,3262,3263,3264,3265,3266,3268,3270,3271,3274,3275,3277,3279,3281,3282,3283,3285,3288,3290,3292,3294,3295,3296,3298,3299,3300,3302,3303,3304,3306,3307,3308,3310,3311,3312,3313,3314,3315,3318,3320,3321,3322,3352,3386,3424]
-    #     question_278_attendees_Egen_hemresa = [3245,3293,3348,3350,3418]
-    #
-    #     answers_278_1 = AutoLoginView.set_ques_answers(question_278_attendees_1,278,'1',answers_277_5)
-    #     answers_278_2 = AutoLoginView.set_ques_answers(question_278_attendees_2,278,'2',answers_278_1)
-    #     answers_278_3 = AutoLoginView.set_ques_answers(question_278_attendees_3,278,'3',answers_278_2)
-    #     answers_278_4 = AutoLoginView.set_ques_answers(question_278_attendees_4,278,'4',answers_278_3)
-    #     answers_278_5 = AutoLoginView.set_ques_answers(question_278_attendees_Egen_hemresa,278,'Egen hemresa',answers_278_4)
-    #
-    #     Answers.objects.bulk_create(answers_278_5)
-    #     response_data = {
-    #         'data': len(answers_278_5)
-    #     }
-    #     print("--- %s seconds ---" % (time.time() - total_time))
-    #     return HttpResponse(json.dumps(response_data), content_type="application/json")
-
-    # def set_ques_answers(attendees,question_id,answer,answers_array):
-    #     from app.models import Answers
-    #     for attendee in attendees:
-    #         data = Answers(question_id=question_id,user_id=attendee,value=answer)
-    #         answers_array.append(data)
-    #     return answers_array
-
-    # def submit_button_lang(request, *args, **kwargs):
-    #     response_data = {}
-    #     all_submit_buttons = ElementsAnswers.objects.filter(element_question_id=69)
-    #     count = 0
-    #     for submit_button in all_submit_buttons:
-    #         event_id = submit_button.page.event_id
-    #         value = submit_button.answer
-    #         try:
-    #             json_value = json.loads(value,strict=False)
-    #         except:
-    #             try:
-    #                 presetsEvent = PresetEvent.objects.filter(event_id=event_id).first()
-    #                 language_id = presetsEvent.preset_id
-    #             except:
-    #                 language_id = 6
-    #             if language_id:
-    #                 obj = {}
-    #                 obj[str(language_id)]=value
-    #                 new_value = str(obj).replace("'",'"')
-    #                 submit_button.answer = new_value
-    #                 submit_button.save()
-    #                 count = count + 1
-    #     response_data['count'] = count
-    #     return HttpResponse(json.dumps(response_data), content_type="application/json")
-
-    # def content_lang(request, *args, **kwargs):
-    #     response_data = {}
-    #     all_email_contents = []
-    #     emails = EmailContents.objects.all()
-    #     for email in emails:
-    #         language = PresetEvent.objects.filter(event_id=email.template.event_id)
-    #         if language.exists():
-    #             if not EmailLanguageContents.objects.filter(language_id=language[0].preset_id,
-    #                                                         email_content_id=email.id).exists():
-    #                 if email.content != '':
-    #                     language_content = EmailLanguageContents(language_id=language[0].preset_id,
-    #                                                              email_content_id=email.id, content=email.content)
-    #                     language_content.save()
-    #                     all_email_contents.append(language_content.as_dict())
-    #     response_data['all_email_contents'] = all_email_contents
-    #     response_data['count_email'] = len(all_email_contents)
-    #
-    #     all_message_contents = []
-    #     messages = MessageContents.objects.all()
-    #     for message in messages:
-    #         message_language = PresetEvent.objects.filter(event_id=message.event_id)
-    #         if message_language.exists():
-    #             if not MessageLanguageContents.objects.filter(language_id=message_language[0].preset_id,
-    #                                                           message_content_id=message.id).exists():
-    #                 if message.content != '':
-    #                     language_content = MessageLanguageContents(language_id=message_language[0].preset_id,
-    #                                                                message_content_id=message.id,
-    #                                                                content=message.content)
-    #                     language_content.save()
-    #                     all_message_contents.append(language_content.as_dict())
-    #     response_data['all_message_contents'] = all_message_contents
-    #     response_data['count_message'] = len(all_message_contents)
-    #     return HttpResponse(json.dumps(response_data), content_type="application/json")
 
     def update_page_content(request, *args, **kwargs):
         response_data = {}
@@ -1446,75 +1215,7 @@ class AutoLoginView(TemplateView):
 
     def add_new_pages(request, *args, **kwargs):
         response_data = {}
-        # try:
-        #     events = Events.objects.all()
-        #     pages = []
-        #     for event in events:
-        #         template = EmailTemplates.objects.filter(name='default-web-template', event_id=event.id)
-        #         template_id = 1
-        #         if template.exists():
-        #             template_id = template[0].id
-        #         if not PageContent.objects.filter(url='404-not-found',event_id=event.id).exists():
-        #             page_form_1 = {
-        #                 "url": '404-not-found',
-        #                 "content": '',
-        #                 "created_by_id": 1,
-        #                 "last_updated_by_id": 1,
-        #                 "template_id": template_id,
-        #                 "event_id": event.id
-        #             }
-        #             page_1 = PageContent(**page_form_1)
-        #             pages.append(page_1)
-        #         if not PageContent.objects.filter(url='403-forbidden-registered', event_id=event.id).exists():
-        #             page_form_2 = {
-        #                 "url": '403-forbidden-registered',
-        #                 "content": '',
-        #                 "created_by_id": 1,
-        #                 "last_updated_by_id": 1,
-        #                 "template_id": template_id,
-        #                 "event_id": event.id
-        #             }
-        #             page_2 = PageContent(**page_form_2)
-        #             pages.append(page_2)
-        #         if not PageContent.objects.filter(url='403-forbidden-unregistered', event_id=event.id).exists():
-        #             page_form_3 = {
-        #                 "url": '403-forbidden-unregistered',
-        #                 "content": '',
-        #                 "created_by_id": 1,
-        #                 "last_updated_by_id": 1,
-        #                 "template_id": template_id,
-        #                 "event_id": event.id
-        #             }
-        #             page_3 = PageContent(**page_form_3)
-        #             pages.append(page_3)
-        #     PageContent.objects.bulk_create(pages)
-        #     response_data['success'] = True
-        #     response_data['events_length'] = len(events)
-        #     response_data['pages_length'] = len(pages)
-        # except Exception as e:
-        #     ErrorR.efail(e)
-        #     response_data['success'] = False
         return HttpResponse(json.dumps(response_data), content_type="application/json")
 
-    # def delete_act(request, *args, **kwargs):
-    #     response_data = {}
-    #     if 'id' in request.GET and 'last_id' in request.GET:
-    #         id_array = []
-    #         attendee_id = request.GET.get('id')
-    #         last_attendee_id = request.GET.get('last_id')
-    #         attendees = Attendee.objects.filter(id__gte=attendee_id, id__lte=last_attendee_id, event_id=26)
-    #         for att in attendees:
-    #             activities = ActivityHistory.objects.filter(attendee_id=att.id).values('id')[:5]
-    #             id_array.append(activities[0]['id'])
-    #             id_array.append(activities[1]['id'])
-    #             id_array.append(activities[2]['id'])
-    #             id_array.append(activities[3]['id'])
-    #             id_array.append(activities[4]['id'])
-    #             # ActivityHistory.objects.filter(attendee_id=att.id,id__gt=activities[4]['id']).delete()
-    #         response_data['id_array'] = id_array
-    #         response_data['total_attendee'] = len(attendees)
-    #     return HttpResponse(json.dumps(response_data), content_type="application/json")
-
     def logged_in_using_admin_email(request, *args, **kwargs):
-        print('here')
         return HttpResponse(json.dumps({}), content_type="application/json")

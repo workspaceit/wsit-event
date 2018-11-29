@@ -1,39 +1,6 @@
 {% extends "layout/main.html" %}
 {% block content %}
     {% load staticfiles %}
-    {#    {% load i18n %}#}
-    {#    {% load staticfiles %}#}
-    {#    {% block extra_head %}#}
-    {#        <script src="{% static 'assets/javascripts/datatable.js' %}"></script>#}
-    {#        <script type="text/javascript">#}
-    {#            var HOTEL_LIST_JSON_URL = '{% url "hotelList" %}';#}
-    {#            // translations for datatables#}
-    {##}
-    {#            var dt_language = {#}
-    {#                "emptyTable": "{% trans "No data available in table" %}",#}
-    {#                "info": "{% trans "Showing _START_ to _END_ of _TOTAL_ entries" %}",#}
-    {#                "infoEmpty": "{% trans "Showing 0 to 0 of 0 entries" %}",#}
-    {#                "infoFiltered": "{% trans "(filtered from _MAX_ total entries)" %}",#}
-    {#                "infoPostFix": "",#}
-    {#                "thousands": ",",#}
-    {#                "lengthMenu": "{% trans "Show _MENU_ entries" %}",#}
-    {#                "loadingRecords": "{% trans "Loading..." %}",#}
-    {#                "processing": "{% trans "Processing..." %}",#}
-    {#                "search": "{% trans "Search:" %}",#}
-    {#                "zeroRecords": "{% trans "No matching records found" %}",#}
-    {#                "paginate": {#}
-    {#                    "first": "{% trans "First" %}",#}
-    {#                    "last": "{% trans "Last" %}",#}
-    {#                    "next": "{% trans "Next" %}",#}
-    {#                    "previous": "{% trans "Previous" %}"#}
-    {#                },#}
-    {#                "aria": {#}
-    {#                    "sortAscending": "{% trans ": activate to sort column ascending" %}",#}
-    {#                    "sortDescending": "{% trans ": activate to sort column descending" %}"#}
-    {#                }#}
-    {#            }#}
-    {#        </script>#}
-    {#    {% endblock %}#}
     <div id="content-wrapper">
 
         <div class="panel colourable">
@@ -80,7 +47,6 @@
                                         <th>ID</th>
                                         <th>Name</th>
                                         <th>Description</th>
-                                        {#                            <th>Cost</th>#}
                                         <th>Occupancy</th>
                                         <th>Edit</th>
                                     </tr>
@@ -91,7 +57,6 @@
                                             <td data-id="{{ room.id }}">{{ room.id }}</td>
                                             <td>{{ room.hotel.name }}</td>
                                             <td>{{ room.description }}</td>
-                                            {#                                <td>€{{ room.cost }}</td>#}
                                             <td>{{ room.occupancy }}%</td>
                                             {% if request.session.admin_permission.content_permission.hotel_permission and request.session.admin_permission.content_permission.hotel_permission.access_level == 'write' or request.session.event_auth_user.type == 'super_admin' %}
                                                 <td>
@@ -128,44 +93,6 @@
                                     </tbody>
                                 </table>
                             {% endfor %}
-                            {#        <div class="table-header">#}
-                            {#            <div class="table-caption">#}
-                            {#                Far Away Hotels#}
-                            {#            </div>#}
-                            {#        </div>#}
-                            {#        <table class="table table-bordered sortable far-hotel-table">#}
-                            {#            <thead>#}
-                            {#            <tr>#}
-                            {#                <th>#</th>#}
-                            {#                <th>Name</th>#}
-                            {#                <th>Description</th>#}
-                            {#                <th>Cost</th>#}
-                            {#                <th>Occupancy</th>#}
-                            {#                <th>Edit</th>#}
-                            {#            </tr>#}
-                            {#            </thead>#}
-                            {#            <tbody>#}
-                            {#            {% for room in FarHotelRooms %}#}
-                            {#                <tr>#}
-                            {#                    <td>{{ room.id }}</td>#}
-                            {#                    <td>{{ room.hotel.name }}</td>#}
-                            {#                    <td>{{ room.description }}</td>#}
-                            {#                    <td>€{{ room.cost }}</td>#}
-                            {#                    <td>{{ room.vat }}%</td>#}
-                            {#                    <td>#}
-                            {#                        <button class="btn btn-xs" data-id="{{ room.id }}" data-toggle="tooltip" data-placement="top"#}
-                            {#                                title="" data-original-title="Room Matching"><i class="fa fa-link"></i></button>#}
-                            {#                        <a class="btn btn-xs" data-toggle="tooltip" data-placement="top" title=""#}
-                            {#                           href="{% url 'hotels' %}{{ room.hotel_id }}" data-original-title="Edit"><i#}
-                            {#                                class="fa fa-gear"></i></a>#}
-                            {#                        <button class="btn btn-xs btn-danger deleteRoom" data-id="{{ room.id }}" data-toggle="tooltip"#}
-                            {#                                data-placement="top" title="" data-original-title="Delete"><i#}
-                            {#                                class="fa fa-times-circle"></i></button>#}
-                            {#                    </td>#}
-                            {#                </tr>#}
-                            {#            {% endfor %}#}
-                            {#            </tbody>#}
-                            {#        </table>#}
                         </div>
                     </div>
 

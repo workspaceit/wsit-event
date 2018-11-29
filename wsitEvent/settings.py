@@ -120,11 +120,11 @@ AWS_REGION_NAME = 'eu-west-1'
 
 DATABASES = {
          'default': {
-             'NAME': 'wsit_event_fresh',
+             'NAME': 'wsit_event_db',
              'ENGINE': 'django.db.backends.mysql',
              'USER': 'root',
              'PASSWORD': '1',
-             'HOST': 'localhost',
+             'HOST': 'event_db',
              'PORT': '3306',
              'OPTIONS': {
                'autocommit': True,
@@ -165,9 +165,9 @@ LOCAL_ENV = False
 
 
 if os.environ['ENVIRONMENT_TYPE'] == 'master':
-    SITE_URL = 'http://192.168.1.67/'
+    SITE_URL = 'http://127.0.0.1:8003/'
 else:
-    SITE_URL = 'http://127.0.0.1:8000'
+    SITE_URL = 'http://127.0.0.1:8003'
 
 
 # DIBS_ACTION_URL = 'https://sat1.dibspayment.com/dibspaymentwindow/entrypoint'

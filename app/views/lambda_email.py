@@ -46,14 +46,10 @@ def mail_template_send(context, subject, to, sender_mail, environment, settings_
         email.send(html_content, settings_local_env)
     elif environment == 'develop':
         email = Mailer(subject=subject, to='workspaceinfotech@gmail.com', from_addr = sender_mail)
-        # email = Mailer(subject=subject,to='joakim@springconf.com',from_addr = sender_mail)
         email.send(html_content, settings_local_env)
     else:
         email = Mailer(subject=subject,to='workspaceinfotech@gmail.com',from_addr = sender_mail)
-        # email = Mailer(subject=subject, to='developerwsit@gmail.com', from_addr = sender_mail)
         email.send(html_content, settings_local_env)
-        # email = Mailer(subject=subject,to='joakim@springconf.com',from_addr = sender_mail)
-        # email.send(html_content, settings_local_env)
 
 
 class Mailer():

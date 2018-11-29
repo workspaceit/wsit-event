@@ -53,7 +53,6 @@ class ExcelView(generic.DetailView):
             tzname = setting_timezone[0].value
             timezone_active = timezone(tzname)
             now = datetime.datetime.now(timezone_active)
-            # print(now.strftime('%Y-%m-%d_%H-%M-%S'))
             return now
 
     def urlify(s):
@@ -79,8 +78,6 @@ class ExcelView(generic.DetailView):
         ]
 
         max_att_in_a_room = matchlines.values("match_id").annotate(max_att=Count("id")).order_by()
-        # logger = logging.getLogger(__name__)
-        # logger.debug(max_att_in_a_room)
 
         max_buddy = 1
         if max_att_in_a_room:
@@ -284,7 +281,6 @@ class ExcelView(generic.DetailView):
             match_lines= MatchLine.objects.all()
             all_bookings = Booking.objects.all()
             all_answers = Answers.objects.filter(question__in=questions)
-            print(serializers.serialize('json', all_answers))
 
             return HttpResponse("asdd")
 
@@ -446,12 +442,9 @@ class ExcelView(generic.DetailView):
             ws.append(row)
         f = io.BytesIO()
         wb.save(f)
-        # wb.save(file_path+"/"+filename)
         response = HttpResponse(save_virtual_workbook(wb), content_type='application/vnd.ms-excel')
         response['Content-Disposition'] = 'attachment; filename='+filename
         return response
-
-
 
     def get_answer(attendee_id,questions,answers):
         answered_questions = answers.filter(user_id=attendee_id)
@@ -477,38 +470,29 @@ class ExcelView(generic.DetailView):
                 buddies = buddies+ ""
         return buddies[:-1]
 
-
     def get_actual_buddy(actualBuddyList,booking):
         actualBuddyName=''
         for actualBuddy in actualBuddyList:
             if actualBuddy.booking.attendee_id!=booking.attendee_id:
-                # actualBuddyName =actualBuddyName + actualBuddy.booking.attendee.firstname + " " + actualBuddy.booking.attendee.lastname
                 actualBuddyName =actualBuddyName + actualBuddy.booking.attendee.email + ","
         return actualBuddyName[:-1]
-
 
     def add_sessions(all_sessions,seminar_users,attendee_id):
         sessions=[]
         for session in all_sessions:
             seminar_user = seminar_users.filter(attendee_id=attendee_id,session_id=session.id).last()
             if seminar_user:
-                # travels.append({'travel_id': travel.id, 'status': traveller.status})
                 sessions.append( seminar_user.status)
             else:
-                # travels.append({'travel_id': travel.id, 'status': ''})
                 sessions.append('')
         return sessions
-
-
 
     def add_travels(all_travels,travel_users,attendee_id):
         travels=[]
         for travel in all_travels:
             traveller = travel_users.filter(attendee_id=attendee_id,travel_id=travel.id).last()
             if traveller:
-                # travels.append({'travel_id': travel.id, 'status': traveller.status})
                 travels.append( traveller.status)
             else:
-                # travels.append({'travel_id': travel.id, 'status': ''})
                 travels.append('')
         return travels

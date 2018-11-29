@@ -1,7 +1,6 @@
 from django.conf.urls import url
 
 from app.views import common_views, matching, export_import_view, export_lambda, login_view, hotel_view, attendee_view, \
-    attendee_test, \
     question_view, room_view, location_view, session_views, setting_view, scan_view, photo_reel, message_view, \
     datatable, travel_view, admin_view, menu_view, page_view, style_view, template_view, attendee_datatable, \
     reset_password, checkpoint_view, file_view, \
@@ -66,10 +65,8 @@ urlpatterns = [
         name='settings-attendee-global-details'),
 
     url(r'^attendee/$', attendee_view.AttendeeView.as_view(), name="attendee"),
-    url(r'^attendee2/$', attendee_test.AttendeeView.as_view(), name="attendee2"),
     url(r'^attendee/users/$', datatable.AttendeeListView.as_view(), name="attendeeList"),
     url(r'^attendee/userlist/$', attendee_datatable.AttendeeListView.as_view(), name="attendeeUserList"),
-    # url(r'^attendee/users2/$', attendee_view.AttendeeListView.as_view(), name="attendeeList2"),
     url(r'^attendee/(?P<pk>[0-9]+)/$', attendee_view.AttendeeDetailView.as_view(), name='attendeeDetail'),
     url(r'^attendee-info/(?P<pk>[0-9]+)/$', attendee_view.AttendeeDetailView.attendeeInfo, name='attendeeInfo'),
     url(r'^attendee/default-answer/$', attendee_view.AttendeeDetailView.default_answer, name='defaultAnswer'),
@@ -150,7 +147,6 @@ urlpatterns = [
     url(r'^sessions/session_order/$', session_views.SessionView.set_sessions_order, name='order-session'),
     url(r'^sessions/session-report/$', session_views.SessionView.generate_session_report_excel, name='session-report'),
     url(r'^sessions/visible-columns/$', session_views.SessionView.set_visible_columns, name='session-visible-columns'),
-    # url(r'^sessions/description-preview/$', session_views.SessionDetailView.show_description_preview, name='sessions-description-preview'),
     url(r'^session/filter-status/$', session_views.SessionDetailView.session_filter_status,
         name='sessions-filter-status'),
     url(r'^session/filter-attending/$', session_views.SessionDetailView.session_filter_attending,
@@ -252,36 +248,14 @@ urlpatterns = [
     url(r'^checkpoint-update-manually/$', checkpoint_view.CheckpointView.checkpoint_manual_update,
         name='checkpoint-update-manually'),
 
-    # url(r'^get-message-recipients/$', message_view.MessageView.get_recipients, name='get-recipients'),
-    # url(r'^send-message/$', message_view.MessageView.as_view(), name='send-message'),
-    # url(r'^send-message/preview/$', email_content_view.EmailContentDetailView.show_message_preview,
-    #     name='message-preview'),
-    # # url(r'^send-email/$', message_view.MessageView.send_email, name='send-email'),
-    # url(r'^send-sms/$', message_view.MessageView.send_sms, name='send-sms'),
-    #
-    # url(r'^test-messages/$', email_content_view.MessageView.test_message, name='new_messages'),
-    # url(r'^test-messages-receivers/$', email_content_view.MessageView.test_message_receivers,
-    #     name='new_ messages_receivers'),
-    #
-    # url(r'^test-messages-receivers/import-clipboard$', email_content_view.MessageView.import_clipboard,
-    #     name='new_messages_receivers_import_clipboard'),
-
     url(r'^travels/$', travel_view.TravelView.as_view(), name='travels'),
     url(r'^travels/(?P<pk>[0-9]+)/$', travel_view.TravelDetailView.as_view(), name='travelsDetail'),
     url(r'^travels/delete/$', travel_view.TravelView.delete, name='deleteTravel'),
-    # url(r'^travels/remove-queue/$', travel_view.TravelView.remove_queue, name='remove-travel-queue'),
     url(r'^travels/get-tags/$', travel_view.TravelView.get_tags, name='get-travel-tags'),
-    # url(r'^travels/queue/$', travel_view.TravelView.travel_queue, name='travel-queue'),
-    # url(r'^travels/deciding/$', travel_view.TravelView.travel_deciding, name='travel-deciding'),
-    # url(r'^travels/queue_order/$', travel_view.TravelView.queue_order, name='travel-queue-order'),
     url(r'^travel-search/$', travel_view.TravelView.travel_search, name='travel-search'),
     url(r'^travels/get-bound/$', travel_view.TravelView.travel_get_bound, name='travel-get-bound'),
     url(r'^travels/travel_order/$', travel_view.TravelView.set_travels_order, name='order-travel'),
     url(r'^travels/get-homebound/$', travel_view.TravelView.get_homebound_travel, name='get-homebound-travel'),
-    # url(r'^sessions/duplicate/$', session_views.SessionView.session_duplicate, name='session-duplicate'),
-    # url(r'^forcefully-add-speaker/$', session_views.SessionView.addSpeakerFourcefullyToSession, name='session-forcefully-add-speaker'),
-    # url(r'^session-conflick-num/$', session_views.SessionView.session_conflick, name='session-conflick-num'),
-    # url(r'^remove-session-for-conflict/$', session_views.SessionView.session_remove_conflict, name='remove-session-for-conflict'),
 
     url(r'^get-all-events/$', common_views.EventView.get_all_events, name='get-all-events'),
     url(r'^change-event/$', common_views.EventView.change_event, name='change-event'),
@@ -337,21 +311,12 @@ urlpatterns = [
     url(r'^templates/delete/$', template_view.EmailTemplateView.delete, name='page-delete'),
     url(r'^templates/(?P<pk>[0-9]+)/$', template_view.EmailTemplateDetailView.as_view(), name='pages'),
 
-    # url(r'^emails/$', email_content_view.EmailContentView.as_view(), name='emails'),
-    # url(r'^emails/edit/(?P<pk>[0-9]+)/$', email_content_view.EmailContentDetailView.as_view(), name='emails'),
-    # url(r'^emails/delete/$', email_content_view.EmailContentView.delete, name='email-delete'),
-    # url(r'^emails/add/$', email_content_view.EmailContentDetailView.add_email, name='email-add'),
-    # url(r'^emails/preview/$', email_content_view.EmailContentDetailView.show_preview, name='email-preview'),
-    # url(r'^emails/send-template-mail/$', email_content_view.EmailContentDetailView.send_template_mail,
-    #     name='send-template-mail'),
-
     url(r'^emails/$', email_view.EmailView.as_view(), name='emails'),
     url(r'^emails-duplicate/$', email_view.EmailView.email_duplicate, name='emails-duplicate'),
     url(r'^emails-delete/$', email_view.EmailView.delete, name='emails-delete'),
     url(r'^emails/(?P<pk>[0-9]+)/$', email_view.EmailDetailView.as_view(), name='emails'),
     url(r'^emails-receivers/(?P<pk>[0-9]+)/$', email_view.EmailReceiversView.as_view(), name='emails-receivers'),
     url(r'^emails-content/(?P<pk>[0-9]+)/$', email_view.EmailContentView.as_view(), name='emails-content'),
-    # url(r'^emails-content-froala/(?P<pk>[0-9]+)/$', email_view.EmailContentView.get_floara_editor, name='emails-content-froala'),
     url(r'^emails-content/get-with-lang/$', email_view.EmailContentView.get_lang_email,
         name='emails-content-get-with-lang'),
     url(r'^emails-preview/$', email_view.EmailContentView.show_preview, name='emails-preview'),
@@ -370,12 +335,6 @@ urlpatterns = [
         name='import-clipboard-email-receiver'),
     url(r'^emails/import-excel-receiver/$', email_view.EmailReceiversView.import_excel_reciever,
         name='import-excel-email-receiver'),
-
-    # url(r'^test-emails-receivers/import-clipboard$', email_content_view.EmailContentDetailView.import_clipboard,
-    #     name='new_emails_receivers_import_clipboard'),
-    # url(r'^test-emails/$', email_content_view.EmailContentView.test_email, name='new_emails'),
-    # url(r'^test-emails-receivers/$', email_content_view.EmailContentView.test_email_receivers,
-    #     name='new_emails_receivers'),
 
     url(r'^messages/$', message_view.MessageView.as_view(), name='messages'),
     url(r'^messages-duplicate/$', message_view.MessageView.message_duplicate, name='messages-duplicate'),

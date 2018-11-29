@@ -46,7 +46,7 @@ class Login(generic.DetailView):
                     current_event = CurrentEvent(event_id=event_id,admin_id=user[0]['id'])
                     current_event.save()
 
-                base_url = 'http://127.0.0.1:8000/'+str(event_url)
+                base_url = 'http://127.0.0.1:8003/'+str(event_url)
 
                 find_users_in_attendee=Attendee.objects.filter(event_id=event_id,email=user[0]['email'])
                 is_attendee = False
@@ -63,51 +63,6 @@ class Login(generic.DetailView):
                     "base_url": base_url,
                     "is_attendee":is_attendee
                 }
-                # event_list = []
-                # group_list = []
-                # content_list = {}
-                # event_permission = EventAdmin.objects.filter(admin_id=user[0]['id'])
-                # for event in event_permission:
-                #     event_list.append(event.as_dict())
-                # content_permission = ContentPermission.objects.filter(admin_id=user[0]['id'], event_id=event_id)
-                # for content in content_permission:
-                #     if content.content == 'event':
-                #         content_list["event_permission"] = content.as_dict()
-                #     if content.content == 'session':
-                #         content_list["session_permission"] = content.as_dict()
-                #     if content.content == 'question':
-                #         content_list["question_permission"] = content.as_dict()
-                #     if content.content == 'travel':
-                #         content_list["travel_permission"] = content.as_dict()
-                #     if content.content == 'location':
-                #         content_list["location_permission"] = content.as_dict()
-                #     if content.content == 'hotel':
-                #         content_list["hotel_permission"] = content.as_dict()
-                #     if content.content == 'filter':
-                #         content_list["filter_permission"] = content.as_dict()
-                #     if content.content == 'export_filter':
-                #         content_list["export_filter_permission"] = content.as_dict()
-                #     if content.content == 'photo_reel':
-                #         content_list["photo_reel_permission"] = content.as_dict()
-                #     if content.content == 'message':
-                #         content_list["message_permission"] = content.as_dict()
-                #     if content.content == 'setting':
-                #         content_list["setting_permission"] = content.as_dict()
-                #     if content.content == 'assign_session':
-                #         content_list["assign_session_permission"] = content.as_dict()
-                #     if content.content == 'assign_travel':
-                #         content_list["assign_travel_permission"] = content.as_dict()
-                #     if content.content == 'assign_hotel':
-                #         content_list["assign_hotel_permission"] = content.as_dict()
-                #
-                # group_permission = GroupPermission.objects.filter(admin_id=user[0]['id'])
-                # for group in group_permission:
-                #     group_list.append(group.as_dict())
-                # admin_permission = {
-                #     "event_permission": event_list,
-                #     "content_permission": content_list,
-                #     "group_permission": group_list
-                # }
                 admin_permission = Login.get_admin_permissions(request,event_id,user[0]['id'])
                 request.session['event_auth_user'] = auth_user
                 request.session['is_login'] = True

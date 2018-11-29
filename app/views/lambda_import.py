@@ -34,7 +34,6 @@ class LambdaUpload:
 
         response_data2 = []
         global_new_att_flag = False
-        # questionHeaders = []
         header_row = []
         change_status_filename = filename
 

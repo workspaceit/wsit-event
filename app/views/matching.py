@@ -1,12 +1,7 @@
-from django.shortcuts import render
 from django.http import HttpResponse
 from django.views import generic
-from app.models import Users, Attendee, Booking, RequestedBuddy, Group, Match, MatchLine
-import json
-from datetime import datetime
-from django.http import Http404
+from app.models import Users, Attendee, Booking, RequestedBuddy
 from django.db.models import Q
-from django.db import transaction
 
 
 class MatchingView(generic.DetailView):
@@ -17,7 +12,4 @@ class MatchingView(generic.DetailView):
             buddy_requests=RequestedBuddy.objects.filter(booking=booking)
             for buddy_request in buddy_requests:
                 buddies=Attendee.objects.filter(Q())
-
-        # print(all_bookings)
         return HttpResponse("sdfdsf")
-        # return render(request, 'admin/admins.html')

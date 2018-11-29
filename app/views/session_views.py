@@ -3,10 +3,10 @@ from django.views import generic
 from django.http import HttpResponse
 import json
 from app.forms import session_form
-from app.models import Session, Locations, Notification, SeminarSpeakers, Attendee, Group, GeneralTag, SessionTags, \
+from app.models import Session, Locations, Notification, SeminarSpeakers, Attendee, Group, SessionTags, \
     GeneralTag, SeminarsUsers, Answers, SessionRating, Setting, VisibleColumns, Events, Checkpoint, RuleSet, \
     ActivityHistory, Questions, CurrentFilter, AttendeeTag, \
-    AttendeeGroups, Travel, RoomAllotment, Room, Option, MessageContents, EmailContents, Scan, CustomClasses, \
+    AttendeeGroups, Travel, Room, Scan, CustomClasses, \
     SessionClasses
 from django.http import Http404
 
@@ -14,13 +14,10 @@ from app.views.gbhelper.editor_helper import EditorHelper
 from app.views.room_view import RoomView
 from app.views.gbhelper.error_report_helper import ErrorR
 from .filter import FilterView
-# import datetime
 from .common_views import GroupView, EventView, CommonContext
-from django.db.models import Max, Avg, Count
+from django.db.models import Max
 from publicfront.views.profile import SessionDetail, AttendeeProfile
 from django.db.models import Q
-import os
-from .mail import MailHelper
 from datetime import timedelta, datetime
 from apscheduler.schedulers.background import BackgroundScheduler
 from app.views.gbhelper.language_helper import LanguageH
@@ -94,7 +91,6 @@ class SessionView(generic.DetailView):
                 for group in hotel_group:
                     group.rooms = Room.objects.all().select_related("hotel").filter(hotel__group_id=group.id)
                     for room in group.rooms:
-                        # room.vat = Group.objects.get(id=room.vat_id)
                         room_allotments = RoomView.find_booking(str(room.id))
                         date_allotments = []
                         for allotments in room_allotments['details']:
@@ -133,7 +129,6 @@ class SessionView(generic.DetailView):
                     'now': datetime.now(),
                     'vats': vats
                 }
-                # print(context)
                 filter_context = CommonContext.get_filter_context(request)
                 context.update(filter_context)
                 context['session_groups'] = session_groups
@@ -245,12 +240,6 @@ class SessionView(generic.DetailView):
                                         {'msg': "Speaker " + spk[0].firstname + " " + spk[
                                             0].lastname + " has time clash.",
                                          'spk': spk[0].as_dict(), 'session_id': session_id}])
-                                    # speaker_form_data = {
-                                    # "speaker_id" : speaker_id,
-                                    #     "session_id" : session_id
-                                    # }
-                                    # speaker = SeminarSpeakers(**speaker_form_data)
-                                    # speaker.save();
                         SessionTags.objects.filter(session_id=session_id).delete()
                         session_tags = tags.split(',')
                         for tag in session_tags:
@@ -303,10 +292,6 @@ class SessionView(generic.DetailView):
                     if form.is_valid():
                         session = Session(**form_data)
                         session.save()
-
-                        # default session checkpoint add
-                        # user_id=request.session['event_auth_user']['id']
-                        # event_id=request.session['event_auth_user']['event_id']
                         checkpoint_data = {
                             'name': session.name,
                             'allow_re_entry': 0,
@@ -319,16 +304,6 @@ class SessionView(generic.DetailView):
                         checkpoint.save()
 
                         speakers = session.speakers.split(',')
-                        # for speaker_id in speakers:
-                        # speaker_form_data = {
-                        #         "speaker_id" : speaker_id,
-                        #         "session_id" : session.id
-                        #     }
-                        #     speaker = SeminarSpeakers(**speaker_form_data)
-                        #     speaker.save();
-
-                        # session.start=datetime.datetime.strptime(session.start,'%Y-%m-%d %H:%M:%S')
-                        # session.end=datetime.datetime.strptime(session.end,'%Y-%m-%d %H:%M:%S')
                         ssn = Session.objects.get(pk=session.id)
                         response['speakerError'] = []
                         if speakers[0] != '':
@@ -512,7 +487,6 @@ class SessionView(generic.DetailView):
     def get_visible_questions(request):
         questions = []
         order_columns = ['0', '111111', '222222', '333333', '444444', '555555', '666666']
-        # order_columns = []
         question_groups = Group.objects.filter(type="question", is_show=1,
                                                event_id=request.session['event_auth_user']['event_id']).order_by(
             'group_order')
@@ -599,15 +573,12 @@ class SessionView(generic.DetailView):
                     answer_value = Answers.objects.filter(question_id=question, user_id=attendee.attendee_id)
                     if answer_value.exists():
                         answer = answer_value[0].value
-                        # print(answer[0].question.title+":"+answer[0].value)
                     else:
                         answer = "N/A"
-                        # print(question_info.title+":"+"N/A")
                     question_answers.append({
                         "title": title,
                         "answer": answer,
                     })
-            # print(question_answers)
             attendee.question_answers = question_answers
 
     def session_queue(request):
@@ -623,14 +594,6 @@ class SessionView(generic.DetailView):
         visible_columns_info = SessionView.get_visible_column_info(visible_questions)
 
         SessionView.get_all_attendee_visible_info(attendee_queue, visible_questions)
-
-        # for user in attendee_queue:
-        #     first_name = Answers.objects.filter(question_id=68, user_id=user.attendee_id)
-        #     last_name = Answers.objects.filter(question_id=69, user_id=user.attendee_id)
-        #     if first_name.exists():
-        #         user.attendee.firstname = first_name[0].value
-        #     if last_name.exists():
-        #         user.attendee.lastname = last_name[0].value
         session_groups = GroupView.get_sessionGroup(request)
         for group in session_groups:
             group.sessions = Session.objects.all().filter(group_id=group.id).order_by('session_order')
@@ -672,7 +635,6 @@ class SessionView(generic.DetailView):
         session = Session.objects.filter(id=session_id).first()
         is_not_conflict = True
         for seminar_user_id in semninar_user_list:
-            # test_session = General.testSession(seminar_user_id,session.id)
             seminar_user = SeminarsUsers.objects.filter(id=seminar_user_id).first()
             already_session_check = SeminarsUsers.objects.filter(session_id=session_id,
                                                                  attendee_id=seminar_user.attendee.id).exclude(
@@ -697,10 +659,7 @@ class SessionView(generic.DetailView):
                     seminar_user.status = "attending"
                     seminar_user.save()
                     update_count += 1
-                    # session1 = session.name
                     session1 = "{session_id:"+str(session.id)+"}"
-
-                    # response_msg += "Session <strong>"+session1+"</strong> has been added to "+seminar_user.attendee.firstname+" "+seminar_user.attendee.lastname+" agenda."
 
                     if str(request.session['event_auth_user']['event_id']) == str(10):
                         msg = "Aktiviteten <strong>" + session1 + "</strong> har lagts till i din agenda."
@@ -718,20 +677,13 @@ class SessionView(generic.DetailView):
                                                        event_id=request.session['event_auth_user']['event_id'])
                     activity_history.save()
 
-                    base_url = 'http://127.0.0.1:8000/'
+                    base_url = 'http://127.0.0.1:8003/'
 
                     context = {
                         'new_session': session,
                         'queue_attendee': seminar_user,
                         'base_url': base_url,
                     }
-                    subject = "Bekräftelse - Kunskapsveckan och GetTogether"
-                    sender_mail = "mahedi@workspaceit.com"
-                    if seminar_user.attendee.event_id == 11:
-                        subject = "NOTIFICATION - KINGFOMARKET"
-                        sender_mail = "mahedi@workspaceit.com"
-                    to = seminar_user.attendee.email
-                    # MailHelper.mail_send('email/no_conflict_session.html',context,subject,to,sender_mail)
                 else:
                     allAttSessions = SeminarsUsers.objects.filter(attendee_id=seminar_user.attendee_id,
                                                                   status='attending', session__allow_overlapping=0)
@@ -755,12 +707,6 @@ class SessionView(generic.DetailView):
                     clash = Session.objects.get(id=clash_session)
                     clash_session_id = clash.id
                     new_opened_session_id = session.id
-                    # ur11 = reverse('public-session-detail', args=[session.id])
-                    # ur12 = reverse('public-session-detail', args=[clash.id])
-                    # session1 = "<a href='"+ur11+"'>"+ session.name+"</a>"
-                    # session2 = "<a href='"+ur12+"'>"+ clash.name+"</a>"
-                    # session1 = session.name
-                    # session2 = clash.name
 
                     session1 = "{session_id:" + str(session.id) + "}"
                     session2 = "{session_id:" + str(clash.id) + "}"
@@ -772,21 +718,16 @@ class SessionView(generic.DetailView):
                                                 to_attendee_id=seminar_user.attendee_id,
                                                 clash_session_id=clash_session_id, new_session_id=new_opened_session_id)
                     notification.save()
-                    # scheduler.add_jobstore('redis', jobs_key=str(notification.id)+".jobs", run_times_key=str(notification.id)+".run_times")
+
                     total_seconds = AttendeeProfile.get_timout(event_id)
                     alarm_time = datetime.now() + timedelta(seconds=total_seconds)
-                    # alarm_time = timezone.now() + timedelta(seconds=total_seconds)
                     scheduler.add_job(SessionDetail.activeSchedule, 'date', run_date=alarm_time,
                                       args=[event_id, notification.id], id=str(notification.id))
                     SeminarsUsers.objects.filter(attendee_id=seminar_user.attendee_id, session_id=session.id).delete()
                     active_deciding = SeminarsUsers(attendee_id=seminar_user.attendee_id, session_id=session.id,
                                                     status='deciding')
                     active_deciding.save()
-                    # session_data = DjangoSession.objects.all().first()
-                    #
-                    # session_info = session_data.get_decoded()
-                    #
-                    # event_id = session_info['event_user']['event_id']
+
                     activity = ActivityHistory(activity_type="update", category="session",
                                                attendee_id=seminar_user.attendee_id, session_id=session.id,
                                                old_value="In Queue", new_value="Deciding", event_id=event_id)
@@ -795,7 +736,7 @@ class SessionView(generic.DetailView):
                     notification_timeout = '01:00'
                     if setting.exists:
                         notification_timeout = setting[0].value
-                    base_url = 'http://127.0.0.1:8000/'
+                    base_url = 'http://127.0.0.1:8003/'
                     context = {
                         'new_session': session,
                         'clash_session': clash,
@@ -803,14 +744,6 @@ class SessionView(generic.DetailView):
                         'notification_timeout': notification_timeout,
                         'base_url': base_url,
                     }
-                    subject = "Bekräftelse - Kunskapsveckan och GetTogether"
-                    sender_mail = "mahedi@workspaceit.com"
-                    if active_deciding.attendee.event_id == 11:
-                        subject = "NOTIFICATION - KINGFOMARKET"
-                        sender_mail = "mahedi@workspaceit.com"
-                    to = active_deciding.attendee.email
-                    # MailHelper.mail_send('email/conflict_session.html',context,subject,to,sender_mail)
-
                     errors.append(
                         "Conflict for attendee " + seminar_user.attendee.firstname + " " + seminar_user.attendee.lastname)
             else:
@@ -823,7 +756,6 @@ class SessionView(generic.DetailView):
         if errors:
             response_data['errors'] = errors
         else:
-            # response_data['success'] = msg
             response_data['success'] = "Successfully moved queue."
         return HttpResponse(json.dumps(response_data), content_type="application/json")
 
@@ -906,7 +838,6 @@ class SessionView(generic.DetailView):
                 for index, col in enumerate(row):
                     header[index] = pattern.sub('', col.value).lower()
                 pick_header = True
-                print(header)
                 continue
 
             name = ''
@@ -916,7 +847,6 @@ class SessionView(generic.DetailView):
                 for index, col in enumerate(row):
                     row_data[ridx][header[index]] = col.value
 
-                print(row_data[ridx])
                 name = row_data[ridx]['sessionname']  # TODO
 
                 seminar_group = row_data[ridx]['seminargroup']  # TODO
@@ -947,12 +877,6 @@ class SessionView(generic.DetailView):
                 if 'description' in row_data[ridx]:
                     if len(description.strip()) > 0:
                         description = row_data[ridx]['description']
-                    # if description is None:
-                    #     error_flag = True
-                    #     error_message.append("Description can't be empty")
-                    # elif len(description.strip()) == 0:
-                    #     error_flag = True
-                    #     error_message.append("Description can't be empty")
 
                 # seminar group
                 if seminar_group is None:
@@ -1035,9 +959,6 @@ class SessionView(generic.DetailView):
                     speakersArr = [x.strip() for x in speaker_col.split(',')]
                 elif isinstance(speaker_col, int):
                     speakersArr = [speaker_col]
-                # else:
-                #     # error_flag = True
-                #     error_message.append("Speaker is not in correct format")
 
                 for spk in speakersArr:
                     atts = Attendee.objects.filter(email=spk.strip(), event_id=event_id)
@@ -1046,7 +967,6 @@ class SessionView(generic.DetailView):
                             speakers.extend(att)
                             speakers_str += str(att.id) + ","
                     else:
-                        # error_flag = True
                         error_message.append(" Speaker " + str(spk) + " not found")
                 if len(speakers_str) > 0:
                     speakers_str = speakers_str[:-1]
@@ -1133,13 +1053,11 @@ class SessionView(generic.DetailView):
                     else:
                         max_group_order = Group.objects.filter(type='session', event_id=event_id).aggregate(
                             Max('group_order'))
-                        # print(max_group_order['group_order__max'])
                         group_lang = seminar_group.replace('"', "&quot;").replace("'", "&apos;")
                         seminar_group_lang = str({current_language_id: group_lang}).replace("'", '"')
                         givenGroup = Group(name=seminar_group, name_lang=seminar_group_lang, type='session',
                                            group_order=(max_group_order['group_order__max'] + 1),
                                            event_id=event_id, is_show=1)
-                        # print(givenGroup)
                         givenGroup.save()
                         group_id = givenGroup.id
 
@@ -1245,8 +1163,6 @@ class SessionView(generic.DetailView):
         ErrorR.ex_time()
         return render(request, 'dashboard/session_import_result.html', context)
 
-        # return HttpResponse(json.dumps(response_data), content_type="application/json")
-
     def checkSessionClashing(attendee_id, session):
         allAttSessions = SeminarsUsers.objects.filter(attendee_id=attendee_id, status='attending',
                                                       session__allow_overlapping=0)
@@ -1279,7 +1195,6 @@ class SessionView(generic.DetailView):
                 for sessionlist in allAttSessions:
                     if (sessionlist.session.start <= session.start < sessionlist.session.end) or (
                             sessionlist.session.start < session.end <= sessionlist.session.end):
-                        print(sessionlist)
                         sessionlist.status = 'not-attending'
                         sessionlist.save()
 
@@ -1540,7 +1455,6 @@ class SessionView(generic.DetailView):
 
     def generate_session_report_excel(request):
         event_id = request.session['event_auth_user']['event_id']
-        # sessions = Session.objects.filter(group__event_id=event_id)
         sessions = Session.objects.filter(group__event_id=event_id).order_by('group__group_order', 'session_order')
         sessions_info = SessionView.get_session_reoprt(sessions)
         headers = ["Session Id", "Group", "Name", "Attending", "Max", "Percentage", "In Queue", "Pending",
@@ -1652,8 +1566,6 @@ class SessionDetailView(generic.DetailView):
 
     def get(self, request, pk, format=None):
         session = self.get_object(pk)
-
-        # attendees = Attendee.objects.filter(seminarspeakers__session_id=session.id)
         attendees = Attendee.objects.values('firstname', 'lastname', 'id').all()
         attendees = attendees.filter(seminarspeakers__session_id=session.id)
         my_data = []
@@ -1895,9 +1807,6 @@ class SessionDetailView(generic.DetailView):
 
                 elif type == "attending":
                     SeminarsUsers.objects.filter(attendee_id=attendee_id, session_id=session_id).delete()
-                    # if has_seminar.exists():
-                    #     seminar_attendee = SeminarsUsers.objects.filter(attendee_id=attendee_id, session_id=session_id).update(status='not-attending')
-                    # else:
                     seminar_attendee = SeminarsUsers(attendee_id=attendee_id, session_id=session_id,
                                                      status='not-attending')
                     seminar_attendee.save()

@@ -1,6 +1,6 @@
 from django.views import generic
 from app.models import Questions, Option, Answers, Session, Attendee, AttendeeGroups, AttendeeTag, TravelAttendee, \
-    Booking, Travel, Photo, Presets, EmailTemplates, RuleSet, StyleSheet, Setting, MenuPermission
+    Booking, Travel, Photo, Presets, EmailTemplates, RuleSet, Setting, MenuPermission
 import json
 import re
 import django
@@ -13,15 +13,12 @@ import base64
 import io
 from django.http import HttpResponse
 from datetime import datetime
-from django.db.models import Count, Max
-# from publicfront.views.economy_page_replace import EconomyPageReplace
-from app.views.gbhelper.common_helper import CommonHelper
+from django.db.models import Max
 from publicfront.views.lang_key import LanguageKey
 from publicfront.views.details import DetailsData
 from app.views.gbhelper.error_report_helper import ErrorR
 from publicfront.views.rule import UserRule
 from django.db.models import Q
-# from django.contrib.staticfiles.templatetags.staticfiles import static
 
 
 class PageReplace(generic.View):
@@ -31,8 +28,6 @@ class PageReplace(generic.View):
         if motive:
             template = EmailTemplates.objects.get(id=template_id)
             page_content = template.content.replace('<body', body_id)
-            # page_content = page_content.replace('{content}',
-            #                                         '<div id="content" class="loading-page">' + pageContents + '</div>')
             page_content = page_content.replace('{content}',
                                                 '<div id="content" class="loading-page"></div>')
             position_head = page_content.index('</head>')
@@ -245,11 +240,6 @@ class PageReplace(generic.View):
                                     rebate_filter_javascript += filter_javascript
                                 elif field_condition == "18":
                                     checkpoint_filter_javascript += filter_javascript
-                                # else:
-                                #     print(filter_javascript)
-                                #     first_empty_filter_javascript += filter_javascript
-
-
                             elif match_condition == '1':
                                 # OR
                                 if filter_action:
@@ -307,9 +297,6 @@ class PageReplace(generic.View):
                                     rebate_filter_javascript += filter_javascript
                                 elif field_condition == "18":
                                     checkpoint_filter_javascript += filter_javascript
-                                # else:
-                                #     first_empty_filter_javascript += filter_javascript
-                                    # ErrorR.okblue(filter_javascript)
                 for filterId in remove_content:
                     footer_content.static_page_filter.remove(filterId)
                 footer_content.registration_date_filter_javascript = registration_date_filter_javascript
@@ -340,10 +327,6 @@ class PageReplace(generic.View):
                 position_head = page_content.index('</head>')
                 head_content = render_to_string('public/static_pages/cms_header_optional.html', {})
                 page_content = page_content[:position_head] + head_content + page_content[position_head:]
-
-                # position_footer = page_content.index('</body>')
-                # foot_content = render_to_string('public/static_pages/cms_footer_optional.html', {})
-                # page_content = page_content[:position_footer] + foot_content + page_content[position_footer:]
             position_head = page_content.index('</body>')
             head_content = render_to_string('public/static_pages/cms_csrf_token.html',
                                             {'csrf_token': django.middleware.csrf.get_token(request)})
@@ -386,12 +369,10 @@ class PageReplace(generic.View):
                         question_filter_id = str(question.id)
                         if not question.time_interval:
                             question.time_interval = '30'
-                        # if question.description != '' and question.description != None:
                         if question.show_description:
                             description = """<span class="event-question-label-description">""" + question.description + """</span>"""
                         if question.type == 'select':
                             options = Option.objects.filter(question_id=qid['qid']).order_by('option_order')
-                            # option = """<option value="">- {} -</option>""".format(select_text)
                             empty_option = """<option value="">- {} -</option>""".format(select_text)
                             option_list = ""
                             opt_flag = False
@@ -418,11 +399,6 @@ class PageReplace(generic.View):
                                         </div>"""
                         elif question.type == 'country':
                             default_value = ''
-                            # description = ''
-                            # question_name = "attendee-question-" + str(question.id)
-                            # question_input_id = "attendee-question-" + str(question.id)
-                            # question_input_q_id = "attendee-question-" + str(question.id)
-                            # question_filter_id = str(question.id)
                             if question.show_description:
                                 description = """<span class="event-question-label-description">""" + question.description + """</span>"""
                             if question.default_answer:
@@ -547,7 +523,6 @@ class PageReplace(generic.View):
                         question_filter_id = str(question.id) + "_u" + str(attendee_id)
                         if not question.time_interval:
                             question.time_interval = '30'
-                        # if question.description != '' and question.description != None:
                         if question.show_description:
                             description = """<span class="event-question-label-description">""" + question.description + """</span>"""
                         if question.type == 'select':
@@ -588,11 +563,6 @@ class PageReplace(generic.View):
                                         </div>"""
                         elif question.type == 'country':
                             default_value = ''
-                            # description = ''
-                            # question_name = "attendee-question-" + str(question.id)
-                            # question_input_id = "attendee-question-" + str(question.id)
-                            # question_input_q_id = "attendee-question-" + str(question.id)
-                            # question_filter_id = str(question.id)
                             if question.show_description:
                                 description = """<span class="event-question-label-description">""" + question.description + """</span>"""
                             if not answer.exists():
@@ -887,24 +857,6 @@ class PageReplace(generic.View):
                         pageContents = pageContents.replace('{qid:' + qid['qid'] + '}', answer_data.value)
                     else:
                         pageContents = pageContents.replace('{qid:' + qid['qid'] + '}', '')
-                    # question = Questions.objects.filter(id=qid['qid'])
-                    # if question.exists():
-                    #     answer = Answers.objects.filter(question_id=qid['qid'], user_id=attendee_id)
-                    #     if answer.exists():
-                    #         if answer[0].question.type == 'date_range' or answer[0].question.type == 'time_range':
-                    #             value_list = json.loads(answer[0].value)
-                    #             value = ' - '.join(value_list)
-                    #             pageContents = pageContents.replace('{qid:' + qid['qid'] + '}', value)
-                    #         elif answer[0].question.type == 'country':
-                    #             country_list = CommonHelper.get_country_list(request)
-                    #             pageContents = pageContents.replace('{qid:' + qid['qid'] + '}', country_list[answer[0].value])
-                    #         else:
-                    #             print(answer[0].value)
-                    #             pageContents = pageContents.replace('{qid:' + qid['qid'] + '}', answer[0].value)
-                    #     else:
-                    #         pageContents = pageContents.replace('{qid:' + qid['qid'] + '}', '')
-                    # else:
-                    #     pageContents = pageContents.replace('{qid:' + qid['qid'] + '}', '')
             return pageContents
         except Exception as e:
             ErrorR.efail(e)
@@ -1231,13 +1183,9 @@ class PageReplace(generic.View):
                 if '{tags}' in pageContents:
                     tags_data = AttendeeTag.objects.filter(attendee_id=attendee.id)
                     tags = ', '.join(tag.tag.name for tag in tags_data)
-                # uid = request.session['event_user']['secret_key']
                 if attendee.status == 'registered':
                     bid = attendee.bid
                     uid = attendee.secret_key
-                # else:
-                #     bid = ''
-                #     uid = ''
                 if '{bidqr}' in pageContents:
                     qr = qrcode.QRCode(
                         version=1,
@@ -1254,36 +1202,8 @@ class PageReplace(generic.View):
                     output_s = output.read()
                     b64 = base64.b64encode(output_s).decode("utf-8")
                     bidqr = b64
-                # else:
-                #     bidqr = ''
-            # else:
-            #     registration_date = ""
-            #     updated_date = ""
-            #     password = ""
-            #     attendee_groups = ""
-            #     tags = ""
-            #     uid = ''
-            #     bid = ''
-            #     bidqr = ''
-            #     first_name = ''
-            #     last_name = ''
-            #     email_address = ''
         except Exception as e:
             ErrorR.efail(e)
-            # registration_date = ""
-            # updated_date = ""
-            # password = ""
-            # attendee_groups = ""
-            # tags = ""
-            # uid = ''
-            # bid = ''
-            # bidqr = ''
-            # first_name = ''
-            # last_name = ''
-            # email_address = ''
-
-        # uid_link = """<a href=""" + base_url + """/?uid={uid}>""" + base_url + """/?uid={uid}</a>"""
-        # calender_content = """<a href=""" + base_url + """/webcal/?uid={uid}>""" + base_url + """/webcal/?uid={uid}</a>"""
         uid_link = base_url + "/?uid={uid}"
         webcal_url = request.session['webcal_url']
         calender_content = webcal_url + "/webcal/?uid={uid}"
@@ -1314,11 +1234,6 @@ class PageReplace(generic.View):
             response['default_date'] = user_language.date_format
             response['default_time'] = user_language.time_format
             response['default_datetime'] = user_language.datetime_format
-            # default_date_format = Setting.objects.filter(name='default_date_format', event_id=event_id)
-            # if default_date_format:
-            #     default_date_format = json.loads(default_date_format[0].value)['python']
-            # else:
-            #     default_date_format = 'm-d-Y'
         except:
             response['default_date'] = 'Y-m-d'
             response['default_time'] = 'H:i'
@@ -1361,24 +1276,6 @@ class PageReplace(generic.View):
                 except Exception as e:
                     pass
             menu_id = menu.menu.id
-            # my_rule_set = []
-            # attendee_id = 0
-            # if 'is_user_login' in request.session and request.session['is_user_login']:
-            #     attendee_id = request.session['event_user']['id']
-            #     rule_sets = RuleSet.objects.filter(group__event_id=event_id)
-            #     for rule in rule_sets:
-            #         filters = json.loads(rule.preset)
-            #         q = Q()
-            #         match_condition = filters[0][0]['matchFor']
-            #         if match_condition == '2':
-            #             q &= Q(id__in=UserRule.get_filtered_attendee(request, filters, match_condition))
-            #         elif match_condition == '1':
-            #             q = Q(id=-11)
-            #             q |= Q(id__in=UserRule.get_filtered_attendee(request, filters, match_condition))
-            #         attendees = Attendee.objects.filter(q)
-            #
-            #         if attendees.filter(id=attendee_id).count() > 0:
-            #             my_rule_set.append(rule.id)
 
             if 'is_user_login' in request.session and request.session['is_user_login']:
                 menu_items = MenuPermission.objects.filter(
@@ -1454,8 +1351,6 @@ class PageReplace(generic.View):
         try:
 
             for i, filter1 in enumerate(filters):
-                # if addif != 0:
-                #     print(str(i) + " " + str(addif))
                 if i == 0 and addif == 0:
                     context_filter_javascript = {'type': 'if', 'user_id': user_id, 'duid': duid, 'datauid': datauid}
                     filter_js += render_to_string('public/static_pages/filter_javascript.html',
@@ -1555,8 +1450,6 @@ class PageReplace(generic.View):
         try:
 
             for i, filter1 in enumerate(filters):
-                # if addif != 0:
-                #     print(str(i) + " " + str(addif))
                 if i == 0 and addif == 0:
                     context_filter_javascript = {'type': 'if', 'user_id': user_id, 'duid': duid, 'datauid': datauid}
                     filter_js += render_to_string('public/static_pages/not_filter_javascript.html',
@@ -1673,8 +1566,6 @@ class PageReplace(generic.View):
                 date_lanaguage_json = preset.datetime_language
             date_lanaguage_json = json.loads(date_lanaguage_json)
             date_format = PageReplace.get_regerated_date_time_format(preset.date_format)
-            # time_format = PageReplace.get_regerated_date_time_format(preset.time_format)
-            # date_lanaguage_json['hiddenName']='true'
 
             date_lanaguage_json['firstDay'] = int(date_lanaguage_json['firstDay'])
             date_lanaguage_json['clear'] = ''
@@ -1721,47 +1612,7 @@ class PageReplace(generic.View):
 
     def get_session_expire_lang(request, *args, **kwargs):
         language = LanguageKey.catch_lang_key_multiple(request, 'notification', ['notify_session_expire'])
-        print(language)
         return HttpResponse(language['langkey']['notify_session_expire'])
-#     def replace_economy_templates(request, html_content, order_number, template):
-#         html_content = html_content.replace('{order-number}', order_number)
-# #
-#         html_content = PageReplace.replace_questions_variable(request, html_content)
-#         html_content = PageReplace.replace_answers(request, html_content)
-#         html_content = PageReplace.replace_sessions(request, html_content)
-#         html_content = PageReplace.replace_travels(request, html_content)
-#         html_content = PageReplace.replace_hotels(request, html_content)
-#         html_content = PageReplace.replace_photos(request, html_content)
-#         html_content = PageReplace.replace_general_tags(request, html_content)
-#
-#         # economy tags
-#         html_content = EconomyPageReplace.replace_order_table(request, html_content)
-#         html_content = EconomyPageReplace.replace_multiple_order_table(request, html_content)
-#         html_content = EconomyPageReplace.replace_balance_table(request, html_content)
-#         html_content = EconomyPageReplace.replace_order_value_paid_order(request, html_content)
-#         html_content = EconomyPageReplace.replace_multiple_order_value_paid_order(request, html_content)
-#         html_content = EconomyPageReplace.replace_order_value_pending_order(request, html_content)
-#         html_content = EconomyPageReplace.replace_multiple_order_value_pending_order(request, html_content)
-#         html_content = EconomyPageReplace.replace_order_value_open_order(request, html_content)
-#         html_content = EconomyPageReplace.replace_multiple_order_value_open_order(request, html_content)
-#         html_content = EconomyPageReplace.replace_order_value_all_order(request, html_content)
-#         html_content = EconomyPageReplace.replace_multiple_order_value_all_order(request, html_content)
-#         html_content = EconomyPageReplace.replace_order_value_credit_order(request, html_content)
-#         html_content = EconomyPageReplace.replace_multiple_order_value_credit_order(request, html_content)
-#         html_content = EconomyPageReplace.replace_reciept(request, html_content)
-#         # get css version
-#         css_version_obj = StyleSheet.objects.get(event_id=request.session['event_id'])
-#         css_version = css_version_obj.version
-#
-#         html_content = html_content.replace('[[file]]', "[[static]]public/[[event_url]]/files")
-#         html_content = html_content.replace('[[files]]', "[[static]]public/[[event_url]]/files/")
-#         html_content = html_content.replace('[[css]]', "[[static]]public/[[event_url]]/compiled_css/style.css?v="+str(css_version))
-#         html_content = html_content.replace('[[static]]', settings.STATIC_URL_ALT)
-#         html_content = html_content.replace('public/js/jquery.min.js',
-#                                             static('public/js/jquery.min.js'))
-#         html_content = html_content.replace('[[event_url]]', template.event.url)
-#         html_content = html_content.replace('[[parmanent]]', settings.STATIC_URL_ALT + 'public/')
-#         return html_content
 
 
 

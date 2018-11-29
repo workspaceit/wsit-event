@@ -1,17 +1,13 @@
-from django.shortcuts import render, redirect
 from django.http import HttpResponse
-from app.models import Attendee, Answers, SeminarsUsers, SeminarSpeakers, Session, ActivityHistory, PageContent, \
-    PagePermission, EmailTemplates, DeviceToken, Booking, TravelAttendee, Travel, Session, Hotel, Room, Group, \
+from app.models import Attendee, SeminarsUsers, SeminarSpeakers, ActivityHistory, \
+    DeviceToken, Booking, TravelAttendee, Travel, Session, Hotel, Room, Group, \
     MatchLine, RequestedBuddy
 from django.views.generic import TemplateView
 import zipfile
 import io
-from boto3.session import Session as boto_session
 import boto
 from django.conf import settings
-import os, json, re
-from publicfront.views.page2 import DynamicPage
-from datetime import datetime, timedelta
+import re
 from django.db.models import Q
 
 from publicfront.views.page_replace import PageReplace

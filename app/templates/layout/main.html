@@ -173,12 +173,11 @@
 <script src="{% static 'assets/javascripts/default_answer.js' %}"></script>
 <script src="{% static 'assets/javascripts/country-list.js' %}"></script>
 
-{#<script src="{% static 'assets/javascripts/jquery.minicolors.js' %}"></script>#}
 <script type="text/javascript" src="{% static 'assets/javascripts/location-map.js' %}"></script>
 <script type="text/javascript" src="{% static 'assets/javascripts/travel.js' %}"></script>
 <script type="text/javascript" src="{% static 'assets/javascripts/search.js' %}"></script>
 <script src="{% static 'assets/javascripts/moment.js' %}"></script>
-{#<script src="{% static 'assets/javascripts/moment-with-locales.js' %}" type="text/javascript"></script>#}
+
 <script src="{% static 'assets/javascripts/moment-timezone-with-data-2010-2020.js' %}" type="text/javascript"></script>
 <script type="text/javascript" src="{% static 'assets/javascripts/orderable.js' %}"></script>
 <script src="{% static 'assets/javascripts/export.js' %}"></script>
@@ -242,33 +241,6 @@
         </div>
     </div>
 </div>
-
-
-{##}
-{##}
-{#<div class="modal fade" id="export-attendee" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">#}
-{#    <div class="modal-dialog" role="document">#}
-{#        <div class="modal-content">#}
-{#            <div class="modal-header">#}
-{#                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span#}
-{#                        aria-hidden="true">&times;</span></button>#}
-{#                <h4 class="modal-title">Export Attendee to Excel</h4>#}
-{#            </div>#}
-{##}
-{#            <div class="modal-body">#}
-{#                  <form method="get"  action="{% url 'export' %}">#}
-{#                    {% csrf_token %}#}
-{#                    <div style="text-align: center;">#}
-{#                        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>#}
-{#                        <button type="submit" class="btn btn-primary save-preset-btn export-btn" modalName="export-attendee" >Export</button>#}
-{#                    </div>#}
-{#                </form>#}
-{#            </div>#}
-{##}
-{#        </div>#}
-{#    </div>#}
-{#</div>#}
-
 
 <div class="modal fade" id="export-hotel" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog" role="document">

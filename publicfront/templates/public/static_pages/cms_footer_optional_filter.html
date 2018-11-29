@@ -17,7 +17,6 @@
     onLoadDateJs();
     onLoadPluginSession();
     $.getScript("{% static 'public/js/kendo/kendo.timezones.min.js' %}");
-    $.getScript("{% static 'public/js/session_scheduler.js' %}");
     $.getScript("{% static 'public/js/kendo.culture.sv-SE.js' %}");
     });
     }
@@ -25,6 +24,5 @@
     <script>kendo_load_status = true;</script>
     <script src="https://kendo.cdn.telerik.com/2017.1.223/js/kendo.all.min.js"></script>
     <script src="{% static 'public/js/kendo/kendo.timezones.min.js' %}"></script>
-    <script src="{% static 'public/js/session_scheduler.js' %}"></script>
     <script src="{% static 'public/js/kendo.culture.sv-SE.js' %}"></script>
 {% endif %}

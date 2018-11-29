@@ -38,9 +38,7 @@ function checkMaxMinAttendeeInline(elem, current_attendee_sum, click_event, atte
         },
         success: function (result) {
             if (result.success) {
-                console.log();
                 var current_attendee_sum_show = parseInt(elem.closest('.box').find('.event-plugin-multiple-registration-current-count-number-inline').html());
-                console.log(current_attendee_sum);
                 if (click_event == 'append') {
                     appendAttendeeInline(elem, result.html, result.js, result.attendee_id);
                     elem.closest('.box').find('.event-plugin-multiple-registration-current-count-number-inline').html(current_attendee_sum_show + 1);
@@ -99,8 +97,6 @@ function saveOrUpdateMultipleAttendeeInline(button, main_submit_btn_id, main_sub
     var answer_data_by_id = {};
     var mult_reg_attendee_inline = {};
     $.each(answers, function (index, value) {
-        console.log(value.id);
-        console.log(value.answer);
         if (mult_reg_attendee_inline[value.duid] != undefined) {
             mult_reg_attendee_inline[value.duid]['attendee_id'] = value.duid;
             if (value.actual_defination != undefined) {
@@ -152,13 +148,11 @@ function saveOrUpdateMultipleAttendeeInline(button, main_submit_btn_id, main_sub
             }
         }
     })
-
-    console.log(mult_reg_attendee_inline);
     $('[inline-data-owner-idz4Vv3ZLs3R]').each(function () {
-        console.log($(this).attr('inline-data-owner-idz4Vv3ZLs3R'));
+        clog($(this).attr('inline-data-owner-idz4Vv3ZLs3R'));
     })
     $('[inline-data-attendee-idz4Vv3ZLs3R]').each(function () {
-        console.log($(this).attr('inline-data-attendee-idz4Vv3ZLs3R'));
+        clog($(this).attr('inline-data-attendee-idz4Vv3ZLs3R'));
     });
 
     var attendees_data = [];
@@ -179,7 +173,6 @@ function saveOrUpdateMultipleAttendeeInline(button, main_submit_btn_id, main_sub
         language_id: language_id,
         csrfmiddlewaretoken: csrf_token
     };
-    console.log(data);
     $.ajax({
         url: base_url + '/multiple-attendee-save-inline/',
         type: "POST",
@@ -188,7 +181,6 @@ function saveOrUpdateMultipleAttendeeInline(button, main_submit_btn_id, main_sub
             if (result.success) {
                 $.growl.notice({message: result.message});
                 setEmptyValueToQuestions($body);
-                console.log(result);
                 if (result.download_flag) {
                     window.location = base_url + "/economy-pdf-request?data=order-invoice&order_number=" + result.order_number;
                     $('.submit-loader').show();

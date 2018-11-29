@@ -1,7 +1,5 @@
 from app.models import SeminarsUsers
-from app.views.gbhelper.economy_library import EconomyLibrary
 from publicfront.views.helper import HelperData
-from publicfront.views.lang_key import LanguageKey
 
 
 class SessionSeatAvailability:
@@ -37,8 +35,6 @@ class SessionSeatAvailability:
             if session_option == 'x':
                 session.availability = str(seats_remain)
             elif session_option == 'x-of-y':
-                # x_of_y_availability_message = LanguageKey.catch_lang_key(request, 'session-details',
-                #                                                          'sessiondetails_txt_seat_availability_x_of_y')
                 x_of_y_availability_message = all_langs['langkey']['sessiondetails_txt_seat_availability_x_of_y']
                 availability_message = x_of_y_availability_message.replace('{X}', str(seats_remain)).replace('{Y}', str(
                     session.max_attendees))
@@ -47,27 +43,17 @@ class SessionSeatAvailability:
                 remain_attending_percent = (seats_remain * 100) / session.max_attendees
                 if remain_attending_percent == 0:
                     if session.allow_attendees_queue == 1:
-                        # no_seats_available = LanguageKey.catch_lang_key(request, 'session-details',
-                        #                                                 'sessiondetails_txt_no_seats_available')
-                        # queue_is_open = LanguageKey.catch_lang_key(request, 'session-details',
-                        #                                            'sessiondetails_txt_seats_available_queue_is_open')
                         no_seats_available = all_langs['langkey']['sessiondetails_txt_no_seats_available']
                         queue_is_open = all_langs['langkey']['sessiondetails_txt_seats_available_queue_is_open']
                         availability_message = no_seats_available + ', ' + queue_is_open
                         availability = availability_message
                     else:
-                        # no_seats_available = LanguageKey.catch_lang_key(request, 'session-details',
-                        #                                                 'sessiondetails_txt_no_seats_available')
                         no_seats_available = all_langs['langkey']['sessiondetails_txt_no_seats_available']
                         availability = no_seats_available
                 elif remain_attending_percent >= 10:
-                    # seats_available = LanguageKey.catch_lang_key(request, 'session-details',
-                    #                                              'sessiondetails_txt_seats_available')
                     seats_available = all_langs['langkey']['sessiondetails_txt_seats_available']
                     availability = seats_available
                 elif remain_attending_percent < 10:
-                    # few_seats_available = LanguageKey.catch_lang_key(request, 'session-details',
-                    #                                                  'sessiondetails_txt_few_seats_available')
                     few_seats_available = all_langs['langkey']['sessiondetails_txt_few_seats_available']
                     availability = few_seats_available
                 session.availability = availability

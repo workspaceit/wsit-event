@@ -8,12 +8,9 @@ from app.models import Travel, Session, RuleSet, \
     AttendeeGroups, AttendeeTag, Elements, Presets, PresetEvent, \
     ElementPresetLang, ElementDefaultLang, Photo, Setting, Orders
 from app.views.gbhelper.economy_library import EconomyLibrary
-from app.views.gbhelper.error_report_helper import ErrorR
-# from publicfront.views.lang_key import LanguageKey
 from .common_views import GroupView
 import re
 import json
-import os
 import qrcode
 import base64
 import io
@@ -27,7 +24,6 @@ class EmailContentDetailView(generic.DetailView):
     def show_message_preview(request):
         content = request.POST.get('content')
         base_url = request.session['event_auth_user']['base_url']
-        # calendar_content = """<a href=""" + base_url + """/webcal/?uid={secret_key}>""" + base_url + """/webcal/?uid={secret_key}</a>"""
         webcal_url = base_url.replace('https:','webcal:')
         webcal_url = base_url.replace('http:','webcal:')
         calendar_content = webcal_url + "/webcal/?uid={secret_key}"
@@ -47,61 +43,17 @@ class EmailContentDetailView(generic.DetailView):
 
     def get_sessions_data_by_attendee(request, sessions, session_rules, attendee, language_id, language):
         context = DetailsH.get_sessions_data_by_attendee(attendee.event_id, language_id, sessions, session_rules, attendee.id, language)
-        # element = Elements.objects.filter(slug="sessions")
-        # language = EmailContentDetailView.get_lang_key(request, element[0].id, 0, attendee.event_id)
-        # for session in sessions:
-        #     session.speakers = SeminarSpeakers.objects.filter(session=session.id)
-        #     session.tags = SessionTags.objects.filter(session=session.id)
-        #     session.status = ""
-        #     status = SeminarsUsers.objects.filter(session_id=session.id, attendee_id=attendee.id)
-        #     if status.exists():
-        #         session.status = status[0].status
-        #
-        # context = {
-        #     'sessions': sessions,
-        #     'session_rules': session_rules,
-        #     'preview': False,
-        #     "language": language
-        # }
         context['preview'] = False
         if language is not None:
             context['language'] = language
         return render_to_string('message/email_sessions.html', context)
 
     def get_travel_data_by_attendee(request, travels, travel_rules, attendee, language_id):
-        # element = Elements.objects.filter(slug="travels")
-        # if event_id is not None:
-        #     language = EmailContentDetailView.get_lang_key(request, element[0].id, 0, event_id)
-        # else:
-        #     language = EmailContentDetailView.get_lang_key(request, element[0].id)
-        # context = {
-        #     'travels': travels,
-        #     'travel_rules': travel_rules,
-        #     'preview': False,
-        #     "language": language
-        # }
         context = DetailsH.get_travel_data_by_attendee(attendee.event_id, language_id, travels, travel_rules)
         context['preview'] = False
         return render_to_string('message/email_travels.html', context)
 
     def get_hotels_data_by_attendee(request, hotels, hotel_rules, attendee, language_id, language):
-        # element = Elements.objects.filter(slug="hotels")
-        # if event_id is not None:
-        #     language = EmailContentDetailView.get_lang_key(request, element[0].id, 0, event_id)
-        # else:
-        #     language = EmailContentDetailView.get_lang_key(request, element[0].id)
-        # for hotel in hotels:
-        #     hotel.buddy = RequestedBuddy.objects.filter(booking_id=hotel.id)
-        #     actual_buddy = MatchLine.objects.filter(booking_id=hotel.id)
-        #     if actual_buddy.exists():
-        #         hotel.actualbuddy = MatchLine.objects.filter(match_id=actual_buddy[0].match_id).exclude(
-        #             id=actual_buddy[0].id)
-        # context = {
-        #     'hotels': hotels,
-        #     'hotel_rules': hotel_rules,
-        #     'preview': False,
-        #     "language": language
-        # }
         context = DetailsH.get_hotels_data_by_attendee(attendee.event_id, language_id, hotels, hotel_rules, attendee.id, language)
         context['preview'] = False
         if language is not None:
@@ -110,17 +62,6 @@ class EmailContentDetailView(generic.DetailView):
 
     def get_question_data_by_attendee(request, questionAnswer, question_rules, attendee, language_id):
         context = DetailsH.get_question_data_by_attendee(attendee.event_id, language_id, questionAnswer, question_rules)
-        # element = Elements.objects.filter(slug="questions")
-        # if event_id is None:
-        #     language = EmailContentDetailView.get_lang_key(request, element[0].id)
-        # else:
-        #     language = EmailContentDetailView.get_lang_key(request, element[0].id, 0, event_id)
-        # context = {
-        #     'questionAnswer': questionAnswer,
-        #     'question_rules': question_rules,
-        #     'preview': False,
-        #     "language": language
-        # }
         context['preview'] = False
         return render_to_string('message/email_question.html', context)
 
@@ -129,7 +70,6 @@ class EmailContentDetailView(generic.DetailView):
             event_id = attendee.event_id
         else:
             event_id = request.session['event_auth_user']['event_id']
-        # default_date_format = EmailContentDetailView.get_default_date_format(event_id)
         if default_date_time_format is None:
             default_date_time_format = EmailContentDetailView.get_language_date_format(event_id)
         default_date_format = default_date_time_format['default_datetime']
@@ -206,7 +146,6 @@ class EmailContentDetailView(generic.DetailView):
             event_id = attendee.event_id
         else:
             event_id = request.session['event_auth_user']['event_id']
-        # default_date_format = EmailContentDetailView.get_default_date_format(event_id)
         if default_date_time_format is None:
             default_date_time_format = EmailContentDetailView.get_language_date_format(event_id)
         default_date_format = default_date_time_format['default_datetime']
@@ -280,7 +219,6 @@ class EmailContentDetailView(generic.DetailView):
             event_id = attendee.event_id
         else:
             event_id = request.session['event_auth_user']['event_id']
-        # default_date_format = EmailContentDetailView.get_default_date_format(event_id)
         if default_date_time_format is None:
             default_date_time_format = EmailContentDetailView.get_language_date_format(event_id)
         default_date_format = default_date_time_format['default_datetime']
@@ -354,7 +292,6 @@ class EmailContentDetailView(generic.DetailView):
             event_id = attendee.event_id
         else:
             event_id = request.session['event_auth_user']['event_id']
-        # default_date_format = EmailContentDetailView.get_default_date_format(event_id)
         if default_date_time_format is None:
             default_date_time_format = EmailContentDetailView.get_language_date_format(event_id)
         default_date_format = default_date_time_format['default_date']
@@ -436,8 +373,6 @@ class EmailContentDetailView(generic.DetailView):
         last_name = ''
         email_address = ''
         if attendee:
-            # if '{base_url}' in message:
-            #     base_url = EmailContentDetailView.get_base_url(request, attendee.event.url)
             if '{first_name}' in message:
                 first_name = str(attendee.firstname)
             if '{last_name}' in message:
@@ -455,13 +390,10 @@ class EmailContentDetailView(generic.DetailView):
                     attendee_group.group = LanguageH.get_group_data_by_language(language_id, attendee_group.group)
                     attendee_groups_list.append(attendee_group.group.name)
                 attendee_groups = ','.join(attendee_groups_list)
-                # attendee_groups = ','.join(attendee_group.group.name for attendee_group in attendee_groups_data)
             if '{tags}' in message:
                 tags_data = AttendeeTag.objects.filter(attendee_id=attendee.id)
                 tags = ','.join(tag.tag.name for tag in tags_data)
-            # if '{uid}' in message:
             uid = attendee.secret_key
-            # if '{bid}' in message:
             bid = attendee.bid
             if '{bidqr}' in message:
                 qr = qrcode.QRCode(
@@ -491,20 +423,7 @@ class EmailContentDetailView(generic.DetailView):
             first_name = '{first_name}'
             last_name = '{last_name}'
             email_address = '{email_address}'
-        # else:
-        #     base_url = request.session['event_auth_user']['base_url']
-        #     registration_date = ""
-        #     updated_date = ""
-        #     attendee_groups = ""
-        #     tags = ""
-        #     uid = ''
-        #     bid = ''
-        #     bidqr = ''
-        #     first_name = ''
-        #     last_name = ''
-        #     email_address = ''
         uid_link = base_url + """/?uid={uid}"""
-        # calender_content = """<a href=""" + base_url + """/webcal/?uid={uid}>""" + base_url + """/webcal/?uid={uid}</a>"""
         webcal_url = base_url.replace('https:','webcal:')
         webcal_url = base_url.replace('http:','webcal:')
         calender_content = webcal_url + "/webcal/?uid={uid}"
@@ -523,9 +442,7 @@ class EmailContentDetailView(generic.DetailView):
         bid_link = "{base_url}/qr-to-png?bid={bid}"
         message = message.replace('{bidqr}', '<img src="{0}"/ class="qr-code">'.format(bid_link))
         message = message.replace('{bid}', bid)
-        # message = message.replace('{bidqr}', '<img src="data:image/png;base64,{0}"/ class="qr-code">'.format(bidqr))
         message = message.replace('{base_url}', base_url)
-        # print(message)
         return message
 
     def replace_economy_tags(request, message, attendee, language_id, preview=False):
@@ -844,7 +761,6 @@ class EmailContentDetailView(generic.DetailView):
                 attendee_group.group = LanguageH.get_group_data_by_language(attendee.language_id, attendee_group.group)
                 attendee_groups_list.append(attendee_group.group.name)
             attendee_groups = ','.join(attendee_groups_list)
-            # attendee_groups = ','.join(attendee_group.group.name for attendee_group in attendee_groups_data)
             tags_data = AttendeeTag.objects.filter(attendee_id=attendee.id)
             tags = ','.join(tag.tag.name for tag in tags_data)
             uid = attendee.secret_key
@@ -1073,7 +989,7 @@ class EmailContentDetailView(generic.DetailView):
         return HttpResponse(json.dumps(response_data), content_type="application/json")
 
     def get_base_url(request, event_url):
-        base_url = 'http://127.0.0.1:8000/'+str(event_url)
+        base_url = 'http://127.0.0.1:8003/'+str(event_url)
         return base_url
 
     def get_default_date_format(event_id):

@@ -36,8 +36,6 @@ class LanguageView(TemplateView):
                 "header_lang_render": header_lang_render,
                 "event_id": event_id
             }
-            # lang = LanguageView.all_key(request,27)
-
             return render(request, 'language/index.html', context)
 
     def get_general_language(request):
@@ -77,8 +75,6 @@ class LanguageView(TemplateView):
             for s_btn in submit_buttons:
                 for s_btn_n in submit_button_names:
                     if s_btn_n['box_id'] == s_btn['box_id'] and s_btn_n['page_id'] == s_btn['page_id']:
-                        print(s_btn_n['box_id'])
-                        print(s_btn_n['answer'])
                         s_btn['button_name'] = s_btn_n['answer']
 
             pdf_buttons = []
@@ -93,8 +89,6 @@ class LanguageView(TemplateView):
             for p_btn in pdf_buttons:
                 for p_btn_n in pdf_button_names:
                     if p_btn_n['box_id'] == p_btn['box_id'] and p_btn_n['page_id'] == p_btn['page_id']:
-                        print(p_btn_n['box_id'])
-                        print(p_btn_n['answer'])
                         p_btn['button_name'] = p_btn_n['answer']
 
             context = {
@@ -557,11 +551,6 @@ class LanguageView(TemplateView):
         except Exception as e:
             import traceback
             traceback.print_exc()
-            # print(traceback.print_exc())
-            # import sys, os
-            # exc_type, exc_obj, exc_tb = sys.exc_info()
-            # fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
-            # print(exc_type, fname, exc_tb.tb_lineno)
             context = {
                 "general_langs": []
             }
@@ -746,11 +735,9 @@ class LanguageView(TemplateView):
             sql_lang_case = ""
             lang_ids = []
             for data in postData:
-                # value = str(request.POST.get(data)).replace('"', "'")
                 value = str(request.POST.get(data)).replace('"','\\"')
                 sql_lang_case += 'WHEN id = ' + str(data) + ' THEN "' + value + '" '
                 lang_ids.append(str(data))
-                # ElementPresetLang.objects.filter(id=int(data)).update(value=request.POST.get(data))
             sql_case = "value = CASE " + sql_lang_case + "END"
             sql = 'update element_preset_lang set ' + sql_case + ' WHERE id IN (' + str(lang_ids).replace("[",
                                                                                                           "").replace(

@@ -81,22 +81,6 @@
                     <div class="panel-title">Attendee Groups</div>
                 </div>
                 <div class="panel-body">
-
-                    {#                <div class=" pull-right btn-group">#}
-                    {#                    <select name="columns" class="pull-left selectpicker attendee-column-control" multiple#}
-                    {#                            data-live-search="true"#}
-                    {#                            data-live-search-placeholder="Search"#}
-                    {#                            data-actions-box="false">#}
-                    {#                        {% for attendee in attendees %}#}
-                    {#                            <option class="selected_column" value="{{ attendee.id }}"#}
-                    {#                                    {% if attendee.id in attendee_columns %}#}
-                    {#                                    selected {% endif %} {% if not attendee_columns %}#}
-                    {#                                    selected {% endif %}>{{ attendee.name }}#}
-                    {#                            </option>#}
-                    {#                        {% endfor %}#}
-                    {#                    </select>#}
-                    {#                </div>#}
-
                     <div class="table-responsive">
                         <table class="table table-striped valign-middle">
                             <thead>
@@ -121,14 +105,9 @@
                             </tbody>
                         </table>
                     </div>
-
-                    {#                <div id="graph-container-attendeegroup">#}
-                    {#                    <canvas id="chart-graph-attendeegroup" width="400" height="250"></canvas>#}
-                    {#                </div>#}
                 </div>
             </div>
         </div>
-        {#    <script type="application/javascript" src="{% static 'assets/javascripts/dashboardjs/attendeegroup.js' %}"></script>#}
 
         {% elif give == "4" %}
         <div class="col-md-6" data-id="4" id="4">

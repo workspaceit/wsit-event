@@ -116,16 +116,8 @@ class ErrorR(TemplateView):
              function_name, lines, index) = inspect.getouterframes(inspect.currentframe())[1]
             print(bcolors.WARNING)
             print(str(time.time() - settings.EX_TIME))
-            # print(bcolors.ENDL)
             print(bcolors.UNDERLINE)
             print(os.path.split(filename)[1] + " " + function_name + " " + str(line_number))
-
-            # CPU_Pct = str(round(float(os.popen(
-            #     '''grep 'cpu ' /proc/stat | awk '{usage=($2+$4)*100/($2+$4+$5)} END {print usage }' ''').readline()),
-            #                     2))
-            # print("CPU Usage = " + CPU_Pct)
-            # tot_m, used_m, free_m = map(int, os.popen('free -t -m').readlines()[-1].split()[1:])
-            # print(tot_m, used_m, free_m)
             print(bcolors.ENDL)
 
     def ex_from(*args, **kwargs):

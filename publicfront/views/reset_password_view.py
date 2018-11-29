@@ -1,8 +1,6 @@
 import json
-import os, sys
 
 from django.http import HttpResponse
-from django.shortcuts import redirect
 from django.views.generic import TemplateView
 from django.http import Http404
 

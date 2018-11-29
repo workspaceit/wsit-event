@@ -82,7 +82,6 @@ $("#given-answer-function").trigger("questionSelection");
 {{ rebate_filter_javascript|safe }}
 {{ checkpoint_filter_javascript|safe }}
 {{ first_empty_filter_javascript|safe }}
-console.log("given-anser");
 setOrUnsetSession();
 });
 var q_timeout = null;
@@ -90,7 +89,6 @@ $( ".given-answer" ).on( "keyup", function() {
 clearTimeout(q_timeout);
 $("#given-answer-function").trigger("questionSelection");
 {{ question_filter_javascript|safe }}
-console.log("given-anser-key");
 q_timeout = setTimeout(function () {
 setOrUnsetSession();
 }, 500);
@@ -115,24 +113,21 @@ $("#session-selection-function").trigger("sessionSelection");
 {{ rebate_filter_javascript|safe }}
 {{ checkpoint_filter_javascript|safe }}
 {{ first_empty_filter_javascript|safe }}
-console.log("session-selection")
 setOrUnsetSession();
 });
 
 
 jQuery(function () {
-console.log("From jQuery.ready callback.");
+clog("From jQuery.ready callback.");
 });
 
 $(window).load(function () {
-console.log("From window.onload callback.");
+clog("From window.onload callback.");
 
 });
 $(function () {
 $("#given-answer-function").trigger("questionSelection");
 $("#session-selection-function").trigger("sessionSelection");
-console.log(window.realTimeDataArrayQuestion);
-console.log(window.realTimeDataArraySession);
 {{ registration_date_filter_javascript|safe }}
 {{ updated_date_filter_javascript|safe }}
 {{ attendee_group_filter_javascript|safe }}

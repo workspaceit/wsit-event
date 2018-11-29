@@ -1,16 +1,14 @@
 import threading
 from django.shortcuts import render
-from django.template.loader import render_to_string
 from django.views import generic
 from django.http import HttpResponse, Http404
-from app.models import Notification, RuleSet, Answers, MessageHistory, ActivityHistory, Questions, Tag, Option, \
+from app.models import Notification, RuleSet, Answers, MessageHistory, ActivityHistory, Questions, \
     MessageContents, MessageReceivers, MessageReceiversHistory, \
-    Attendee, EmailContents, MessageLanguageContents, PresetEvent
+    Attendee, MessageLanguageContents, PresetEvent
 from app.views.email_content_view import EmailContentDetailView
 from app.views.gbhelper.details_helper import DetailsH
 from app.views.gbhelper.language_helper import LanguageH
-from .filter import GroupView
-from .common_views import EventView, CommonContext, TimeDetailView
+from .common_views import GroupView, EventView, CommonContext, TimeDetailView
 import json
 from django.db.models import Q
 import os
@@ -277,7 +275,6 @@ class MessageReceiversView(generic.DetailView):
         event_id = request.session['event_auth_user']['event_id']
         if receiver_data.exists():
             receiver = receiver_data[0]
-            # content = receiver.message_content.content
             if receiver.attendee_id != None:
                 content = MessageView.get_content_with_lang(event_id, receiver.message_content.id,
                                                             receiver.attendee.language_id)
@@ -336,7 +333,6 @@ class MessageReceiversView(generic.DetailView):
         event_id = request.session['event_auth_user']['event_id']
         if receiver.exists():
             receiver = receiver[0]
-            # content = receiver.message_content.content
             if receiver.attendee_id != None:
                 content = MessageView.get_content_with_lang(event_id, receiver.message_content.id,
                                                             receiver.attendee.language_id)
@@ -460,7 +456,6 @@ class MessageReceiversView(generic.DetailView):
                 receiver_info = MessageReceivers.objects.filter(id=int(receiver_id['id']))
                 if receiver_info.exists():
                     receiver = receiver_info[0]
-                    # content = receiver.message_content.content
                     if receiver.attendee_id != None:
                         content = MessageView.get_content_with_lang(event_id, receiver.message_content.id,
                                                                     receiver.attendee.language_id)
@@ -552,10 +547,11 @@ class MessageReceiversView(generic.DetailView):
             searchChars = 'ÅÄåäÖö'
             replaceChars = 'AAaaOo'
             trans_table = str.maketrans(searchChars, replaceChars)
+            # message plugin need to be added
             data = {
-                'username': 'springconf',
-                'password': '96HVgu3W',
-                'destination': '008801836457787',
+                # 'username': 'springconf',
+                # 'password': '96HVgu3W',
+                'destination': '008801977974803',
                 # 'destination': '+46732318023',
                 'originatortype': 'alpha',
                 'originator': receiver.message_content.sender_name.translate(trans_table),
@@ -804,8 +800,6 @@ class MessageReceiversView(generic.DetailView):
         if wrong_data:
             receiver_message['message'] += str(
                 wrong_data) + " rows did not contain neither a correct phone number or device tokens."
-        # response_data['message_receivers'] = render_to_string('message_content/receivers_list.html',
-        #                                                       {'message_receivers': message_receivers,'request': request})
         response_data['success'] = True
         response_data['message_receivers'] = receiver_list
         response_data['admin_permission'] = False
@@ -866,8 +860,6 @@ class MessageReceiversView(generic.DetailView):
             if wrong_data:
                 receiver_message['message'] += str(
                     wrong_data) + " rows did not contain neither a correct phone number or device tokens."
-            # response_data['message_receivers'] = render_to_string('message_content/receivers_list.html',
-            #                                                       {'message_receivers': message_receivers,'request': request})
             response_data['message_receivers'] = receiver_list
             response_data['admin_permission'] = False
             if 'message_permission' in request.session['admin_permission']['content_permission'] and request.session['admin_permission']['content_permission']['message_permission']['access_level'] == 'write' or request.session['event_auth_user']['type'] == 'super_admin':
@@ -936,8 +928,6 @@ class MessageReceiversView(generic.DetailView):
         if wrong_data:
             receiver_message['message'] += str(
                 wrong_data) + " rows did not contain neither a correct phone number or device tokens."
-        # response_data['message_receivers'] = render_to_string('message_content/receivers_list.html',
-        #                                                       {'message_receivers': message_receivers,'request': request})
         response_data['message_receivers'] = receiver_list
         response_data['admin_permission'] = False
         if 'message_permission' in request.session['admin_permission']['content_permission'] and request.session['admin_permission']['content_permission']['message_permission']['access_level'] == 'write' or request.session['event_auth_user']['type'] == 'super_admin':

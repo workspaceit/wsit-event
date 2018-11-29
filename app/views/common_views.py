@@ -1,10 +1,5 @@
-import sys
-
-from apscheduler.triggers import date
 from django.template.loader import render_to_string
-
 from app.views.gbhelper.error_report_helper import ErrorR
-# from app.views.language_view import LanguageView
 from app.views.login_view import Login
 
 try:
@@ -27,11 +22,11 @@ import boto.ses
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.views import generic
-from app.models import Tag, Group, Questions, Attendee, Answers, ActivityHistory, Events, EventAdmin, ContentPermission, \
-    GroupPermission, Users, CurrentEvent, PageContent, Session, Travel, Room, RoomAllotment, \
+from app.models import Tag, Group, Questions, Attendee, Answers, ActivityHistory, Events, EventAdmin, \
+    Users, CurrentEvent, PageContent, Session, Travel, Room, RoomAllotment, \
     EmailContents, StyleSheet, Setting, DashboardPlugin, ElementsAnswers, PageContentClasses, AttendeeGroups, RuleSet, \
     MessageContents, Option, PluginSubmitButton, PhotoGroup, PresetEvent, Presets, ElementPresetLang, Notification, \
-    MessageReceivers, EmailReceivers, Rebates, EmailTemplates, Checkpoint, CurrentFilter, SeminarSpeakers, MessageHistory, Cookie
+    MessageReceivers, EmailReceivers, Rebates, EmailTemplates, Checkpoint, SeminarSpeakers, MessageHistory, Cookie
 import json
 from django.conf import settings
 import boto.ses
@@ -42,31 +37,19 @@ from datetime import datetime, timedelta
 from boto.s3.key import Key
 from django.db.models.functions import Concat
 from django.db.models import Value
-# from app.views.template_view import EmailTemplates
-import os
 from django.db.models import Sum, Count
-from datetime import timedelta
 import time
-from django.db import connection
 from app.views.gbhelper.language_helper import LanguageH
 
 
 class IndexView(generic.DetailView):
     def get(self, request):
-        # return render(request, 'dashboard/index_test.html')
         context = {}
         try:
             logger = logging.getLogger(__name__)
             if 'is_login' not in request.session or not request.session['is_login']:
                 return redirect('login')
             else:
-                # is_attendee_exists = True
-                # if 'is_attendee' in request.session['event_auth_user']:
-                #     if request.session['event_auth_user']['is_attendee'] == False:
-                #         is_attendee_exists = False
-                # else:
-                #     is_attendee_exists = False
-                # if not is_attendee_exists:
                 request.session['event_auth_user']['is_attendee'] = False
                 find_users_in_attendee = Attendee.objects.filter(
                     event_id=request.session['event_auth_user']['event_id'],
@@ -162,26 +145,18 @@ class IndexView(generic.DetailView):
         return render(request, 'dashboard/index.html', context)
 
 
-class SeminarView(generic.DetailView):
-    def get(self, request):
-        return render(request, 'seminar/seminar.html')
-
-
 class AnswerView(generic.DetailView):
     def get(self, request):
         return render(request, '')
 
     def saveAnswers(request, userId, answer):
         response = {}
-        print(answer)
         if answer['value'] != '[Multiple Values]':
             existAnswer = Answers.objects.filter(user_id=userId).filter(question_id=answer['id'])
-            # existAnswer = Answers.objects.filter(user_id = userId).filter(question_id = answer['id']).order_by('-id')[:1]
             if existAnswer.exists():
                 old_value = existAnswer[0].value
                 if answer['value'] == '' or answer['value'] == 'Empty':
                     response['deleted_questions'] = existAnswer[0].id
-                    # existAnswer.delete()
                 else:
                     existAnswer.update(value=answer['value'])
                 if old_value != answer['value']:
@@ -191,12 +166,10 @@ class AnswerView(generic.DetailView):
                                                        question_id=answer['id'], old_value=old_value,
                                                        new_value=answer['value'],
                                                        event_id=request.session['event_auth_user']['event_id'])
-                    # activity_history.save()
                     response['questions_activity'] = activity_history
             else:
                 if answer['value'] != '' and answer['value'] != 'Empty':
                     attendeeAnswer = Answers(value=answer['value'], question_id=answer['id'], user_id=userId)
-                    # attendeeAnswer.save()
                     response['new_questions_answer'] = attendeeAnswer
                     old_value = 'Empty'
                     activity_history = ActivityHistory(attendee_id=userId,
@@ -205,7 +178,6 @@ class AnswerView(generic.DetailView):
                                                        question_id=answer['id'], old_value=old_value,
                                                        new_value=answer['value'],
                                                        event_id=request.session['event_auth_user']['event_id'])
-                    # activity_history.save()
                     response['questions_activity'] = activity_history
         return response
 
@@ -213,11 +185,8 @@ class AnswerView(generic.DetailView):
 class GroupView(generic.DetailView):
 
     def get_hotelGroup(request):
-        # current_language_id = LanguageH.get_current_language_id(request.session['event_auth_user']['event_id'])
         group = Group.objects.filter(type="hotel", is_show=1,
                                      event_id=request.session['event_auth_user']['event_id']).order_by('group_order')
-        # for grp in group:
-        #     grp = LanguageH.get_group_data_by_language(current_language_id, grp)
         return group
 
     def get_paymentGroup(request):
@@ -289,14 +258,9 @@ class CommonContext(generic.DetailView):
         for group in hotel_group:
             group.rooms = Room.objects.all().select_related("hotel").filter(hotel__group_id=group.id)
             for room in group.rooms:
-                # room.vat = Group.objects.get(id=room.vat_id)
                 room_allotments = RoomAllotment.objects.filter(room_id=room.id).order_by('available_date')
                 date_allotments = []
                 for allotments in room_allotments:
-                    # current_date = allotments.available_date
-                    # booking_count = Booking.objects.filter(room_id=allotments.room_id, check_in__lte=current_date,check_out__gte=current_date).count()
-                    # book_amount = math.ceil(booking_count / room.beds)
-                    # if allotments.allotments > book_amount:
                     date_allotments.append(str(allotments.available_date))
                 if len(date_allotments) > 0:
                     new_date = datetime.strptime(date_allotments[-1], "%Y-%m-%d") + timedelta(days=1)
@@ -825,21 +789,6 @@ class EventView(generic.DetailView):
                                                       default_login_email_id, reset_password_email_id,
                                                       exclude_plugin_settings)
 
-                        # Create Attendee Details Page
-
-                        # attendee_details_page = PageContent.objects.filter(url='attendee-details-page', event_id=default_event.id)
-                        # EventView.create_default_page(attendee_details_page,current_admin_id,web_template,event,default_login_email_id,reset_password_email_id,exclude_plugin_settings)
-                        #
-                        # # Create Session Details Page
-                        #
-                        # session_details_page = PageContent.objects.filter(url='session-details-page', event_id=default_event.id)
-                        # EventView.create_default_page(session_details_page,current_admin_id,web_template,event,default_login_email_id,reset_password_email_id,exclude_plugin_settings)
-                        #
-                        # # Create Location Details Page
-                        #
-                        # location_details_page = PageContent.objects.filter(url='location-details-page', event_id=default_event.id)
-                        # EventView.create_default_page(location_details_page,current_admin_id,web_template,event,default_login_email_id,reset_password_email_id,exclude_plugin_settings)
-
                     ErrorR.ex_time_init()
                     # Create Default Invoice Templates
                     default_invoice_template_lists = []
@@ -1008,13 +957,6 @@ class EventView(generic.DetailView):
                                                     value=default_evaluation_appear[0].value,
                                                     event_id=event.id)
                         event_settings.append(evaluation_appear)
-                    # default_evaluation_disappear = Setting.objects.filter(name='disappear_evaluation_setting',
-                    #                                                       event_id=default_event.id)
-                    # if default_evaluation_disappear.exists():
-                    #     evaluation_disappear = Setting(name=default_evaluation_disappear[0].name,
-                    #                                    value=default_evaluation_disappear[0].value,
-                    #                                    event_id=event.id)
-                    #     event_settings.append(evaluation_disappear)
 
                     # Create Default Session Details Setting
 
@@ -1049,22 +991,7 @@ class EventView(generic.DetailView):
                     order_number_settings = Setting(name='start_order_number', value='{}-0000001'.format(event.id), event_id=event.id)
                     event_settings.append(order_number_settings)
 
-                    # Create Default Attendee Details Setting
-
-                    # default_attendee_details_settings = Setting.objects.filter(name='attendee_global_settings',
-                    #                                                            event_id=default_event.id)
-                    # if default_attendee_details_settings.exists():
-                    #     attendee_details_settings = Setting(name=default_attendee_details_settings[0].name,
-                    #                                         value=default_attendee_details_settings[0].value,
-                    #                                         event_id=event.id)
-                    #     event_settings.append(attendee_details_settings)
-
                     Setting.objects.bulk_create(event_settings)
-
-                    #visible_columns = [0, 1, 4, 11, 12, 13, 14]
-                    #current = CurrentFilter(admin_id=current_admin_id, event_id=event.id, visible_columns=json.dumps(visible_columns))
-                    #current.save()
-
 
                     # Create Default Sender Email
 
@@ -1074,7 +1001,6 @@ class EventView(generic.DetailView):
 
                     response_data['event'] = event.as_dict()
                     response_data['success'] = 'Event Create Successfully'
-                    print("--- %s seconds ---" % (time.time() - start_time))
                 else:
                     event = Events(**form_data)
                     event.save()
@@ -1433,10 +1359,6 @@ class EventView(generic.DetailView):
                                                         event_id=event.id)
                     appear_evaluation_setting.save()
 
-                    # disappear_evaluation_setting = Setting(name="disappear_evaluation_setting", value="1:00",
-                    #                                        event_id=event.id)
-                    # disappear_evaluation_setting.save()
-
                     # Default Sender Email
 
                     default_sender_email = "mahedi@workspaceit.com"
@@ -1586,7 +1508,7 @@ class EventView(generic.DetailView):
         request.session['event_auth_user']['event_name'] = eventName.name
         event_url = eventName.url
 
-        base_url = 'http://127.0.0.1:8000/' + str(event_url)
+        base_url = 'http://127.0.0.1:8003/' + str(event_url)
         request.session['event_auth_user']['event_url'] = event_url
         request.session['event_auth_user']['base_url'] = base_url
         find_users_in_attendee = Attendee.objects.filter(event_id=event_id, email=request.session['event_auth_user']['email'])
@@ -1594,57 +1516,11 @@ class EventView(generic.DetailView):
         if find_users_in_attendee.exists():
             is_attendee = True
         request.session['event_auth_user']['is_attendee'] = is_attendee
-        # event_list = []
-        # group_list = []
-        # content_list = {}
         admin_id = request.session['event_auth_user']['id']
 
         # update database
 
         CurrentEvent.objects.filter(admin_id=admin_id).update(event_id=event_id)
-
-        # event_permission = EventAdmin.objects.filter(admin_id=admin_id)
-        # for event in event_permission:
-        #     event_list.append(event.as_dict())
-        # content_permission = ContentPermission.objects.filter(admin_id=admin_id, event_id=event_id)
-        # for content in content_permission:
-        #     if content.content == 'event':
-        #         content_list["event_permission"] = content.as_dict()
-        #     if content.content == 'session':
-        #         content_list["session_permission"] = content.as_dict()
-        #     if content.content == 'question':
-        #         content_list["question_permission"] = content.as_dict()
-        #     if content.content == 'travel':
-        #         content_list["travel_permission"] = content.as_dict()
-        #     if content.content == 'location':
-        #         content_list["location_permission"] = content.as_dict()
-        #     if content.content == 'hotel':
-        #         content_list["hotel_permission"] = content.as_dict()
-        #     if content.content == 'filter':
-        #         content_list["filter_permission"] = content.as_dict()
-        #     if content.content == 'export_filter':
-        #         content_list["export_filter_permission"] = content.as_dict()
-        #     if content.content == 'photo_reel':
-        #         content_list["photo_reel_permission"] = content.as_dict()
-        #     if content.content == 'message':
-        #         content_list["message_permission"] = content.as_dict()
-        #     if content.content == 'setting':
-        #         content_list["setting_permission"] = content.as_dict()
-        #     if content.content == 'assign_session':
-        #         content_list["assign_session_permission"] = content.as_dict()
-        #     if content.content == 'assign_travel':
-        #         content_list["assign_travel_permission"] = content.as_dict()
-        #     if content.content == 'assign_hotel':
-        #         content_list["assign_hotel_permission"] = content.as_dict()
-        #
-        # group_permission = GroupPermission.objects.filter(admin_id=admin_id)
-        # for group in group_permission:
-        #     group_list.append(group.as_dict())
-        # admin_permission = {
-        #     "event_permission": event_list,
-        #     "content_permission": content_list,
-        #     "group_permission": group_list
-        # }
         admin_permission = Login.get_admin_permissions(request,event_id,admin_id)
         request.session['admin_permission'] = admin_permission
         request.session.modified = True
@@ -1701,20 +1577,14 @@ class EventView(generic.DetailView):
         response_data = {}
         try:
             event_id = request.POST.get('id')
-            # event = Events.objects.get(id=event_id)
-            # if event.url == 'default-project':
             if str(event_id) == '1':
                 response_data['warning'] = "You can't delete the Default Project"
             elif str(event_id) == str(request.session['event_auth_user']['event_id']):
                 response_data['warning'] = "You can't delete you current event. Please change your event first"
             else:
-                # ErrorR.ex_time_init()
                 MessageHistory.objects.filter(activityhistory__event_id=event_id).delete()
                 Cookie.objects.filter(cookiepage__page__event_id=event_id).delete()
                 Events.objects.get(id=event_id).delete()
-                # ErrorR.ex_time()
-                # Events.objects.filter(id=event_id).update(is_show=0)
-                # EventAdmin.objects.filter(event_id=event_id).delete()
                 response_data['success'] = "Event Deleted Successfully"
         except Exception as e:
             ErrorR.efail(e)
@@ -1884,384 +1754,6 @@ class EventView(generic.DetailView):
             print(e)
         return ""
 
-        # def set_general_language(request,old_language_id,language_id):
-        #     try:
-        #         presetId = old_language_id
-        #         general_langs = []
-        #         event_id = request.session['event_auth_user']['event_id']
-        #         menus = MenuItem.objects.values('id', 'title', 'title_lang').filter(event_id=event_id)
-        #         questions = Questions.objects.values('id', 'title', 'description', 'title_lang','description_lang').filter(group__event_id=event_id)
-        #         options = Option.objects.values('id', 'option', 'option_lang').filter(question__group__event_id=event_id)
-        #         sessions = Session.objects.values('id','name','name_lang','description','description_lang').filter(group__event_id=event_id)
-        #         travels = Travel.objects.values('id','name','name_lang','description','description_lang').filter(group__event_id=event_id)
-        #         locations = Locations.objects.values('id','name','name_lang','description','description_lang','address','address_lang','contact_name','contact_name_lang').filter(group__event_id=event_id)
-        #         hotels = Hotel.objects.values('id','name','name_lang').filter(group__event_id=event_id)
-        #         rooms = Room.objects.values('id','description','description_lang').filter(hotel__group__event_id=event_id)
-        #         groups = Group.objects.values('id','name','name_lang').filter(event_id=event_id).exclude(type='email')
-        #
-        #         cursor = connection.cursor()
-        #
-        #         session_array = []
-        #         travel_array = []
-        #         location_array = []
-        #         hotel_array = []
-        #         room_array = []
-        #         group_array = []
-        #
-        #         menu_lang = EventView.set_menu_lang(request,menus,presetId,language_id)
-        #         if menu_lang['success']:
-        #             cursor.execute(menu_lang['sql'])
-        #
-        #         question_lang = EventView.set_question_lang(request,questions,presetId,language_id)
-        #         if question_lang['success']:
-        #             cursor.execute(question_lang['sql'])
-        #
-        #         option_lang = EventView.set_option_lang(request,options,presetId,language_id)
-        #         if option_lang['success']:
-        #             cursor.execute(option_lang['sql'])
-        #
-        #         session_lang = EventView.set_session_lang(request,sessions,presetId,language_id)
-        #         if session_lang['success']:
-        #             cursor.execute(session_lang['sql'])
-        #
-        #         travel_lang = EventView.set_travel_lang(request,travels,presetId,language_id)
-        #         if travel_lang['success']:
-        #             cursor.execute(travel_lang['sql'])
-        #
-        #         location_lang = EventView.set_location_lang(request,travels,presetId,language_id)
-        #         if travel_lang['success']:
-        #             cursor.execute(travel_lang['sql'])
-        #
-        #
-        #         for location in locations:
-        #             if location['name_lang'] != '' and location['name_lang'] != None:
-        #                 try:
-        #                     location_name_lang = json.loads(location['name_lang'], strict=False)
-        #                     if location_name_lang[str(presetId)]:
-        #                         location['name'] = location_name_lang[str(presetId)]
-        #                 except:
-        #                     pass
-        #             if location['description_lang'] != '' and location['description_lang'] != None:
-        #                 try:
-        #                     location_description_lang = json.loads(location['description_lang'], strict=False)
-        #                     if location_description_lang[str(presetId)]:
-        #                         location['description'] = location_description_lang[str(presetId)]
-        #                 except:
-        #                     pass
-        #             if location['address_lang'] != '' and location['address_lang'] != None:
-        #                 try:
-        #                     location_address_lang = json.loads(location['address_lang'], strict=False)
-        #                     if location_address_lang[str(presetId)]:
-        #                         location['address'] = location_address_lang[str(presetId)]
-        #                 except:
-        #                     pass
-        #             if location['contact_name_lang'] != '' and location['contact_name_lang'] != None:
-        #                 try:
-        #                     location_contact_name_lang = json.loads(location['contact_name_lang'], strict=False)
-        #                     if location_contact_name_lang[str(presetId)]:
-        #                         location['contact_name'] = location_contact_name_lang[str(presetId)]
-        #                 except:
-        #                     pass
-        #             location_dict = {
-        #                 'id':location['id'],
-        #                 'name': location['name'],
-        #                 'description': location['description'] if location['description'] else '',
-        #                 'address': location['address'] if location['address'] else '',
-        #                 'contact_name': location['contact_name'] if location['contact_name'] else '',
-        #             }
-        #             location_array.append(location_dict)
-        #         general_langs.append({"locations":location_array})
-        #
-        #         for hotel in hotels:
-        #             if hotel['name_lang'] != '' and hotel['name_lang'] != None:
-        #                 try:
-        #                     hotel_name_lang = json.loads(hotel['name_lang'], strict=False)
-        #                     if hotel_name_lang[str(presetId)]:
-        #                         hotel['name'] = hotel_name_lang[str(presetId)]
-        #                 except:
-        #                     pass
-        #             hotel_dict = {
-        #                 'id':hotel['id'],
-        #                 'name': hotel['name'],
-        #             }
-        #             hotel_array.append(hotel_dict)
-        #         general_langs.append({"hotels":hotel_array})
-        #
-        #         for room in rooms:
-        #             if room['description_lang'] != '' and room['description_lang'] != None:
-        #                 try:
-        #                     room_description_lang = json.loads(room['description_lang'], strict=False)
-        #                     if room_description_lang[str(presetId)]:
-        #                         room['description'] = room_description_lang[str(presetId)]
-        #                 except:
-        #                     pass
-        #             room_dict = {
-        #                 'id':room['id'],
-        #                 'description': room['description'] if room['description'] else '',
-        #             }
-        #             room_array.append(room_dict)
-        #         general_langs.append({"rooms":room_array})
-        #
-        #         for group in groups:
-        #             if group['name_lang'] != '' and group['name_lang'] != None:
-        #                 try:
-        #                     group_name_lang = json.loads(group['name_lang'], strict=False)
-        #                     if group_name_lang[str(presetId)]:
-        #                         group['name'] = group_name_lang[str(presetId)]
-        #                 except:
-        #                     pass
-        #             group_dict = {
-        #                 'id': group['id'],
-        #                 'name': group['name']
-        #             }
-        #             group_array.append(group_dict)
-        #         general_langs.append({"groups":group_array})
-        #
-        #         context = {
-        #             "general_langs": general_langs
-        #         }
-        #         return render(request, 'language/general_lang_render.html', context)
-        #     except Exception as e:
-        #         import traceback
-        #         traceback.print_exc()
-        #         # print(traceback.print_exc())
-        #         # import sys, os
-        #         # exc_type, exc_obj, exc_tb = sys.exc_info()
-        #         # fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
-        #         # print(exc_type, fname, exc_tb.tb_lineno)
-        #         context = {
-        #             "general_langs": []
-        #         }
-        #         return render(request, 'language/general_lang_render.html', context)
-
-        # def set_menu_lang(request,menus,presetId,language_id):
-        #     response = {}
-        #     try:
-        #         data_array = []
-        #         data_ids = []
-        #         for menu in menus:
-        #             if menu['title_lang'] != '' and menu['title_lang'] != None:
-        #                 try:
-        #                     menu_title_lang = json.loads(menu['title_lang'], strict=False)
-        #                     if menu_title_lang[str(presetId)]:
-        #                         menu_title_lang[str(language_id)] = menu_title_lang[str(presetId)]
-        #                         menu['title_lang'] = str(menu_title_lang).replace("'", '"')
-        #                         data_array.append({'id':str(menu['id']),'title_lang':menu['title_lang']})
-        #                         data_ids.append(menu['id'])
-        #                 except:
-        #                     pass
-        #         sql_title_case = ''
-        #         for d_data in data_array:
-        #             d_id = d_data["id"]
-        #             d_title = d_data["title_lang"]
-        #             sql_title_case +="WHEN id = "+d_id+" THEN '"+str(d_title)+"' "
-        #         if sql_title_case != "":
-        #             sql_case = 'title_lang = CASE '+sql_title_case+'END'
-        #             sql = LanguageView.create_language_sql('menu_items',sql_case,data_ids)
-        #             response['success'] = True
-        #             response['sql'] = sql
-        #     except Exception as e:
-        #         print(e)
-        #         response['success'] = False
-        #     return response
-        #
-        # def set_question_lang(request,questions,presetId,language_id):
-        #     response = {}
-        #     try:
-        #         data_array = []
-        #         data_ids = []
-        #         for question in questions:
-        #             data_dict ={
-        #                 'id':str(question['id'])
-        #             }
-        #             if question['title_lang'] != '' and question['title_lang'] != None:
-        #                 try:
-        #                     question_title_lang = json.loads(question['title_lang'], strict=False)
-        #                     if question_title_lang[str(presetId)]:
-        #                         question_title_lang[str(language_id)] = question_title_lang[str(presetId)]
-        #                         data_dict['title_lang'] = str(question_title_lang).replace("'", '"')
-        #                 except:
-        #                     pass
-        #             if question['description_lang'] != '' and question['description_lang'] != None:
-        #                 try:
-        #                     question_description_lang = json.loads(question['description_lang'], strict=False)
-        #                     if question_description_lang[str(presetId)]:
-        #                         question_description_lang[str(language_id)] = question_description_lang[str(presetId)]
-        #                         data_dict['description_lang'] = str(question_description_lang).replace("'", '"')
-        #                 except:
-        #                     pass
-        #             data_array.append(data_dict)
-        #             data_ids.append(question['id'])
-        #         sql_title_case = ''
-        #         sql_description_case = ''
-        #         for d_data in data_array:
-        #             d_id = d_data["id"]
-        #             if 'title_lang' in d_data:
-        #                 d_title = d_data["title_lang"]
-        #                 sql_title_case +="WHEN id = "+d_id+" THEN '"+str(d_title)+"' "
-        #             if 'description_lang' in d_data:
-        #                 d_description = d_data["description_lang"]
-        #                 sql_description_case +="WHEN id = "+d_id+" THEN '"+str(d_description)+"' "
-        #         if sql_title_case != "" or sql_description_case != "":
-        #             sql_case_array = []
-        #             if sql_title_case != "":
-        #                 sql_case_array.append('title_lang = CASE '+sql_title_case+'END')
-        #             if sql_description_case != "":
-        #                 sql_case_array.append('description_lang = CASE '+sql_description_case+'END')
-        #             sql_case = ','.join(sql_case_array)
-        #             response['success'] = True
-        #             sql = LanguageView.create_language_sql('questions',sql_case,data_ids)
-        #             response['sql'] = sql
-        #         else:
-        #             response['success'] = False
-        #     except Exception as e:
-        #         print(e)
-        #         response['success'] = False
-        #     return response
-        #
-        # def set_option_lang(request,options,presetId,language_id):
-        #     response = {}
-        #     try:
-        #         data_array = []
-        #         data_ids = []
-        #         for option in options:
-        #             if option['option_lang'] != '' and option['option_lang'] != None:
-        #                 try:
-        #                     option_lang = json.loads(option['option_lang'], strict=False)
-        #                     if option_lang[str(presetId)]:
-        #                         option_lang[str(language_id)] = option_lang[str(presetId)]
-        #                         option['title_lang'] = str(option_lang).replace("'", '"')
-        #                         data_array.append({'id':str(option['id']),'option_lang':option['option_lang']})
-        #                         data_ids.append(option['id'])
-        #                 except:
-        #                     pass
-        #         sql_option_case = ''
-        #         for d_data in data_array:
-        #             d_id = d_data["id"]
-        #             d_option = d_data["option_lang"]
-        #             sql_option_case +="WHEN id = "+d_id+" THEN '"+str(d_option)+"' "
-        #         if sql_option_case != "":
-        #             sql_case = 'option_lang = CASE '+sql_option_case+'END'
-        #             response['success'] = True
-        #             sql = LanguageView.create_language_sql('options',sql_case,data_ids)
-        #             response['sql'] = sql
-        #         else:
-        #             response['success'] = False
-        #     except Exception as e:
-        #         print(e)
-        #         response['success'] = False
-        #     return response
-        #
-        # def set_session_lang(request,sessions,presetId,language_id):
-        #     response = {}
-        #     try:
-        #         data_array = []
-        #         data_ids = []
-        #         for session in sessions:
-        #             data_dict ={
-        #                 'id':str(session['id'])
-        #             }
-        #             if session['name_lang'] != '' and session['name_lang'] != None:
-        #                 try:
-        #                     session_name_lang = json.loads(session['name_lang'], strict=False)
-        #                     if session_name_lang[str(presetId)]:
-        #                         session_name_lang[str(language_id)] = session_name_lang[str(presetId)]
-        #                         data_dict['name_lang'] = str(session_name_lang).replace("'", '"')
-        #                 except:
-        #                     pass
-        #             if session['description_lang'] != '' and session['description_lang'] != None:
-        #                 try:
-        #                     session_description_lang = json.loads(session['description_lang'], strict=False)
-        #                     if session_description_lang[str(presetId)]:
-        #                         session_description_lang[str(language_id)] = session_description_lang[str(presetId)]
-        #                         data_dict['description_lang'] = str(session_description_lang).replace("'", '"')
-        #                 except:
-        #                     pass
-        #             data_array.append(data_dict)
-        #             data_ids.append(session['id'])
-        #
-        #         sql_name_case = ''
-        #         sql_description_case = ''
-        #         for d_data in data_array:
-        #             d_id = d_data["id"]
-        #             if 'name_lang' in d_data:
-        #                 d_name = d_data["name_lang"]
-        #                 sql_name_case +="WHEN id = "+d_id+" THEN '"+str(d_name)+"' "
-        #             if 'description_lang' in d_data:
-        #                 d_description = d_data["description_lang"]
-        #                 sql_description_case +="WHEN id = "+d_id+" THEN '"+str(d_description)+"' "
-        #         if sql_name_case != "" or sql_description_case != "":
-        #             sql_case_array = []
-        #             if sql_name_case != "":
-        #                 sql_case_array.append('name_lang = CASE '+sql_name_case+'END')
-        #             if sql_description_case != "":
-        #                 sql_case_array.append('description_lang = CASE '+sql_description_case+'END')
-        #             sql_case = ','.join(sql_case_array)
-        #             response['success'] = True
-        #             sql = LanguageView.create_language_sql('sessions',sql_case,data_ids)
-        #             response['sql'] = sql
-        #         else:
-        #             response['success'] = False
-        #     except Exception as e:
-        #         print(e)
-        #         response['success'] = False
-        #     return response
-        #
-        # def set_travel_lang(request,travels,presetId,language_id):
-        #     response = {}
-        #     try:
-        #         data_array = []
-        #         data_ids = []
-        #         for travel in travels:
-        #             data_dict ={
-        #                 'id':str(travel['id'])
-        #             }
-        #             if travel['name_lang'] != '' and travel['name_lang'] != None:
-        #                 try:
-        #                     travel_name_lang = json.loads(travel['name_lang'], strict=False)
-        #                     if travel_name_lang[str(presetId)]:
-        #                         travel_name_lang[str(language_id)] = travel_name_lang[str(presetId)]
-        #                         data_dict['name_lang'] = str(travel_name_lang).replace("'", '"')
-        #                 except:
-        #                     pass
-        #             if travel['description_lang'] != '' and travel['description_lang'] != None:
-        #                 try:
-        #                     travel_description_lang = json.loads(travel['description_lang'], strict=False)
-        #                     if travel_description_lang[str(presetId)]:
-        #                         travel_description_lang[str(language_id)] = travel_description_lang[str(presetId)]
-        #                         data_dict['description_lang'] = str(travel_description_lang).replace("'", '"')
-        #                 except:
-        #                     pass
-        #             data_array.append(data_dict)
-        #             data_ids.append(travel['id'])
-        #
-        #         sql_name_case = ''
-        #         sql_description_case = ''
-        #         for d_data in data_array:
-        #             d_id = d_data["id"]
-        #             if 'name_lang' in d_data:
-        #                 d_name = d_data["name_lang"]
-        #                 sql_name_case +="WHEN id = "+d_id+" THEN '"+str(d_name)+"' "
-        #             if 'description_lang' in d_data:
-        #                 d_description = d_data["description_lang"]
-        #                 sql_description_case +="WHEN id = "+d_id+" THEN '"+str(d_description)+"' "
-        #         if sql_name_case != "" or sql_description_case != "":
-        #             sql_case_array = []
-        #             if sql_name_case != "":
-        #                 sql_case_array.append('name_lang = CASE '+sql_name_case+'END')
-        #             if sql_description_case != "":
-        #                 sql_case_array.append('description_lang = CASE '+sql_description_case+'END')
-        #             sql_case = ','.join(sql_case_array)
-        #             response['success'] = True
-        #             sql = LanguageView.create_language_sql('travels',sql_case,data_ids)
-        #             response['sql'] = sql
-        #         else:
-        #             response['success'] = False
-        #     except Exception as e:
-        #         print(e)
-        #         response['success'] = False
-        #     return response
-
 
 class EventDetailView(generic.DetailView):
     def get_object(self, pk):
@@ -2349,27 +1841,6 @@ class AttendeeListJson(BaseDatatableView):
     def get_event_id(self):
         return self.request.session['event_user']['event_id']
 
-        #
-        # def prepare_results(self, qs):
-        #
-        #     session = boto_session(aws_access_key_id=settings.AWS_ACCESS_KEY_ID,
-        #       aws_secret_access_key=settings.AWS_SECRET_ACCESS_KEY,
-        #       region_name='eu-west-1')
-        #     s3_client = session.client('s3')
-        #     json_data = []
-        #     for q in qs:
-        #         print(q.photo)
-        #         main_photo_key = q.photo
-        #         thumb_photo_key = q.thumb_image
-        #         main_photo = '{}/{}/{}'.format(s3_client.meta.endpoint_url, settings.AWS_STORAGE_BUCKET_NAME, main_photo_key)
-        #         thumb_photo = '{}/{}/{}'.format(s3_client.meta.endpoint_url, settings.AWS_STORAGE_BUCKET_NAME, thumb_photo_key)
-        #         #url = "<a class='fancybox-thumbs' data-fancybox-group='thumb' href='"+main_photo+"'><img src='"+thumb_photo+"' /></a>"
-        #         json_data.append([{
-        #             'photo': main_photo,
-        #             'thumb': thumb_photo
-        #         }])
-        #     return json_data
-
 
 class DescriptionView(generic.DetailView):
     def show_description_preview(request):
@@ -2400,7 +1871,6 @@ class DescriptionView(generic.DetailView):
         content = content.replace('[[event_url]]', event_url)
         content = content.replace('[[parmanent]]', settings.STATIC_URL_ALT + 'public/')
         base_url = request.session['event_auth_user']['base_url']
-        # calendar_content = """<a href=""" + base_url + """/webcal/?uid={secret_key}>""" + base_url + """/webcal/?uid={secret_key}</a>"""
         webcal_url = base_url.replace('https:','webcal:')
         webcal_url = base_url.replace('http:','webcal:')
         calendar_content = webcal_url + "/webcal/?uid={secret_key}"
@@ -2428,37 +1898,3 @@ class TimeDetailView(generic.DetailView):
         convertedtz = timezone(tzname)
         convertedtime = aware_est.astimezone(convertedtz)
         return convertedtime
-
-        # def language_copy(request):
-        #     TimeDetailView.insert_language(request,15)
-        #     TimeDetailView.insert_language(request,16)
-        #     return HttpResponse(json.dumps({'success':True}), content_type='application/json')
-        #
-        # def insert_language(request,event_id):
-        #     try:
-        #         if Events.objects.filter(id=event_id).exists():
-        #             start_time = time.time()
-        #             event_id = event_id
-        #             language_en = Presets.objects.get(id=6)
-        #             new_en = Presets(preset_name=language_en.preset_name,event_id=event_id,created_by_id=1)
-        #             new_en.save()
-        #
-        #             element_language_en = ElementPresetLang.objects.filter(preset_id=6)
-        #             en_lang = []
-        #             for element_lang_en in element_language_en:
-        #                 en_lang.append(ElementPresetLang(value=element_lang_en.value, element_default_lang_id=element_lang_en.element_default_lang_id,
-        #                                       preset_id=new_en.id))
-        #             language_se = Presets.objects.get(id=7)
-        #             new_se = Presets(preset_name=language_se.preset_name,event_id=event_id,created_by_id=1)
-        #             new_se.save()
-        #             element_language_se = ElementPresetLang.objects.filter(preset_id=7)
-        #             se_lang = []
-        #             for element_lang_se in element_language_se:
-        #                 se_lang.append(ElementPresetLang(value=element_lang_se.value, element_default_lang_id=element_lang_se.element_default_lang_id,
-        #                                       preset_id=new_se.id))
-        #             languages = en_lang + se_lang
-        #             ElementPresetLang.objects.bulk_create(languages)
-        #     except Exception as e:
-        #         print(e)
-        #     print("--- %s language seconds ---" % (time.time() - start_time))
-        #     return ""

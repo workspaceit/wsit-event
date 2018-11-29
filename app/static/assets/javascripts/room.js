@@ -319,7 +319,6 @@ $('body').on('click', '.editRoom', function (event) {
                     $.growl.notice({message: result.success});
                     $('#hotel-details-edit-room').modal('hide');
                     var room = result.room;
-                    console.log(room.description_lang);
                     var row = '' +
                         '<td>' + room.beds + '</td>' +
                         '<td class="room-description" data-lang=\''+room.description_lang.replace(/'/g, "\\'")+'\'>' + getcontentByLanguage(room.description, room.description_lang, current_language_id) + '</td>' +

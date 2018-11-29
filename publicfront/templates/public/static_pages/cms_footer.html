@@ -79,7 +79,7 @@
             {#            var ws = new WebSocket("ws://0.0.0.0:5678/{{ request.session.event_user.secret_key }}");#}
             var ws = new WebSocket("{{ request.session.socket_url }}:5678/{{ request.session.event_user.secret_key }}");
             ws.onopen = function () {
-                if (window.location.hostname != '192.168.1.67') {
+                if (window.location.hostname != '192.168.1.67' && window.location.hostname != '163.53.151.2') {
                     console.log("Socket Connected successfully");
                 }
             };
@@ -107,7 +107,6 @@
                     }
                 }
                 if (flag) {
-                    console.log('found');
                     Promise.resolve(get_eval_next_up_messages()).then(console.log);
                     {#                    console.log("Promised")#}
                 }
@@ -151,15 +150,7 @@
                                 });
                             }
                             if (response.messages_status) {
-                                {#$('.defaultCountdown').each(#}
-                                {#        function () {#}
-                                {##}
-                                {#            var self = $(this);#}
-                                {#            self.countdown('destroy');#}
-                                {#        }#}
-                                {#);#}
                                 $.each(response.messages_html, function (key, value) {
-                                    console.log(key);
                                     $("#" + key).parent().html(value);
                                     $("#" + key).closest(".col").show();
                                     $('.defaultCountdown').each(
@@ -346,10 +337,8 @@
     });
 </script>
 <script type="application/javascript">
-    {#    $(".given-answer").on("change", function () {#}
     $('body').bind('change', '.given-answer', function (event) {
         $("#given-answer-function").trigger("questionSelection");
-        console.log(window.realTimeDataArrayQuestion);
         {{ registration_date_filter_javascript|safe }}
         {{ updated_date_filter_javascript|safe }}
         {{ attendee_group_filter_javascript|safe }}
@@ -368,8 +357,6 @@
         {{ rebate_filter_javascript|safe }}
         {{ checkpoint_filter_javascript|safe }}
         {{ first_empty_filter_javascript|safe }}
-        console.log('ok now');
-{#        setOrUnsetSession();#}
     });
     var q_timeout = null;
     $('body').bind('keyup', '.given-answer', function (event) {
@@ -382,14 +369,8 @@
 {#            setOrUnsetSession();#}
         }, 500);
     });
-    {#    $(".session-selection").on("change", function () {#}
     $('body').on('change', '.session-selection', function (event) {
-        console.log('click here');
-        // note this
-        {#            sessionSelection();#}
         $("#session-selection-function").trigger("sessionSelection");
-        {#        setOrUnsetSession();#}
-        console.log(window.realTimeDataArraySession);
         {{ registration_date_filter_javascript|safe }}
         {{ updated_date_filter_javascript|safe }}
         {{ attendee_group_filter_javascript|safe }}
@@ -408,12 +389,9 @@
         {{ rebate_filter_javascript|safe }}
         {{ checkpoint_filter_javascript|safe }}
         {{ first_empty_filter_javascript|safe }}
-{#        setOrUnsetSession();#}
     });
 
     $("#given-answer-function").bind("questionSelection", function () {
-        console.log("questionSelection");
-        {#        function questionSelection() {#}
         var realTimeDataArray = {};// note this
         $('.given-answer').each(function () {
 
@@ -462,8 +440,6 @@
     });
 
     $("#session-selection-function").bind("sessionSelection", function () {
-        console.log("sessionSelection");
-
         $('.session-selection').each(function () {
 
             if (typeof(window.realTimeDataArraySession[$(this).attr('data-session-id')]) === 'undefined') {
@@ -616,19 +592,16 @@
 </script>
 <script>
     jQuery(function () {
-        console.log("From jQuery.ready callback.");
+        clog("From jQuery.ready callback.");
     });
 
     $(window).load(function () {
-        console.log("From window.onload callback.");
+        clog("From window.onload callback.");
     });
 </script>
 {{ kendo_content|safe }}
 <script src="{% static 'public/js/page.js' %}"></script>
-{#<script src="{% static 'public/js/session_agenda.js' %}"></script>#}
-{#<script src="{% static 'public/js/details.js' %}"></script>#}
 <script src="{% static 'public/js/plugin_session.js' %}"></script>
-{#<script src="{% static 'public/js/plugins.js' %}"></script>#}
 {% if plugin_js_need.get_multiple_registration.loop_registration %}
     <script>plugin_js_need["get_multiple_registration"]["loop_registration"] = true;</script>
     <script src="{% static 'public/js/multiple_registration.js' %}"></script>
@@ -656,8 +629,6 @@
     $(function () {
         $("#given-answer-function").trigger("questionSelection");
         $("#session-selection-function").trigger("sessionSelection");
-        console.log(window.realTimeDataArrayQuestion);
-        console.log(window.realTimeDataArraySession);
         {{ registration_date_filter_javascript|safe }}
         {{ updated_date_filter_javascript|safe }}
         {{ attendee_group_filter_javascript|safe }}
@@ -680,8 +651,6 @@
     });
     function triggerSession() {
         $("#session-selection-function").trigger("sessionSelection");
-        console.log("window.realTimeDataArrayQuestion");
-        console.log(window.realTimeDataArraySession);
         {{ registration_date_filter_javascript|safe }}
         {{ updated_date_filter_javascript|safe }}
         {{ attendee_group_filter_javascript|safe }}

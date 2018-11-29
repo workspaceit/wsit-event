@@ -3,10 +3,8 @@ from django.views import generic
 from django.http import HttpResponse
 from app.models import SeminarsUsers, Notification, Elements, EmailTemplates, StyleSheet
 import json
-from django.db.models import Q
 
 from publicfront.views.lang_key import LanguageKey
-from publicfront.views.mail import MailHelper
 from .page2 import DynamicPage
 from django.template.loader import render_to_string
 from django.conf import settings
@@ -27,35 +25,11 @@ class SessionMessageView(generic.DetailView):
         session_attendee = SeminarsUsers.objects.filter(session_id=session_id, status='attending')
         for attendee in session_attendee:
             if type == 'message':
-                # notification = Notification(type='session_message', to_attendee_id=attendee.attendee.id, message=message)
-                # notification.save()
-                # message_history = MessageHistory(subject=subject, attendee_id=attendee.id, message=message,
-                #                                  admin_id=request.session['event_auth_user']['id'], type='message')
-                # message_history.save()
                 response_data['success'] = 'Message Sent Successfully'
             elif type == 'email':
-                # context = {
-                #     'message': message
-                # }
-                # # subject = "MESSAGE - KINGFOMARKET"
-                # to = attendee.attendee.email
-                # MailHelper.mail_send('email_template/email_message.html', context, subject, to)
-                # message_history = MessageHistory(subject=subject, attendee_id=attendee.id, message=message,
-                #                                  admin_id=request.session['event_auth_user']['id'], type='mail')
-                # message_history.save()
                 response_data['success'] = 'Email Sent Successfully'
             elif type == 'sms':
-                print(message)
-                # message_history = MessageHistory(subject=subject, attendee_id=attendee.id, message=message,
-                #                                  admin_id=request.session['event_auth_user']['id'], type='sms')
-                # message_history.save()
                 response_data['success'] = 'SMS Sent Successfully'
-
-            # activity_history = ActivityHistory(attendee_id=attendee.id,
-            #                                    admin_id=request.session['event_auth_user']['id'],
-            #                                    activity_type='message', category='message',
-            #                                    message_id=message_history.id, event_id=1)
-            # activity_history.save()
 
     def get_archived_message(request, *args, **kwargs):
         if 'is_user_login' in request.session and request.session['is_user_login']:
@@ -71,7 +45,6 @@ class SessionMessageView(generic.DetailView):
                 archived_message = render_to_string('public/attendee/archived_messages.html', context)
                 message_page = SessionMessageView.get_default_template(request,archived_message)
                 return HttpResponse(message_page)
-                # return render(request, 'public/attendee/archived_messages.html', context)
             else:
                 return redirect('welcome', event_url=request.session['event_url'])
         else:

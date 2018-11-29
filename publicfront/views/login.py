@@ -80,7 +80,6 @@ class LoginView(generic.View):
         if attendee.exists():
             if 'send_email_id' in request.POST:
                 send_email_id = request.POST.get('send_email_id')
-                # queue = UserEmail.email_connection(request)
                 UserEmail.send_email_to_user(request, send_email_id, attendee[0])
             else:
                 send_email_data = EmailContents.objects.filter(name='request-login-confirmation',template__event_id=event_id)

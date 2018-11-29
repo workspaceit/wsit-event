@@ -1,4 +1,3 @@
-
 from app.models import SeminarsUsers, Session, SeminarSpeakers
 
 
@@ -13,7 +12,6 @@ class General():
             response['session']=session.name
             capacity = session.max_attendees
             count = SeminarsUsers.objects.filter(session_id=session_id,status='attending').count()
-            # if capacity > count: [condition changed when require to allow max_attendees=0 that means unlimited atnde alolw]
             if capacity > count or capacity == 0:
                     already_has_session = SeminarsUsers.objects.filter(attendee_id=attendee_id, status='attending',session__allow_overlapping=0)
                     already_has_session_as_speaker = SeminarSpeakers.objects.filter(speaker_id=attendee_id)
@@ -21,12 +19,6 @@ class General():
                     isSpeaker = 0
                     if session.allow_overlapping == 0:
                         for sessionlist in already_has_session:
-                           # if sessionlist.session.start <= session.start <sessionlist.session.end:
-                           #     Inbetween = 1
-                           #     break
-                           # elif sessionlist.session.start <session.end <=sessionlist.session.end:
-                           #     Inbetween = 1
-                           #     break
                             if sessionlist.session.start <= session.start <sessionlist.session.end:
                                Inbetween = 1
                                break
@@ -71,6 +63,5 @@ class General():
         else:
             response['valid'] = False
             response['reason'] = "Session not found."
-        print(response)
         return response
 

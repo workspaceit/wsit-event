@@ -50,7 +50,6 @@ class DocumentDetail(generic.DetailView):
                 context = {
                     'page_content': page_content
                 }
-                # return render(request, 'public/attendee/login_page.html', context)
                 return render(request, 'public/static_pages/cms_page.html', context)
             else:
                 return redirect('welcome', event_url=request.session['event_url'])

@@ -2,8 +2,7 @@ from django.shortcuts import render
 from django.views import generic
 from django.http import HttpResponse
 import json
-from app.models import StyleSheet, Events ,PaymentSettings
-from django.conf import settings
+from app.models import PaymentSettings
 
 
 from app.views.common_views import EventView

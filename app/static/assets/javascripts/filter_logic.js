@@ -354,7 +354,6 @@ $(function () {
     });
     $body.on('change', '.condition-8', function () {
         var selectedValue = $(this).val();
-        console.log(selectedValue);
         if (selectedValue == 5) {
             $(this).closest('li').find('.answer-number-container').hide();
             $(this).closest('li').find('.answer-number-within-container').show();
@@ -952,7 +951,6 @@ function traverse(elem, par) {
 function filterShow(preset, ul) {
     clog(preset);
     for (var i = 0; i < preset.length; i++) {
-        console.log(preset[i].length);
         if(preset[i].length > 0) {
             if (preset[i][0].length != undefined) {
                 ul.append($('#filter-nested-html').html());
@@ -1321,7 +1319,6 @@ function filterShow(preset, ul) {
                     lastAdded.find('.condition-9').val(preset[i][0].values[0]);
                 }
                 else {
-                    console.log('else occurred');
                     lastAdded.find('.second').hide();
                     lastAdded.find('.third').hide();
                     lastAdded.find('.rule').val(preset[i][0].field);

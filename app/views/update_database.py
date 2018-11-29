@@ -49,7 +49,6 @@ class UpdateDatabaseView(generic.TemplateView):
                     logger.debug("=============New Preset Language Add END==============")
                 except Exception as e:
                     ErrorR.efail(e)
-                    # Elements.objects.raw('"'+render_to_string('update_database/elements.html')+'"')
 
             response_data = {'message': 'Database updated Successfully','content':UpdateDatabaseView().getContent()}
             logger.debug("=============Update Database Start END==============")

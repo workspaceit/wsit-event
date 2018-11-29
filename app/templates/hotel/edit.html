@@ -65,12 +65,6 @@
                                         <option value="{{ group.id }}" {% if hotel.group_id == group.id %}
                                                 selected {% endif %}>{{ group.name|safe }}</option>
                                     {% endfor %}
-                                    {#                        <option value="Near By Hotels" {% if hotel.category == "Near By Hotels" %} selected {% endif %}>#}
-                                    {#                            Near By Hotels#}
-                                    {#                        </option>#}
-                                    {#                        <option value="Far Away Hotels" {% if hotel.category == "Far Away Hotels" %}#}
-                                    {#                                selected {% endif %}>Far Away Hotels#}
-                                    {#                        </option>#}
                                 </select>
                             </div>
                         </div>
@@ -87,7 +81,6 @@
                             <tr>
                                 <th>#Beds</th>
                                 <th>Description</th>
-{#                                <th>Cost</th>#}
                                 <th>Occupancy</th>
                             </tr>
                             </thead>
@@ -96,7 +89,6 @@
                                 <tr class="roomInfo" data-id="{{ room.id }}">
                                     <td>{{ room.beds }}</td>
                                     <td class="room-description" data-lang="{{ room.description_lang }}">{{ room.description }}</td>
-{#                                    <td>€{{ room.cost }}</td>#}
                                     <td>{{ room.occupancy }}%</td>
                                 </tr>
                             {% endfor %}

@@ -82,14 +82,6 @@
                             </div>
                         </div>
                     </div>
-
-                    {#                        <div class="col-sm-6">#}
-                    {#                            <div class="form-group no-margin-hr">#}
-                    {#                                <label class="control-label">Named Url</label>#}
-                    {#                                <input type="text" id="menu-name_url" name="name_url" class="form-control"#}
-                    {#                                       placeholder="name url">#}
-                    {#                            </div>#}
-                    {#                        </div>#}
                     <div class="row">
                         <div class="col-sm-12">
                             <div class="col-sm-4">
@@ -170,14 +162,6 @@
                     </div>
                     <!-- row -->
                     <div class="row">
-                        {#                        <div class="col-sm-6">#}
-                        {#                            <label class="control-label">Group</label>#}
-                        {#                            <select multiple id="menu-group" name="group" class="form-control filter-question-selector">#}
-                        {#                                {% for group in groups %}#}
-                        {#                                    <option value="{{ group.id }}">{{ group.name }}</option>#}
-                        {#                                {% endfor %}#}
-                        {#                            </select>#}
-                        {#                        </div>#}
                         <div class="col-sm-6">
                             <label class="control-label input-group">Rule
                                 {% if request.session.admin_permission.content_permission.menu_permission and request.session.admin_permission.content_permission.menu_permission.access_level == 'write' or request.session.event_auth_user.type == 'super_admin' %}
@@ -187,9 +171,6 @@
                             </label>
 
                             <select multiple id="menu-rule" name="rule" class="form-control menu-rule-selector">
-                                {#                                <optgroup label="Quickfilter">#}
-                                {#                                    <option class="quick-filter" value="0"> quick filter</option>#}
-                                {#                                </optgroup>#}
 
                                 {% for group in filterGroup %}
 
@@ -214,17 +195,6 @@
                             </div>
                         </div>
                         <!-- available checkbox start -->
-                        {#                        <div class="col-sm-2">#}
-                        {#                            <label class="control-label">Available Offline</label>#}
-                        {##}
-                        {#                            <div class="checkbox">#}
-                        {#                                <label>#}
-                        {#                                    <input type="checkbox" id="menu-availability" name="availability"#}
-                        {#                                           class="px">#}
-                        {#                                    <span class="lbl">Yes</span>#}
-                        {#                                </label>#}
-                        {#                            </div>#}
-                        {#                        </div>#}
                         <div class="col-sm-3">
                             <label class="control-label">Allow Unregistered</label>
 

@@ -45,8 +45,6 @@ if ($('#hidden_secret').length > 0) {
 
 
 function onLoadJs() {
-    console.log("Loading onLoadJS");
-    //$('body').css('display', 'block');
     $('body').find('#content').removeClass('loading-page');
     $body.find('.element').each(function () {
         if ($.trim($(this).html()) == '' && $.trim($(this).closest('.col').text()) == '') {
@@ -232,7 +230,6 @@ function onLoadJs() {
         var attendee_table = $(this).closest('.event-plugin-attendee-list').find('.attendee-plugin-dt-table').DataTable();
         clearTimeout(search_timer);
         search_timer = setTimeout(function () {
-            console.log("Timer");
             attendee_table.search(search_data).draw();
         }, 350);
     });
@@ -359,7 +356,6 @@ function onLoadJs() {
         }
         $(this).val($(this).attr('data-default'));
     });
-    console.log("Complete Loading onLoadJS");
 }
 
 //Sortable attendee list
@@ -398,52 +394,26 @@ function sortAttendeeList(f, n, elem_tbody) {
 
 $(function () {
     var disallow_page = $('#disallow_page').val();
-    console.log("disallow_page");
-    // alert(disallow_page);
     var access = true;
-    // var start_page_with_logged_in = false;
-    // if(window.location.pathname.split('/')[2] == ""){
-    //     start_page_with_logged_in = true;
-    // }
-    // console.log(start_page_with_logged_in);
-    // if (disallow_page == 1) {
-    //     console.log(window.performance.navigation.type);
-    //     if (!!window.performance && window.performance.navigation.type == 2) {
-    //         access = false;
-    //         window.location.reload();
-    //     }
-    // }
-    console.log(disallow_page);
-    console.log(access);
-    // if (disallow_page != 1 || access) {
     $('body').find('#content').each(function () {
         var page_url = $.trim($('body').attr('id'));
-        // $('.submit-loader').show();
         $.ajax({
             url: base_url + '/api/' + page_url + '/',
             type: "GET",
             async: false,
             success: function (result) {
-                console.log(result);
-                // $('.submit-loader').hide();
                 $('#content').html(result.html);
-                console.log("--------------eval data start----------");
                 js_data = result.js;
                 eval(result.js);
-                console.log("------------eval data End-------------------");
-                // setOrUnsetSession();
             }
         });
     });
-    // }
-    // onLoadJs();
     // Submit Button Start
 
     $body.on('click', '.form-submit-button', function (e) {
         e.preventDefault();
         var $this_section = $(this).closest('.section-box');
         setEmptyValueToQuestions($body);
-        console.log('ok');
         var box_id = $this_section.attr('id');
         var required_actual = true;
         var required_field = [];
@@ -471,10 +441,8 @@ $(function () {
         var $this_sec_form_questions;
         if (is_loop_multiple) {
             $this_sec_form_questions = $this_section.closest('.event-plugin-multiple-registration').closest('.section-box').find('.event-question');
-            console.log('here loop');
         }
         if ($this_sec_form_questions == undefined) {
-            console.log('here common');
             $this_sec_form_questions = $this_section.find('.event-question');
         }
 
@@ -496,7 +464,6 @@ $(function () {
                 if (type == 'text' || type == 'select-one' || type == 'textarea' || type == 'date') {
                     answer = element.val();
                     if ($form_question.is(":visible")) {
-                        console.log("visible");
                         if (answer == '' || answer == 'not selected') {
                             if ($form_question.attr('data-def') == 'firstname' || $form_question.attr('data-def') == 'lastname' || $form_question.attr('data-def') == 'email') {
                                 required_actual = false;
@@ -673,8 +640,6 @@ $(function () {
 
                             } else if (is_loop_multiple) {
                                 duid = $form_question.closest('.section').find('.event-plugin-multiple-registration-attendee-table tr:nth-child(2)').attr('data-multiple-attendee-id');
-                                console.log('duid');
-                                console.log(duid);
                                 var ans_data = {
                                     id: id,
                                     answer: answer,
@@ -696,8 +661,6 @@ $(function () {
                                     ans_data['actual_defination'] = $form_question.attr('data-def');
                                 }
                                 answers.push(ans_data);
-                                console.log('*******');
-                                console.log($form_question.closest('.section').find('.inline-registration-form .event-plugin-multiple-registration-attendee-form-inline').length);
                                 $form_question.closest('.section').find('.inline-registration-form .event-plugin-multiple-registration-attendee-form-inline').each(function () {
                                     duid = $(this).attr('inline-data-attendee-idz4vv3zls3r');
                                     var ans_data = {
@@ -742,9 +705,6 @@ $(function () {
                 return false;
             }
         });
-        console.log(answers);
-        console.log(is_loop_multiple);
-        console.log(is_inline_multiple);
         var session_validation = validateSession($this_section);
         if (!session_validation) {
             validated = false;
@@ -786,9 +746,6 @@ $(function () {
 
                     multiple_registration_attendee[multiple_attendee_id]['answers'] = answers;
                     $.each(answers, function (index, value) {
-                        console.log(value.id);
-                        console.log(value.answer);
-                        console.log(value.type);
                         if (value.type == 'date_range' || value.type == 'time_range') {
                             var answer_values = JSON.parse(value.answer);
                             var answer_value = answer_values[0] + ' to ' + answer_values[1];
@@ -826,8 +783,6 @@ $(function () {
                                     if (!economy_data.multiple.order_number && result.order_number) {
                                         economy_data.multiple.order_number = result.order_number
                                     }
-                                    console.log(count_attendee);
-                                    console.log(multiple_attendee_id_array.indexOf(multiple_attendee_id) + 1);
                                     if (count_attendee > multiple_attendee_id_array.indexOf(multiple_attendee_id) + 1) {
                                         multiple_attendee_id = multiple_attendee_id_array[multiple_attendee_id_array.indexOf(multiple_attendee_id) + 1];
                                         getMultipleAttendeeForm(multiple_form, multiple_attendee_id);
@@ -837,7 +792,6 @@ $(function () {
                                         multiple_form.find('.event-plugin-multiple-registration-form').html("");
                                         multiple_form.find('.event-plugin-multiple-registration-form-header').html("");
                                         saveOrUpdateMultipleAttendee($button, main_submit_btn_id, main_submit_btn_box_id, main_page_id, form_box_id, language_id);
-                                        console.log(multiple_registration_attendee);
                                     }
                                     $('html, body').animate({
                                         scrollTop: $('.event-plugin-multiple-registration').offset().top
@@ -852,7 +806,6 @@ $(function () {
                 } else {
                     $('.submit-loader').hide();
                     $button.prop('disabled', false);
-                    console.log(multiple_registration_attendee);
                     saveOrUpdateMultipleAttendee($button, main_submit_btn_id, main_submit_btn_box_id, main_page_id, form_box_id, language_id);
                 }
             } else {
@@ -871,11 +824,7 @@ $(function () {
             if (total_attendees < min_attendee) {
                 validated = false;
             }
-            console.log(min_attendee);
-            console.log(total_attendees);
-            console.log(validated);
             if (validated && h_r_validation) {
-                console.log("Inline Multiple Registration");
                 var multiple_form = $this_section.find('.event-plugin-multiple-registration');
                 var form_box_id = multiple_form.attr('id').split('-')[3];
                 var btn_box_id = $(this).closest('.event-plugin-submit-button').attr('id').split('-')[3];
@@ -892,12 +841,8 @@ $(function () {
                 }
             }
         } else {
-            console.log("validated");
-            console.log(validated);
             if (validated) {
                 if ($.trim($('#hidden_secret').val()) == undefined || $.trim($('#hidden_secret').val()) == "") {
-                    console.log(required_actual);
-                    console.log(required_field.length);
                     if (required_field.length < 3 || !required_actual) {
                         validated = false;
                         $.growl.error({message: "You need to fill up Firstname, Lastname and Email for Registration"});
@@ -911,11 +856,7 @@ $(function () {
                     temporary_attendee_id = $this_section.find('.temporary-user-id-for-reg').val().trim();
                 }
             }
-            console.log(answers);
-            console.log(reservation_Data);
             add_ineffective_rebates();
-            console.log(validated);
-            console.log(h_r_validation);
             if (validated && h_r_validation) {
                 var user_login = false;
                 if ($.trim($('#hidden_secret').val()) != undefined && $.trim($('#hidden_secret').val()) != "") {
@@ -954,8 +895,6 @@ $(function () {
                     if (phone != '') {
                         data['phonenumber'] = phone;
                     }
-                    console.log("data");
-                    console.log(data);
 
                     $.ajax({
                         url: base_url + '/attendee-registration/',
@@ -1219,7 +1158,6 @@ function saveOrUpdateMultipleAttendee(button, main_submit_btn_id, main_submit_bt
         economy_data: JSON.stringify(economy_data),
         csrfmiddlewaretoken: csrf_token
     };
-    console.log(data);
     $.ajax({
         url: base_url + '/multiple-attendee-save/',
         type: "POST",
@@ -1268,7 +1206,6 @@ function getArrayFromDict(attendee_list) {
 
 
 function getMultipleAttendeeForm(multiple_form, attendee_id) {
-    console.log('multiple');
     $("tr[data-multiple-attendee-id='" + attendee_id + "']").parent().find('tr[class="active"]').removeClass("active");
     $("tr[data-multiple-attendee-id='" + attendee_id + "']").addClass("active");
     var attendee_page_id = multiple_form.attr('data-attendee-page');
@@ -1353,15 +1290,10 @@ function validateEmail(email) {
         regularExp += "|";
     });
     var regex = regularExp.slice(0, -1);
-    console.log('regex');
-    console.log(regex);
-    //var validEmail = ['lxj.isabella@gmail.com', 'JakobGraff@web.de', 'terrence.marriott@live.com', 'bjorn@toftmadsen.org', 'laridk@gmail.com', 'paulkreshchenko@gmail.com', 'xric@hotmail.co.uk', 'algernon@gmail.com', 'ben@todomedia.co.uk', 'andytomlinson@hotmail.co.uk', 'lxj.isabella@gmail.com', 'helenamoreira21@gmail.com']
-    //var re = /^([\w-]+(?:\.[\w-]+)*)@(\bworkspaceit|\bspringconf|\bking).([a-z]{2,6}(?:\.[a-z]{2})?)$/i;
     if (emails.length > 0) {
         if (jQuery.inArray(email, validEmail) !== -1) {
             return true;
         } else {
-            //var re = /^([\w-]+(?:\.[\w-]+)*)@(\bworkspaceit.com|\bspringconf.com|\bking.com|\btailwind.se|\bactivision.com|\bblizzard.com)$/;
             if (regex.length > 0) {
                 var re = new RegExp("^([\\w-]+(?:\\.[\\w-]+)*)@(" + regex + ")$");
             } else {
@@ -1413,7 +1345,6 @@ function equalHeight(group) {
 
 function setEmptyValueToQuestions($elem) {
     var a = 0;
-    console.log($elem.find('.event-question:not(:visible)').length);
     $elem.find('.event-question:not(:visible)').each(function () {
         var element = $(this).find('.given-answer');
         if (element.length > 0) {
@@ -1428,7 +1359,6 @@ function setEmptyValueToQuestions($elem) {
             }
         }
     });
-    console.log(a);
 }
 
 
@@ -1490,31 +1420,28 @@ function pageEnable69() {
 $(document).ajaxStart(function () {
     pageDisable96();
     $('body').find('.loader').show();
-    console.log("Triggered ajaxStart handler.");
 });
 
 $(document).ajaxStop(function () {
     pageEnable69();
-    console.log("Triggered ajaxStop handler.");
     $('body').find('.loader').hide();
 });
 
 $(document).ajaxSend(function () {
 
-    console.log("Triggered ajaxSend handler.");
+    clog("Triggered ajaxSend handler.");
 });
 
 $(document).ajaxError(function () {
-    console.log("Triggered ajaxError handler.");
+    clog("Triggered ajaxError handler.");
 });
 
 $(document).ajaxComplete(function () {
-
-    console.log("Triggered ajaxComplete handler.");
+    clog("Triggered ajaxComplete handler.");
 });
 $(document).ajaxSuccess(function () {
     cookie_counter = cookie_expire;
-    console.log("Triggered ajaxSuccess handler.");
+    clog("Triggered ajaxSuccess handler.");
 });
 
 Array.prototype.unique_answer = function () {
@@ -1522,8 +1449,6 @@ Array.prototype.unique_answer = function () {
     for (var i = 0; i < a.length; ++i) {
         for (var j = i + 1; j < a.length; ++j) {
             if (a[i].id === a[j].id) {
-                console.log(a[i].id);
-                console.log(a[j].answer);
                 a[i].answer = a[j].answer;
                 a.splice(j--, 1);
             }
@@ -1579,8 +1504,6 @@ function validateSession($this_section) {
         } else {
             var min_attendee = $(this).find('.event-plugin-list').attr('data-session-choose-least');
             var max_attendee = $(this).find('.event-plugin-list').attr('data-session-choose-highest');
-            console.log(min_attendee);
-            console.log(max_attendee);
             if (min_attendee == "up-to-max-available-sessions") {
                 min_attendee = 5;
             }
@@ -1638,6 +1561,12 @@ function global_getDateWithLanguage(text_date) {
         console.log(error);
     }
     return result_date;
+}
+
+function clog(message) {
+    if (window.location.hostname != '192.168.1.67' && window.location.hostname != '163.53.151.2') {
+        console.log(message);
+    }
 }
 
 var country_list = [{id: "AF", text: "Afghanistan"}, {id: "AX", text: "Åland Islands"}, {

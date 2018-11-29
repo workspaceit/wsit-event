@@ -40,7 +40,6 @@ init.push(function () {
         placeholder: "Select a preset"
     }).on("change", function (e) {
         var language_id = e.val;
-        console.log(language_id);
         if (session_language != '') {
             $('#name').val(getcontentByLanguage(session_language.name, session_language.name_lang, language_id));
             if ($('textarea#froala_content_editor').froalaEditor('codeView.isActive')) {
@@ -154,7 +153,6 @@ function getcontentByLanguage(data, data_lang, language_id) {
     if (data != '' && data != null && data != undefined) {
         data = data.replace(/&quot;/g, '"').replace(/&apos;/g, "'").replace(/&amp;/g, "&");
     }
-    console.log(data);
     return data;
 
 }

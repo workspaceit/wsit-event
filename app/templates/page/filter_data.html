@@ -62,7 +62,6 @@
                     <hr class="">
 
                     <ul class="list-group filter-rule-list filter-list" id="filter-list">
-                        {#            {% include 'attendee/filter_extra.html' %}#}
                     </ul>
                 </div>
                 <div class="row">
@@ -73,19 +72,6 @@
                                     style="display: none;"><i
                                     class="fa fa-check-circle"></i>&nbsp;&nbsp;Save Filter
                             </button>
-
-
-                            {#                    <button type="button" class="btn btn-success btn-lg" id="btn-update-filter"#}
-                            {#                            style="display: none;"><i#}
-                            {#                            class="fa fa-check-circle"></i>&nbsp;&nbsp;Update Filter#}
-                            {#                    </button>#}
-                            {#                    <button type="button" class="btn btn-success btn-lg" id="trav">#}
-                            {#                               <i class="fa fa-check-circle"></i>&nbsp;&nbsp;Update Filter#}
-                            {#                    </button>#}
-                            {#                    <button type="button" class="btn btn-success btn-lg" id="btn-filter-attendee">#}
-                            {#                               <i class="fa fa-check-circle"></i>&nbsp;&nbsp;Update Filter#}
-                            {#                    </button>#}
-                            {##}
                             <button type="button" class=" btn-save"
                                     id="btn-update-quick-filter"
                                     style="display: none;"><i
@@ -158,13 +144,6 @@
                             {% include 'filter/all_rules/second_1.html' %}
                         </select>
 
-
-                        {#                    <select class="form-control second second-2" style="display: none;">#}
-                        {#                        <option value="1">is</option>#}
-                        {#                        <option value="2">is not</option>#}
-                        {#                    </select>#}
-
-
                         <select class="second second-3" style="display: none;">
                             {% include 'filter/all_rules/second_3.html' %}
                         </select>
@@ -173,13 +152,6 @@
                         <select class=" second second-4" style="display: none;">
                             {% include 'filter/all_rules/second_3.html' %}
                         </select>
-
-
-                        {#                    <select class="form-control second second-5" style="display: none;">#}
-                        {#                        <option value="1">is</option>#}
-                        {#                        <option value="2">is not</option>#}
-                        {#                    </select>#}
-                        {##}
 
                         <select class="second second-6" style="display: none;">
                             {% include 'filter/all_rules/second_6.html' %}
@@ -259,14 +231,6 @@
                             </div>
                         </div>
 
-
-                        {#                    <select class="form-control third third-2" style="display: none">#}
-                        {#                        <option value="1" selected>Registered</option>#}
-                        {#                        <option value="2">Pending</option>#}
-                        {#                        <option value="3">Canceled</option>#}
-                        {#                    </select>#}
-
-
                         <select class=" third third-3" style="display: none">
                             {% include 'filter/all_rules/third_3.html' %}
                         </select>
@@ -275,15 +239,6 @@
                         <select class=" third third-4" style="display: none">
                             {% include 'filter/all_rules/third_4.html' %}
                         </select>
-
-
-                        {#                    <select class="form-control third third-5" style="display: none">#}
-                        {#                        <option value="1">not invoiced or paid</option>#}
-                        {#                        <option value="2">invoiced - payment pending</option>#}
-                        {#                        <option value="3">payment received</option>#}
-                        {#                        <option value="4">canceled</option>#}
-                        {#                    </select>#}
-
 
                         <select class=" filter-session-selector third third-6"
                                 style="display: none">

@@ -537,10 +537,8 @@ class EconomyLibrary:
         try:
             group_info = EconomyLibrary.get_group_registration_info(owner_id)
             if group_info['group-attendee']:
-                print('One ***')
                 group_open_orders = Orders.objects.filter(attendee_id__in=group_info['grp-atts'], status='open')
                 if group_open_orders:
-                    print('Two ***')
                     min_order_number = group_open_orders.aggregate(min_order_number=Min('order_number'))['min_order_number']
                     group_open_orders.update(order_number=min_order_number)
         except Exception as ex:

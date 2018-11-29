@@ -1,14 +1,13 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.views import generic
-from app.models import Questions, Group, Option,Attendee,QuestionPreRequisite, Travel, CurrentFilter
+from app.models import Questions, Group, Option, QuestionPreRequisite, Travel, CurrentFilter
 from app.views.gbhelper.common_helper import CommonHelper
 from .common_views import GroupView, EventView
 import json
 from django.http import Http404
 from django_datatables_view.base_datatable_view import BaseDatatableView
 from django.db.models import Q, Max
-# from .common_views import GroupView
 from app.views.gbhelper.language_helper import LanguageH
 
 
@@ -41,7 +40,6 @@ class QuestionView(generic.DetailView):
             form_data = {
                 "type": request.POST.get('type'),
                 "group_id": request.POST.get('group'),
-                # "question_class": request.POST.get('question_class'),
                 "required": required,
                 "show_description":show_description
             }
@@ -67,13 +65,10 @@ class QuestionView(generic.DetailView):
                 form_data["min_character"] = request.POST.get('min_character')
             if "max_character" in request.POST:
                 form_data["max_character"] = request.POST.get('max_character')
-            # if "regular_expression" in request.POST:
-            #     form_data["regular_expression"] = request.POST.get('regular_expression')
             default_country = request.POST.get('default_country')
             if default_country != '':
                 form_data['default_answer'] = default_country
             options_list = json.loads(request.POST.get('options_list'))
-            # pre_requisite_list = json.loads(request.POST.get('pre_requisite_list'))
             event_id = request.session['event_auth_user']['event_id']
             current_language_id = LanguageH.get_current_language_id(event_id)
             default_language_id = current_language_id
@@ -106,21 +101,9 @@ class QuestionView(generic.DetailView):
                         opt_form = LanguageH.insert_lang(current_language_id,opt_form,"option_lang",opt['option_lang'])
                         add_option = Option(**opt_form)
                         add_option.save()
-                # for pre in pre_requisite_list:
-                #     Qs = Questions.objects.get(id=int(pre['pre_question_id']))
-                #     Qsn = Option.objects.get(id=int(pre['pre_question_answer_id']))
-                #     action = False
-                #     if pre['action'] == '1':
-                #         action = True
-                #     if 'id' in pre:
-                #         update_pre_req =QuestionPreRequisite.objects.filter(id=pre['id']).update(action=action,pre_req_question=Qs,pre_req_answer=Qsn)
-                #     else:
-                #         pre_requisite = QuestionPreRequisite(question_id=question_id,action=action,pre_req_question=Qs,pre_req_answer=Qsn)
-                #         pre_requisite.save()
                 question = Questions.objects.get(id=question_id)
                 response_data['success'] = 'Question Update Successfully'
                 response_data['question'] = question.as_dict()
-                # response_data['default_language_id'] = default_language_id
             else:
                 form_data["title"] = request.POST.get('title')
                 question_order = QuestionView.get_questions_order(request.POST.get('group'))
@@ -140,16 +123,6 @@ class QuestionView(generic.DetailView):
                     opt_form = LanguageH.insert_lang(current_language_id,opt_form,"option_lang",opt['option_lang'])
                     add_option = Option(**opt_form)
                     add_option.save()
-
-                # for pre in pre_requisite_list:
-                #     # print(pre['pre_question_id'])
-                #     action = False
-                #     if pre['action'] == '1':
-                #         action = True
-                #     Qs = Questions.objects.get(id=int(pre['pre_question_id']))
-                #     Qsn = Option.objects.get(id=int(pre['pre_question_answer_id']))
-                #     pre_requisite = QuestionPreRequisite(question_id=question.id,action=action,pre_req_question=Qs,pre_req_answer=Qsn)
-                #     pre_requisite.save()
 
                 response_data['success'] = 'Question Create Successfully'
                 response_data['question'] = question.as_dict()
@@ -206,7 +179,6 @@ class QuestionView(generic.DetailView):
                 return HttpResponse(json.dumps(response_data), content_type='application/json')
 
             question.pk = None
-            # if '[Copy]' not in session.name:
             question.title += '[Copy]'
             question.actual_definition= None
             question.save()

@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.views import generic
-from app.models import Users, Attendee, EventAdmin, ContentType, Group, Events, ContentPermission, GroupPermission
+from app.models import Users, Attendee, EventAdmin, Group, Events, ContentPermission, GroupPermission
 import json
 from datetime import datetime
 from django.http import Http404
@@ -12,7 +12,6 @@ from django.contrib.auth.hashers import make_password
 from django.db.models import Value as V
 from django.db.models.functions import Concat
 from app.views.gbhelper.error_report_helper import ErrorR
-from app.views.gbhelper.language_helper import LanguageH
 
 
 class AdminView(TemplateView):
@@ -62,8 +61,6 @@ class AdminView(TemplateView):
 
                 ErrorR.ex_time_init()
                 deleted_event = EventAdmin.objects.filter(admin_id=admin.id).exclude(event_id__in=event_exist).delete()
-                # for event in deleted_event:
-                #     event.delete()
                 ErrorR.ex_time()
                 admin_id = user_id
                 delete_content = ContentPermission.objects.filter(admin_id=admin_id).delete()

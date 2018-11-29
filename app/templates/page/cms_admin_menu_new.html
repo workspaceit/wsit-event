@@ -2,14 +2,12 @@
 <section class="admin">
     <div id="admin-toggle-wrapper">
         <div id="admin-toggle-wrapper-titlebar">Admin</div>
-{#        <label> Language <br/>#}
         <select id="admin-languages-toggle">
             {% for preset in presets %}
                 <option value="{{ preset.id }}" {% if preset.id == current_language.preset_id %}
                         selected  {% endif %} >{{ preset.preset_name }}</option>
             {% endfor %}
         </select>
-{#        </label>#}
         <br/>
         <input type="checkbox" id="admin-editor-toggle" data-admin-menu="admin-editor"/> <label
             for="admin-editor-toggle"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Custom</label><br/>
@@ -23,57 +21,9 @@
         {% endif %}
         <input type="checkbox" id="admin-columns-toggle" data-admin-menu="admin-columns"/> <label
             for="admin-columns-toggle"><i class="fa fa-columns" aria-hidden="true"></i> Columns</label><br/>
-{#        <input type="checkbox" id="admin-file-repository-toggle" data-admin-menu="admin-file-repository"/> <label#}
-{#            for="admin-file-repository-toggle"><i class="fa fa-folder-open" aria-hidden="true"></i>&nbsp;File&nbsp;repository</label><br/>#}
-        {#        <input type="checkbox"/> <label id="admin-save-cms">Save</label>#}
-
     </div>
 
     <!-- admin-code-editor menu -->
-
-{#    <div class="admin-menu admin-bottom-menu" id="admin-editor">#}
-{#        <div class="row inner-gutter">#}
-{#            <div class="col span-12" id="admin-editor-col-1" style="width: 100%;">#}
-{#                <div class="froala-editor-div">#}
-{#                    <textarea id="froala_content_editor" name="froala_content_editor"></textarea>#}
-{#                </div>#}
-{#            </div>#}
-{#            <div class="admin-close-button-wrapper">#}
-{#                    <div class="admin-close-button"></div>#}
-{#                </div>#}
-            {#            <div class="col span-9" id="admin-editor-col-1">#}
-            {#                <div id="in">#}
-            {#                    <form action="#">#}
-            {#                            <textarea id="code"#}
-            {#                                      name="code_data"></textarea></form>#}
-            {#                </div>#}
-            {#                <div id="out" style="display: none;"></div>#}
-            {#            </div>#}
-            {#            <div class="col span-3" id="admin-editor-col-2">#}
-            {##}
-            {#                <div class="admin-close-button-wrapper">#}
-            {#                    <div class="admin-close-button"></div>#}
-            {#                </div>#}
-            {##}
-            {#                <fieldset>#}
-            {#                    <legend>Add variable tag</legend>#}
-            {##}
-            {#                    <div class="admin-menu-group no-margin">#}
-            {#                        <div class="admin-search-wrapper">#}
-            {#                            <input class="admin-search admin-tag-search" type="text"/>#}
-            {##}
-            {#                            <div class="admin-clear-search"></div>#}
-            {#                        </div>#}
-            {#                    </div>#}
-            {##}
-            {#                    <div class="admin-menu-group admin-menu-scrollable no-padding">#}
-            {#                        <ul id="add-tag-treeview">#}
-            {#                        </ul>#}
-            {#                    </div>#}
-            {#                </fieldset>#}
-            {#            </div>#}
-{#        </div>#}
-{#    </div>#}
 
     <!-- admin-questions menu -->
 
@@ -205,48 +155,6 @@
     </div>
 
     <!-- admin-file-repository menu -->
-
-{#    <div class="admin-top-menu admin-menu" id="admin-file-repository">#}
-{#        <div class="row inner-gutter">#}
-{#            <div class="col span-5" id="admin-file-repository-col-1">#}
-{#                <fieldset>#}
-{#                    <legend>File repository</legend>#}
-{#                    <div class="admin-menu-group">#}
-{#                        <a href="javascript:void(0);" id="admin-admin-file-repository-upload-file"#}
-{#                           class="admin-auto-width admin-button"><i#}
-{#                                class="fa fa-cloud-upload" aria-hidden="true"></i> Upload files</a>#}
-{#                        <a href="javascript:void(0);" id="admin-admin-file-repository-add-folder"#}
-{#                           class="admin-auto-width admin-button"><i#}
-{#                                class="fa fa-folder" aria-hidden="true"></i> Add folder</a>#}
-{#                        <a href="javascript:void(0);" id="admin-admin-file-repository-delete-selected-files"#}
-{#                           class="admin-auto-width admin-button"><i class="fa fa-trash" aria-hidden="true"></i>#}
-{#                            Delete#}
-{#                            selected</a>#}
-{#                    </div>#}
-{#                    <div class="admin-menu-group no-margin">#}
-{#                        <div class="admin-search-wrapper">#}
-{#                            <input class="admin-search admin-file-search" type="text"/>#}
-{##}
-{#                            <div class="admin-clear-search"></div>#}
-{#                        </div>#}
-{#                    </div>#}
-{#                    <div class="admin-menu-group admin-menu-scrollable no-padding">#}
-{#                        <ul id="admin-file-repository-treeview">#}
-{#                        </ul>#}
-{#                    </div>#}
-{#                </fieldset>#}
-{#            </div>#}
-{#            <div class="col span-7" id="admin-file-repository-col-2">#}
-{#                <div class="admin-close-button-wrapper">#}
-{#                    <div class="admin-close-button"></div>#}
-{#                </div>#}
-{#                <fieldset>#}
-{#                    <legend>Preview</legend>#}
-{#                    <div class="show-image-file"></div>#}
-{#                </fieldset>#}
-{#            </div>#}
-{#        </div>#}
-{#    </div>#}
 
     <!-- admin-element-settings -->
 

@@ -6,11 +6,9 @@ from app.models import Photo, Setting, ActivityHistory, PhotoGroup
 from django.db import transaction
 from django.conf import settings
 from boto.s3.connection import S3Connection, Bucket, Key
-import os
 import zipfile
 import io
 import boto
-from PIL import Image
 from .common_views import EventView
 
 
@@ -83,7 +81,6 @@ class PhotoReelView(generic.DetailView):
     def photo_admin_all(request):
         if EventView.check_read_permissions(request, 'photo_reel_permission'):
             photo_groups = PhotoReelView.get_photo_groups(request)
-            print(photo_groups)
             for group in photo_groups:
                 group.photos = Photo.objects.filter(group_id=group)
                 for photo in group.photos:
@@ -126,16 +123,6 @@ class PhotoReelView(generic.DetailView):
     def delete_photo(request):
         if request.is_ajax():
             try:
-
-                # print(os.path('/publicfront'+photo[0].photo))
-                # import os
-                # myfile= photo[0].photo
-                # if os.path.isfile(myfile):
-                #     os.remove(myfile)
-                # else:
-                #     print("asd")
-                # os.unlink(os.path('/publicfront'+photo[0].photo))
-                # os.unlink(os.path('/publicfront'+photo[0].thumb_image))
                 with transaction.atomic():
                     photo=Photo.objects.get(pk=request.POST.get('id'))
                     photoName=photo.photo

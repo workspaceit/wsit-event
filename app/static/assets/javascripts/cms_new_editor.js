@@ -429,24 +429,10 @@ $(function () {
         });
 
     });
-    // $body.find('div.editor-inline-box').on('froalaEditor.buttons.refresh', function (e, editor) {
-    //     getInlineEditorHtml($(this));
-    //     saveOrUpdate();
-    // });
-    // $body.find('div.editor-inline-box').on('froalaEditor.contentChanged', function (e, editor) {
-    //     console.log('ypyo');
-    //     getInlineEditorHtml($(this));
-    //     saveOrUpdate();
-    // });
 });
-
-// function saveEditorHtml() {
-//    
-// }
 
 function onLoadCmsJs() {
     $body.find('#hidden-content').find('.event-plugin').each(function () {
-        console.log('ok');
         var element_id = "elements-" + $(this).attr('data-name');
         var element_html = $('#' + element_id).find('.element').html();
         $(this).html(element_html);
@@ -715,7 +701,7 @@ function initInlineFroala($this_div) {
     // if (editor_fullpage == 'true') {
     //     is_fullpage = true;
     // }
-    // console.log(is_fullpage);
+    // clog(is_fullpage);
     var static_url = $('#static-url').val();
     var editor_link_styles = JSON.parse($('#editor_link_styles').val().replace(/'/g, '"'));
     var editor_font_familys = JSON.parse($('#editor_font_familys').val().replace(/'/g, '"'));
@@ -758,12 +744,11 @@ function initInlineFroala($this_div) {
         },
         // Callback on refresh.
         refresh: function ($btn) {
-            console.log($btn);
-            console.log('do refresh tag');
+            clog('do refresh tag');
         },
         // Callback on dropdown show.
         refreshOnShow: function ($btn, $dropdown) {
-            console.log('do refresh when show tag');
+            clog('do refresh when show tag');
         }
     });
     // Add Economy Tags
@@ -797,11 +782,11 @@ function initInlineFroala($this_div) {
         },
         // Callback on refresh.
         refresh: function ($btn) {
-            console.log('do refresh economy');
+            clog('do refresh economy');
         },
         // Callback on dropdown show.
         refreshOnShow: function ($btn, $dropdown) {
-            console.log('do refresh when show economy');
+            clog('do refresh when show economy');
         }
     });
     // Add Group Tags
@@ -846,11 +831,11 @@ function initInlineFroala($this_div) {
         },
         // Callback on refresh.
         refresh: function ($btn) {
-            console.log('do refresh group');
+            clog('do refresh group');
         },
         // Callback on dropdown show.
         refreshOnShow: function ($btn, $dropdown) {
-            console.log('do refresh when show group');
+            clog('do refresh when show group');
         }
     });
     // Add General Questions
@@ -876,11 +861,11 @@ function initInlineFroala($this_div) {
                 },
                 // Callback on refresh.
                 refresh: function ($btn) {
-                    console.log('do refresh question');
+                    clog('do refresh question');
                 },
                 // Callback on dropdown show.
                 refreshOnShow: function ($btn, $dropdown) {
-                    console.log('do refresh when show question');
+                    clog('do refresh when show question');
                 }
             });
         });
@@ -991,7 +976,7 @@ function initInlineFroala($this_div) {
                 }
             })
             .on('froalaEditor.imageManager.imagesLoaded', function (e, editor, data) {
-                // console.log(data);
+                // clog(data);
                 // Do something when the request finishes with success.
                 // alert('Images have been loaded.');
             }).on('froalaEditor.imageManager.imageLoaded', function (e, editor, $img) {
@@ -1159,7 +1144,7 @@ function initInlineFroala($this_div) {
                 }
             })
             .on('froalaEditor.imageManager.imagesLoaded', function (e, editor, data) {
-                // console.log(data);
+                // clog(data);
                 // Do something when the request finishes with success.
                 // alert('Images have been loaded.');
             }).on('froalaEditor.imageManager.imageLoaded', function (e, editor, $img) {
@@ -1226,7 +1211,6 @@ function initInlineFroala($this_div) {
 }
 function getInlineEditorHtml($this_div) {
     var box = $this_div.closest('.form-editor').attr('id');
-    console.log(box);
     if ($.trim(box) != "" && $.trim(box) != undefined) {
         var box_id = box.split("-")[1];
         var page_id = window.location.pathname.split('/')[3];
@@ -1234,7 +1218,7 @@ function getInlineEditorHtml($this_div) {
         // $this_div.find('.admin-cms-toolbox').remove();
         var compiled_html = $this_div.froalaEditor('html.get');
         // $this_div.froalaEditor('html.set',element_toolbox+compiled_html);
-        // console.log(compiled_html);
+        // clog(compiled_html);
         // compiled_html = compiled_html.replace(element_toolbox,'');
         // // var uncompiled_html = editor.getValue();
         var uncompiled_html = compiled_html;
@@ -1396,7 +1380,7 @@ function showPluginUsingSettings(element_settings, element_title_settings) {
     for (var i = 0; i < element_settings.length; i++) {
         var $elem = $("#content_data").find("#box-" + element_settings[i].box_id).find(".plugin-" + element_settings[i].element_question.group_slug + "-" + element_settings[i].element_question.id);
         if (element_settings[i].element_question.id == 213) {
-            console.log(element_settings[i].answer);
+            clog(element_settings[i].answer);
         }
         // Should be dynamic
 

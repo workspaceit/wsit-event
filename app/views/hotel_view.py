@@ -3,7 +3,7 @@ from django.template.loader import render_to_string
 from django.views import generic
 from django.http import HttpResponse
 import json
-from app.models import Hotel, Room, Locations, Group, RoomAllotment, Booking, RequestedBuddy, Attendee, Match, \
+from app.models import Hotel, Room, Locations, Group, RoomAllotment, Booking, Match, \
     MatchLine, EmailContents, MessageContents
 from app.views.export_lambda import ExcelView
 from .room_view import RoomView
@@ -13,9 +13,7 @@ from django.http import Http404
 from django.db.models import Q
 from datetime import datetime, timedelta
 from django.db import transaction
-from django.db.models import Avg, Max, Min
-from .mail import MailHelper
-import logging, traceback
+import traceback
 from app.views.gbhelper.language_helper import LanguageH
 
 
@@ -28,16 +26,12 @@ class HotelView(generic.DetailView):
                 group.rooms = Room.objects.all().select_related("hotel").filter(hotel__group_id=group.id).order_by(
                     'room_order')
                 for room in group.rooms:
-                    # room.vat = Group.objects.get(id=room.vat_id)
-                    # room.occupancy = RoomView.get_occupancy_modified(room)
                     occupancy = RoomView.find_booking(str(room.id))
                     room.occupancy = occupancy['total_occupancy']
 
             context = {
                 "hotelRooms": hotelGroup
             }
-            # NearHotelRooms = Room.objects.all().select_related("hotel").filter(hotel__category="Near By Hotels")
-            # FarHotelRooms = Room.objects.all().select_related("hotel").filter(hotel__category="Far Away Hotels")
             return render(request, 'hotel/hotel.html', context)
 
     def post(self, request):
@@ -50,7 +44,6 @@ class HotelView(generic.DetailView):
                         "location_id": request.POST.get('location'),
                     }
                     rooms = json.loads(request.POST.get('rooms'))
-                    # print(rooms)
                     event_id = request.session['event_auth_user']['event_id']
                     current_language_id = LanguageH.get_current_language_id(event_id)
                     default_language_id = current_language_id
@@ -69,9 +62,6 @@ class HotelView(generic.DetailView):
                             allotments = json.loads(room.get('allotments'))
                             for allotment_data in allotments:
                                 start_date = datetime.strptime(allotment_data[0], '%Y-%m-%d')
-                                # end_date = datetime.strptime(allotment_data[1], '%Y-%m-%d')
-                                # day_count = (end_date - start_date).days + 1
-
                                 allotment_form_data = {
                                     "allotments": allotment_data[1],
                                     "available_date": datetime.strftime(start_date, '%Y-%m-%d'),
@@ -95,7 +85,6 @@ class HotelView(generic.DetailView):
                             updated_rooms = room.as_dict()
                             occupancy = RoomView.find_booking(str(room.id))
                             updated_rooms['occupancy'] = occupancy['total_occupancy']
-                            # updated_rooms['occupancy'] = RoomView.get_occupancy_modified(room)
                             roomlist.append(updated_rooms)
                         response_data['success'] = 'Hotel Update Successfully'
                         response_data['rooms'] = roomlist
@@ -110,11 +99,8 @@ class HotelView(generic.DetailView):
                         for room in rooms:
                             savedRoom = RoomView.addRoom(request, hotel.id, room)
                             allotments = json.loads(room.get('allotments'))
-                            # return
                             for allotment_data in allotments:
                                 start_date = datetime.strptime(allotment_data[0], '%Y-%m-%d')
-                                # end_date = datetime.strptime(allotment_data[1], '%Y-%m-%d')
-                                # day_count = (end_date - start_date).days + 1
 
                                 allotment_form_data = {
                                     "allotments": allotment_data[1],
@@ -132,16 +118,6 @@ class HotelView(generic.DetailView):
                                     continue
                                 allotment = RoomAllotment(**allotment_form_data)
                                 allotment.save()
-
-                                # for single_date in (start_date + timedelta(n) for n in range(day_count)):
-                                #     print(single_date)
-                                #     allotment_form_data = {
-                                #         "allotments": allotment_data[2],
-                                #         "available_date": datetime.strftime(single_date, '%Y-%m-%d'),
-                                #         "room_id": savedRoom.id
-                                #     }
-                                #     allotment = RoomAllotment(**allotment_form_data)
-                                #     allotment.save();
                     response_data['success'] = 'Hotel Create Successfully'
                     response_data['name_lang'] = form_data['name_lang']
                 else:
@@ -168,41 +144,10 @@ class HotelView(generic.DetailView):
     def edit(request):
         return render(request, 'hotel/add.html')
 
-    # @staticmethod
-    # def get_common_dates(booking_list):
-    #     booking1_check_in = booking_list[0].check_in
-    #     booking1_check_out = booking_list[0].check_out
-    #     day_count = (booking1_check_out - booking1_check_in).days + 1
-    #     booking1_date_list = []
-    #     for single_date in (booking1_check_in + timedelta(n) for n in range(day_count)):
-    #         booking1_date_list.append(single_date)
-    #
-    #     booking2_check_in = booking_list[1].check_in
-    #     booking2_check_out = booking_list[1].check_out
-    #     day_count2 = (booking2_check_out - booking2_check_in).days + 1
-    #     booking2_date_list = []
-    #     for single_date2 in (booking2_check_in + timedelta(n) for n in range(day_count2)):
-    #         booking2_date_list.append(single_date2)
-    #
-    #     common_dates = list(set(booking1_date_list).intersection(booking2_date_list))
-    #     return common_dates
-
     @transaction.atomic
     def match(request):
         if EventView.check_read_permissions(request, 'hotel_permission'):
             room_id = request.GET.get('room_id')
-            # all_matches = Match.objects.all()
-            # for match in all_matches:
-            #     if match.all_dates == '':
-            #         booking_check_in = match.start_date
-            #         booking_check_out = match.end_date
-            #         day_count = (booking_check_out - booking_check_in).days + 1
-            #         all_dates = []
-            #         for single_date in (booking_check_in + timedelta(n) for n in range(day_count)):
-            #                 all_dates.append(str(single_date))
-            #         print('all_dates')
-            #         print(all_dates)
-            #         Match.objects.filter(id=match.id).update(all_dates=json.dumps(all_dates))
             context = RoomView.get_matched_pair(request, room_id)
             common_context = CommonContext.get_all_common_context(request)
 
@@ -212,7 +157,6 @@ class HotelView(generic.DetailView):
             for group in hotel_group:
                 group.rooms = Room.objects.all().select_related("hotel").filter(hotel__group_id=group.id)
                 for room in group.rooms:
-                    # room.vat = Group.objects.get(id=room.vat_id)
                     room_allotments = RoomView.find_booking(str(room.id))
                     date_allotments = []
                     for allotments in room_allotments['details']:
@@ -242,7 +186,6 @@ class HotelView(generic.DetailView):
         for group in hotel_group:
             group.rooms = Room.objects.all().select_related("hotel").filter(hotel__group_id=group.id)
             for room in group.rooms:
-                # room.vat = Group.objects.get(id=room.vat_id)
                 room_allotments = RoomView.find_booking(str(room.id))
                 date_allotments = []
                 for allotments in room_allotments['details']:
@@ -280,16 +223,12 @@ class HotelView(generic.DetailView):
                     attendee_count.append(attendee_booking.attendee_id)
             if len(bookings) <= beds or len(attendee_count) <= beds:
                 common_dates = RoomView.get_common_dates(bookings)
-                print(common_dates)
                 if len(common_dates) > 0:
                     # room distribution checking
                     start_date = min(common_dates)
                     end_date = max(common_dates) + timedelta(days=1)
                     previous_matches_room = Match.objects.filter(Q(room_id=room_id))
                     previous_total = previous_matches_room.count()
-                    # min_allotment = RoomAllotment.objects.values('allotments').filter(room_id=room_id, available_date__in=common_dates).aggregate(Min('allotments'))['allotments__min']
-                    # print(min_allotment)
-                    # if previous_total < min_allotment:
                     check_allotment = RoomView.check_allotment(request, room_id, common_dates)
                     if check_allotment:
                         all_dates = []
@@ -308,7 +247,6 @@ class HotelView(generic.DetailView):
                             for match_attendee in match_buddies:
                                 matchlist = match_buddies[:]
                                 matchlist.remove(match_attendee)
-                                # HotelView.send_email(request, match_attendee['booking']['attendee'], 'email/match_buddy.html', matchlist)
                         # end room distribution checking
                         context = {
                             'booking_list': all_pair_up_attendes
@@ -376,8 +314,6 @@ class HotelView(generic.DetailView):
                 if match.booking_id != int(booking_id):
                     match_attendees = match_attendees + str(match.booking.attendee.firstname) + ' ' + str(
                         match.booking.attendee.lastname)
-                    # if match.id != matches[len(matches)-1].id:
-                    #     match_attendees = match_attendees + ' and '
             a_list = []
             all_dates = []
             hotel_info = Room.objects.get(id=int(room_id))
@@ -396,11 +332,7 @@ class HotelView(generic.DetailView):
                         else:
                             booking_check_in = booking.check_in
                             booking_check_out = booking.check_out
-                        print(booking_check_in)
-                        print(booking_check_out)
                         day_count = (booking_check_out - booking_check_in).days
-                        print('day_count')
-                        print(day_count)
                         booking_date_list = []
                         for single_date in (booking_check_in + timedelta(n) for n in range(day_count)):
                             booking_date_list.append(single_date)
@@ -422,8 +354,6 @@ class HotelView(generic.DetailView):
                     attendee_booking['check_out'] = check_out
                     attendee_booking['room_id'] = room_id
                     attendee_booking_available = HotelView.check_available_room(attendee_booking, 0)
-                    print("attendee_booking_available")
-                    print(attendee_booking_available)
                     if attendee_booking_available:
                         matche_buddy = MatchLine.objects.filter(match_id=get_match[0].match_id).exclude(
                             booking_id=booking_id)
@@ -503,32 +433,12 @@ class HotelView(generic.DetailView):
                                                                             hotel__name__icontains=search_key).order_by(
                 'room_order')
             for room in group.rooms:
-                # room.vat = Group.objects.get(id=room.vat_id)
                 occupancy = RoomView.find_booking(str(room.id))
                 room.occupancy = occupancy['total_occupancy']
         context = {
             "hotelsGroups": hotels_group
         }
         return render(request, 'hotel/hotel_result.html', context)
-
-    def send_email(request, attendee_obj, file_path, matchlist):
-        buddies = []
-        for match in matchlist:
-            buddies.append(match['booking']['attendee']['email'])
-        context = {
-            "buddies": buddies
-        }
-        logger = logging.getLogger(__name__)
-        subject = "GT-ROOM BUDDY"
-        sender_mail = "mahedi@workspaceit.com"
-        if attendee_obj['group']['event']['id'] == 11:
-            subject = "ROOM BUDDY"
-            sender_mail = "mahedi@workspaceit.com"
-        logger.debug("-----------------sender Email------------------------")
-        logger.debug(sender_mail)
-        to = attendee_obj['email']
-        MailHelper.mail_send(file_path, context, subject, to, sender_mail)
-        return "ok"
 
     def generate_hotel_report_excel(request):
         hotels = Hotel.objects.filter(group__event_id=request.session['event_auth_user']['event_id'])

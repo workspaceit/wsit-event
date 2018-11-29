@@ -3,19 +3,13 @@ import django
 from django.shortcuts import render, redirect
 from django.http import HttpResponse, Http404
 from django.views import generic
-from app.models import Attendee, Locations, Answers, SessionTags, Booking, MatchLine, SeminarsUsers, Session, \
-    Group, Notification, Setting, SeminarSpeakers, ActivityHistory, Questions, Elements, EmailTemplates, StyleSheet
+from app.models import Attendee, Answers, SessionTags, SeminarsUsers, Session, \
+    Group, Notification, Setting, SeminarSpeakers, ActivityHistory, Elements, EmailTemplates, StyleSheet
 import json
-import base64
 from django.conf import settings
 from datetime import datetime, timedelta
 from django.db.models import Q
-import os
-import io
 import time
-import boto
-import base64
-from boto.s3.key import Key
 
 from publicfront.views.helper import HelperData
 from publicfront.views.lang_key import LanguageKey
@@ -23,15 +17,12 @@ from publicfront.views.notify_view import NotifyView
 from django.template.loader import render_to_string
 from pytz import timezone
 from apscheduler.schedulers.background import BackgroundScheduler
-from PIL import Image, ExifTags
 
 from publicfront.views.send_email import UserEmail
 from publicfront.views.error_report import ErrorR
 
 scheduler = BackgroundScheduler()
-# scheduler.add_jobstore('redis')
 scheduler.start()
-# from publicfront.views.page import StaticPage
 from django.contrib.staticfiles.templatetags.staticfiles import static
 from publicfront.views.session_seat_availability import SessionSeatAvailability
 from app.views.gbhelper.economy_library import EconomyLibrary
@@ -129,53 +120,6 @@ class AttendeeProfile(generic.DetailView):
                 return redirect('welcome', event_url=request.session['event_url'])
         else:
             return redirect('welcome', event_url=request.session['event_url'])
-
-    def handle_uploaded_file(image_data, request, *args, **kwargs):
-        f = image_data['image']
-        if os.environ['ENVIRONMENT_TYPE'] != 'master' and os.environ['ENVIRONMENT_TYPE'] != 'staging' and os.environ[
-            'ENVIRONMENT_TYPE'] != 'develop':
-            print("ok")
-
-        else:
-            conn = boto.connect_s3(settings.AWS_ACCESS_KEY_ID, settings.AWS_SECRET_ACCESS_KEY, host=settings.AWS_STORAGE_HOST)
-            bucket = conn.get_bucket(settings.AWS_STORAGE_BUCKET_NAME)
-            user_id = request.session['event_user']['id']
-            # filepath = settings.BASE_DIR + "/publicfront/static/public/images/attendee/"
-            filename = 'public/images/attendee/attendee_' + str(user_id) + '.jpg'
-            image = Image.open(io.BytesIO(base64.b64decode(f)))
-
-            image1 = image.rotate(image_data['rotation'])
-            im = image1.crop((int(image_data['data']['x']), int(image_data['data']['y']),
-                              int(image_data['data']['x']) + int(image_data['data']['width']),
-                              int(image_data['data']['y']) + int(image_data['data']['height'])))
-
-            output_image = io.BytesIO()
-            im.save(output_image, image.format)
-            # image.show()
-            # with open(filepath + filename, 'wb') as f:
-            #     f.write(imgdata)
-            key_name = filename
-            k = Key(bucket)
-            k.key = key_name
-            if not k.exists():
-                key = bucket.new_key(key_name)
-                # key.set_contents_from_string(out_im.getvalue())
-                key.set_contents_from_string(output_image.getvalue())
-                key.set_metadata('Content-Type', 'image/' + image.format)
-                key.set_acl('public-read')
-                key.make_public()
-            else:
-                k.set_contents_from_string(output_image.getvalue())
-                k.set_metadata('Content-Type', 'image/' + image.format)
-                k.set_acl('public-read')
-                k.make_public()
-            Attendee.objects.filter(id=user_id).update(avatar=filename)
-
-            activity_history = ActivityHistory(attendee_id=user_id, activity_type='update', category='profile',
-                                               event_id=request.session['event_user']['event_id'])
-            activity_history.save()
-
-            request.session['event_user']['avatar'] = filename
 
     # Need to add response message language for Message plugin
     def sessionNotification(request, *args, **kwargs):
@@ -286,7 +230,6 @@ class SessionDetail(generic.DetailView):
                 status_text = 'Not Attending'
                 status = 'not-answered'
                 session_attendee = SeminarsUsers.objects.filter(attendee_id=attendee_id, session_id=session.id)
-                # count = SeminarsUsers.objects.filter(attendee_id=attendee_id, session=session).count()
                 if session_attendee.count() > 0:
                     status = session_attendee[0].status
                     if session_attendee[0].status == 'attending':
@@ -354,7 +297,6 @@ class SessionDetail(generic.DetailView):
                     page_content = page_content.replace('[[parmanent]]', settings.STATIC_URL_ALT + 'public/')
                     menu_find = re.findall(r'{(menu)}', page_content)
                     if len(menu_find) > 0:
-                        # menu = StaticPage.get_menu(request)
                         menu = render_to_string('public/content/menu.html', {'request': request})
                         page_content = page_content.replace('{menu}', menu)
                     context2 = {
@@ -406,7 +348,6 @@ class SessionDetail(generic.DetailView):
                             user_id) + ' and sessions.group_id = groups.id  and groups.is_searchable = 1 order by groups.group_order')
                     if len(list(sessions)) > 0:
                         for session in sessions:
-                            print(session)
                             SessionDetail.get_session(session, user_id)
                             all_sessions_groups.append(session)
                     html = 'public/session/session_sort_time.html'
@@ -482,20 +423,12 @@ class SessionDetail(generic.DetailView):
             for sessionlist in already_has_session:
                 if sessionlist.session.start <= session.start < sessionlist.session.end:
                     Inbetween = True
-                    # response_data['clash_session'] = sessionlist.session.as_dict()
-                    # break
                 elif sessionlist.session.start < session.end <= sessionlist.session.end:
                     Inbetween = True
-                    # response_data['clash_session'] = sessionlist.session.as_dict()
-                    # break
                 elif session.start <= sessionlist.session.start < session.end:
                     Inbetween = True
-                    # response_data['clash_session'] = sessionlist.session.as_dict()
-                    # break
                 elif session.start < sessionlist.session.end <= session.end:
                     Inbetween = True
-                    # response_data['clash_session'] = sessionlist.session.as_dict()
-                    # break
                 if remove_conflict and Inbetween:
                     remove_conflict_session = SessionDetail.remove_conflict_session(request, sessionlist, attendee_id)
                     if remove_conflict_session:
@@ -504,63 +437,12 @@ class SessionDetail(generic.DetailView):
             for sessionlist in already_has_session_as_speaker:
                 if sessionlist.session.start <= session.start < sessionlist.session.end:
                     Inbetween = True
-                    # response_data['clash_session'] = sessionlist.session.as_dict()
-                    # break
                 elif sessionlist.session.start < session.end <= sessionlist.session.end:
                     Inbetween = True
-                    # response_data['clash_session'] = sessionlist.session.as_dict()
-                    # break
                 elif session.start <= sessionlist.session.start < session.end:
                     Inbetween = True
-                    # response_data['clash_session'] = sessionlist.session.as_dict()
-                    # break
                 elif session.start < sessionlist.session.end <= session.end:
                     Inbetween = True
-                    # response_data['clash_session'] = sessionlist.session.as_dict()
-                    # break
-                # if remove_conflict and Inbetween:
-                #     remove_conflict_session = SessionDetail.remove_conflict_session(request, sessionlist, attendee_id)
-                #     if remove_conflict_session:
-                #         Inbetween = False
-
-        # else :
-        #     for sessionlist in already_has_session:
-        #         if sessionlist.session.allow_overlapping == 0:
-        #             if sessionlist.session.start <= session.start <sessionlist.session.end:
-        #                Inbetween = True
-        #                # response_data['clash_session'] = sessionlist.session.as_dict()
-        #                break
-        #             elif sessionlist.session.start <session.end <=sessionlist.session.end:
-        #                Inbetween = True
-        #                # response_data['clash_session'] = sessionlist.session.as_dict()
-        #                break
-        #             if session.start <= sessionlist.session.start <session.end:
-        #                Inbetween = True
-        #                # response_data['clash_session'] = sessionlist.session.as_dict()
-        #                break
-        #             elif session.start < sessionlist.session.end <=session.end:
-        #                Inbetween = True
-        #                # response_data['clash_session'] = sessionlist.session.as_dict()
-        #                break
-        #
-        #     for sessionlist in already_has_session_as_speaker:
-        #         if sessionlist.session.allow_overlapping == 0:
-        #             if sessionlist.session.start <= session.start <sessionlist.session.end:
-        #                Inbetween = True
-        #                # response_data['clash_session'] = sessionlist.session.as_dict()
-        #                break
-        #             elif sessionlist.session.start <session.end <=sessionlist.session.end:
-        #                Inbetween = True
-        #                # response_data['clash_session'] = sessionlist.session.as_dict()
-        #                break
-        #             if session.start <= sessionlist.session.start <session.end:
-        #                Inbetween = True
-        #                # response_data['clash_session'] = sessionlist.session.as_dict()
-        #                break
-        #             elif session.start < sessionlist.session.end <=session.end:
-        #                Inbetween = True
-        #                # response_data['clash_session'] = sessionlist.session.as_dict()
-        #                break
         return Inbetween
 
     def check_session_clash_act_radio(request, attendee_id, session, previous_id=[]):
@@ -587,47 +469,25 @@ class SessionDetail(generic.DetailView):
             for sessionlist in already_has_session:
                 if sessionlist.session.start <= session.start < sessionlist.session.end:
                     Inbetween = True
-                    # response_data['clash_session'] = sessionlist.session.as_dict()
-                    # break
                 elif sessionlist.session.start < session.end <= sessionlist.session.end:
                     Inbetween = True
-                    # response_data['clash_session'] = sessionlist.session.as_dict()
-                    # break
                 elif session.start <= sessionlist.session.start < session.end:
                     Inbetween = True
-                    # response_data['clash_session'] = sessionlist.session.as_dict()
-                    # break
                 elif session.start < sessionlist.session.end <= session.end:
                     Inbetween = True
-                    # response_data['clash_session'] = sessionlist.session.as_dict()
-                    # break
                 if remove_conflict and Inbetween:
                     remove_conflict_session = SessionDetail.remove_conflict_session(request, sessionlist, attendee_id)
                     if remove_conflict_session:
                         Inbetween = False
-
-
             for sessionlist in already_has_session_as_speaker:
                 if sessionlist.session.start <= session.start < sessionlist.session.end:
                     Inbetween = True
-                    # response_data['clash_session'] = sessionlist.session.as_dict()
-                    # break
                 elif sessionlist.session.start < session.end <= sessionlist.session.end:
                     Inbetween = True
-                    # response_data['clash_session'] = sessionlist.session.as_dict()
-                    # break
                 elif session.start <= sessionlist.session.start < session.end:
                     Inbetween = True
-                    # response_data['clash_session'] = sessionlist.session.as_dict()
-                    # break
                 elif session.start < sessionlist.session.end <= session.end:
                     Inbetween = True
-                    # response_data['clash_session'] = sessionlist.session.as_dict()
-                    # break
-                # if remove_conflict and Inbetween:
-                #     remove_conflict_session = SessionDetail.remove_conflict_session(request, sessionlist, attendee_id)
-                #     if remove_conflict_session:
-                #         Inbetween = False
         return Inbetween
 
     def get_filtered_session(sessions, user_id):
@@ -677,9 +537,7 @@ class SessionDetail(generic.DetailView):
             capacity = session.max_attendees
             attendee_id = request.session['event_user']['id']
             event_id = request.session['event_user']['event_id']
-            # count = SeminarsUsers.objects.filter(Q(session_id=session_id)&(Q(status='attending') | Q( status='in-queue'))).count()
             count = SeminarsUsers.objects.filter(session_id=session_id).exclude(status='not-attending').count()
-            # count_queue = SeminarsUsers.objects.filter(session_id=session_id, status='in-queue').count()
             all_langs = LanguageKey.catch_lang_key_obj(request, 'session-details')
             if status_type == 'attend':
                 response_data = SessionDetail.status_type_attend(request, session_id)
@@ -700,11 +558,7 @@ class SessionDetail(generic.DetailView):
                                                                                     "sessiondetails_txt_status_queue_open")
                 response_data['message'] = NotifyView.get_notification_text(request, "notify_unregistered_session")
             else:
-                # SeminarsUsers.objects.filter(attendee_id=attendee_id, session_id=session_id).delete()
                 SeminarsUsers.objects.filter(attendee_id=attendee_id, session_id=session_id).delete()
-                # if has_seminar.exists():
-                #     seminar_attendee = SeminarsUsers.objects.filter(attendee_id=attendee_id, session_id=session_id).update(status='not-attending')
-                # else:
                 seminar_attendee = SeminarsUsers(attendee_id=attendee_id, session_id=session_id, status='not-attending')
                 seminar_attendee.save()
 
@@ -747,7 +601,6 @@ class SessionDetail(generic.DetailView):
                 if session_exist.exists():
                     seminar_user = session_exist[0]
                     if seminar_user.status == 'attending':
-                        print('if')
                         response_data['result'] = True
                         response_data['message'] = NotifyView.get_notification_text(request,
                                                                                     "notify_session_already_attend")
@@ -756,7 +609,6 @@ class SessionDetail(generic.DetailView):
                         response_data['status_msg'] = LanguageKey.catch_lang_key(request, "session-details",
                                                                                  "sessiondetails_txt_status_attending")
                     elif seminar_user.status == 'in-queue':
-                        print('else')
                         response_data['result'] = True
                         response_data['message'] = NotifyView.get_notification_text(request,
                                                                                     "notify_session_already_queue")
@@ -799,10 +651,6 @@ class SessionDetail(generic.DetailView):
                                     activity.save()
 
                                 SeminarsUsers.objects.filter(attendee_id=attendee_id, session_id=session_id).delete()
-                                # if exists_session.exists():
-                                #     SeminarsUsers.objects.filter(attendee_id=attendee_id, session_id=session_id).update(status='attending')
-                                # else:
-
                                 seminar_attendee = SeminarsUsers(attendee_id=attendee_id, session_id=session_id)
                                 seminar_attendee.save()
                                 response_data['success'] = True
@@ -815,7 +663,6 @@ class SessionDetail(generic.DetailView):
                             response_data['session_full'] = False
                         else:
                             if not session.receive_answer and session.allow_attendees_queue:
-                                print("here")
                                 old_history = SeminarsUsers.objects.filter(attendee_id=attendee_id,
                                                                            session_id=session_id)
                                 if old_history.exists():
@@ -834,7 +681,6 @@ class SessionDetail(generic.DetailView):
                                     activity.save()
 
                                 SeminarsUsers.objects.filter(attendee_id=attendee_id, session_id=session_id).delete()
-                                # if not already_has_session:
                                 form_data = {
                                     "attendee_id": attendee_id,
                                     "session_id": session_id,
@@ -847,8 +693,6 @@ class SessionDetail(generic.DetailView):
                                     form_data['queue_order'] = all_queue[all_queue.count() - 1].queue_order + 1
                                 seminar_attendee = SeminarsUsers(**form_data)
                                 seminar_attendee.save()
-                                # else:
-                                #     seminar_attendee = SeminarsUsers.objects.filter(attendee_id=attendee_id, session_id=session_id).update(status='in-queue')
                                 response_data['success'] = True
                                 response_data['result'] = True
                                 response_data['status'] = 'in-queue'
@@ -857,7 +701,6 @@ class SessionDetail(generic.DetailView):
                                 response_data['message'] = NotifyView.get_notification_text(request,
                                                                                             "notify_queue_session")
                             else:
-                                # response_data['status'] = 'Capacity Full'
                                 response_data['success'] = True
                                 response_data['result'] = False
                                 response_data['status'] = 'full'
@@ -930,7 +773,6 @@ class SessionDetail(generic.DetailView):
                 if session_exist.exists():
                     seminar_user = session_exist[0]
                     if seminar_user.status == 'attending':
-                        print('if')
                         response_data['result'] = True
                         response_data['message'] = NotifyView.get_notification_text(request,
                                                                                     "notify_session_already_attend")
@@ -939,7 +781,6 @@ class SessionDetail(generic.DetailView):
                         response_data['status_msg'] = LanguageKey.catch_lang_key(request, "session-details",
                                                                                  "sessiondetails_txt_status_attending")
                     elif seminar_user.status == 'in-queue':
-                        print('else')
                         response_data['result'] = True
                         response_data['message'] = NotifyView.get_notification_text(request,
                                                                                     "notify_session_already_queue")
@@ -983,10 +824,6 @@ class SessionDetail(generic.DetailView):
                                     activity.save()
 
                                 SeminarsUsers.objects.filter(attendee_id=attendee_id, session_id=session_id).delete()
-                                # if exists_session.exists():
-                                #     SeminarsUsers.objects.filter(attendee_id=attendee_id, session_id=session_id).update(status='attending')
-                                # else:
-
                                 seminar_attendee = SeminarsUsers(attendee_id=attendee_id, session_id=session_id)
                                 seminar_attendee.save()
                                 response_data['success'] = True
@@ -999,7 +836,6 @@ class SessionDetail(generic.DetailView):
                             response_data['session_full'] = False
                         else:
                             if not session.receive_answer and session.allow_attendees_queue:
-                                print("here")
                                 old_history = SeminarsUsers.objects.filter(attendee_id=attendee_id,
                                                                            session_id=session_id)
                                 if old_history.exists():
@@ -1018,7 +854,6 @@ class SessionDetail(generic.DetailView):
                                     activity.save()
 
                                 SeminarsUsers.objects.filter(attendee_id=attendee_id, session_id=session_id).delete()
-                                # if not already_has_session:
                                 form_data = {
                                     "attendee_id": attendee_id,
                                     "session_id": session_id,
@@ -1031,8 +866,6 @@ class SessionDetail(generic.DetailView):
                                     form_data['queue_order'] = all_queue[all_queue.count() - 1].queue_order + 1
                                 seminar_attendee = SeminarsUsers(**form_data)
                                 seminar_attendee.save()
-                                # else:
-                                #     seminar_attendee = SeminarsUsers.objects.filter(attendee_id=attendee_id, session_id=session_id).update(status='in-queue')
                                 response_data['success'] = True
                                 response_data['result'] = True
                                 response_data['status'] = 'in-queue'
@@ -1041,7 +874,6 @@ class SessionDetail(generic.DetailView):
                                 response_data['message'] = NotifyView.get_notification_text(request,
                                                                                             "notify_queue_session")
                             else:
-                                # response_data['status'] = 'Capacity Full'
                                 response_data['success'] = True
                                 response_data['result'] = False
                                 response_data['status'] = 'full'
@@ -1165,7 +997,6 @@ class SessionDetail(generic.DetailView):
 
     def activeSchedule(request, id):
         event_id = request.session['event_id']
-        print("Scheduled : Event = " + str(event_id) + " ID = " + str(id))
         notification = Notification.objects.get(id=id)
         if notification:
             if notification.status == 0:
@@ -1199,7 +1030,6 @@ class SessionDetail(generic.DetailView):
                                                                 attendee_id=attendee_id)
                 attendee_id_in_queue = attendee_id
             if attendee_id_in_queue != 0:
-                # attendee_id_in_queue = already_in_queue[0].attendee_id
                 sessions_of_queue_attende = SeminarsUsers.objects.filter(attendee_id=attendee_id_in_queue,
                                                                          status='attending',
                                                                          session__allow_overlapping=0)
@@ -1230,19 +1060,9 @@ class SessionDetail(generic.DetailView):
                     clash = Session.objects.get(id=clash_session)
                     clash_session_id = clash.id
                     new_opened_session_id = session.id
-                    # ur11 = reverse('public-session-detail', args=[session.id])
-                    # ur12 = reverse('public-session-detail', args=[clash.id])
-                    # session1 = "<a href='"+ur11+"'>"+ session.name+"</a>"
-                    # session2 = "<a href='"+ur12+"'>"+ clash.name+"</a>"
-                    # session1 = session.name
-                    # session2 = clash.name
                     clash_name = clash.name
                     session1 = "{session_id:" + str(session.id) + "}"
                     session2 = "{session_id:" + str(clash.id) + "}"
-                    # if str(event_id) == str(10):
-                    #     msg = "En plats till <strong>"+session1+"</strong> är ledig. vill du hellre delta på denna aktivitet än ditt tidigare val <strong>"+session2+"</strong>?"
-                    # else:
-                    # msg = "A seat has opened up for <strong>"+session1+"</strong> Would you rather go to this session than your previously booked session <strong>"+session2+"</strong>?"
                     element = Elements.objects.filter(slug="messages")
                     language = LanguageKey.get_lang_key(request, element[0].id)
                     msg = language['langkey']['messages_notify_session_clash'].replace('{session1}', session1)
@@ -1251,20 +1071,13 @@ class SessionDetail(generic.DetailView):
                                                 to_attendee_id=attendee_id_in_queue, clash_session_id=clash_session_id,
                                                 new_session_id=new_opened_session_id)
                     notification.save()
-                    # scheduler.add_jobstore('redis', jobs_key=str(notification.id)+".jobs", run_times_key=str(notification.id)+".run_times")
                     total_seconds = AttendeeProfile.get_timout(event_id)
                     alarm_time = datetime.now() + timedelta(seconds=total_seconds)
-                    # alarm_time = timezone.now() + timedelta(seconds=total_seconds)
 
                     SeminarsUsers.objects.filter(attendee_id=attendee_id_in_queue, session_id=session.id).delete()
                     active_deciding = SeminarsUsers(attendee_id=attendee_id_in_queue, session_id=session.id,
                                                     status='deciding')
                     active_deciding.save()
-                    # session_data = DjangoSession.objects.all().first()
-                    #
-                    # session_info = session_data.get_decoded()
-                    #
-                    # event_id = session_info['event_user']['event_id']
                     activity = ActivityHistory(activity_type="update", category="session",
                                                attendee_id=attendee_id_in_queue, session_id=session.id,
                                                old_value="In Queue", new_value="Deciding", event_id=event_id)
@@ -1276,7 +1089,6 @@ class SessionDetail(generic.DetailView):
                     email_settings = Setting.objects.filter(name='session_conflict_confirmation', event_id=event_id)
                     if email_settings.exists():
                         email_id = email_settings[0].value
-                        # email_queue = UserEmail.email_connection(request)
                         UserEmail.send_session_email_to_user(request, email_id, active_deciding.attendee, clash_name)
                     scheduler.add_job(SessionDetail.activeSchedule, 'date', run_date=alarm_time,
                                       args=[request, notification.id], id=str(notification.id))
@@ -1292,15 +1104,8 @@ class SessionDetail(generic.DetailView):
                     SeminarsUsers.objects.filter(id=queue_id).delete()
                     seminar_user = SeminarsUsers(session_id=s_id, attendee_id=a_id)
                     seminar_user.save()
-                    # new_queue = SeminarsUsers.objects.filter(id=queue_id)
-                    # ur11 = reverse('public-session-detail', args=[session.id])
-                    # session1 = "<a href='"+ur11+"'>"+ session.name+"</a>"
-                    # session1 = session.name
                     session1 = "{session_id:" + str(session.id) + "}"
                     session_name = session.name
-                    # if str(event_id) == str(10):
-                    #     msg = "Aktiviteten <strong>"+session1+"</strong> har lagts till i din agenda."
-                    # else:
                     element = Elements.objects.filter(slug="messages")
                     language = LanguageKey.get_lang_key(request, element[0].id)
                     msg = language['langkey']['messages_notify_session_attend'].replace('{session}',
@@ -1317,7 +1122,6 @@ class SessionDetail(generic.DetailView):
                     email_settings = Setting.objects.filter(name='session_no_conflict_confirmation', event_id=event_id)
                     if email_settings.exists():
                         email_id = email_settings[0].value
-                        # email_queue = UserEmail.email_connection(request)
                         UserEmail.send_session_email_to_user(request, email_id, seminar_user.attendee, session_name)
 
         except Exception as e:

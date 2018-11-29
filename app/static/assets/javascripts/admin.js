@@ -31,7 +31,6 @@ $(function () {
                 clog(response);
 
                 if (response.success) {
-                    console.log(response)
                     var admin = response.user;
                     var events = response.events;
                     var content_permission = response.content_permission;

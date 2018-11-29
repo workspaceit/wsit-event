@@ -1,23 +1,16 @@
 from django.shortcuts import render
-from django.template.loader import render_to_string
 from django.http import HttpResponse
 from django.views import generic
-from django.db import transaction
-from app.models import EmailContents, EmailTemplates, Questions, Travel, Session, Hotel, Room, RuleSet, Attendee, \
-    Answers, SeminarsUsers, TravelAttendee, Booking, RequestedBuddy, MessageHistory, \
-    AttendeeGroups, AttendeeTag, SeminarSpeakers, SessionTags, TravelTag, Setting, EmailReceivers, Option, Tag, \
-    EmailReceiversHistory, \
-    ActivityHistory, MessageContents, EmailLanguageContents, PresetEvent, Presets
+from app.models import EmailContents, EmailTemplates, RuleSet, Attendee, MessageHistory, \
+    Setting, EmailReceivers, EmailReceiversHistory, \
+    ActivityHistory, EmailLanguageContents, PresetEvent, Presets
 from app.views.email_content_view import EmailContentDetailView
 from app.views.gbhelper.language_helper import LanguageH
-from app.views.mail import Mailer
 from .filter import FilterView
 from django.http import Http404
-# from .message_view import MessageView
-from .common_views import GroupView, CommonContext, EventView
+from .common_views import CommonContext, EventView
 from django.db.models import Q
 from .mail import MailHelper
-from .page_view import PageDetailView
 import re
 import json
 import os
@@ -177,7 +170,6 @@ class EmailView(generic.TemplateView):
 
     def send_email(request, attendee, email_content):
         try:
-            # content = email_content.content
             content = EmailView.get_content_with_lang(attendee.event_id, email_content.id,
                                                       attendee.language_id)
             content = email_content.template.content.replace('{content}', content)
@@ -190,7 +182,6 @@ class EmailView(generic.TemplateView):
             content = EmailContentDetailView.replace_economy_tags(request, content, attendee, attendee.language_id)
             content = EmailContentDetailView.replace_general_questions(request, content, attendee, attendee.language_id)
             content = EmailContentDetailView.replace_photos(request, content, attendee, attendee.language_id)
-            # mail_template_content = email_content.template.content.replace('{content}', content)
             mail_template_content = content
             subject = LanguageH.get_email_subject_by_language(attendee.language_id, email_content)
             to = attendee.email
@@ -323,8 +314,6 @@ class EmailReceiversView(generic.TemplateView):
         receivers = json.loads(request.POST.get('receivers'))
         status = request.POST.get('status')
         ErrorR.ex_time_init()
-        # for receiver in receivers:
-        #     EmailReceivers.objects.filter(id=int(receiver)).update(status=status)
         EmailReceivers.objects.filter(id__in=receivers).update(status=status)
         ErrorR.ex_time()
         response_data['success'] = True
@@ -334,8 +323,6 @@ class EmailReceiversView(generic.TemplateView):
     def delete_receiver(request):
         response_data = {}
         receivers = json.loads(request.POST.get('receivers'))
-        # for receiver in receivers:
-        #     EmailReceivers.objects.filter(id=int(receiver['id'])).update(is_show=0)
         EmailReceivers.objects.filter(id__in=receivers).update(is_show=0)
         response_data['success'] = True
         response_data['message'] = "Receivers Delete Successfully"
@@ -352,7 +339,6 @@ class EmailReceiversView(generic.TemplateView):
         if receiver.exists():
             receiver = receiver[0]
             previewContent = ''
-            # content = receiver.email_content.content
             msg = MIMEMultipart('alternative')
             if receiver.attendee_id != None:
                 content = EmailView.get_content_with_lang(event_id, receiver.email_content.id,
@@ -413,8 +399,6 @@ class EmailReceiversView(generic.TemplateView):
         if receiver_data.exists():
             receiver = receiver_data[0]
             previewContent = ''
-
-            # content = receiver.email_content.content
             if receiver.attendee_id != None:
                 content = EmailView.get_content_with_lang(event_id, receiver.email_content.id,
                                                           receiver.attendee.language_id)
@@ -517,244 +501,8 @@ class EmailReceiversView(generic.TemplateView):
         content = content.replace('{email_address}', receiver.email)
         return content
 
-    def send_email(request):
-        # from wsitEvent.tasks import mail_task
-        import boto.sqs
-        from boto.sqs.message import Message
-        from django.conf import settings
-        import os
-        import time
-        from django.db.models.aggregates import Count
-        try:
-            ErrorR.ex_time_init()
-            event_id = request.session['event_auth_user']['event_id']
-            receivers = json.loads(request.POST.get('receivers'))
-            response_data = {}
-            updated_receivers = []
-            email_activities = []
-            email_receivers_history = []
-            message_history_flag = False
-            message_histoty_id = 0
-            conn = boto.sqs.connect_to_region(settings.SES_REGION, aws_access_key_id=settings.AWS_ACCESS_KEY_ID,
-                                              aws_secret_access_key=settings.AWS_SECRET_ACCESS_KEY)
-            queue = conn.get_queue('test_email_queue')
-            start_time = time.time()
-            email_queue = []
-            i = 1
-            all_receivers = EmailReceivers.objects.filter(id__in=receivers)
-            email_content_id = request.POST.get('email_id')
-            email_content = EmailContents.objects.get(id=email_content_id)
-            content_languages = {}
-            attendee_languages = Attendee.objects.filter(emailreceivers__in=receivers).values('language_id').annotate(
-                lcount=Count('language_id'))
-            for attendee_lang in attendee_languages:
-                # email_content_language = email_content.emaillanguagecontents_set.all()
-                # content_languages = {}
-                # for content_lang in email_content_language:
-                language_id = str(attendee_lang['language_id'])
-                content_languages["subject_" + language_id] = LanguageH.get_email_subject_by_language(language_id,
-                                                                                                      email_content)
-                content_languages["content_" + language_id] = EmailView.get_content_with_lang(event_id,
-                                                                                              email_content.id,
-                                                                                              language_id)
-                content_languages["economy_language_" + language_id] = LanguageH.catch_lang_key_obj(event_id,
-                                                                                                    language_id,
-                                                                                                    'economy')
-                content_languages["session_language_" + language_id] = LanguageH.catch_lang_key_obj(event_id,
-                                                                                                    language_id,
-                                                                                                    'sessions')
-                content_languages["hotel_language_" + language_id] = LanguageH.catch_lang_key_obj(event_id, language_id,
-                                                                                                  'hotels')
-                content_languages["session_language_" + language_id]['langkey'].update(
-                    content_languages["economy_language_" + language_id]['langkey'])
-                content_languages["hotel_language_" + language_id]['langkey'].update(
-                    content_languages["economy_language_" + language_id]['langkey'])
-                content_languages["language_" + language_id] = LanguageH.catch_lang_key_obj(event_id, language_id,
-                                                                                            'economy')
-            default_date_time_format = EmailContentDetailView.get_language_date_format(event_id)
-            ErrorR.ex_time()
-            for receiver in all_receivers:
-                # ErrorR.ex_time_init()
-                # if len(email_queue) == 0:
-                #     ErrorR.ex_time_init()
-                # receiver_info = EmailReceivers.objects.filter(id=int(receiver_id['id']))
-                # if receiver_info.exists():
-                #     receiver = receiver_info[0]
-                # content = receiver.email_content.content
-                to = receiver.email
-                sender_mail = receiver.email_content.sender_email
-                EmailReceivers.objects.filter(id=receiver.id).update(status='sent', last_received=datetime.now())
-                updated_receiver = EmailReceivers.objects.get(id=receiver.id)
-                updated_receiver_dict = updated_receiver.as_dict()
-                updated_receiver_dict['last_received'] = str(
-                    TimeDetailView.utc_to_local(request, updated_receiver_dict['last_received']))
-                updated_receivers.append(updated_receiver_dict)
-                if receiver.attendee_id != None:
-                    # subject = LanguageH.get_email_subject_by_language(receiver.attendee.language_id,receiver.email_content)
-                    # ErrorR.ex_time()
-                    # ErrorR.ex_time_init()
-                    # content = EmailView.get_content_with_lang(event_id, receiver.email_content.id,
-                    #                                           receiver.attendee.language_id)
-                    subject = content_languages["subject_" + str(receiver.attendee.language_id)]
-                    content = content_languages["content_" + str(receiver.attendee.language_id)]
-
-                    mail_template_content = receiver.email_content.template.content.replace('{content}', content)
-
-                    mail_template_content = EmailContentDetailView.replace_questions_variable(request,
-                                                                                              mail_template_content,
-                                                                                              receiver.attendee,
-                                                                                              receiver.attendee.language_id,
-                                                                                              default_date_time_format)
-
-                    mail_template_content = EmailContentDetailView.replace_sessions(request, mail_template_content,
-                                                                                    receiver.attendee,
-                                                                                    receiver.attendee.language_id,
-                                                                                    content_languages[
-                                                                                        "session_language_" + str(
-                                                                                            receiver.attendee.language_id)],
-                                                                                    default_date_time_format)
-
-                    mail_template_content = EmailContentDetailView.replace_travels(request, mail_template_content,
-                                                                                   receiver.attendee,
-                                                                                   receiver.attendee.language_id,
-                                                                                   default_date_time_format)
-
-                    mail_template_content = EmailContentDetailView.replace_hotels(request, mail_template_content,
-                                                                                  receiver.attendee,
-                                                                                  receiver.attendee.language_id,
-                                                                                  content_languages[
-                                                                                      "hotel_language_" + str(
-                                                                                          receiver.attendee.language_id)],
-                                                                                  default_date_time_format)
-
-                    mail_template_content = EmailContentDetailView.replace_general_tags(request, mail_template_content,
-                                                                                        receiver.attendee,
-                                                                                        receiver.attendee.language_id)
-
-                    mail_template_content = EmailContentDetailView.replace_economy_tags(request, mail_template_content,
-                                                                                        receiver.attendee,
-                                                                                        content_languages[
-                                                                                            "economy_language_" + str(
-                                                                                                receiver.attendee.language_id)])
-
-                    mail_template_content = EmailContentDetailView.replace_general_questions(request,
-                                                                                             mail_template_content,
-                                                                                             receiver.attendee,
-                                                                                             receiver.attendee.language_id)
-
-                    mail_template_content = EmailContentDetailView.replace_photos(request, mail_template_content,
-                                                                                  receiver.attendee,
-                                                                                  receiver.attendee.language_id)
-
-                    if not message_history_flag:
-                        message_history = MessageHistory(subject=subject, message='N/A',
-                                                         admin_id=request.session['event_auth_user']['id'],
-                                                         type='mail')
-                        message_history.save()
-                        message_histoty_id = message_history.id
-                        message_history_flag = True
-                    receiver_history = EmailReceiversHistory(receiver_id=receiver.id)
-                    email_receivers_history.append(receiver_history)
-                    activity_history = ActivityHistory(attendee_id=receiver.attendee.id,
-                                                       admin_id=request.session['event_auth_user']['id'],
-                                                       activity_type='message', category='message',
-                                                       message_id=message_histoty_id,
-                                                       event_id=request.session['event_auth_user']['event_id'])
-                    email_activities.append(activity_history)
-                    # MailHelper.mail_template_send(mail_template_content, subject, to, sender_mail)
-                    # mail_task.apply_async([
-                    #     {
-                    #         'template':mail_template_content,
-                    #         'subject': subject,
-                    #         'to': to,
-                    #         'sender': sender_mail
-                    #     }
-                    # ])
-                    # m = Message()
-                    data = json.dumps({
-                        'to': to,
-                        'sender': sender_mail,
-                        'subject': subject,
-                        'template': mail_template_content,
-                        'environment': os.environ['ENVIRONMENT_TYPE'],
-                        'local_env': settings.LOCAL_ENV
-                    })
-                    # m.set_body(data)
-                    email_queue.append((i, data, 0))
-                    # queue.write(m)
-                else:
-                    default_language = PresetEvent.objects.get(event_id=event_id)
-                    subject = LanguageH.get_email_subject_by_language(default_language.preset_id,
-                                                                      receiver.email_content)
-                    content = EmailView.get_content_with_lang(event_id, receiver.email_content.id,
-                                                              default_language.preset_id)
-                    mail_template_content = receiver.email_content.template.content.replace('{content}', content)
-                    mail_template_content = EmailReceiversView.replace_empty_data(mail_template_content, receiver)
-                    receiver_history = EmailReceiversHistory(receiver_id=receiver.id)
-                    email_receivers_history.append(receiver_history)
-                    # MailHelper.mail_template_send(mail_template_content, subject, to, sender_mail)
-                    # mail_task.apply_async([
-                    #     {
-                    #         'template':mail_template_content,
-                    #         'subject': subject,
-                    #         'to': to,
-                    #         'sender': sender_mail
-                    #     }
-                    # ])
-                    # m = Message()
-                    data = json.dumps({
-                        'to': to,
-                        'sender': sender_mail,
-                        'subject': subject,
-                        'template': mail_template_content,
-                        'environment': os.environ['ENVIRONMENT_TYPE'],
-                        'local_env': settings.LOCAL_ENV
-                    })
-                    email_queue.append((i, data, 0))
-                    # m.set_body(data)
-                    # queue.write(m)
-                # ErrorR.ex_time()
-                if i == 10:
-                    # ErrorR.ex_time_init()
-                    queue.write_batch(email_queue)
-                    # ErrorR.ex_time()
-                    # ErrorR.ex_time()
-                    email_queue = []
-                    i = 1
-                else:
-                    i = i + 1
-            # ErrorR.ex_time_init()
-            if i > 1:
-                queue.write_batch(email_queue)
-            # ErrorR.ex_time()
-            ErrorR.ex_time_init()
-            ActivityHistory.objects.bulk_create(email_activities)
-            EmailReceiversHistory.objects.bulk_create(email_receivers_history)
-            ErrorR.ex_time()
-            response_data['success'] = True
-            response_data['message'] = 'Email Sent Successfully'
-            response_data['updated_receivers'] = updated_receivers
-
-            ErrorR.ilog("-----------Email-Total-time--------------")
-            ErrorR.ilog(time.time() - start_time)
-            return HttpResponse(json.dumps(response_data), content_type="application/json")
-        except Exception as e:
-            print(e)
-            import sys, os
-            exc_type, exc_obj, exc_tb = sys.exc_info()
-            fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
-            print(exc_type, fname, exc_tb.tb_lineno)
-            response_data = {
-                'success': False,
-                'message': 'Something went wrong. Please try again.'
-            }
-            return HttpResponse(json.dumps(response_data), content_type="application/json")
-
     def send_email_by_lambda(request):
-        # from wsitEvent.tasks import mail_task
-
         import time
-
         from django.db.models.aggregates import Count
         try:
             ErrorR.ex_time_init("Processing of DEF")
@@ -772,9 +520,6 @@ class EmailReceiversView(generic.TemplateView):
             attendee_languages = Attendee.objects.filter(emailreceivers__in=receivers).values('language_id').annotate(
                 lcount=Count('language_id'))
             for attendee_lang in attendee_languages:
-                # email_content_language = email_content.emaillanguagecontents_set.all()
-                # content_languages = {}
-                # for content_lang in email_content_language:
                 language_id = str(attendee_lang['language_id'])
                 content_languages["subject_" + language_id] = LanguageH.get_email_subject_by_language(language_id,
                                                                                                       email_content)
@@ -810,23 +555,11 @@ class EmailReceiversView(generic.TemplateView):
                 i += 1
                 to = receiver.email
                 sender_mail = receiver.email_content.sender_email
-                # EmailReceivers.objects.filter(id=receiver.id).update(status='sent', last_received=datetime.now())
-                # updated_receiver = EmailReceivers.objects.get(id=receiver.id)
-                # updated_receiver_dict = updated_receiver.as_dict()
-                # updated_receiver_dict['last_received'] = str(
-                #     TimeDetailView.utc_to_local(request, updated_receiver_dict['last_received']))
                 updated_receiver_dict = {
                     'id': receiver.id,
-                    # 'status': 'sent',
-                    # 'last_received': last_received
                 }
                 updated_receivers.append(updated_receiver_dict)
                 if receiver.attendee_id != None:
-                    # subject = LanguageH.get_email_subject_by_language(receiver.attendee.language_id,receiver.email_content)
-                    # ErrorR.ex_time()
-                    # ErrorR.ex_time_init()
-                    # content = EmailView.get_content_with_lang(event_id, receiver.email_content.id,
-                    #                                           receiver.attendee.language_id)
                     subject = content_languages["subject_" + str(receiver.attendee.language_id)]
                     content = content_languages["content_" + str(receiver.attendee.language_id)]
 
@@ -997,8 +730,6 @@ class EmailReceiversView(generic.TemplateView):
                 'last_received': str(receiver.last_received),
             }
             receiver_list.append(context)
-        # response_data['email_receivers'] = render_to_string('email_content/receivers_list.html',
-        #                                                     {'email_receivers': email_receivers,'request': request})
         response_data['email_receivers'] = receiver_list
         response_data['success'] = True
         response_data['admin_permission'] = False
@@ -1060,8 +791,6 @@ class EmailReceiversView(generic.TemplateView):
                     'last_received': str(receiver.last_received),
                 }
                 receiver_list.append(context)
-            # response_data['email_receivers'] = render_to_string('email_content/receivers_list.html',
-            #                                                     {'email_receivers': email_receivers,'request': request})
             response_data['email_receivers'] = receiver_list
             response_data['success'] = True
             response_data['admin_permission'] = False
@@ -1131,9 +860,6 @@ class EmailReceiversView(generic.TemplateView):
                 'last_received': str(receiver.last_received),
             }
             receiver_list.append(context)
-            # receiver_list.append(receiver.as_dict())
-        # response_data['email_receivers'] = render_to_string('email_content/receivers_list.html',
-        #                                                     {'email_receivers': email_receivers,'request': request})
         ErrorR.ex_time()
         response_data['email_receivers'] = receiver_list
         response_data['success'] = True
@@ -1228,7 +954,6 @@ class EmailContentView(generic.DetailView):
                 "presetsEvent": presetsEvent
             }
             context.update(editor_common_context)
-            # return render(request, 'email_content/contents.html', context)
             return render(request, 'email_content/contents_froala.html', context)
         else:
             raise Http404
@@ -1269,38 +994,6 @@ class EmailContentView(generic.DetailView):
                 'message': 'You do not have Permission to do this',
             }
             return HttpResponse(json.dumps(response_data), content_type="application/json")
-
-    # def get_floara_editor(request,pk,*args, **kwargs):
-    #     if EventView.check_permissions(request, 'message_permission'):
-    #         language_id = None
-    #         try:
-    #             email = EmailContents.objects.filter(id=pk,
-    #                                                  template__event_id=request.session['event_auth_user'][
-    #                                                      'event_id']).first()
-    #             if email:
-    #                 defult_language = PresetEvent.objects.filter(event_id=email.template.event_id).first()
-    #                 language_id = defult_language.preset_id
-    #                 email_content = EmailLanguageContents.objects.filter(email_content_id=pk,
-    #                                                                      language_id=defult_language.preset_id).first()
-    #                 if email_content:
-    #                     email.content = email_content.content
-    #             else:
-    #                 raise Http404
-    #         except EmailContents.DoesNotExist:
-    #             raise Http404
-    #         editor_common_context = EditorHelper.get_editor_context(request,language_id)
-    #         [presets, presetsEvent] = LanguageH.get_preset_list(request.session['event_auth_user']['event_id'],
-    #                                                             request.session['event_auth_user']['type'])
-    #         context = {
-    #             "email": email,
-    #             # "questionGroup": questionGroup,
-    #             "presets": presets,
-    #             "presetsEvent": presetsEvent
-    #         }
-    #         context.update(editor_common_context)
-    #         return render(request, 'email_content/contents_froala.html', context)
-    #     else:
-    #         raise Http404
 
     def show_preview(request):
         content = request.POST.get('content')

@@ -26,7 +26,6 @@ $(function () {
     }
     var editor_link_styles = JSON.parse($('#editor_link_styles').val().replace(/'/g, '"'));
     var editor_font_familys = JSON.parse($('#editor_font_familys').val().replace(/'/g, '"'));
-    console.log(is_fullpage);
     $.FroalaEditor.DefineIcon('general_tags', {NAME: 'tags'});
     $.FroalaEditor.RegisterCommand('general_tags', {
         title: 'General Tags',
@@ -66,11 +65,11 @@ $(function () {
         },
         // Callback on refresh.
         refresh: function ($btn) {
-            console.log('do refresh tag');
+            clog('do refresh tag');
         },
         // Callback on dropdown show.
         refreshOnShow: function ($btn, $dropdown) {
-            console.log('do refresh when show tag');
+            clog('do refresh when show tag');
         }
     });
     // Add Economy Tags
@@ -104,11 +103,11 @@ $(function () {
         },
         // Callback on refresh.
         refresh: function ($btn) {
-            console.log('do refresh economy');
+            clog('do refresh economy');
         },
         // Callback on dropdown show.
         refreshOnShow: function ($btn, $dropdown) {
-            console.log('do refresh when show economy');
+            clog('do refresh when show economy');
         }
     });
     // Add Group Tags
@@ -153,11 +152,11 @@ $(function () {
         },
         // Callback on refresh.
         refresh: function ($btn) {
-            console.log('do refresh group');
+            clog('do refresh group');
         },
         // Callback on dropdown show.
         refreshOnShow: function ($btn, $dropdown) {
-            console.log('do refresh when show group');
+            clog('do refresh when show group');
         }
     });
     // Add General Questions
@@ -183,13 +182,11 @@ $(function () {
                 },
                 // Callback on refresh.
                 refresh: function ($btn) {
-                    console.log('do refresh question');
+                    clog('do refresh question');
                 },
                 // Callback on dropdown show.
                 refreshOnShow: function ($btn, $dropdown) {
-                    console.log($btn);
-                    console.log($dropdown);
-                    console.log('do refresh when show question');
+                    clog('do refresh when show question');
                 }
             });
         });
@@ -296,7 +293,7 @@ $(function () {
             }
         })
         .on('froalaEditor.imageManager.imagesLoaded', function (e, editor, data) {
-            // console.log(data);
+            // clog(data);
             // Do something when the request finishes with success.
             // alert('Images have been loaded.');
         }).on('froalaEditor.imageManager.imageLoaded', function (e, editor, $img) {
@@ -452,7 +449,6 @@ function addOrUpdateTemplateContent(editor) {
     // content = content.replace(/(\r\n|\n|\r)/gm, "");
     content = content.replace('<div id="content-body-data">{content}</div>', '{content}');
     content = content.replace('<p>{content}</p>', '{content}');
-    console.log(content);
     var template_id = window.location.pathname.split('/')[3];
     $.ajax({
         url: base_url + '/admin/templates/',

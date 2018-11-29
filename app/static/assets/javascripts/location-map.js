@@ -156,12 +156,11 @@ $(function () {
         if ($('textarea#froala_content_editor').froalaEditor('codeView.isActive')) {
             $('textarea#froala_content_editor').froalaEditor('codeView.toggle');
         }
-        $('textarea#froala_content_editor').froalaEditor('html.set', '');
         $('.location-language-preset-selector').select2("val", "");
         $('.language-preset-selector').hide();
-        // setTimeout(function () {
-        //     editor.setValue('');
-        // }, 400);
+        setTimeout(function () {
+            $('textarea#froala_content_editor').froalaEditor('html.set', '');
+        }, 400);
         mapInitialize();
     }
 
@@ -207,12 +206,9 @@ $(function () {
                     var lat = Number(location.latitude);
                     var lon = Number(location.longitude);
                     $('#location_name').val(getcontentByLanguage(location.name, location.name_lang, current_language_id));
-                    //$('#location_description').val(location.description);
-                    // $('#description').val(location.description);
                     if ($('textarea#froala_content_editor').froalaEditor('codeView.isActive')) {
                         $('textarea#froala_content_editor').froalaEditor('codeView.toggle');
                     }
-                    $('textarea#froala_content_editor').froalaEditor('html.set', getcontentByLanguage(location.description, location.description_lang, current_language_id));
                     $('#location_address').val(getcontentByLanguage(location.address, location.address_lang, current_language_id));
                     $('#location_group').select2('val', location.group.id);
                     $('#location_group').attr('data-id', location.group.id);
@@ -243,13 +239,9 @@ $(function () {
                     $('#btn-update-location').show();
                     var point = {lat: lat, lng: lon, from: 'edit'};
                     $('#' + modal_class).data('point', point).modal();
-                    // setTimeout(function () {
-                    //     var description_content = $.trim($('#description').val());
-                    //     //if (description_content != '') {
-                    //     editor.setValue(description_content);
-                    //
-                    //     //}
-                    // }, 400);
+                    setTimeout(function () {
+                        $('textarea#froala_content_editor').froalaEditor('html.set', getcontentByLanguage(location.description, location.description_lang, current_language_id));
+                    }, 400);
                 }
                 else {
                     var errors = response.message;
@@ -376,21 +368,6 @@ $(function () {
             contact_name_lang: contact_name_lang,
             csrfmiddlewaretoken: csrfToken
         };
-        //if ($('#id_checkbox_location_maps_highlights').prop('checked')) {
-        //    data['map_highlight'] = mapHighlight;
-        //}
-        //if ($('#id_checkbox_location_name').prop('checked')) {
-        //    data['contact_name'] = contact_name;
-        //}
-        //if ($('#id_checkbox_location_web').prop('checked')) {
-        //    data['contact_web'] = contact_web;
-        //}
-        //if ($('#id_checkbox_location_phone').prop('checked')) {
-        //    data['contact_phone'] = contact_phone;
-        //}
-        //if ($('#id_checkbox_location_email').prop('checked')) {
-        //    data['contact_email'] = contact_email;
-        //}
 
 
         var ajaxUrl = '/admin/locations/',
@@ -639,13 +616,10 @@ $(function () {
         if ($('textarea#froala_content_editor').froalaEditor('codeView.isActive')) {
             $('textarea#froala_content_editor').froalaEditor('codeView.toggle');
         }
-        $('textarea#froala_content_editor').froalaEditor('html.set', '');
         $('#seminars-edit-seminar').modal();
-        // setTimeout(function () {
-        //     // editor.setValue('');
-        //
-        //
-        // }, 400);
+        setTimeout(function () {
+            $('textarea#froala_content_editor').froalaEditor('html.set', '');
+        }, 400);
 
     });
 
@@ -730,7 +704,6 @@ $(function () {
                     if ($('textarea#froala_content_editor').froalaEditor('codeView.isActive')) {
                         $('textarea#froala_content_editor').froalaEditor('codeView.toggle');
                     }
-                    $('textarea#froala_content_editor').froalaEditor('html.set', getcontentByLanguage(session.description, session.description_lang, current_language_id));
                     //$('#group').val(session.group);
 //                    $('#speakers').val(session.speakers);
 
@@ -810,15 +783,9 @@ $(function () {
                     $('#btn-update-session').show();
 //                    $('#btn-remove-queue').show();
                     $('#' + modal_class).modal();
-                    // setTimeout(function () {
-                    //     var description_content = $.trim($('#description').val());
-                    //     clog(description_content);
-                    //     if (description_content != '') {
-                    //         $('textarea#froala_content_editor').froalaEditor('html.set', description_content);
-                    //         // editor.setValue(description_content);
-                    //
-                    //     }
-                    // }, 400);
+                    setTimeout(function () {
+                        $('textarea#froala_content_editor').froalaEditor('html.set', getcontentByLanguage(session.description, session.description_lang, current_language_id));
+                    }, 400);
 
                 }
                 else {
@@ -871,8 +838,6 @@ $(function () {
         var allow_all_day = $('#allow-all-day-session').prop('checked');
         var name_lang = valueWithSpecialCharacter(name);
         var description_lang = valueWithSpecialCharacter(description);
-        console.log('Cost: ' + cost);
-        console.log('VAT: ' + vat);
 
         var requiredFields = [
             {fieldId: 'name', message: 'Name'},

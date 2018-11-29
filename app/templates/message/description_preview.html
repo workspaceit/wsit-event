@@ -1,9 +1,3 @@
-{#{% load staticfiles %}#}
-{#{% if request.session.event_auth_user.event_id == 10 %}#}
-{#    <link href="{% static 'assets/stylesheets/page_gt_style.css' %}" rel="stylesheet" type="text/css"/>#}
-{#{% else %}#}
-{#    <link href="{% static 'assets/stylesheets/page_style.css' %}" rel="stylesheet" type="text/css"/>#}
-{#{% endif %}#}
 {% if email_contents %}
 {{ email_contents| safe }}
 {% endif %}

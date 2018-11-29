@@ -56,7 +56,6 @@ $(document).ready(function () {
 
 $(document).ajaxSuccess(function () {
     cookie_counter = cookie_expire;
-    console.log("Triggered ajaxSuccess handler.");
 });
 // Session Scheduler
 
@@ -515,8 +514,6 @@ $(function () {
                                 csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val()
                             },
                             success: function (result) {
-                                console.log(result.pdf_button);
-
                                 var plugin_content = plugin_name.replace(/ /g, "-");
                                 var plugin_html = $('#elements-' + plugin_content.toLowerCase()).find('.element').html();
                                 var plugin_element = "<div class='event-plugin element event-plugin-" + plugin_content.toLowerCase() + " box' id='box-" + idCount + "' data-id='" + plugin_id + "' data-name='" + plugin_content.toLowerCase() + "' data-pdf-button-id='" + result.pdf_button.id + "' data-pdf-button-name='" + result.pdf_button.name + "'>" + plugin_html + element_plugin_toolbox;
@@ -1237,53 +1234,10 @@ $(function () {
             saveOrUpdate();
         });
         $body.find('div.editor-inline-box').on('froalaEditor.contentChanged', function (e, editor) {
-            console.log('ypyo');
             getInlineEditorHtml($(this));
             saveOrUpdate();
         });
-        // $this_editor.on('froalaEditor.buttons.refresh', function (e, editor) {
-        //     getInlineEditorHtml($(this));
-        //     saveOrUpdate();
-        // });
-        // $this_editor.on('froalaEditor.contentChanged', function (e, editor) {
-        //     console.log('ypyo');
-        //     getInlineEditorHtml($(this));
-        //     saveOrUpdate();
-        // });
-        // if ($('textarea#froala_content_editor').froalaEditor('codeView.isActive')) {
-        //     $('textarea#froala_content_editor').froalaEditor('codeView.toggle');
-        // }
-        // $('textarea#froala_content_editor').froalaEditor('html.set', '');
-        // editor.setValue("");
-        // } else {
-        //     // var scrollHeight = $("#content_data").height() - $("#admin-editor").height();
-        //     // $("#content_data").height(scrollHeight);
-        //     saveEditorHtml();
-        // }
     });
-    // $("#admin-file-repository-toggle").on("click", function () {
-    //     if ($('#admin-editor.visible').length == 0) {
-    //         if ($('#content_data').find('.temporary').length < 1) {
-    //             createTemporarySection();
-    //         }
-    //         idCount++;
-    //         var element = "<div class='element form-editor box' id=box-" + idCount + ">" +
-    //             element_toolbox + "<div class='editor-inline-box'></div>"+
-    //             "</div>";
-    //         $('.temporary').children('.row:last').children('.col:last').append(element);
-    //         $('#current-editor-box').val('box-' + idCount);
-    //         $('html, body').animate({
-    //             scrollTop: $("#" + 'box-' + idCount).offset().top
-    //         }, 'fast');
-    //         if ($('textarea#froala_content_editor').froalaEditor('codeView.isActive')) {
-    //             $('textarea#froala_content_editor').froalaEditor('codeView.toggle');
-    //         }
-    //         $('textarea#froala_content_editor').froalaEditor('html.set', '');
-    //         // editor.setValue("");
-    //     } else {
-    //         saveEditorHtml();
-    //     }
-    // });
     function createTemporarySection() {
         idCount++;
         var section_id = idCount;
@@ -1307,93 +1261,6 @@ $(function () {
         sortSection();
 
     }
-
-    // $(document).on('click', '.element > .admin-cms-toolbox > .edit', function () {
-    //     if ($('#admin-editor.visible').length > 0) {
-    //         saveEditorHtml();
-    //     }
-    //     var box_id = $(this).closest('.element').attr('id');
-    //     var page_id = window.location.pathname.split('/')[3];
-    //     // $('form').find('.CodeMirror').remove();
-    //     var csrf_token = $('input[name=csrfmiddlewaretoken]').val();
-    //     var new_html = "";
-    //     var language_id = $("#admin-languages-toggle").val();
-    //     $.ajax({
-    //         url: base_url + '/admin/pages/get-element-html/',
-    //         dataType: "json",
-    //         type: "POST",
-    //         data: {
-    //             box_id: box_id.split("-")[1],
-    //             page_id: page_id,
-    //             language_id: language_id,
-    //             csrfmiddlewaretoken: csrf_token
-    //         },
-    //         async: false,
-    //         success: function (result) {
-    //             if (result.success) {
-    //                 if (result.element_html != "") {
-    //                     // new_html = result.element_html.uncompiled;
-    //                     new_html = result.element_html.compiled;
-    //                 }
-    //             }
-    //         }
-    //     });
-    //     //var hiddenDiv = $('#hidden-content');
-    //     //hiddenDiv.html($(this).closest('.element').html());
-    //     //hiddenDiv.find('.admin-cms-toolbox').remove();
-    //     //var allHtml = hiddenDiv.html();
-    //     ////var new_html = toMarkdown(allHtml);
-    //     // $("#code").html(new_html);
-    //     // clog(new_html);
-    //     // editor = CodeMirror.fromTextArea(document.getElementById('code'), {
-    //     //     mode: 'gfm',
-    //     //     lineNumbers: false,
-    //     //     matchBrackets: true,
-    //     //     lineWrapping: true,
-    //     //     theme: 'base16-light',
-    //     //     extraKeys: {"Enter": "newlineAndIndentContinueMarkdownList"}
-    //     // });
-    //     // //editor.display.wrapper.style.fontSize = "1.2em";
-    //     //
-    //     // update(editor);
-    //     // $("#code").html("");
-    //     // clog(editor.getValue());
-    //     // var data = btoa( // base64 so url-safe
-    //     //     RawDeflate.deflate( // gzip
-    //     //         unescape(encodeURIComponent( // convert to utf8
-    //     //             editor.getValue()
-    //     //         ))
-    //     //     )
-    //     // );
-    //     // clog(data);
-    //     // var h = data.replace(/^#/, '');
-    //     // setOutput(decodeURIComponent(escape(RawDeflate.inflate(atob(h)))));
-    //     if ($('textarea#froala_content_editor').froalaEditor('codeView.isActive')) {
-    //         $('textarea#froala_content_editor').froalaEditor('codeView.toggle');
-    //     }
-    //     $('textarea#froala_content_editor').froalaEditor('html.set', new_html);
-    //     $('#current-editor-box').val(box_id);
-    //     $(".admin-menu").removeClass("visible");
-    //     $('#admin-editor').addClass('visible');
-    //     // $('#admin-file-repository').addClass('visible');
-    //     // $("#admin-toggle-wrapper #admin-file-repository-toggle").prop('checked', true);
-    //     $("#admin-toggle-wrapper #admin-editor-toggle").prop('checked', true);
-    //     // editor.on('change', function () {
-    //     //     update(editor);
-    //     //     updateData();
-    //     // });
-    //     // var scrollHeight = $("#content_data").height() + $("#admin-editor").height();
-    //     // $("#content_data").height(scrollHeight);
-    //     console.log('yes');
-    //     $('html, body').animate({
-    //         scrollTop: $("#" + box_id).offset().top
-    //         // scrollTop: scrollHeight
-    //     }, 2000);
-    //     //editor.on('blur', function () {
-    //     //    getEditorHtml();
-    //     //    saveOrUpdate();
-    //     //});
-    // });
     $(document).on('click', '#admin-save-cms', function () {
         if ($('#admin-editor.visible').length > 0) {
             saveEditorHtml();
@@ -1401,41 +1268,8 @@ $(function () {
         saveOrUpdate();
     });
     $(document).on('click', '#admin-editor .admin-close-button', function () {
-        // var scrollHeight = $("#content_data").height() - $("#admin-editor").height();
-        // $("#content_data").height(scrollHeight);
         saveEditorHtml();
     });
-    //editor.on('blur', function () {
-    //    getEditorHtml();
-    //    saveOrUpdate();
-    //});
-    // $('textarea#froala_content_editor').on('froalaEditor.contentChanged', function (e, editor) {
-    //     updateData();
-    // });
-    // $body.find('div.editor-inline-box').on('froalaEditor.contentChanged', function (e, editor) {
-    //     getInlineEditorHtml($(this));
-    //     saveOrUpdate();
-    // });
-    // $('textarea#froala_content_editor').on('froalaEditor.focus', function (e, editor) {
-    //     updateData();
-    // });
-    // $('textarea#froala_content_editor').on('froalaEditor.click', function (e, editor) {
-    //     updateData();
-    // });
-    // $('textarea#froala_content_editor').on('froalaEditor.blur', function (e, editor) {
-    //     getEditorHtml();
-    //     saveOrUpdate();
-    // });
-
-    // $(document).on('froalaEditor.buttons.refresh','.editor-inline-box', function (e, editor) {
-    //     getInlineEditorHtml($(this));
-    //     saveOrUpdate();
-    // });
-    // $(document).on('froalaEditor.contentChanged','.editor-inline-box', function (e, editor) {
-    //     console.log('ypyo');
-    //     getInlineEditorHtml($(this));
-    //     saveOrUpdate();
-    // });
 
     function saveEditorHtml() {
         getEditorHtml();
@@ -1476,15 +1310,7 @@ $(function () {
         clog("ok");
         var editor_box = $('#current-editor-box').val();
         if ($.trim(editor_box) != "") {
-            // clog(editor_box);
             var content = $('textarea#froala_content_editor').froalaEditor('html.get');
-            // clog($('#content_data').find('#' + editor_box).html());
-            // $('#content_data').find('#' + editor_box).html(element_toolbox + content);
-            // clog(element_toolbox + content);
-            // $('#' + editor_box).html(element_toolbox + content);
-            // $('#' + editor_box).froalaEditor('html.set', element_toolbox + content);
-            console.log(editor_box);
-            console.log(content);
             $body.find('#' + editor_box).find('.editor-inline-box').froalaEditor('html.set', content);
         }
     }
@@ -1790,7 +1616,6 @@ $(function () {
                 }
                 var radio_preselect_elem = $('.settings-session-checkbox-radio-preselected').find('select');
                 radio_preselect_elem.html(radio_options);
-                console.log(radio_preselect_elem)
                 if(checkbox_radio_preselect_session){
                     radio_preselect_elem.val(checkbox_radio_preselect_session);
                 }
@@ -2146,7 +1971,6 @@ $(function () {
                             var $elem = $(this).closest('.settings-submit-button');
                             if (element_settings[i].answer.includes('"state":') && setting_id == element_settings[i].element_question.id) {
                                 var submit_btn_setting = JSON.parse(element_settings[i].answer);
-                                console.log(submit_btn_setting)
                                 switch (submit_btn_setting[0].state) {
                                     case 1:
                                         clog('1');
@@ -2868,7 +2692,6 @@ $(function () {
                     'setting_answer': JSON.stringify(add_session_settings_array),
                     'type': 'setting'
                 };
-                console.log(setting_data);
                 element_settings.push(setting_data);
             }
         });

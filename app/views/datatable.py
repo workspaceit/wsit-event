@@ -1,4 +1,4 @@
-from app.models import Attendee, Group, Questions, Answers, RuleSet, CurrentFilter,AttendeeTag,Tag, AttendeeGroups, \
+from app.models import Attendee, Group, Questions, Answers, CurrentFilter,AttendeeTag,Tag, AttendeeGroups, \
     Orders, Payments, RegistrationGroupOwner
 from app.views.gbhelper.economy_library import EconomyLibrary
 from django_datatables_view.base_datatable_view import BaseDatatableView
@@ -14,7 +14,6 @@ from django.db.models import Value
 
 
 class AttendeeListView(BaseDatatableView):
-    # attendees = Attendee.objects.all().order_by('id')
     order_columns = ['0', '111111', '222222', '333333', '444444', '555555', '666666', '777777', '888888', '999999', '100001']
     questions = []
     manualColumns = [2, 3, 4, 5, 6, 7, 8, 9, 10]
@@ -36,27 +35,8 @@ class AttendeeListView(BaseDatatableView):
                 self.questions.append(q_g)
         for question in self.questions:
             self.order_columns.append(question.id)
-
-        start_time = time.time()
         attendees = Attendee.objects.filter(event_id=self.get_event_id(),status="registered").order_by('id')
-        print(len(attendees))
-        print(time.time() - start_time)
         return attendees
-
-    # def get_filtered_attendees(self, rule_id):
-    #     rule = RuleSet.objects.get(id=rule_id)
-    #     filters = json.loads(rule.preset)
-    #     q = Q()
-    #     match_condition = filters[0][0]['matchFor']
-    #     if match_condition == '2':
-    #         q &= FilterView.recur_filter(self.request, filters, match_condition)
-    #     elif match_condition == '1':
-    #         q = Q(id=-11)
-    #         q |= FilterView.recur_filter(self.request,filters, match_condition)
-    #
-    #     q = (q) & Q(group__event_id=self.get_event_id())
-    #     attendees = Attendee.objects.filter(q)
-    #     return attendees
 
     def filter_queryset(self, qs):
         start_time = time.time()
@@ -65,29 +45,17 @@ class AttendeeListView(BaseDatatableView):
             try:
                 search.index(' ')
                 has_space = True
-                # print('space')
             except:
                 has_space = False
-                # print('no space')
                 pass
-
-            # col_data = self.extract_datatables_column_data()
             visible_columns = list(map(int, self.request.POST.get('visible', None).split(',')))
-
             self.manualVisibleCols = list(set(visible_columns).intersection(self.manualColumns))
             combined_visible_columns = visible_columns
             visible_columns = list(set(visible_columns) ^ set(self.manualVisibleCols))
-
-            # print ('visible columns')
-            # print (visible_columns)
-            # print ('manual columns')
-            # print (self.manualVisibleCols)
-
             activate_rule = self.request.POST.get('activate_rule', None)
             first_name_visible = last_name_visible = False
 
             filtered_attendees = Attendee.objects.filter(event_id=self.get_event_id(),status="registered")
-            # first_name_question_id = last_name_question_id = 0
             rule_id = self.request.POST.get('rule_id', None)
             if len(visible_columns) != 0:
                 currentFilter = CurrentFilter.objects.filter(admin_id=self.get_admin_id(),event_id=self.get_event_id(), table_type='attendee')
@@ -99,11 +67,8 @@ class AttendeeListView(BaseDatatableView):
 
                 visible_questions = [self.order_columns[x] for x in visible_columns]
 
-                # print('Active rule: ' + activate_rule)
-
                 if activate_rule == 'true' and rule_id is not None and rule_id != '':
 
-                    # filtered_attendees = self.get_filtered_attendees(rule_id)
                     filtered_attendees = FilterView.get_filtered_attendees(self.request, rule_id)
                     # add to database
                     currentFilter = CurrentFilter.objects.filter(admin_id=self.get_admin_id(),event_id=self.get_event_id(), table_type='attendee')
@@ -153,7 +118,6 @@ class AttendeeListView(BaseDatatableView):
                 newResults = Attendee.objects.filter(created__startswith=search, id__in=extra_attendee_ids)
                 for newResult in newResults:
                     newResultsId.append(newResult.id)
-            # print(newResultsId)
             if 3 in self.manualVisibleCols:
                 newResults = Attendee.objects.filter(updated__startswith=search, id__in=extra_attendee_ids)
                 for newResult in newResults:
@@ -197,34 +161,22 @@ class AttendeeListView(BaseDatatableView):
                 newResultsId.extend(tem_att['attendee_id'] for tem_att in tempOrderAttendee)
 
             newResultsId = list(set(newResultsId) ^ set(list(set(attendee_ids).intersection(newResultsId))))
-            # print (newResultsId)
             attendee_ids = list(chain(attendee_ids, newResultsId))
-            print('Total attendees: ' + str(len(attendee_ids)))
-            #
 
             q1 = Q()
-            # q1 |= Q(id__in=attendee_ids)
             q1 |= Q(id__in=attendee_ids)
             qs = qs.filter(q1).order_by('id')
-        print("Time needed: {}".format(time.time() - start_time))
         return qs
 
     def prepare_results(self, qs):
         json_data = []
         country_list = CommonHelper.get_country_list(self)
-        # print (len(qs))
         for q in qs:
-            #items = [q.id, q.id, q.firstname, q.lastname, q.email, q.created, q.updated, q.id, q.secret_key, q.password, q.group_id, q.tag]
             items = [q.id, q.id]
-
-            # print("test time format")
-            # print(CommonHelper.get_formated_date(self.request,q.created))
             #local time
             created_date=TimeDetailView.utc_to_local(self.request,str(q.created.strftime("%Y-%m-%d %H:%M:%S")))
             updated_date=TimeDetailView.utc_to_local(self.request,str(q.updated.strftime("%Y-%m-%d %H:%M:%S")))
 
-            # items.append(created_date.strftime('%Y-%m-%d %H:%M'))
-            # items.append(updated_date.strftime('%Y-%m-%d %H:%M'))
             items.append(CommonHelper.get_formated_date(self.request,created_date))
             items.append(CommonHelper.get_formated_date(self.request,updated_date))
             items.append(q.secret_key)

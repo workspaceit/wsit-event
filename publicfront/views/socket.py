@@ -1,4 +1,3 @@
-from django.shortcuts import render
 from django.views import generic
 from publicfront.views.page2 import DynamicPage
 from django.shortcuts import render, redirect

@@ -74,11 +74,6 @@
                                                             data-placement="top"
                                                             title="" data-original-title="Export"><i
                                                             class="dropdown-icon fa fa-file-excel-o"></i></button>
-                                                    {#                                                    <button class="btn btn-xs btn-export-hotel"#}
-                                                    {#                                                            data-id="{{ filter.id }}" data-toggle="tooltip"#}
-                                                    {#                                                            data-placement="top"#}
-                                                    {#                                                            title="" data-original-title="Export as Hotel"><i#}
-                                                    {#                                                            class="dropdown-icon fa fa-home"></i></button>#}
                                                 </td>
                                             {% else %}
                                                 <td style="text-align: center;">
@@ -93,11 +88,6 @@
                                                             data-placement="top"
                                                             title="" data-original-title="Export"><i
                                                             class="dropdown-icon fa fa-file-excel-o"></i></button>
-                                                    {#                                                    <button class="btn btn-xs btn-export-hotel"#}
-                                                    {#                                                            data-id="{{ filter.id }}" data-toggle="tooltip"#}
-                                                    {#                                                            data-placement="top"#}
-                                                    {#                                                            title="" data-original-title="Export as Hotel"><i#}
-                                                    {#                                                            class="dropdown-icon fa fa-home"></i></button>#}
                                                 </td>
                                             {% endif %}
                                         </tr>
@@ -123,8 +113,6 @@
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
                     <div class="modal-header">
-                        {#                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span#}
-                        {#                                aria-hidden="true">&times;</span></button>#}
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
                         <h4 class="modal-title">Add Export</h4>
                     </div>
@@ -724,80 +712,27 @@
         $(document).on('click', '.btn-export-filter', function (event) {
             var $this = $(this);
             var rule_preset = $this.parent().prev('td').html();
-{#            bootbox.confirm("Are you sure you want to Export " + rule_preset + "?", function (result) {#}
-{#                if (result) {#}
-                    var id = $this.attr('data-id');
-                    var csrf_token = $('input[name=csrfmiddlewaretoken]').val();
-
-
-{#                                   $("#export-form input[name=id]").val(id);#}
-{#                                    $("#export-form input[name=export_as_hotel]").val(false);#}
-{#                                    $("#export-form input[name=csrfmiddlewaretoken]").val(csrf_token);#}
-{##}
-{#                                    $("#export-form").submit();#}
-
-
-                    $(".loader").show();
-                    $.ajax({
-                        url: base_url + "/admin/export-filter/export/",
-                        data: {
-                            id: id,
-                            export_as_hotel: false,
-                            csrfmiddlewaretoken: csrf_token
-                        },
-                        type: "POST",
-                        success: function (result) {
-                            $(".loader").hide();
-                            $.growl.notice({message: result.message});
-                            check_export_status();
-                        },
-                        error: function () {
-                            $(".loader").hide();
-                            $.growl.error({message: "Something Wrong"});
-                        }
-                    });
-
-{#                }#}
-{#            });#}
+            var id = $this.attr('data-id');
+            var csrf_token = $('input[name=csrfmiddlewaretoken]').val();
+            $(".loader").show();
+            $.ajax({
+                url: base_url + "/admin/export-filter/export/",
+                data: {
+                    id: id,
+                    export_as_hotel: false,
+                    csrfmiddlewaretoken: csrf_token
+                },
+                type: "POST",
+                success: function (result) {
+                    $(".loader").hide();
+                    $.growl.notice({message: result.message});
+                    check_export_status();
+                },
+                error: function () {
+                    $(".loader").hide();
+                    $.growl.error({message: "Something Wrong"});
+                }
+            });
         });
-        {#    $(document).on('click', '.btn-export-hotel', function (event) {#}
-        {#        var $this = $(this);#}
-        {#        var rule_preset = $this.parent().prev('td').html();#}
-        {#        bootbox.confirm("Are you sure you want to Export " + rule_preset + " as Hotel?", function (result) {#}
-        {#            if (result) {#}
-        {#                var id = $this.attr('data-id');#}
-        {#                var csrf_token = $('input[name=csrfmiddlewaretoken]').val();#}
-        {##}
-        {#                $("#export-form input[name=id]").val(id);#}
-        {#                $("#export-form input[name=export_as_hotel]").val(true);#}
-        {#                $("#export-form input[name=csrfmiddlewaretoken]").val(csrf_token);#}
-        {##}
-        {#                $("#export-form").submit();#}
-        {##}
-        {##}
-        {#                $(".loader").show();#}
-        {#                $.ajax({#}
-        {#                    url:base_url+"/admin/export-filter/export/",#}
-        {#                    data : {#}
-        {#                        id : id,#}
-        {#                        export_as_hotel : true,#}
-        {#                        csrfmiddlewaretoken : csrf_token#}
-        {#                    },#}
-        {#                    type : "POST",#}
-        {#                    success : function(result){#}
-        {#                        $(".loader").hide();#}
-        {#                        $.growl.notice({message: result.message});#}
-        {#                    },#}
-        {#                    error : function(){#}
-        {#                        $(".loader").hide();#}
-        {#                        $.growl.error({message: "Something Wrong"});#}
-        {#                    }#}
-        {#                });#}
-        {##}
-        {#            }#}
-        {#        });#}
-        {#    });#}
-
-
     </script>
 {% endblock %}

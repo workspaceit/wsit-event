@@ -10,8 +10,6 @@ from boto.s3.key import Key
 import re
 
 from app.views.common_views import EventView
-from django.db.models.signals import post_save
-from django.dispatch import receiver
 from app.views.gbhelper.error_report_helper import ErrorR
 
 class StyleView(generic.DetailView):

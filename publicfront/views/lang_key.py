@@ -6,15 +6,11 @@ import json
 
 class LanguageKey(generic.TemplateView):
     def get_lang_key(request, element_id, preset=0):
-        # event_id = request.session['event_id']
         language_id = request.session['language_id']
         response_data = {}
         try:
             elementObj = Elements.objects.get(id=element_id)
             if elementObj:
-                # presets = Presets.objects.all()
-                # presetsEvent = PresetEvent.objects.filter(event_id=event_id)
-                # if presetsEvent.exists():
                 lang_data = ElementPresetLang.objects.select_related('element_default_lang').filter(preset_id=language_id,
                                                              element_default_lang__element_id=element_id)
                 lang_key = {}
@@ -23,12 +19,6 @@ class LanguageKey(generic.TemplateView):
 
                 response_data['langkey'] = lang_key
                 response_data['lang_preset'] = Presets.objects.get(id=language_id)
-                # else:
-                #     lang_data = ElementDefaultLang.objects.filter(element_id=elementObj[0].id)
-                #     lang_key = {}
-                #     for lang in lang_data:
-                #         lang_key[lang.lang_key] = lang.default_value
-                #     response_data['langkey'] = lang_key
                 return response_data
         except Exception as e:
             ErrorR.efail(e)
@@ -83,9 +73,6 @@ class LanguageKey(generic.TemplateView):
         try:
             elementObj = Elements.objects.filter(slug='session-details')
             if elementObj.exists():
-                # presets = Presets.objects.all()
-                # presetsEvent = PresetEvent.objects.filter(event_id=event_id)
-                # if presetsEvent.exists():
                 lang_data = ElementPresetLang.objects.filter(preset_id=language_id,
                                                              element_default_lang__element_id=elementObj[0].id).select_related('element_default_lang')
                 if lang_data.exists():

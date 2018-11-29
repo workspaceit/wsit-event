@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.views import generic
-from app.models import Room, Group, Hotel, Booking, RoomAllotment, MatchLine, Attendee, Match, RequestedBuddy
+from app.models import Room, Hotel, Booking, RoomAllotment, MatchLine, Attendee, Match, RequestedBuddy
 from django.http import Http404
 import json
 from .common_views import GroupView, EventView
@@ -44,14 +44,6 @@ class RoomView(generic.DetailView):
 
                 allotments = json.loads(request.POST.get('allotments'))
                 for allotment_data in allotments:
-                    # start_date = datetime.strptime(allotment_data[0], '%Y-%m-%d')
-                    # end_date = datetime.strptime(allotment_data[1], '%Y-%m-%d')
-                    # day_count = (end_date - start_date).days + 1
-                    #
-                    # for single_date in (start_date + timedelta(n) for n in range(day_count)):
-                    # print(single_date)
-                    #
-                    #
                     allotment_form_data = {
                         "allotments": allotment_data[1],
                         "available_date": str(allotment_data[0]),
@@ -123,9 +115,7 @@ class RoomView(generic.DetailView):
         try:
             rooms = Room.objects.filter(hotel_id=hotelId)
             for room in rooms:
-                # room.vat = Group.objects.get(id=room.vat_id)
                 room.allotments = RoomAllotment.objects.filter(room_id=room.id)
-                # room.occupancy = RoomView.get_occupancy_modified(room)
                 occupancy = RoomView.find_booking(str(room.id))
                 room.occupancy = occupancy['total_occupancy']
                 room.allotment_list = occupancy
@@ -227,14 +217,7 @@ class RoomView(generic.DetailView):
             current_date = allotment.available_date
             booking_count = Booking.objects.filter(room_id=allotment.room_id, check_in__lte=current_date,
                                                    check_out__gt=current_date).count()
-            #
-            # is_booked = Booking.objects.filter(room_id=allotment.room_id).count()
             if booking_count > 0:
-                # allotment_form_data = {
-                # "allotments": booking_count
-                #     }
-                # RoomAllotment.objects.filter(id=id).update(**allotment_form_data)
-                # response_data['new_allotment'] = booking_count
                 response_data['error'] = 'This Room is in booking List. Allotment could not be deleted'
 
             else:
@@ -315,14 +298,9 @@ class RoomView(generic.DetailView):
         return response_data
 
     def find_booking(room_id):
-        # current_date=allotment.available_date
-        # get_bookings = Booking.objects.filter(room_id=allotment.room_id,check_in__lte=current_date, check_out__gte=current_date).count()
-        #
-        # return get_bookings
         room = Room.objects.get(id=room_id)
         qry = 'SELECT room_allotments.*, count(bookings.id) as booking FROM room_allotments left outer join bookings on room_allotments.room_id=bookings.room_id and room_allotments.available_date >= bookings.check_in and room_allotments.available_date < bookings.check_out WHERE room_allotments.room_id=' + str(
             room_id) + ' group by room_allotments.id order by room_allotments.available_date'
-        # qry = 'SELECT room_allotments.*, count(bookings.id) as booking FROM room_allotments left outer join bookings on room_allotments.room_id=bookings.room_id and room_allotments.available_date between bookings.check_in and bookings.check_out WHERE room_allotments.room_id=' + room_id + ' group by room_allotments.id'
         cursor = connection.cursor()
 
         cursor.execute(qry)
@@ -331,7 +309,6 @@ class RoomView(generic.DetailView):
         total_stay = 0
         total_allotments = 0
         for row in rows:
-            # print(row)
             res = {}
             res['id'] = row[0]
             res['allotments'] = row[1]
@@ -344,16 +321,6 @@ class RoomView(generic.DetailView):
                 count_match__gt=1, match__room_id=room_id)
             count_matched_pairs = matched_attendee.filter(match__start_date__lte=res['available_date'],
                                                           match__end_date__gt=res['available_date']).count()
-
-            # count_matched_pairs2 = matched_attendee.filter(match__start_date__lte=res['available_date'], match__end_date__gt=res['available_date'])
-            # print(count_matched_pairs2.query)
-            # count_matched_pairs = matched_attendee.filter(match__all_dates__icontains=res['available_date']).count()
-            # count_matched_pairs = matched_attendee.filter(booking__check_in__lte=res['available_date'], booking__check_out__gt=res['available_date']).count()
-            # if count_matched_pairs > 0:
-
-            # print('count_matched_pairs')
-            # print(res['available_date'])
-            # print(count_matched_pairs)
             res['matched_pairs'] = count_matched_pairs
             match_id = []
             if matched_attendee.count() > 0:
@@ -363,9 +330,6 @@ class RoomView(generic.DetailView):
                 match_id__in=match_id, booking__check_in__lte=res['available_date'],
                 booking__check_out__gt=res['available_date']).exclude(match__start_date__lte=res['available_date'],
                                                                       match__end_date__gt=res['available_date']).count()
-
-            # count_matched_singles = MatchLine.objects.values('match_id').annotate(count_match = Count('match_id')).filter(match_id__in=match_id,booking__check_in__lte=res['available_date'], booking__check_out__gt=res['available_date']).exclude(match__all_dates__icontains=res['available_date']).count()
-            # count_matched_singles = MatchLine.objects.values('match_id').annotate(count_match = Count('match_id')).filter(match_id__in=match_id,booking__check_in__lte=res['available_date'], booking__check_out__gte=res['available_date']).exclude(booking__check_in__lte=res['available_date'], booking__check_out__gt=res['available_date']).count()
             res['matched_singles'] = count_matched_singles
             matched_booking = []
             booking_matched = MatchLine.objects.filter(match_id__in=match_id)
@@ -377,8 +341,6 @@ class RoomView(generic.DetailView):
                 id__in=matched_booking).count()
             res['unmatched'] = count_unmatched_attendee
             total = count_matched_pairs + count_matched_singles + count_unmatched_attendee
-            # if total > res['allotments']:
-            #     total = res['allotments']
             res['total'] = total
             best_scenario = count_matched_pairs + count_matched_singles + math.ceil(
                 count_unmatched_attendee / room.beds)
@@ -404,7 +366,6 @@ class RoomView(generic.DetailView):
             "total_occupancy": total_occupancy
         }
         return context
-        # return HttpResponse(json.dumps(result), content_type="application/json")
 
     def get_matched_pair(request, room_id):
         sql = ' select mat.* from matches mat where (mat.id NOT IN( select match_line.match_id from match_line)) or (mat.id IN( select match_line.match_id from match_line group by match_line.match_id having Count(match_line.match_id) = 1))'
@@ -417,8 +378,6 @@ class RoomView(generic.DetailView):
             logger.debug("-----------------'Delete Match'------------------------" + str(delete_match.id))
         rooms_with_multiple_beds = Room.objects.values('id').filter(beds__gt=1)
         bookings_matched = MatchLine.objects.values('booking_id').filter(booking__room_id=room_id)
-        # remove_bookings_matched = MatchLine.objects.values('booking_id').annotate(count_match_id=Count('match_id')).filter(count_match_id=1)
-        # bookings_matched = bookings_matched.exclude(id__in=remove_bookings_matched)
         bookings = Booking.objects.filter(room_id=room_id,
                                           broken_up=False).exclude(id__in=bookings_matched)
         matched_list = []
@@ -463,7 +422,6 @@ class RoomView(generic.DetailView):
                         for match_attendee in match_buddies:
                             matchlist = match_buddies[:]
                             matchlist.remove(match_attendee)
-                            # HotelView.send_email(request, match_attendee['booking']['attendee'], 'email/match_buddy.html', matchlist)
             # end insert automatically matched bookings to matches table
         unmatched_bookings_data = []
         unmatched_bookings = Booking.objects.filter(room_id=room_id).exclude(id__in=bookings_matched)
@@ -477,7 +435,6 @@ class RoomView(generic.DetailView):
         check_booking = []
         for match in matches:
             match_lines = match.lines.all()
-            # print(len(match_lines))
             if len(match_lines) > 1:
                 booking_list_1 = []
                 for line in match_lines:
@@ -515,13 +472,10 @@ class RoomView(generic.DetailView):
         bookings_matched = MatchLine.objects.values('booking_id').all()
         request_me = RequestedBuddy.objects.filter(buddy_id=booking.attendee_id).exclude(Q(booking_id__in=room_buddy)| Q(booking_id__in=bookings_matched))
         for my_booking in request_me:
-            # already_booked = MatchLine.objects.filter(booking_id = my_booking.booking_id)
-            # if my_booking.booking_id not in room_buddy and not already_booked.exists():
             room_buddy.append(my_booking.booking_id)
         return room_buddy
 
     def get_requested_buddies(request, buddy, room_buddy, room_id, already_matched_booking):
-        # if buddy.booking_id not in already_matched_booking:
         bookings_matched = MatchLine.objects.values('booking_id').all()
         if buddy.exists == 1:
             buddy_booking = Booking.objects.filter(room_id=room_id, broken_up=False,
@@ -622,12 +576,6 @@ class RoomView(generic.DetailView):
             count_matched_singles = MatchLine.objects.values('match_id').annotate(count_match=Count('match_id')).filter(
                 match_id__in=match_id, booking__check_in__lte=c_dates, booking__check_out__gte=c_dates).exclude(
                 match__start_date__lte=c_dates, match__end_date__gte=c_dates).count()
-            # matched_booking = []
-            # booking_matched = MatchLine.objects.filter(match_id__in=match_id)
-            # if booking_matched.exists():
-            #     for booking in booking_matched:
-            #         matched_booking.append(booking.booking_id)
-            # count_unmatched_attendee = Booking.objects.filter(room_id=room_id,check_in__lte=c_dates, check_out__gte=c_dates).exclude(id__in=matched_booking).count();
             total = count_matched_pairs + count_matched_singles
             if total_allotments.exists():
                 total_remain = total_allotments[0].allotments - total
@@ -645,7 +593,6 @@ class RoomDetailView(generic.DetailView):
 
     def get(self, request, pk, format=None):
         room = self.get_object(pk)
-        # get_all_match = RoomView.get_matched_pair(request, room)
         paymentGroup = GroupView.get_paymentGroup(request)
         room_allotments = RoomView.find_booking(pk)
         context = {

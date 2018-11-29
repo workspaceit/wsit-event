@@ -1,14 +1,10 @@
 import sys
-from django.conf.locale import id
-from django.shortcuts import render, redirect
 from django.http import HttpResponse
-from app.models import Attendee, Session, SeminarsUsers, Notification, Setting, Events, Elements, Presets, \
-    PresetEvent, ElementPresetLang, ElementDefaultLang
+from app.models import Attendee, Session, SeminarsUsers, Notification, Setting, Elements, ElementPresetLang, ElementDefaultLang
 from datetime import datetime, timedelta
 from pytz import timezone
 from app.snsHelper import SNSHelper
 import threading
-import logging
 import os
 import time
 import logging
@@ -97,15 +93,10 @@ class NextupEvaluation():
             start_time = time.time()
             attendee = Attendee.objects.get(secret_key=secret_key)
             element_id = 15
-            # setting_keys = ['appear_evaluation_setting','disappear_evaluation_setting','timezone']
             setting_keys = ['appear_evaluation_setting','timezone']
             setting_data = NextupEvaluation.get_settings_data(attendee.event_id, setting_keys)
             db_time = setting_data["appear_evaluation_setting"]
             db_time_after = NextupEvaluation.hms_to_minutes(db_time)
-            # db_time = setting_data["disappear_evaluation_setting"]
-            # db_time_before = NextupEvaluation.hms_to_minutes(db_time)
-            # print("db_time_before")
-            # print(db_time_before)
             event_query = setting_data["timezone"]
             time_zone_name = event_query
             timezone_active = timezone(time_zone_name)
@@ -114,10 +105,6 @@ class NextupEvaluation():
             now = datetime.strptime(str(time_now).split(".")[0], f)
             time_after = now + timedelta(minutes=db_time_after)
             time_after = datetime.strptime(str(time_after).split(".")[0], f)
-            # time_before = now - timedelta(minutes=db_time_before)
-            # time_before = datetime.strptime(str(time_before).split(".")[0], f)
-            # print("time_before")
-            # print(time_before)
             sql = "SELECT sessions.*," \
                   "`seminars_has_users`.`id`," \
                   "`seminars_has_users`.`id` as seminars_has_user_id, " \
@@ -141,7 +128,6 @@ class NextupEvaluation():
                 sql
             )
             sessions = list(sessions)
-            print(len(sessions))
             for session in sessions:
                 SeminarsUsers.objects.filter(id=session.seminars_has_user_id).update(
                     status_socket_evaluation=True)
@@ -173,7 +159,6 @@ class NextupEvaluation():
             if notifications.exists():
                 lang_keys = ['messages_notify_socket_session']
                 language = NextupEvaluation.catch_lang_key_multiple(attendee.language_id, element_id, lang_keys)
-                print("You have a new message")
                 socket_data.append(language['langkey']['messages_notify_socket_session'])
                 for notification in notifications:
                     Notification.objects.filter(id=notification.id).update(status_socket_message=True)

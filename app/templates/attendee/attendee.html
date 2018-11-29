@@ -40,47 +40,11 @@
     {% endblock %}
     <div id="content-wrapper">
         <input type="hidden" id="search_key" value="{{ search_key }}"/>
-        <!-- Edit Attendee Modal -->
-        {#        {% include "attendee/edit.html" %}#}
-        {#        {% include "attendee/add.html" %}#}
-        <!-- / .modal -->
-        <!-- / Large modal -->
 
         <div class="panel colourable">
             <div class="panel-heading">
         <span class="panel-title"><i class="fa fa-user fa-lg"></i>&nbsp;&nbsp;&nbsp;<strong>Attendee
             Search</strong></span>
-                {#                <ul class="nav nav-tabs nav-tabs" id="myTab">#}
-                {#                    <li class="active">#}
-                {#                        <a href="#attendee-search" data-toggle="tab"><span class="fa fa-search fa-lg"></span>&nbsp;&nbsp;Search</a>#}
-                {#                    </li>#}
-                {#                    <li class="">#}
-                {#                        <a href="#attendee-rules" data-toggle="tab"><span#}
-                {#                                class="fa fa-filter fa-lg"></span>&nbsp;&nbsp;Rules</a>#}
-                {#                    </li>#}
-                {#                    <li class="dropdown">#}
-                {#                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">#}
-                {#                            <span class="fa fa-cog fa-lg">&nbsp;&nbsp;<i class="fa fa-caret-down"></i></span>#}
-                {#                        </a>#}
-                {#                        <ul class="dropdown-menu pull-right">#}
-                {#                            <li><a href="#" class="open-preset">Open Filter Preset...</a></li>#}
-                {#                            <li><a href="#" data-toggle="modal" data-target="#save-as-modal" class="set-preset">Save#}
-                {#                                Preset</a></li>#}
-                {#                            <li><a href="#" data-toggle="modal" data-target="#save-as-modal" class="set-preset-as">Save#}
-                {#                                Preset As...</a></li>#}
-                {#                            <li class="divider"></li>#}
-                {#                            <li class="dropdown-header">Recently Used Presets</li>#}
-                {#                            {% for rule in last_used_rules %}#}
-                {#                                <li><a href="javascript:void(0);" class="open_rules"#}
-                {#                                       data-id="{{ rule.rule.id }}">{{ rule.rule.name }}</a></li>#}
-                {#                            {% endfor %}#}
-                {#                        </ul>#}
-                {#                        <!-- / .dropdown-menu -->#}
-                {#                    </li>#}
-                {#                    <!--<li class="">#}
-                {#                        <a href="#filter-visible-columns" data-toggle="tab"><span class="fa fa-eye fa-lg"></span> Visible Columns</a>#}
-                {#                    </li>-->#}
-                {#                </ul>#}
                 <!-- / .nav -->
             </div>
             <!-- / .panel-heading -->
@@ -185,7 +149,6 @@
                         </tbody>
                     </table>
                 </div>
-                {#                {% include 'attendee/filters.html' %}#}
                 <div class="tab-pane fade" id="filter-visible-columns">
                     Visible Columns
                 </div>
@@ -193,56 +156,15 @@
 
         </div>
     </div> <!-- / #content-wrapper -->
-
-
-    {#    <div class="modal fade" id="save-as-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">#}
-    {#        <div class="modal-dialog" role="document">#}
-    {#            <div class="modal-content">#}
-    {#                <div class="modal-header">#}
-    {#                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span#}
-    {#                            aria-hidden="true">&times;</span></button>#}
-    {#                    <h4 class="modal-title">Save Preset Name</h4>#}
-    {#                </div>#}
-    {#                <div class="modal-body">#}
-    {#                    <div class="row">#}
-    {#                        <div class="col-sm-6">#}
-    {#                            <div class="form-group no-margin-hr">#}
-    {#                                <label class="control-label">Filter Group</label>#}
-    {#                                <select class="form-control" id="preset_filter_group" name="group">#}
-    {#                                    {% for group in filter_group %}#}
-    {#                                        <option value="{{ group.id }}">{{ group.name }}</option>#}
-    {#                                    {% endfor %}#}
-    {#                                </select>#}
-    {#                            </div>#}
-    {#                        </div>#}
-    {#                        <div class="col-sm-6">#}
-    {#                            <div class="form-group no-margin-hr">#}
-    {#                                <label class="control-label">Preset Name</label>#}
-    {#                                <input type="text" id="preset_name" class="form-control" placeholder="Preset Name">#}
-    {#                            </div>#}
-    {#                        </div>#}
-    {#                    </div>#}
-    {#                    <div class="modal-footer">#}
-    {#                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>#}
-    {#                        <button type="button" class="btn btn-primary save-preset-btn">Save changes</button>#}
-    {#                    </div>#}
-    {#                </div>#}
-    {#            </div>#}
-    {#        </div>#}
-    {#    </div>#}
     <div class="modal fade" id="users-preset" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
 
     </div>
-    {#    <script src="{% static 'assets/javascripts/bootstrap-datepicker.min.js' %}"></script>#}
-    {#<link href="{% static 'assets/stylesheets/bootstrap-datepicker.min.css' %}" rel="stylesheet" type="text/css">#}
 
     <script>
         $(function () {
             if (window.location.search.indexOf('page') > -1) {
                 $('#myTab a[href="#attendee-rules"]').tab('show');
             }
-
-
         });
     </script>
 {% endblock %}

@@ -440,7 +440,6 @@
                         },
                         success: function (result) {
                             result = JSON.parse(result);
-                            console.log(result);
                             if (result.error) {
                                 $.growl.error({message: result.msg});
                             } else {

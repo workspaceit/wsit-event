@@ -96,13 +96,6 @@
 
                         <div class="panel-body">
 
-                            {#                            <div class="">#}
-                            {#                                <div class="group">#}
-                            {#                                    <h3 class="uid-link-markdown custom-accordion"> UID Link</h3>#}
-                            {#                                </div>#}
-                            {#                            </div>#}
-
-
                             <div>
                                 <div class="panel-body">
                                     <div class="ui-accordion">
@@ -156,13 +149,6 @@
                                     </div>
                                 </div>
                             </div>
-
-                            {#                            <div class="">#}
-                            {#                                <div class="group">#}
-                            {#                                    <h3 class="calendar-markdown custom-accordion"> My Calendar</h3>#}
-                            {#                                </div>#}
-                            {#                            </div>#}
-                            {#                        #}
                         </div>
                     </div>
                 </div>
@@ -257,13 +243,6 @@
             $(".general-markdown").click(function () {
                 $textBox.replaceSelectedText("{" + $(this).attr('data-id') + "}", "end");
             });
-            {#            $(".calendar-markdown").click(function () {#}
-            {#                $textBox.replaceSelectedText("{calendar}", "end");#}
-            {#            });#}
-            {#            $(".uid-link-markdown").click(function () {#}
-            {#                var url = base_url + "/" + $('.current-event').attr('data-url') + "/";#}
-            {#                $textBox.replaceSelectedText(url + "?uid={secret_key}", "end");#}
-            {#            });#}
 
             $('body').on('click', '#btn-message-preview', function () {
                 var input = $("<textarea>")

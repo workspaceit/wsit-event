@@ -179,29 +179,6 @@
                 </div>
             </div>
 
-
-{##}
-{#                <br>#}
-{##}
-{#                <div class="row">#}
-{#                    <div class="col-sm-6">#}
-{#                        <div class="form-group no-margin-hr">#}
-{#                            <label class="control-label">Travel</label>#}
-{#                            <input type="checkbox" id="flight" name="flight" class="allselect travel" {{ flight }}  value="flight" /> <label for="flight">Export</label>#}
-{#                        </div>#}
-{#                    </div>#}
-{#                </div>#}
-{##}
-{#                <div class="row">#}
-{#                    <div class="col-sm-6">#}
-{#                        <div class="form-group no-margin-hr">#}
-{#                            <label class="control-label">Hotel</label>#}
-{#                            <input type="checkbox" id="hotels" name="hotels" class="allselect hotel" {{ hotels }} value="room" /> <label for="hotels">Export</label>#}
-{#                        </div>#}
-{#                    </div>#}
-{#                </div>#}
-
-
             <br>
             <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
             <div class="row">
@@ -264,7 +241,6 @@
                             var rowCount = 0;
                             $('.filter-list').html($('#filter-li-html').html());
                             activeDatePicker();
-
 
                         }
                     }

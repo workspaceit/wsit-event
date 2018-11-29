@@ -28,9 +28,7 @@ from django.template.loader import render_to_string
 from django.contrib.staticfiles.templatetags.staticfiles import static
 from django.conf import settings
 from django.http import Http404
-from slugify import slugify
-from pytz import timezone
-from django.db.models import Q, Func, F, TimeField, ExpressionWrapper
+from django.db.models import Q
 from publicfront.views.lang_key import LanguageKey
 from publicfront.views.page_replace import PageReplace
 from publicfront.views.page_replace import UpdatableObj
@@ -42,16 +40,8 @@ from app.views.gbhelper.error_report_helper import ErrorR
 from django.db import transaction
 from datetime import datetime
 from app.views.gbhelper.economy_library import EconomyLibrary
-import hashlib
 import time
-from django.views.decorators.csrf import csrf_exempt
 import logging
-import boto
-from boto.s3.key import Key
-from weasyprint import HTML
-from weasyprint.fonts import FontConfiguration
-import boto3
-from django.http import HttpResponseForbidden
 
 
 class DynamicPage(generic.View):
@@ -162,19 +152,11 @@ class DynamicPage(generic.View):
 
     def count_hit(request, cookie_id, page_id):
         time_zone_time = HelperData.getTimezoneNow(request)
-        # event_id = request.session['event_id']
-        # event_query = Setting.objects.filter(name="timezone", event=event_id)
         if time_zone_time != None:
-            # time_zone_name = event_query[0].value
-            # timezone_active = timezone(time_zone_name)
             now = time_zone_time.date()
-            # f = '%Y-%m-%d'
-            # now = datetime.strptime(str(time_now).split(".")[0], f)
             cookiePageObj = CookiePage.objects.extra(select={'visit_date': 'date( visit_date )'}).filter(
                 cookie_id=cookie_id, page_id=page_id, visit_date=now)
             if cookiePageObj.exists():
-                # CookiePage.objects.filter(cookie_id=cookie_id, page_id=page_id, visit_date=now).update(
-                #     visit_count=cookiePageObj[0].visit_count + 1)
                 CookiePage.objects.filter(id=cookiePageObj[0].id).update(
                     visit_count=cookiePageObj[0].visit_count + 1)
             else:
@@ -328,18 +310,11 @@ class DynamicPage(generic.View):
             if page.is_show:
                 data_user_id = ''
                 kendo_plugin_flag = False
-                # if page.login_required and page.url != 'logout':
-                #     if 'is_user_login' not in request.session:
-                #         return redirect('welcome', event_url=request.session['event_url'])
-                #     elif 'is_user_login' in request.session and request.session['is_user_login'] == False:
-                #         return redirect('welcome', event_url=request.session['event_url'])
                 current_language = request.session['language_id']
                 if 'is_user_login' in request.session and request.session['is_user_login']:
                     data_user_id = "-u-" + str(request.session['event_user']['id'])
                 logger.debug("=====replace template header Start=======")
                 pageContents = page.content
-                # if motive:
-                # pageContents += DynamicPage.get_static_page(request, "testu2", False, *args, **kwargs)
                 page_content = PageReplace.replace_template(request, motive, page, pageContents)
                 page_content = PageReplace.replace_menu(request, motive, page_content)
                 page_content = PageReplace.replace_language(request, motive, page_content, current_language)
@@ -349,7 +324,6 @@ class DynamicPage(generic.View):
 
                 # Motive Check Start
                 if not motive:
-                    # page_content = PageDetailsWithLanguage.get_page_with_language(request,page,page_content,current_language)
                     page_content = CmsPageView.replace_section(request, page_content, page.id, True, data_user_id)
                     page_content = CmsPageView.replace_row(request, page_content, page.id, True, data_user_id)
                     page_content = CmsPageView.replace_col(request, page_content, page.id, True, data_user_id)
@@ -414,7 +388,6 @@ class DynamicPage(generic.View):
                         'new-password': 'get_new_password',
                         'attendee-list': 'get_attendee_plugin',
                         'hotel-reservation': 'get_plugin_hotel_reservation',
-                        'session-scheduler': 'get_session_scheduler',
                         'archive-messages': 'get_archive_messages',
                         'photo-upload': 'get_photo_upload',
                         'photo-gallery': 'get_photo_gallery',
@@ -469,28 +442,6 @@ class DynamicPage(generic.View):
                         box_class = {"page_id": page.id, "box_id": page_class.box_id,
                                      "class_name": page_class.classname.classname}
                         class_list.append(box_class)
-                # else:
-                #     ErrorR.okblue(page.element_filter)
-                #     if page.element_filter == '' or page.element_filter == None:
-                #         element_filters = []
-                #     else:
-                #         element_filters = json.loads(page.element_filter)
-                #     ErrorR.okgreen(len(element_filters))
-                #     ErrorR.okgreen(element_filters)
-                #     for element in element_filters:
-                #         ErrorR.warn(int(element['element_id']))
-                #         get_element = Elements.objects.filter(id=int(element['element_id']))
-                #         ErrorR.warn(get_element)
-                #         if get_element.exists():
-                #             ErrorR.warn(get_element[0].slug)
-                #             if get_element[0].slug == 'hotel-reservation':
-                #                 updated_variable.plugin_js_need['get_plugin_hotel_reservation'] = True
-                #             elif get_element[0].slug == 'photo-gallery':
-                #                 updated_variable.plugin_js_need['get_photo_gallery'] = True
-                #             elif get_element[0].slug == 'photo-upload':
-                #                 updated_variable.plugin_js_need['get_photo_upload'] = True
-                #             ErrorR.okblue(updated_variable.plugin_js_need)
-                # ErrorR.okblue(updated_variable.plugin_js_need)
 
                 # Motive Check End
 
@@ -541,16 +492,8 @@ class DynamicPage(generic.View):
                                                                                         updated_variable)
                 updated_variable += updatable_variable
 
-                # page_content = page_content.replace('[[css]]', "[[static]]public/[[event_url]]/compiled_css/style.css")
-                # page_content = page_content.replace('public/js/jquery.min.js',
-                #                                     static('public/js/jquery.min.js'))
-                # page_content = page_content.replace('<body', '<body style="display:none;"')
-
                 page_content = PageReplace.replace_kendo_plugin(request, motive, kendo_plugin_flag,
                                                                 page_content)
-
-                # return render(request, 'public/static_pages/cms_page.html', context)
-                # str_test = render_to_string('public/static_pages/cms_page.html', context)
                 final_page_content = page_content.replace('\n\n', '')
                 final_page_content = final_page_content.replace('\r', '')
                 final_page_content = final_page_content.replace('\t\t', '')
@@ -571,23 +514,6 @@ class DynamicPage(generic.View):
             'request': request
         }
         return render_to_string('public/content/menu_head.html', context)
-
-    def get_all_language(request, current_language, *args, **kwargs):
-        event_id = request.session["event_id"]
-        languages = Presets.objects.filter(Q(event_id=event_id) | Q(event_id=None))
-        for language in languages:
-            language.preset_class = slugify(language.preset_name.lower())
-        if current_language == None:
-            current_language = Presets.objects.get(id=6)
-            current_language.id = current_language.preset.id
-            current_language.preset_name = current_language.preset.preset_name
-        current_language.preset_class = slugify(current_language.preset_name.lower())
-        context = {
-            'request': request,
-            'languages': languages,
-            "current_language": current_language
-        }
-        return render_to_string('public/content/language.html', context)
 
     def get_eval_next_up_msg(request, *args, **kwargs):
         response_data = {}
@@ -652,252 +578,6 @@ class DynamicPage(generic.View):
         return default_date_format
 
 
-# class PageDetailsWithLanguage(generic.DetailView):
-#
-#
-#     def get_page_with_language(request,page,page_content,current_language):
-#         page_content = CmsPageView.replace_section(request, page_content)
-#         page_content = CmsPageView.replace_row(request, page_content)
-#         page_content = CmsPageView.replace_col(request, page_content)
-#         page_content = CmsPageView.replace_editor_html(request, page_content, page.id, current_language)
-#         page_content = StaticPage.replace_questions(request, page_content)
-#         page_content = StaticPage.replace_questions_variable(request, page_content)
-#         page_content = StaticPage.replace_answers(request, page_content)
-#         page_content = StaticPage.replace_sessions(request, page_content)
-#         page_content = StaticPage.replace_travels(request, page_content)
-#         page_content = StaticPage.replace_hotels(request, page_content)
-#         page_content = StaticPage.replace_photos(request, page_content)
-#         page_content = StaticPage.replace_general_tags(request, page_content)
-#
-#         if page.element_filter == '' or page.element_filter == None:
-#             element_filters = []
-#         else:
-#             element_filters = json.loads(page.element_filter)
-#         # Function which are already decleared are listed here N.B.:Now bellow code can be unreadable
-#         get_element_content_obj = {
-#             'evaluations': 'get_evaluation',
-#             'messages': 'get_messages',
-#             'next-up': 'get_session_next_up',
-#             'location-list': 'get_location_list',
-#             'session-radio-button': 'get_session_radio',
-#             'session-checkbox': 'get_session_checkbox',
-#             'login-form': 'get_login_form',
-#             'request-login': 'get_request_login',
-#             'submit-button': 'get_submit_button',
-#             'reset-password': 'get_reset_password',
-#             'new-password': 'get_new_password',
-#             'attendee-list': 'get_attendee_plugin',
-#             'hotel-reservation': 'get_plugin_hotel_reservation',
-#             'session-scheduler': 'get_session_scheduler',
-#             'archive-messages': 'get_archive_messages',
-#             'photo-upload': 'get_photo_upload',
-#             'photo-gallery': 'get_photo_gallery',
-#             'logout': 'get_logout',
-#             'multiple-registration': 'get_multiple_registration'
-#         }
-#         for element in element_filters:
-#             get_element = Elements.objects.filter(id=int(element['element_id']))
-#             if get_element.exists():
-#                 if get_element[0].slug == 'hotel-reservation' or get_element[0].slug == 'session-scheduler':
-#                     kendo_plugin_flag = True
-#                 element_name = get_element[0].slug
-#                 if get_element[0].slug in get_element_content_obj:
-#                     function_to_eval = 'Plugins.' + get_element_content_obj[
-#                         get_element[0].slug] + '(request, page.id, element)'
-#                     get_element_content = eval(function_to_eval)
-#                 else:
-#                     get_element_content = ''
-#                 if element_name == 'submit-button' or element_name == 'photo-upload':
-#                     page_content = page_content.replace(
-#                         '{element:' + element_name + ',box:' + element['box_id'].split('-')[1] + ',button_id:' +
-#                         element['button_id'] + '}', get_element_content)
-#                 else:
-#                     page_content = page_content.replace(
-#                         '{element:' + element_name + ',box:' + element['box_id'].split('-')[1] + '}',
-#                         get_element_content)
-#         page_content = CmsPageView.replace_enddiv(request, page_content)
-#
-#
-#         page_content = page_content.replace('[[file]]', "[[static]]public/[[event_url]]/files")
-#         page_content = page_content.replace('[[files]]', "[[static]]public/[[event_url]]/files/")
-#         page_content = page_content.replace('[[static]]', settings.STATIC_URL_ALT)
-#         # page_content = page_content.replace('public/js/jquery.min.js',
-#         #                                     static('public/js/jquery.min.js'))
-#         page_content = page_content.replace('[[event_url]]', page.template.event.url)
-#         page_content = page_content.replace('[[parmanent]]', settings.STATIC_URL_ALT + 'public/')
-#
-#         return page_content
-#
-#     def get_content_javascript(request,page):
-#         page_classes = PageContentClasses.objects.filter(page_id=page.id)
-#         class_list = []
-#         for page_class in page_classes:
-#             box_class = {"box_id": page_class.box_id, "class_name": page_class.classname.classname}
-#             class_list.append(box_class)
-#         footer_content = {
-#             "class_list": class_list,
-#             "static_page": page,
-#             "footer_ajax_page_id": page.id,
-#             "request": request
-#         }
-#         filter_store = []
-#         filter_ids = []
-#         registration_date_filter_javascript = ""
-#         updated_date_filter_javascript = ""
-#         attendee_group_filter_javascript = ""
-#         attendee_tag_filter_javascript = ""
-#         session_filter_javascript = ""
-#         question_filter_javascript = ""
-#         app_filter_javascript = ""
-#         hotel_filter_javascript = ""
-#         speaker_filter_javascript = ""
-#         email_filter_javascript = ""
-#         message_filter_javascript = ""
-#         page_filter_javascript = ""
-#         language_filter_javascript = ""
-#         if page.filter:
-#             footer_content['static_page_filter'] = json.loads(page.filter)
-#             for filterId in footer_content['static_page_filter']:
-#                 if 'filter_id' in filterId:
-#                     ErrorR.okblue("--------------RULE-----------")
-#                     ErrorR.okgreen(filterId)
-#                     filter_action = True
-#                     if 'action' in filterId:
-#                         if filterId['action'] == '0':
-#                             filter_action = False
-#                     ErrorR.okblue(filter_action)
-#                     filter_ids.append(filterId['filter_id'])
-#                     rule_list = RuleSet.objects.filter(id=filterId['filter_id'])
-#                     if not rule_list.exists():
-#                         footer_content['static_page_filter'].remove(filterId)
-#                     for rule in rule_list:
-#                         filter_store_data = {}
-#                         filter_store_data['rule'] = json.loads(rule.preset)
-#                         filter_store_data['rule_id'] = rule.id
-#                         filter_store_data['box'] = filterId['box_id']
-#                         filter_store.append(filter_store_data)
-#                         field_condition = filter_store_data['rule'][0][0]['field']
-#                         match_condition = filter_store_data['rule'][0][0]['matchFor']
-#                         filter_permission = StaticPage.get_filter_permissions(request, rule_list)
-#                         ErrorR.okgreen(filter_permission)
-#                         if match_condition == '2':
-#                             # AND
-#                             if filter_action:
-#                                 # True
-#                                 filter_javascript = StaticPage.get_filter_js(request,
-#                                                                              filter_store_data['rule'],
-#                                                                              match_condition,
-#                                                                              filterId['box_id'])
-#                                 filter_javascript = filter_javascript.replace('if()', 'if(' + str(
-#                                     filter_permission).lower() + ')')
-#                                 filter_javascript = filter_javascript.replace('logic_dynamicaly_fill',
-#                                                                               str(filter_permission).lower())
-#                             else:
-#                                 # False
-#                                 filter_javascript = StaticPage.get_filter_js_not(request,
-#                                                                                  filter_store_data['rule'],
-#                                                                                  match_condition,
-#                                                                                  filterId['box_id'])
-#                                 filter_javascript = filter_javascript.replace('if()', 'if(' + str(
-#                                     filter_permission).lower() + ')')
-#                                 filter_javascript = filter_javascript.replace('logic_dynamicaly_fill',
-#                                                                               str(filter_permission).lower())
-#
-#                             if field_condition == "1":
-#                                 registration_date_filter_javascript += filter_javascript
-#                             elif field_condition == "2":
-#                                 updated_date_filter_javascript += filter_javascript
-#                             elif field_condition == "3":
-#                                 attendee_group_filter_javascript += filter_javascript
-#                             elif field_condition == "4":
-#                                 attendee_tag_filter_javascript += filter_javascript
-#                             elif field_condition == "6":
-#                                 session_filter_javascript += filter_javascript
-#                             elif field_condition == "7":
-#                                 question_filter_javascript += filter_javascript
-#                             elif field_condition == "8":
-#                                 app_filter_javascript += filter_javascript
-#                             elif field_condition == "9":
-#                                 hotel_filter_javascript += filter_javascript
-#                             elif field_condition == "10":
-#                                 speaker_filter_javascript += filter_javascript
-#                             elif field_condition == "11":
-#                                 email_filter_javascript += filter_javascript
-#                             elif field_condition == "12":
-#                                 message_filter_javascript += filter_javascript
-#                             elif field_condition == "13":
-#                                 page_filter_javascript += filter_javascript
-#                             elif field_condition == "14":
-#                                 language_filter_javascript += filter_javascript
-#
-#                         elif match_condition == '1':
-#                             # OR
-#                             if filter_action:
-#                                 # TURE
-#                                 filter_javascript = StaticPage.get_filter_js(request,
-#                                                                              filter_store_data['rule'],
-#                                                                              match_condition,
-#                                                                              filterId['box_id'])
-#                                 filter_javascript = filter_javascript.replace('if()', 'if(' + str(
-#                                     filter_permission).lower() + ')')
-#                                 filter_javascript = filter_javascript.replace('logic_dynamicaly_fill',
-#                                                                               str(filter_permission).lower())
-#                             else:
-#                                 # FLASE
-#                                 filter_javascript = StaticPage.get_filter_js_not(request,
-#                                                                                  filter_store_data['rule'],
-#                                                                                  match_condition,
-#                                                                                  filterId['box_id'])
-#                                 filter_javascript = filter_javascript.replace('if()', 'if(' + str(
-#                                     filter_permission).lower() + ')')
-#                                 filter_javascript = filter_javascript.replace('logic_dynamicaly_fill',
-#                                                                               str(filter_permission).lower())
-#
-#                             if field_condition == "1":
-#                                 registration_date_filter_javascript += filter_javascript
-#                             elif field_condition == "2":
-#                                 updated_date_filter_javascript += filter_javascript
-#                             elif field_condition == "3":
-#                                 attendee_group_filter_javascript += filter_javascript
-#                             elif field_condition == "4":
-#                                 attendee_tag_filter_javascript += filter_javascript
-#                             elif field_condition == "6":
-#                                 session_filter_javascript += filter_javascript
-#                             elif field_condition == "7":
-#                                 question_filter_javascript += filter_javascript
-#                             elif field_condition == "8":
-#                                 app_filter_javascript += filter_javascript
-#                             elif field_condition == "9":
-#                                 hotel_filter_javascript += filter_javascript
-#                             elif field_condition == "10":
-#                                 speaker_filter_javascript += filter_javascript
-#                             elif field_condition == "11":
-#                                 email_filter_javascript += filter_javascript
-#                             elif field_condition == "12":
-#                                 message_filter_javascript += filter_javascript
-#                             elif field_condition == "13":
-#                                 page_filter_javascript += filter_javascript
-#                             elif field_condition == "14":
-#                                 language_filter_javascript += filter_javascript
-#                                 # ErrorR.okblue(filter_javascript)
-#
-#         footer_content['registration_date_filter_javascript'] = registration_date_filter_javascript
-#         footer_content['updated_date_filter_javascript'] = updated_date_filter_javascript
-#         footer_content['attendee_group_filter_javascript'] = attendee_group_filter_javascript
-#         footer_content['attendee_tag_filter_javascript'] = attendee_tag_filter_javascript
-#         footer_content['session_filter_javascript'] = session_filter_javascript
-#         footer_content['question_filter_javascript'] = question_filter_javascript
-#         footer_content['app_filter_javascript'] = app_filter_javascript
-#         footer_content['hotel_filter_javascript'] = hotel_filter_javascript
-#         footer_content['speaker_filter_javascript'] = speaker_filter_javascript
-#         footer_content['email_filter_javascript'] = email_filter_javascript
-#         footer_content['message_filter_javascript'] = message_filter_javascript
-#         footer_content['page_filter_javascript'] = page_filter_javascript
-#         footer_content['language_filter_javascript'] = language_filter_javascript
-#         footer_content['page_id'] = page.id
-#         return footer_content
-
-
 class Plugins(generic.TemplateView):
     def get_evaluation(request, page_id, element):
         language = LanguageKey.get_lang_key(request, element['element_id'])
@@ -911,8 +591,6 @@ class Plugins(generic.TemplateView):
                     element_settings = ElementsAnswers.objects.filter(page_id=page_id, box_id=box_id).select_related(
                         'element_question')
                     today = HelperData.getTimezoneNow(request)
-                    # f = '%Y-%m-%d %H:%M:%S'
-                    # today = datetime.strptime(str(time_now).split(".")[0], f)
                     title = ''
                     appear_time = 11
                     message = ''
@@ -1034,7 +712,6 @@ class Plugins(generic.TemplateView):
                                 pass
                     if Notification.objects.filter(to_attendee_id=user_id, status=1).exists():
                         show_archive_button = 'True'
-                    # language = LanguageKey.get_lang_key(request.session['event_id'], element['element_id'])
                     language['langkey']['pre_message_countdown'] = \
                         language['langkey']['messages_txt_countdown'].split('{countdown}')[0]
                     language['langkey']['post_message_countdown'] = \
@@ -1362,8 +1039,6 @@ class Plugins(generic.TemplateView):
                     else:
                         time_before = now + timedelta(minutes=int(appear_before))
                         time_after = now - timedelta(minutes=int(disappear_after))
-                        # time_before = datetime.strptime(str(time_before).split(".")[0], f)
-                        # time_after = datetime.strptime(str(time_after).split(".")[0], f)
                         # Searchable removed
                         sql = 'select DISTINCT sessions.*, seminars_has_users.status from seminars_has_users, sessions, groups where seminars_has_users.session_id = sessions.id and seminars_has_users.status ="attending" and seminars_has_users.attendee_id=' + str(
                             user_id) + ' and sessions.group_id = groups.id and (sessions.start <= "' + str(
@@ -1498,22 +1173,6 @@ class Plugins(generic.TemplateView):
                         context['display_table'] = eval(answer.answer)
                     elif answer.element_question.question_key == 'attendee_list_attendee_per_page':
                         context['attendees_per_page'] = int(answer.answer)
-                    # elif answer.element_question.question_key == 'attendee_list_filter_id':
-                    #     filter_id = eval(answer.answer)
-                    #     context['filter_id'] = filter_id
-                    # elif answer.element_question.question_key == 'attendee_list_selected_columns':
-                    #     selected_columns_data = json.loads(answer.answer)
-                    #     selected_columns = selected_columns_data['selected_sorted']
-                    #     context['column_ids'] = selected_columns
-                    #     col_ques = Questions.objects.filter(id__in=selected_columns).values("id", "title",
-                    #                                                                         "actual_definition")
-                    #     visible_columns = []
-                    #     for item in selected_columns:
-                    #         visible_columns.append(col_ques.get(id=item))
-                    #     for ids, col_question in enumerate(visible_columns):
-                    #         if col_question['actual_definition'] == None or col_question['actual_definition'] == '':
-                    #             visible_columns[ids]['actual_definition'] = col_question['title'].replace(' ', '_')
-                    #     context['columns'] = visible_columns
 
                 x_y_z = 'Showing {0}-{1} from {2} data items'
                 if 'attendee_list_txt_x_y_of_z' in language['langkey']:
@@ -1534,8 +1193,6 @@ class Plugins(generic.TemplateView):
                         language['langkey']['attendee_list_txt_empty'])
             else:
                 return ''
-                # return plugin_div + """<div class="placeholder empty"> %s </div></div>""" % (
-                #     language['langkey']['attendee_list_txt_empty'])
         except Exception as e:
             ErrorR.efail(e)
             return plugin_div + """<div class="placeholder misconfigured"> %s </div></div>""" % (
@@ -1545,18 +1202,14 @@ class Plugins(generic.TemplateView):
         response_data = {}
         try:
             if 'is_user_login' in request.session and request.session['is_user_login']:
-                # selected_columns = request.POST.get('column_ids')
-                # filter_id = request.POST.get('filter_id')
                 attendee_export_id = request.POST.get('attendee_export_id')
                 show_counting_column_header = request.POST.get('show_counting_column_header')
                 show_counting_column = request.POST.get('show_counting_column')
                 show_counting_column = eval(show_counting_column) if show_counting_column else False
-                # column_ids = json.loads(selected_columns)
 
                 export_rule = ExportRule.objects.filter(id=attendee_export_id)
                 table_headers = []
                 filter_id = 0
-                # preset_data = None
                 general_ques = []
                 question_ids = []
                 sessions = []
@@ -2061,35 +1714,9 @@ class Plugins(generic.TemplateView):
 
     def get_applied_rebate(request, json_data):
         result = {}
-        # user_id = None
         prerequisite_filter = []
-        # if 'is_user_login' in request.session and request.session['is_user_login']:
-        #     user_id = request.session['event_user']['id']
         answer = json_data[0]
-        print(answer)
         if answer['state'] == 1:
-            # p_counter = 0
-            # p_length = len(answer['data'])
-            # for prerequisite in answer['data']:
-            #     if p_counter < p_length - 1 and user_id:
-            #         filters = json.loads(RuleSet.objects.get(id=prerequisite['filter_id']).preset)
-            #         q = Q()
-            #         match_condition = filters[0][0]['matchFor']
-            #         if match_condition == '2':
-            #             q &= Q(id__in=UserRule.get_filtered_attendee(request, filters, match_condition))
-            #         elif match_condition == '1':
-            #             q = Q(id=-11)
-            #             q |= Q(id__in=UserRule.get_filtered_attendee(request, filters, match_condition))
-            #
-            #         attendees = Attendee.objects.filter(q)
-            #         att_existence = '1' if attendees.filter(id=user_id).count() > 0 else '0'
-            #         if prerequisite['match'] == att_existence:
-            #             result["rebate"] = prerequisite["rebate_id"]
-            #             break
-            #     else:
-            #         result["rebate"] = prerequisite["rebate_id"]
-            #
-            #     p_counter = p_counter + 1
             for item in answer['data']:
                 item['action'] = 'filter'
             prerequisite_filter = answer['data']
@@ -2118,7 +1745,6 @@ class Plugins(generic.TemplateView):
 
     def get_rebates(request, page_id, element):
         box_id = element['box_id'].split('-')[1]
-        # box_id=1
         try:
             element_settings = ElementsAnswers.objects.filter(page_id=page_id, box_id=box_id).select_related(
                 'element_question')
@@ -2129,9 +1755,6 @@ class Plugins(generic.TemplateView):
             pass
             if rebate_apply is not None:
                 json_data = json.loads(rebate_apply)
-
-                # json_data = json.loads('[{"state":2,"data":[{"match":"1","from":"08/22/2017","to":"08/24/2017","rebate_id":["1","2"]},{"match":"0","from":"08/22/2017","to":"08/22/2017","rebate_id":["2","3"]},{"match":"1","from":"08/22/2017","to":"08/22/2017","rebate_id":["4"]},{"rebate_id":["5"]}]}]')
-
                 result, prerequisite_filter = Plugins.get_applied_rebate(request, json_data)
                 rebate_list = result.get('rebate')
                 if prerequisite_filter:
@@ -2214,7 +1837,6 @@ class Plugins(generic.TemplateView):
         plugin_div = """<div class="event-plugin element event-plugin-location-list" box" id="box-""" + str(
             box_id) + """" data-id=""" + str(element['element_id']) + """ data-name="location-list">"""
         try:
-            # if 'is_user_login' in request.session and request.session['is_user_login']:
             element_settings = ElementsAnswers.objects.filter(page_id=page_id, box_id=box_id).select_related(
                 'element_question')
             title = ''
@@ -2283,9 +1905,6 @@ class Plugins(generic.TemplateView):
             else:
                 return plugin_div + """<div class="placeholder empty"> %s </div></div>""" % (
                     language['langkey']['locationlist_txt_empty'])
-                # else:
-                #     return plugin_div + """<div class="placeholder empty"> %s </div></div>""" % (
-                #         language['langkey']['locationlist_txt_empty'])
         except Exception as e:
             ErrorR.efail(e)
             return plugin_div + """<div class="placeholder misconfigured"> %s </div></div>""" % (
@@ -2297,7 +1916,6 @@ class Plugins(generic.TemplateView):
         plugin_div = """<div class="event-plugin element event-plugin-session-radio" box" id="box-""" + str(
             box_id) + """" data-id=""" + str(element['element_id']) + """ data-name="session-radio">"""
         try:
-            # if 'is_user_login' in request.session and request.session['is_user_login']:
             event_id = request.session["event_id"]
             element_settings = ElementsAnswers.objects.filter(page_id=page_id, box_id=box_id).select_related(
                 'element_question')
@@ -2375,38 +1993,16 @@ class Plugins(generic.TemplateView):
                     show_details_link = setting.answer
 
             if session_groups != '':
-                # sessionGroups = Group.objects.filter(type="session", is_show=1, is_searchable=1,
-                #                                      event_id=request.session['event_id'],
-                #                                      id__in=session_groups).order_by('group_order')
                 preselected_order_number = None
-                # if preselected_session != '':
-                #     session_info=SessionDetail.status_type_attend(request, int(preselected_session))
-                #     if 'is_user_login' in request.session and request.session['is_user_login']:
-                #         if session_info['success'] and session_info['status'] == 'attending':
-                #             if "already_attending" not in session_info:
-                #                 user_id = request.session['event_user']['id']
-                #                 order_info = EconomyLibrary.place_order(event_id, user_id, 'session', int(preselected_session),
-                #                                                         None, preselected_order_number, True)
-                #                 preselected_order_number = order_info['order_number']
                 economy_currency_txt = EconomyLibrary.get_event_currency(request.session['language_id'])
-                # session_details = Plugins.get_session_details(request, sessionGroups, event_id, session_option,economy_currency_txt)
                 sessions = Session.objects.select_related('group').select_related('location').filter(
                     group__in=session_groups, group__type="session", group__is_show=1, group__is_searchable=1,
                     group__event_id=request.session['event_id']).order_by('group__group_order', 'session_order')
                 session_details = Plugins.get_sessions_details(request, sessions, session_option, economy_currency_txt)
                 session_details_lang = LanguageKey.get_session_details_lang(request)
-                # # Vat Text Language update
-                # lang_vat_included = session_details['session_details_lang']["langkey"]['sessiondetails_txt_session_cost_incl_vat']
-                # lang_vat_included = lang_vat_included.replace("{X}","100")
-                # session_details['session_details_lang']["langkey"]['sessiondetails_txt_session_cost_incl_vat'] = lang_vat_included
-                #
-                # lang_vat_excluded = session_details['session_details_lang']["langkey"]['sessiondetails_txt_session_cost_excl_vat']
-                # lang_vat_excluded = lang_vat_excluded.replace("{X}", "100")
-                # session_details['session_details_lang']["langkey"]['sessiondetails_txt_session_cost_excl_vat'] = lang_vat_excluded
 
                 context = {
                     "title": title,
-                    # "sessionGroups": list(session_details['sessionGroups']),
                     "sessionDatas": session_details,
                     "message": message,
                     "session_enable": session_enable,
@@ -2429,7 +2025,6 @@ class Plugins(generic.TemplateView):
                     "location_link": location_link,
                     "session_option": session_option,
                     "language": language,
-                    # "session_details_language": session_details['session_details_lang'],
                     "session_details_language": session_details_lang,
                     "box_id": box_id,
                     "request": request,
@@ -2442,7 +2037,6 @@ class Plugins(generic.TemplateView):
                 }
 
                 if 'is_user_login' not in request.session or not request.session['is_user_login']:
-                    # context['session_enable'] = False
                     context['session_enable'] = 'True'
                 elif 'is_user_login' in request.session and request.session['is_user_login']:
                     context['data_session_id'] = "_u" + str(request.session['event_user']['id'])
@@ -2451,9 +2045,6 @@ class Plugins(generic.TemplateView):
             else:
                 return plugin_div + """<div class="placeholder empty"> %s </div></div>""" % (
                     language['langkey']['sessionradiobutton_txt_empty'])
-                # else:
-                #     return plugin_div + """<div class="placeholder empty"> %s </div></div>""" % (
-                #     language['langkey']['sessionradiobutton_txt_empty'])
         except Exception as e:
             ErrorR.efail(e)
             return plugin_div + """<div class="placeholder misconfigured"> %s </div></div>""" % (
@@ -2560,24 +2151,7 @@ class Plugins(generic.TemplateView):
                     remove_conflict_sessions = setting.answer
             if session_groups != '':
                 preselected_order_number = None
-                # sessionGroups = Group.objects.filter(type="session", is_show=1, is_searchable=1,
-                #                                      event_id=request.session['event_id'],
-                #                                      id__in=session_groups).order_by('group_order')
-                # if preselected_session != '':
-                #     for pre_session in preselected_session:
-                #         session_info=SessionDetail.status_type_attend(request, int(pre_session))
-                #         if 'is_user_login' in request.session and request.session['is_user_login']:
-                #             if session_info['success'] and session_info['status'] == 'attending':
-                #                 if "already_attending" not in session_info:
-                #                     user_id = request.session['event_user']['id']
-                #                     order_info = EconomyLibrary.place_order(event_id, user_id, 'session', int(pre_session),None,preselected_order_number,True)
-                #                     if order_info != False:
-                #                         preselected_order_number = order_info['order_number']
-                #                     else:
-                #                         preselected_order_number = ""
                 economy_currency_txt = EconomyLibrary.get_event_currency(request.session['language_id'])
-                # session_details = Plugins.get_session_details(request, sessionGroups, event_id, session_option,
-                #                                               economy_currency_txt)
                 sessions = Session.objects.select_related('group').select_related('location').filter(
                     group__in=session_groups, group__type="session", group__is_show=1, group__is_searchable=1,
                     group__event_id=request.session['event_id']).order_by('group__group_order', 'session_order')
@@ -2594,7 +2168,6 @@ class Plugins(generic.TemplateView):
                         pass
                 context = {
                     "title": title,
-                    # "sessionGroups": list(session_details['sessionGroups']),
                     "sessionDatas": session_details,
                     "message": message,
                     "session_enable": session_enable,
@@ -2618,7 +2191,6 @@ class Plugins(generic.TemplateView):
                     "location_link": location_link,
                     "session_option": session_option,
                     "language": language,
-                    # "session_details_language": session_details['session_details_lang'],
                     "session_details_language": session_details_lang,
                     "box_id": box_id,
                     "request": request,
@@ -2633,7 +2205,6 @@ class Plugins(generic.TemplateView):
                 }
 
                 if 'is_user_login' not in request.session or not request.session['is_user_login']:
-                    # context['session_enable'] = False
                     context['session_enable'] = 'True'
                 elif 'is_user_login' in request.session and request.session['is_user_login']:
                     context['data_session_id'] = "_u" + str(request.session['event_user']['id'])
@@ -2648,9 +2219,6 @@ class Plugins(generic.TemplateView):
             else:
                 return plugin_div + """<div class="placeholder empty"> %s </div></div>""" % (
                     language['langkey']['sessioncheckbox_txt_empty'])
-                # else:
-                #     return plugin_div + """<div class="placeholder empty"> %s </div></div>""" % (
-                #     language['langkey']['sessioncheckbox_txt_empty'])
         except Exception as e:
             ErrorR.efail(e)
             return plugin_div + """<div class="placeholder misconfigured"> %s </div></div>""" % (
@@ -2922,8 +2490,6 @@ class Plugins(generic.TemplateView):
             return render_to_string('public/element/logout.html', context)
         except Exception as e:
             ErrorR.efail(e)
-            # return plugin_div + """<div class="placeholder misconfigured"> %s </div></div>""" % (
-            # language['langkey']['photo_upload_txt_misconfigured'])
 
     def get_reset_password(request, page_id, element):
         language = LanguageKey.get_lang_key(request, element['element_id'])
@@ -3012,12 +2578,6 @@ class Plugins(generic.TemplateView):
                 owner_id = owner_group[0].owner_id
                 group_name = owner_group[0].group.name
             elif current_attendee.registration_group_id == None:
-                # group_name = 'registration-group-' + str(attendee_id)
-                # new_group = RegistrationGroups(name=group_name, event_id=event_id)
-                # new_group.save()
-                # group_id = new_group.id
-                # group_owner = RegistrationGroupOwner(group_id=group_id, owner_id=attendee_id)
-                # group_owner.save()
                 owner_id = attendee_id
                 has_group = True
                 single_user = True
@@ -3069,16 +2629,6 @@ class Plugins(generic.TemplateView):
                             selected_columns_data = json.loads(json.loads(setting.answer))
                             if selected_columns_data['question'][0]['id'] != "":
                                 selected_columns = selected_columns_data['question'][0]['id'].split(',')
-
-                                # col_ques = Questions.objects.filter(id__in=selected_columns).values("id", "title",
-                                #                                                                     "actual_definition")
-                                # visible_columns = []
-                                # for item in selected_columns:
-                                #     visible_columns.append(col_ques.get(id=item))
-                                # for ids, col_question in enumerate(visible_columns):
-                                #     if col_question['actual_definition'] == None or col_question['actual_definition'] == '':
-                                #         visible_columns[ids]['actual_definition'] = col_question['title'].replace(' ', '_')
-                                # columns = visible_columns
                     column_ids = selected_columns
                     columns = []
                     questions = Questions.objects.filter(id__in=column_ids)
@@ -3263,435 +2813,6 @@ class Plugins(generic.TemplateView):
             ErrorR.efail(e)
             return ''
 
-    def get_session_scheduler(request, page_id, element):
-        lang = LanguageKey.get_lang_key(request, element['element_id'])
-        box_id = element['box_id'].split('-')[1]
-        plugin_div = """<div class="event-plugin element event-plugin-session-scheduler" box" id="box-""" + str(
-            box_id) + """" data-id=""" + str(element['element_id']) + """ data-name="session-scheduler">"""
-        try:
-            if 'is_user_login' in request.session and request.session['is_user_login']:
-                if request.session['event_user']['attending'] == "Yes":
-                    user_id = request.session['event_user']['id']
-                    event_id = request.session['event_id']
-                    event = Events.objects.get(id=event_id)
-                    element_settings = ElementsAnswers.objects.filter(page_id=page_id, box_id=box_id).select_related(
-                        'element_question')
-                    browsing_modes = []
-                    element_settings_info = {}
-                    groups = []
-                    session_option = ''
-                    session_scheduler_messages = ''
-                    session_scheduler_session_start_time = ''
-                    session_scheduler_session_start_date = ''
-                    session_scheduler_session_end_time = ''
-                    session_scheduler_session_end_date = ''
-                    session_scheduler_session_rvsp_date = ''
-                    session_scheduler_session_speaker = ''
-                    session_scheduler_session_link_speaker = ''
-                    session_scheduler_session_tags = ''
-                    session_scheduler_session_session_groups = ''
-                    session_scheduler_session_location = ''
-                    session_scheduler_session_limk_location = ''
-                    session_scheduler_column_session_group_available_in_agenda_view = ''
-                    session_scheduler_column_date_available_in_agenda_view = ''
-                    session_scheduler_column_time_available_in_agenda_view = ''
-                    session_scheduler_one_hour_height = ''
-                    session_scheduler_session_width = ''
-                    session_scheduler_disable_grouping = ''
-                    session_scheduler_session_cost = ''
-                    session_scheduler_session_incl_vat = ''
-                    group_length = 1
-                    for setting in element_settings:
-                        if setting.element_question.question_key == 'session_scheduler_message':
-                            element_settings_info[
-                                setting.element_question.question_key] = LanguageKey.get_plugin_description_by_language(
-                                request,
-                                setting.description)
-                            session_scheduler_messages = element_settings_info[setting.element_question.question_key]
-                        elif setting.element_question.question_key == 'session_scheduler_session_enable':
-                            if setting.answer == 'True':
-                                element_settings_info[setting.element_question.question_key] = True
-                            else:
-                                element_settings_info[setting.element_question.question_key] = False
-
-
-                        elif setting.element_question.question_key == 'session_scheduler_session_groups':
-
-                            # Collect Group Infomation for scheduler
-
-                            group_data = []
-                            groups = json.loads(setting.answer)
-                            for group in groups:
-                                grp = Group.objects.get(id=group)
-                                grp = LanguageKey.get_group_data_by_language(request, grp)
-                                obj = {
-                                    'value': grp.id,
-                                    'text': grp.name,
-                                }
-                                group_data.append(obj)
-                            element_settings_info[setting.element_question.question_key] = group_data
-                            group_length = len(group_data)
-
-
-                        elif setting.element_question.question_key == 'session_scheduler_default_browse_date':
-
-                            if setting.answer:
-                                element_settings_info[setting.element_question.question_key] = setting.answer
-                            else:
-                                element_settings_info[setting.element_question.question_key] = str(event.start)
-
-                        elif setting.element_question.question_key == 'session_scheduler_day_starts_at':
-                            if setting.answer:
-                                element_settings_info[setting.element_question.question_key] = setting.answer
-                            else:
-                                element_settings_info[setting.element_question.question_key] = '10:00 AM'
-
-                        elif setting.element_question.question_key == 'session_scheduler_day_ends_at':
-
-                            if setting.answer:
-                                element_settings_info[setting.element_question.question_key] = setting.answer
-                            else:
-                                element_settings_info[setting.element_question.question_key] = '05:00 PM'
-
-                        elif setting.element_question.question_key == 'session_scheduler_allow_browsing_week_modes':
-                            if setting.answer == 'True':
-                                browsing_modes.append("week")
-
-                        elif setting.element_question.question_key == 'session_scheduler_allow_browsing_work_week_modes':
-                            if setting.answer == 'True':
-                                browsing_modes.append("workWeek")
-
-                        elif setting.element_question.question_key == 'session_scheduler_allow_browsing_day_modes':
-                            if setting.answer == 'True':
-                                browsing_modes.append("day")
-
-                        elif setting.element_question.question_key == 'session_scheduler_allow_browsing_agenda_modes':
-                            if setting.answer == 'True':
-                                browsing_modes.append("agenda")
-
-
-                        elif setting.element_question.question_key == 'session_scheduler_show_toolbar_today_button':
-
-                            if setting.answer == 'True':
-                                element_settings_info[setting.element_question.question_key] = True
-                            else:
-                                element_settings_info[setting.element_question.question_key] = False
-
-                        elif setting.element_question.question_key == 'session_scheduler_show_toolbar_currently_selected_date':
-
-                            if setting.answer == 'True':
-                                element_settings_info[setting.element_question.question_key] = True
-                            else:
-                                element_settings_info[setting.element_question.question_key] = False
-
-                        elif setting.element_question.question_key == 'session_scheduler_show_toolbar_change_browse_mode_buttons':
-
-                            if setting.answer == 'True':
-                                element_settings_info[setting.element_question.question_key] = True
-                            else:
-                                element_settings_info[setting.element_question.question_key] = False
-
-                        elif setting.element_question.question_key == 'session_scheduler_show_toolbar_move_day_forward_or_backwards_buttons':
-
-                            if setting.answer == 'True':
-                                element_settings_info[setting.element_question.question_key] = True
-                            else:
-                                element_settings_info[setting.element_question.question_key] = False
-
-                        elif setting.element_question.question_key == 'session_scheduler_show_toolbar_business_hours_toggle':
-
-                            if setting.answer == 'True':
-                                element_settings_info[setting.element_question.question_key] = True
-                            else:
-                                element_settings_info[setting.element_question.question_key] = False
-
-                        elif setting.element_question.question_key == 'session_scheduler_show_all_or_my_sessions':
-
-                            if setting.answer == 'True':
-                                element_settings_info[setting.element_question.question_key] = True
-                            else:
-                                element_settings_info[setting.element_question.question_key] = False
-
-                        elif setting.element_question.question_key == 'session_scheduler_show_subscribe_to_calender':
-
-                            if setting.answer == 'True':
-                                element_settings_info[setting.element_question.question_key] = True
-                            else:
-                                element_settings_info[setting.element_question.question_key] = False
-
-                        elif setting.element_question.question_key == 'session_scheduler_show_session_group_toggle':
-
-                            if setting.answer == 'True':
-                                element_settings_info[setting.element_question.question_key] = True
-                            else:
-                                element_settings_info[setting.element_question.question_key] = False
-
-                        elif setting.element_question.question_key == 'session_scheduler_column_session_group_available_in_agenda_view':
-
-                            if setting.answer == 'True':
-                                element_settings_info[setting.element_question.question_key] = True
-                                session_scheduler_column_session_group_available_in_agenda_view = True
-                            else:
-                                element_settings_info[setting.element_question.question_key] = False
-                                session_scheduler_column_session_group_available_in_agenda_view = False
-
-                        elif setting.element_question.question_key == 'session_scheduler_column_date_available_in_agenda_view':
-
-                            if setting.answer == 'True':
-                                element_settings_info[setting.element_question.question_key] = True
-                                session_scheduler_column_date_available_in_agenda_view = True
-                            else:
-                                element_settings_info[setting.element_question.question_key] = False
-                                session_scheduler_column_date_available_in_agenda_view = False
-
-                        elif setting.element_question.question_key == 'session_scheduler_column_time_available_in_agenda_view':
-
-                            if setting.answer == 'True':
-                                element_settings_info[setting.element_question.question_key] = True
-                                session_scheduler_column_time_available_in_agenda_view = True
-                            else:
-                                element_settings_info[setting.element_question.question_key] = False
-                                session_scheduler_column_time_available_in_agenda_view = False
-
-                        elif setting.element_question.question_key == 'session_scheduler_agenda_view_sort_on':
-
-                            if setting.answer == 'True':
-                                element_settings_info[setting.element_question.question_key] = True
-                            else:
-                                element_settings_info[setting.element_question.question_key] = False
-
-                        elif setting.element_question.question_key == 'session_scheduler_session_start_time':
-
-                            if setting.answer == 'True':
-                                element_settings_info[setting.element_question.question_key] = True
-                                session_scheduler_session_start_time = True
-                            else:
-                                element_settings_info[setting.element_question.question_key] = False
-                                session_scheduler_session_start_time = False
-
-                        elif setting.element_question.question_key == 'session_scheduler_session_start_date':
-
-                            if setting.answer == 'True':
-                                element_settings_info[setting.element_question.question_key] = True
-                                session_scheduler_session_start_date = True
-                            else:
-                                element_settings_info[setting.element_question.question_key] = False
-                                session_scheduler_session_start_date = False
-
-                        elif setting.element_question.question_key == 'session_scheduler_session_end_time':
-
-                            if setting.answer == 'True':
-                                element_settings_info[setting.element_question.question_key] = True
-                                session_scheduler_session_end_time = True
-                            else:
-                                element_settings_info[setting.element_question.question_key] = False
-                                session_scheduler_session_end_time = False
-
-                        elif setting.element_question.question_key == 'session_scheduler_session_end_date':
-
-                            if setting.answer == 'True':
-                                element_settings_info[setting.element_question.question_key] = True
-                                session_scheduler_session_end_date = True
-                            else:
-                                element_settings_info[setting.element_question.question_key] = False
-                                session_scheduler_session_end_date = False
-
-                        elif setting.element_question.question_key == 'session_scheduler_session_rvsp_date':
-
-                            if setting.answer == 'True':
-                                element_settings_info[setting.element_question.question_key] = True
-                                session_scheduler_session_rvsp_date = True
-                            else:
-                                element_settings_info[setting.element_question.question_key] = False
-                                session_scheduler_session_rvsp_date = False
-
-                        elif setting.element_question.question_key == 'session_scheduler_session_speaker':
-
-                            if setting.answer == 'True':
-                                element_settings_info[setting.element_question.question_key] = True
-                                session_scheduler_session_speaker = True
-                            else:
-                                element_settings_info[setting.element_question.question_key] = False
-                                session_scheduler_session_speaker = False
-
-                        elif setting.element_question.question_key == 'session_scheduler_session_link_speaker':
-
-                            if setting.answer == 'True':
-                                element_settings_info[setting.element_question.question_key] = True
-                                session_scheduler_session_link_speaker = True
-                            else:
-                                element_settings_info[setting.element_question.question_key] = False
-                                session_scheduler_session_link_speaker = False
-
-                        elif setting.element_question.question_key == 'session_scheduler_session_tags':
-
-                            if setting.answer == 'True':
-                                element_settings_info[setting.element_question.question_key] = True
-                                session_scheduler_session_tags = True
-                            else:
-                                element_settings_info[setting.element_question.question_key] = False
-                                session_scheduler_session_tags = False
-
-                        elif setting.element_question.question_key == 'session_scheduler_session_session_groups':
-
-                            if setting.answer == 'True':
-                                element_settings_info[setting.element_question.question_key] = True
-                                session_scheduler_session_session_groups = True
-                            else:
-                                element_settings_info[setting.element_question.question_key] = False
-                                session_scheduler_session_session_groups = False
-
-                        elif setting.element_question.question_key == 'session_scheduler_session_location':
-
-                            if setting.answer == 'True':
-                                element_settings_info[setting.element_question.question_key] = True
-                                session_scheduler_session_location = True
-                            else:
-                                element_settings_info[setting.element_question.question_key] = False
-                                session_scheduler_session_location = False
-
-                        elif setting.element_question.question_key == 'session_scheduler_session_limk_location':
-
-                            if setting.answer == 'True':
-                                element_settings_info[setting.element_question.question_key] = True
-                                session_scheduler_session_limk_location = True
-                            else:
-                                element_settings_info[setting.element_question.question_key] = False
-                                session_scheduler_session_limk_location = False
-
-                        elif setting.element_question.question_key == 'session_scheduler_session_available':
-
-                            element_settings_info[setting.element_question.question_key] = setting.answer
-                            session_option = setting.answer
-
-                        elif setting.element_question.question_key == 'session_scheduler_width':
-
-                            element_settings_info[setting.element_question.question_key] = setting.answer
-
-                        elif setting.element_question.question_key == 'session_scheduler_session_width':
-
-                            element_settings_info[setting.element_question.question_key] = setting.answer
-                            session_scheduler_session_width = setting.answer
-
-
-
-                        elif setting.element_question.question_key == 'session_scheduler_one_hour_height':
-
-                            element_settings_info[setting.element_question.question_key] = setting.answer
-                            session_scheduler_one_hour_height = setting.answer
-
-                        elif setting.element_question.question_key == 'session_scheduler_title':
-
-                            element_settings_info[setting.element_question.question_key] = setting.answer
-
-                        elif setting.element_question.question_key == 'session_scheduler_message':
-                            setting.description = LanguageKey.get_plugin_description_by_language(request,
-                                                                                                 setting.description)
-                            element_settings_info[setting.element_question.question_key] = setting.description
-
-                        elif setting.element_question.question_key == 'session_scheduler_disable_grouping':
-
-                            if setting.answer == 'True':
-                                element_settings_info[setting.element_question.question_key] = True
-                                session_scheduler_disable_grouping = True
-                            else:
-                                element_settings_info[setting.element_question.question_key] = False
-                                session_scheduler_disable_grouping = False
-
-                        elif setting.element_question.question_key == 'session_scheduler_session_cost':
-
-                            if setting.answer == 'True':
-                                session_scheduler_session_cost = True
-                                element_settings_info[setting.element_question.question_key] = True
-                            else:
-                                session_scheduler_session_cost = False
-                                element_settings_info[setting.element_question.question_key] = False
-
-                        elif setting.element_question.question_key == 'session_scheduler_session_incl_vat':
-
-                            if setting.answer == 'True':
-                                session_scheduler_session_incl_vat = True
-                                element_settings_info[setting.element_question.question_key] = True
-                            else:
-                                session_scheduler_session_incl_vat = False
-                                element_settings_info[setting.element_question.question_key] = False
-
-                    element_settings_info['session_scheduler_browsing_modes'] = browsing_modes
-                    timezone = Setting.objects.filter(event_id=request.session['event_id'], name='timezone')
-                    timezone_of_event = "UTC"
-                    if timezone.exists():
-                        timezone_of_event = timezone[0].value
-                    element_settings_info['session_scheduler_timezone'] = timezone_of_event
-
-                    group_list = Group.objects.filter(id__in=groups)
-                    for group in group_list:
-                        group = LanguageKey.get_group_data_by_language(request, group)
-
-                    # languages
-                    messages = {}
-                    messages["today"] = lang['langkey']['sessionscheduler_btn_today']
-                    views = {}
-                    views["day"] = lang['langkey']['sessionscheduler_btn_day']
-                    views["week"] = lang['langkey']['sessionscheduler_btn_week']
-                    views["agenda"] = lang['langkey']['sessionscheduler_btn_agenda']
-                    views["workWeek"] = lang['langkey']['sessionscheduler_btn_work_week']
-                    messages['views'] = views
-                    messages['showFullDay'] = lang['langkey']['sessionscheduler_btn_full_day']
-                    messages['showWorkDay'] = lang['langkey']['sessionscheduler_btn_business_hours']
-
-                    element_settings_info['session_scheduler_session_languages'] = messages
-                    element_settings_info['session_scheduler_session_notifications'] = lang['langkey'][
-                        'sessionscheduler_notify_track']
-                    session_scheduler_width = 0
-                    if session_scheduler_session_width:
-                        session_scheduler_width = int(session_scheduler_session_width) * int(group_length)
-
-                    element_settings_info['session_scheduler_width'] = session_scheduler_width
-                    economy_currency_txt = EconomyLibrary.get_event_currency(request.session['language_id'])
-                    session_details_lang = LanguageKey.get_session_details_lang(request)
-                    context = {
-                        "messages": messages,
-                        "session_scheduler_messages": session_scheduler_messages,
-                        'session_group_list': group_list,
-                        'session_scheduler_session_start_time': session_scheduler_session_start_time,
-                        'session_scheduler_session_start_date': session_scheduler_session_start_date,
-                        'session_scheduler_session_end_time': session_scheduler_session_end_time,
-                        'session_scheduler_session_end_date': session_scheduler_session_end_date,
-                        'session_scheduler_session_rvsp_date': session_scheduler_session_rvsp_date,
-                        'session_scheduler_session_speaker': session_scheduler_session_speaker,
-                        'session_scheduler_session_link_speaker': session_scheduler_session_link_speaker,
-                        'session_scheduler_session_tags': session_scheduler_session_tags,
-                        'session_scheduler_session_session_groups': session_scheduler_session_session_groups,
-                        'session_scheduler_session_location': session_scheduler_session_location,
-                        'session_scheduler_session_limk_location': session_scheduler_session_limk_location,
-                        'session_scheduler_session_cost': session_scheduler_session_cost,
-                        'session_scheduler_session_incl_vat': session_scheduler_session_incl_vat,
-                        "element_settings_info": json.dumps(element_settings_info),
-                        "language": lang,
-                        "box_id": box_id,
-                        "page_id": page_id,
-                        "economy_currency_txt": economy_currency_txt,
-                        "element_id": element['element_id'],
-                        "request": request,
-                        "session_scheduler_column_session_group_available_in_agenda_view": session_scheduler_column_session_group_available_in_agenda_view,
-                        "session_scheduler_column_date_available_in_agenda_view": session_scheduler_column_date_available_in_agenda_view,
-                        "session_scheduler_column_time_available_in_agenda_view": session_scheduler_column_time_available_in_agenda_view,
-                        "session_scheduler_one_hour_height": str(session_scheduler_one_hour_height) + "px",
-                        "session_scheduler_width": str(session_scheduler_width) + "px",
-                        "session_scheduler_disable_grouping": session_scheduler_disable_grouping,
-                        "data_user_id": str(user_id),
-                        "session_details_language": session_details_lang
-                    }
-                    return render_to_string('public/element/session_scheduler_test.html', context)
-                else:
-                    return ''
-            else:
-                return ""
-        except Exception as e:
-            ErrorR.efail(e)
-            return plugin_div + """<div class="placeholder misconfigured"> %s </div></div>""" % (
-                lang['langkey']['sessionscheduler_txt_misconfigured'])
-
     def get_session_agenda(request, page_id, element):
         lang = LanguageKey.get_lang_key(request, element['element_id'])
         session_details_lang = LanguageKey.get_session_details_lang(request)
@@ -3832,40 +2953,10 @@ class Plugins(generic.TemplateView):
                                 element_settings_info[setting.element_question.question_key] = setting.answer
                                 start_date = datetime.strptime(setting.answer, '%m/%d/%Y')
                                 start_date = datetime.strftime(start_date, "%Y-%m-%d")
-                                # start_date_at = setting.answer
                                 start_date_at = str(start_date)
-                                # start += str(start_date)
                             else:
                                 element_settings_info[setting.element_question.question_key] = str(event.start)
-                                # start += str(event.start)
                                 start_date_at = str(event.start)
-
-                        # elif setting.element_question.question_key == 'session_agenda_day_starts_at':
-                        #     if setting.answer:
-                        #         element_settings_info[setting.element_question.question_key] = setting.answer
-                        #         # start += ' ' + setting.answer
-                        #         start_time_at = setting.answer
-                        #         start_time = datetime.strptime(setting.answer, '%I:%M %p')
-                        #         start_time = datetime.strftime(start_time, '%H:%M:%S')
-                        #     else:
-                        #         element_settings_info[setting.element_question.question_key] = '10:00 AM'
-                        #         # start += ' ' + '10:00 AM'
-                        #         start_time_at = '10:00 AM'
-                        #         start_time = datetime.strptime('10:00 AM', '%I:%M %p')
-                        #         start_time = datetime.strftime(start_time, '%H:%M:%S')
-                        #
-                        # elif setting.element_question.question_key == 'session_agenda_day_ends_at':
-                        #
-                        #     if setting.answer:
-                        #         element_settings_info[setting.element_question.question_key] = setting.answer
-                        #         end_time = datetime.strptime(setting.answer, '%I:%M %p')
-                        #         end_time = datetime.strftime(end_time, '%H:%M:%S')
-                        #         end_time_at = setting.answer
-                        #     else:
-                        #         element_settings_info[setting.element_question.question_key] = '05:00 PM'
-                        #         end_time = datetime.strptime('05:00 PM', '%I:%M %p')
-                        #         end_time = datetime.strftime(end_time, '%H:%M:%S')
-                        #         end_time_at = '05:00 PM'
 
                         elif setting.element_question.question_key == 'session_agenda_show_toolbar_today_button':
 
@@ -4132,20 +3223,10 @@ class Plugins(generic.TemplateView):
                             sDate = time_now_start
                             eDate = time_now_end
 
-                    # raw_sql = "SELECT * FROM sessions WHERE start BETWEEN '" + str(
-                    #     sDate) + "' and '"+str(eDate)+"' and CAST(start AS TIME) BETWEEN '" + str(start_time) + "' and '" + str(
-                    #     end_time) + "'"
-                    # sessions_ids = []
-                    # sessions_list = Session.objects.raw(raw_sql)
-                    # for session in sessions_list:
-                    #     sessions_ids.append(session.id)
-
                     group_list = Group.objects.filter(id__in=groups)
                     for group in group_list:
                         group = LanguageKey.get_group_data_by_language(request, group)
 
-                    # grp_data = group_list
-                    # session_length = 0
                     sort_by_array = []
                     for sort_key in session_agenda_sort_on:
                         if sort_key == 'time':
@@ -4155,13 +3236,6 @@ class Plugins(generic.TemplateView):
                             sort_by_array.append('group__name')
                         elif sort_key == 'name':
                             sort_by_array.append('name')
-
-                    # if session_agenda_disable_grouping == False:
-                    #     for group in grp_data:
-                    #         group.sessions = Session.objects.filter(group_id=group.id,start__range=(sDate,eDate)).order_by('start')
-                    #         group.sessions = Plugins.get_sessions_details(request,group.sessions,page_id,box_id)
-                    #         session_length += len(group.sessions)
-                    # else:
                     if only_display_attendees_sessions:
                         grp_data = Session.objects.select_related('group').select_related('location').filter((Q((Q(seminarsusers__status='attending') | Q(seminarsusers__status='in-queue') | Q(seminarsusers__status='deciding')), seminarsusers__attendee_id=user_id) | Q(seminarspeakers__speaker_id=user_id)))\
                             .filter(group__in=groups, start__range=(sDate, eDate)).order_by(*sort_by_array).distinct()
@@ -4174,7 +3248,6 @@ class Plugins(generic.TemplateView):
                     economy_currency_txt = EconomyLibrary.get_event_currency(request.session['language_id'])
                     sessions_data = grp_data
                     context = {
-                        # "messages": messages,
                         "session_agenda_message": session_agenda_message,
                         'sessions_data': sessions_data,
                         'session_group_list': group_list,
@@ -4222,204 +3295,6 @@ class Plugins(generic.TemplateView):
             return plugin_div + """<div class="placeholder misconfigured"> %s </div></div>""" % (
                 lang['langkey']['session_agenda_txt_misconfigured'])
 
-    def getSchedulerEvents(request, *args, **kwargs):
-        tab = request.GET.get('tab')
-        box_id = request.GET.get('box_id')
-        page_id = request.GET.get('page_id')
-        element_settings = ElementsAnswers.objects.filter(page_id=page_id, box_id=box_id,
-                                                          element_question__question_key='session_scheduler_session_available')
-
-        attendee_id = request.session['event_user']['id']
-        sessions = Session.objects.all().select_related("group").filter(group__is_show=1, group__is_searchable=1,
-                                                                        group__event_id=request.session['event_user'][
-                                                                            'event_id'])
-
-        if tab == "all-session":
-            sessions = Session.objects.all().select_related("group").filter(group__is_show=1,
-                                                                            group__is_searchable=1,
-                                                                            group__event_id=
-                                                                            request.session['event_user'][
-                                                                                'event_id'])
-        elif tab == "my-session":
-            query_string = 'SELECT ssn.*, shu.status FROM sessions ssn left join seminars_has_users shu on ssn.id = shu.session_id left join seminars_has_speakers shs on ssn.id=shs.session_id left join groups grp on ssn.group_id = grp.id where (( shu.attendee_id=' + str(
-                attendee_id) + ' and shu.status="attending") or shs.speaker_id=' + str(
-                attendee_id) + ') and grp.is_searchable = 1 group by ssn.id order by grp.group_order'
-            sessions = Session.objects.raw(query_string)
-        response_data = []
-        session_option = element_settings[0].answer
-        # response_data = Plugins.get_sessions_details(request, sessions,element_settings[0].answer)
-        if len(list(sessions)) > 0:
-            all_langs = LanguageKey.catch_lang_key_obj(request, 'session-details')
-            economy_currency_txt = EconomyLibrary.get_event_currency(request.session['language_id'])
-            economy_cost = LanguageKey.catch_lang_key_multiple(request, 'economy', ['economy_txt_cost_excl_vat',
-                                                                                    'economy_txt_cost_incl_vat'])
-            economy_lang = {
-                "economy_currency_txt": economy_currency_txt,
-                "economy_cost": economy_cost
-            }
-            for session in sessions:
-                session = LanguageKey.get_session_data_by_language(request, session)
-                id = session.id
-                name = session.name
-                group = session.group_id
-                location = session.location.name
-                location_id = session.location.id
-                session_attendees = SeminarsUsers.objects.filter(session_id=session.id,
-                                                                 status='attending').count()
-                seats_remain = session.max_attendees - session_attendees
-                capacity = session.max_attendees
-                count = SeminarsUsers.objects.filter(session_id=id).exclude(status='not-attending').count()
-                full = False
-                if capacity != 0:
-                    if capacity <= count:
-                        full = True
-                full_queue_open = False
-                if full:
-                    if session.allow_attendees_queue:
-                        full_queue_open = True
-
-                start = str(session.start)
-                end = str(session.end)
-                rsvp_date = str(session.reg_between_end)
-                allday = session.all_day
-                if allday:
-                    start = session.start.strftime("%Y-%m-%d")
-                    end = session.end.strftime("%Y-%m-%d")
-
-                background = Group.objects.get(id=group)
-                background = LanguageKey.get_group_data_by_language(request, background)
-                color = background.color
-                status = "not-answered"
-                has_conflict = False
-                tags = SessionTags.objects.filter(session_id=session.id)
-                taglist = []
-                for tag in tags:
-                    taglist.append(tag.tag.name)
-
-                speakers = SeminarSpeakers.objects.filter(session_id=id)
-                speakersData = []
-                if speakers.count() > 0:
-                    for speaker in speakers:
-                        status = 'attending'
-                        badge_firstname = Answers.objects.filter(question__actual_definition='firstname',
-                                                                 user_id=speaker.speaker.id)
-                        if badge_firstname.exists():
-                            firstname = badge_firstname[0].value
-                        else:
-                            firstname = speaker.speaker.firstname
-
-                        badge_lastname = Answers.objects.filter(question__actual_definition='lastname',
-                                                                user_id=speaker.speaker.id)
-                        if badge_lastname.exists():
-                            lastname = badge_lastname[0].value
-                        else:
-                            lastname = speaker.speaker.lastname
-
-                        speaker_obj = {
-                            'id': speaker.speaker.id,
-                            'firstname': firstname,
-                            'lastname': lastname
-                        }
-                        speakersData.append(speaker_obj)
-
-                session_attendee = SeminarsUsers.objects.filter(attendee_id=attendee_id, session_id=session.id)
-                # session_speaker = SeminarSpeakers.objects.filter(speaker_id=attendee_id, session_id=session.id)
-                if session_attendee.count() > 0:
-                    if session_attendee[0].status == 'attending':
-                        status = "attending"
-                    elif session_attendee[0].status == 'in-queue':
-                        status = "in-queue"
-                    elif session_attendee[0].status == 'deciding':
-                        status = "deciding"
-                    elif session_attendee[0].status == 'not-attending':
-                        is_clash = Plugins.check_session_clash(attendee_id, session)
-                        # session_attending = SeminarsUsers.objects.filter(Q(attendee_id=attendee_id,
-                        #                                                    status="attending",
-                        #                                                    session__allow_overlapping=0) & (
-                        #                                                      Q(session__start__lte=session.start,
-                        #                                                        session__end__gt=session.start) | Q(
-                        #                                                          session__start__lt=session.end,
-                        #                                                          session__end__gte=session.end)))
-
-                        if is_clash:
-                            has_conflict = True
-                        status = 'not-attending'
-                else:
-                    is_clash = Plugins.check_session_clash(attendee_id, session)
-                    # session_attending = SeminarsUsers.objects.filter(Q(attendee_id=attendee_id,
-                    #                                                    status="attending",
-                    #                                                    session__allow_overlapping=0) & (
-                    #                                                      Q(session__start__lte=session.start,
-                    #                                                        session__end__gt=session.start) | Q(
-                    #                                                          session__start__lt=session.end,
-                    #                                                          session__end__gte=session.end)))
-                    if is_clash:
-                        has_conflict = True
-                        # status = 'time-conflict'
-                    # else:
-                    status = 'not-answered'
-                # if session_speaker.count() > 0:
-                #     status = "attending"
-
-                # time_now = datetime.now().date()
-                # setting_timezone = Setting.objects.filter(name='timezone', event_id=request.session['event_id'])
-                # if setting_timezone:
-                #     tzname = setting_timezone[0].value
-                #     timezone_active = timezone(tzname)
-                #     time_now = datetime.now(timezone_active)
-                #     time_now = time_now.strftime("%Y-%m-%d %H:%M:%S")
-                #     time_now = datetime.strptime(time_now,"%Y-%m-%d %H:%M:%S")
-                #     time_now = time_now.date()
-                time_zone_time = HelperData.getTimezoneNow(request)
-                time_now = time_zone_time.date()
-                session_expire = False
-                reg_between_end = session.reg_between_end
-                if reg_between_end < time_now:
-                    session_expire = True
-                session = SessionSeatAvailability.get_seats_availability(request, session, session_option,
-                                                                         request.session['event_id'], all_langs)
-                session = SessionSeatAvailability.get_vat_lang(request, session, session_option,
-                                                               request.session['event_id'], economy_lang, all_langs)
-                all_session_status = []
-                all_session_status.append(status)
-                if full:
-                    all_session_status.append("full")
-                    if full_queue_open:
-                        all_session_status.append("queue-open")
-                if has_conflict:
-                    all_session_status.append("time-conflict")
-                if session_expire:
-                    all_session_status.append("rsvp-ended")
-
-                session_obj = {
-                    'id': id,
-                    'Title': name,
-                    'groupId': group,
-                    'groupName': background.name,
-                    'Start': start,
-                    'End': end,
-                    'rsvp_date': rsvp_date,
-                    'color': color,
-                    'IsAllDay': allday,
-                    'full': full,
-                    'session_expire': session_expire,
-                    'full_queue_open': full_queue_open,
-                    'status': status,
-                    'location': location,
-                    'speakers': speakersData,
-                    'taglist': taglist,
-                    'location_id': location_id,
-                    'seat_availability': session.availability,
-                    'lang_vat_included': session.lang_vat_included,
-                    'lang_vat_excluded': session.lang_vat_excluded,
-                    'cost': session.cost,
-                    'cost_included_vat': session.cost_included_vat(),
-                    'all_session_status': all_session_status
-                }
-                response_data.append(session_obj)
-
-        return HttpResponse(json.dumps(response_data), content_type="application/json")
-
     def get_sessions_details(request, sessions, session_option, economy_currency_txt):
         is_login = False
         if 'is_user_login' in request.session and request.session['is_user_login']:
@@ -4429,18 +3304,13 @@ class Plugins(generic.TemplateView):
                      'sessiondetails_txt_seat_availability_x_of_y', 'sessiondetails_txt_no_seats_available',
                      'sessiondetails_txt_seats_available_queue_is_open', 'sessiondetails_txt_no_seats_available',
                      'sessiondetails_txt_seats_available', 'sessiondetails_txt_few_seats_available']
-        # all_langs = LanguageKey.catch_lang_key_obj(request, 'session-details')
         all_langs = LanguageKey.catch_lang_key_multiple(request, 'session-details', lang_keys)
-        # economy_currency_txt = EconomyLibrary.get_event_currency(request.session['language_id'])
         economy_cost = LanguageKey.catch_lang_key_multiple(request, 'economy',
                                                            ['economy_txt_cost_excl_vat', 'economy_txt_cost_incl_vat'])
         economy_lang = {
             "economy_currency_txt": economy_currency_txt,
             "economy_cost": economy_cost
         }
-        # session_option = element_settings_info['session_agenda_session_available']
-        # setting_timezone = Setting.objects.filter(name='timezone', event_id=request.session['event_id'])
-        # all_sessions = []
         for session in sessions:
             session = LanguageKey.get_session_data_by_language(request, session)
             id = session.id
@@ -4454,7 +3324,6 @@ class Plugins(generic.TemplateView):
             if full:
                 if session.allow_attendees_queue:
                     full_queue_open = True
-            # status = "not-attending"
             status = "not-answered"
             has_conflict = False
             tags = SessionTags.objects.filter(session_id=id)
@@ -4499,43 +3368,17 @@ class Plugins(generic.TemplateView):
                         status = "deciding"
                     elif session_attendee[0].status == 'not-attending':
                         is_clash = Plugins.check_session_clash(attendee_id, session)
-                        # session_attending = SeminarsUsers.objects.filter(Q(attendee_id=attendee_id,
-                        #                                                    status="attending",
-                        #                                                    session__allow_overlapping=0) & (
-                        #                                                      Q(session__start__lte=session.start,
-                        #                                                        session__end__gt=session.start) | Q(
-                        #                                                          session__start__lt=session.end,
-                        #                                                          session__end__gte=session.end)))
 
                         if is_clash:
                             has_conflict = True
-                            # status = 'time-conflict'
-                        # else:
                         if status != "attending":
                             status = 'not-attending'
                 else:
                     is_clash = Plugins.check_session_clash(attendee_id, session)
-                    # session_attending = SeminarsUsers.objects.filter(Q(attendee_id=attendee_id,
-                    #                                                    status="attending",
-                    #                                                    session__allow_overlapping=0) & (
-                    #                                                      Q(session__start__lte=session.start,
-                    #                                                        session__end__gt=session.start) | Q(
-                    #                                                          session__start__lt=session.end,
-                    #                                                          session__end__gte=session.end)))
                     if is_clash:
                         has_conflict = True
-                        # status = 'time-conflict'
-                    # else:
                     if status != "attending":
                         status = 'not-answered'
-            # time_now = datetime.now().date()
-            # if setting_timezone:
-            #     tzname = setting_timezone[0].value
-            #     timezone_active = timezone(tzname)
-            #     time_now = datetime.now(timezone_active)
-            #     time_now = time_now.strftime("%Y-%m-%d %H:%M:%S")
-            #     time_now = datetime.strptime(time_now,"%Y-%m-%d %H:%M:%S")
-            #     time_now = time_now.date()
             time_zone_time = HelperData.getTimezoneNow(request)
             time_now = time_zone_time.date()
             session_expire = False
@@ -4578,8 +3421,6 @@ class Plugins(generic.TemplateView):
                 else:
                     current_status = status
             session.is_disable = False
-            # if remove_conflict_sessions:
-            #     has_conflict = False
             if session_expire or has_conflict:
                 session.is_disable = True
             elif full:
@@ -4587,33 +3428,6 @@ class Plugins(generic.TemplateView):
                     session.is_disable = True
             session.current_status = current_status
             session.custom_classes = SessionClasses.objects.filter(session_id=id)
-            # ErrorR.okblue(session.__dict__)
-        #     session_obj = {
-        #         'id': id,
-        #         'name': session.name,
-        #         'group_id': session.group_id,
-        #         'group_name': session.group.name,
-        #         'start': session.start,
-        #         'end': session.end,
-        #         'rsvp_date': session.reg_between_end,
-        #         'allday': session.all_day,
-        #         'full': full,
-        #         'current_status': current_status,
-        #         'full_queue_open': full_queue_open,
-        #         'status': status,
-        #         'custom_classes': SessionClasses.objects.filter(session_id=id),
-        #         'speakers': speakersData,
-        #         'taglist': taglist,
-        #         'location_id': session.location_id,
-        #         'location_name': session.location.name,
-        #         'availability': session.availability,
-        #         'cost': session.cost,
-        #         'lang_vat_excluded': session.lang_vat_excluded,
-        #         'lang_vat_included': session.lang_vat_included,
-        #         'cost_included_vat': session.cost_included_vat
-        #     }
-        #     all_sessions.append(session_obj)
-        # return all_sessions
         return sessions
 
     def get_filtered_session_agenda(request, *args, **kwargs):
@@ -4623,10 +3437,7 @@ class Plugins(generic.TemplateView):
         page_id = request.POST.get('page_id')
         element_id = request.POST.get('element_id')
         groups = []
-        # groups = json.loads(request.POST.get('groups'))
         element_settings = request.POST.get('settings')
-        # my_session = request.POST.get('my_session')
-        # search_key = request.POST.get('search_key')
         date_range = request.POST.get('date_range')
         element_settings = json.loads(element_settings)
         session_agenda_day_starts_at = element_settings['session_agenda_day_starts_at']
@@ -4699,12 +3510,6 @@ class Plugins(generic.TemplateView):
                         default_groups = element_settings['session_agenda_session_groups']
                         for group in default_groups:
                             groups.append(group['value'])
-
-                    # group_list = Group.objects.filter(id__in=groups)
-                    # for group in group_list:
-                    #     group = LanguageKey.get_group_data_by_language(request, group)
-                    #
-                    # grp_data = group_list
                     session_agenda_sort_on = ['time', 'group', 'name']
                     try:
                         if session_agenda_view_sort_on != '':
@@ -4722,7 +3527,6 @@ class Plugins(generic.TemplateView):
                             sort_by_array.append('name')
 
                     session_length = 0
-                    # if my_session == 'false':
                     if only_display_attendees_sessions:
                         grp_data = Session.objects.filter((Q((Q(
                             seminarsusers__status='attending') | Q(seminarsusers__status='in-queue') | Q(
@@ -4731,20 +3535,11 @@ class Plugins(generic.TemplateView):
                     else:
                         grp_data = Session.objects.filter(group__in=groups, start__range=(sDate, eDate)).order_by(
                             *sort_by_array)
-                    # if len(search_key) !=0:
-                    #     grp_data = Plugins.get_searched_sessions(grp_data,session_agenda_searchable_property,search_key,visible_field)
                     economy_currency_txt = EconomyLibrary.get_event_currency(request.session['language_id'])
                     grp_data = Plugins.get_sessions_details(request, grp_data,
                                                             element_settings['session_agenda_session_available'],
                                                             economy_currency_txt)
                     session_length += len(grp_data)
-                    # else:
-                    #     grp_data = Session.objects.filter(group__in=groups,start__range=(sDate,eDate)).order_by('name').order_by(*sort_by_array)
-                    #     grp_data = grp_data.filter(Q(Q(seminarsusers__attendee_id=user_id) & Q(seminarsusers__status='attending'))| Q(seminarspeakers__speaker_id=user_id)).distinct()
-                    #     if len(search_key) !=0:
-                    #         grp_data = Plugins.get_searched_sessions(grp_data,session_agenda_searchable_property,search_key,visible_field)
-                    #     grp_data = Plugins.get_sessions_details(request, grp_data, element_settings)
-                    #     session_length += len(grp_data)
                     sessions_data = grp_data
                     economy_currency_txt = EconomyLibrary.get_event_currency(request.session['language_id'])
                     context = {
@@ -4798,8 +3593,6 @@ class Plugins(generic.TemplateView):
             q |= Q(group__name__icontains=key)
         if "name" in searchable_property:
             q |= Q(name__icontains=key)
-        # if "description" in searchable_property:
-        #     q |= Q(description__icontains=key)
         if "tag" in searchable_property and visible_field['session_agenda_session_tags']:
             q |= Q(sessiontags__tag__name__icontains=key)
         if "speaker" in searchable_property and visible_field['session_agenda_session_speaker']:
@@ -4859,8 +3652,6 @@ class Plugins(generic.TemplateView):
                     }
                     speakersData.append(speaker_obj)
             session.speakers = speakersData
-            # attendee = Attendee.objects.filter(id=attendee_id)
-
 
             session.is_speaker = False
             tags_list = SessionTags.objects.filter(session_id=session.id)
@@ -5294,106 +4085,9 @@ class Plugins(generic.TemplateView):
                 elif session.start < sessionlist.session.end <= session.end:
                     Inbetween = True
                     break
-        # else:
-        #     for sessionlist in already_has_session:
-        #         if sessionlist.session.allow_overlapping == 0:
-        #             if sessionlist.session.start <= session.start < sessionlist.session.end:
-        #                 Inbetween = True
-        #                 break
-        #             elif sessionlist.session.start < session.end <= sessionlist.session.end:
-        #                 Inbetween = True
-        #                 break
-        #             if session.start <= sessionlist.session.start < session.end:
-        #                 Inbetween = True
-        #                 break
-        #             elif session.start < sessionlist.session.end <= session.end:
-        #                 Inbetween = True
-        #                 break
-        #
-        #     for sessionlist in already_has_session_as_speaker:
-        #         if sessionlist.session.allow_overlapping == 0:
-        #             if sessionlist.session.start <= session.start < sessionlist.session.end:
-        #                 Inbetween = True
-        #                 break
-        #             elif sessionlist.session.start < session.end <= sessionlist.session.end:
-        #                 Inbetween = True
-        #                 break
-        #             if session.start <= sessionlist.session.start < session.end:
-        #                 Inbetween = True
-        #                 break
-        #             elif session.start < sessionlist.session.end <= session.end:
-        #                 Inbetween = True
-        #                 break
-        # Inbetween = False
         return Inbetween
 
-    # def get_session_details(request, sessionGroups, event_id, session_option,economy_currency_txt):
-    #     response = {}
-    #     session_details_lang = LanguageKey.get_session_details_lang(request)
-    #     all_langs = LanguageKey.catch_lang_key_obj(request, 'session-details')
-    #
-    #     for group in sessionGroups:
-    #         group.sessions = Session.objects.filter(group_id=group.id).order_by('session_order')
-    #         for session in group.sessions:
-    #             session.cost_detail = session.get_cost_detail()
-    #             if session.vat != None:
-    #                 lang_vat_included = session_details_lang["langkey"]['sessiondetails_txt_session_cost_incl_vat']
-    #                 amount = session.get_vat_amount()
-    #                 if not HelperData.isint(amount):
-    #                     amount = '{:0,.2f}'.format(amount).replace(",", " ")
-    #                 else:
-    #                     amount = '{0:,}'.format(int(amount)).replace(",", " ")
-    #
-    #                 lang_vat_included = lang_vat_included.replace("{X}", '%s %s'%(amount,economy_currency_txt))
-    #                 session.lang_vat_included = lang_vat_included
-    #
-    #                 lang_vat_excluded = session_details_lang["langkey"]['sessiondetails_txt_session_cost_excl_vat']
-    #                 lang_vat_excluded = lang_vat_excluded.replace("{X}", '%s %s'%(amount,economy_currency_txt))
-    #                 session.lang_vat_excluded = lang_vat_excluded
-    #             else:
-    #                 lang_vat_included = session_details_lang["langkey"]['sessiondetails_txt_session_cost_incl_vat']
-    #                 lang_vat_included = lang_vat_included.replace("{X}", '%s %s'%(str(0),economy_currency_txt))
-    #                 session.lang_vat_included = lang_vat_included
-    #
-    #                 lang_vat_excluded = session_details_lang["langkey"]['sessiondetails_txt_session_cost_excl_vat']
-    #                 lang_vat_excluded = lang_vat_excluded.replace("{X}", '%s %s'%(str(0),economy_currency_txt))
-    #                 session.lang_vat_excluded = lang_vat_excluded
-    #
-    #             session.tags = SessionTags.objects.filter(session_id=session.id)
-    #             session.speakers = SeminarSpeakers.objects.filter(session_id=session.id)
-    #             session.custom_classes = SessionClasses.objects.filter(session_id=session.id)
-    #             session = SessionSeatAvailability.get_seats_availability(request, session, session_option, event_id,
-    #                                                                      all_langs)
-    #             session = LanguageKey.get_session_data_by_language(request, session)
-    #
-    #
-    #     response['sessionGroups'] = sessionGroups
-    #     response['session_details_lang'] = session_details_lang
-    #     return response
-
     def check_session_availability(request, *args, **kwargs):
-        # rebates = json.loads(request.POST.get('rebates'))
-        # rebate_type = request.POST.get('rebate_type')
-        # else_rebate = rebates.pop()
-        # user_id = request.session['event_user']['id']
-        # if rebate_type == 'filter':
-        #     for rebate_item in rebates:
-        #         rule_set = RuleSet.objects.filter(id=rebate_item['filter_id']).first()
-        #         if rule_set:
-        #             filters = json.loads(rule_set.preset)
-        #             q = Q()
-        #             match_condition = filters[0][0]['matchFor']
-        #             if match_condition == '2':
-        #                 q &= Q(id__in=UserRule.get_filtered_attendee(request, filters, match_condition))
-        #             elif match_condition == '1':
-        #                 q = Q(id=-11)
-        #                 q |= Q(id__in=UserRule.get_filtered_attendee(request, filters, match_condition))
-        #
-        #             filtered_attendee = Attendee.objects.filter(q).filter(id=user_id)
-        #             if filtered_attendee:
-        #                 print(rebate_item['rebate_id'])
-        #
-        # raise Exception()
         operation = request.POST.get('operation')
         response = {}
         event_id = request.session['event_id']
@@ -5410,9 +4104,6 @@ class Plugins(generic.TemplateView):
                                          language_id=request.session["language_id"])
                 temp_attendee.save()
                 user_id = temp_attendee.id
-                # request.POST._mutable = True
-                # request.POST['temp_user_id'] = user_id
-                # request.POST._mutable = False
             # temporary login
             tem_session = DynamicPage.tem_login_make(request, user_id)
 
@@ -5484,11 +4175,6 @@ class Plugins(generic.TemplateView):
                             rebates = request.POST.get('rebates')
                             if rebate_type and rebates:
                                 Plugins.check_and_apply_rebate(request, rebate_type, rebates, user_id, order_values)
-                            # rebates = json.loads(request.POST.get('rebates'))
-                            # for rebate in rebates:
-                            #     EconomyLibrary.apply_rebate(user_id=user_id, order_id=order_values['order_id'],
-                            #                                 rebate_id=rebate['rebate_id'],
-                            #                                 rebate_item_type='session', rebate_item_id=rebate['rebate_for'])
                         else:
                             response['order_number'] = None
                         if previous_id not in [0, '0']:
@@ -5529,9 +4215,6 @@ class Plugins(generic.TemplateView):
                                          language_id=request.session["language_id"])
                 temp_attendee.save()
                 user_id = temp_attendee.id
-                # request.POST._mutable = True
-                # request.POST['temp_user_id'] = user_id
-                # request.POST._mutable = False
             # temporary login
             tem_session = DynamicPage.tem_login_make(request, user_id)
 
@@ -5579,11 +4262,6 @@ class Plugins(generic.TemplateView):
                         rebates = request.POST.get('rebates')
                         if rebate_type and rebates:
                             Plugins.check_and_apply_rebate(request, rebate_type, rebates, user_id, order_values)
-                        # rebates = json.loads(request.POST.get('rebates'))
-                        # for rebate in rebates:
-                        #     EconomyLibrary.apply_rebate(user_id=user_id, order_id=order_values['order_id'],
-                        #                                 rebate_id=rebate['rebate_id'],
-                        #                                 rebate_item_type='session', rebate_item_id=rebate['rebate_for'])
                     else:
                         response['order_number'] = None
 
@@ -5872,17 +4550,11 @@ class Plugins(generic.TemplateView):
                 if order_values:
                     response['order_number'] = order_values['order_number']
                     group_order_number = order_values['order_number']
-                    # rebates = json.loads(se_session['rebates'])
-                    # for rebate in rebates:
-                    #     EconomyLibrary.apply_rebate(user_id=user_id, order_id=order_values['order_id'],
-                    #                                 rebate_id=rebate['rebate_id'],
-                    #                                 rebate_item_type='session', rebate_item_id=rebate['rebate_for'])
                     rebate_type = se_session.get('rebate_type')
                     rebates = se_session.get('rebates')
                     if rebate_type and rebates:
                         Plugins.check_and_apply_rebate(request, rebate_type, rebates, user_id, order_values)
                 else:
-                    print('ELSE BLOCK *********')
                     response['order_number'] = None
             if tem_session:
                 response['temp_user_id'] = user_id
@@ -6072,7 +4744,6 @@ class Plugins(generic.TemplateView):
                     response['success'] = True
                     response['status'] = 'not-attending'
                     response['previous_sessions_content_status_msg'][str(ses.session_id)] = all_langs['langkey']['sessiondetails_txt_status_not_attending']
-                    # response['message'] = NotifyView.get_notification_text(request, "notify_unregistered_session")
                 else:
                     response['rsvp_ended'] = True
         return response
@@ -6134,9 +4805,6 @@ class Plugins(generic.TemplateView):
                         context['group_order_combined'] = eval(setting.answer)
                     elif setting.element_question.question_key == 'economy_download_invoice_changing_status':
                         context['download_invoice_changing_status'] = eval(setting.answer)
-
-                    # elif setting.element_question.question_key == 'economy_order_as':
-                    #     context['order_table_type'] = setting.answer
                     elif setting.element_question.question_key == 'economy_include_balance_table':
                         context['balance_table'] = eval(setting.answer)
                     elif setting.element_question.question_key == 'economy_pay_by_card_button_status':
@@ -6257,31 +4925,6 @@ class Plugins(generic.TemplateView):
         else:
             response = HttpResponse('Something went wrong.')
         return response
-
-    # def download_page_pdf(request, *args, **kwargs):
-    #     try:
-    #         if 'is_user_login' in request.session and request.session['is_user_login']:
-    #             attendee_id = request.session['event_user']['id']
-    #             page_id = request.GET.get('page_id')
-    #             page = PageContent.objects.get(id=page_id)
-    #             pdf_name = 'page_'+ str(attendee_id)
-    #             session = boto3.Session(settings.AWS_ACCESS_KEY_ID, settings.AWS_SECRET_ACCESS_KEY)
-    #             s3 = session.client('s3')
-    #             key = 'public/' + page.template.event.url + '/files/'+pdf_name+'.txt'
-    #             obj = s3.get_object(Bucket=settings.AWS_STORAGE_BUCKET_NAME, Key=key)
-    #             html_content = obj['Body'].read().decode('utf-8')
-    #             font_config = FontConfiguration()
-    #             html = HTML(string=html_content)
-    #             result = html.write_pdf(font_config=font_config)
-    #             response = HttpResponse(content_type='application/pdf')
-    #             response['Content-Disposition'] = 'attachment; filename="{}"'.format("page.pdf")
-    #             response['Content-Transfer-Encoding'] = 'binary'
-    #             response.write(result)
-    #             s3.delete_object(Bucket=settings.AWS_STORAGE_BUCKET_NAME, Key=key)
-    #             return response
-    #     except Exception as e:
-    #         ErrorR.efail(e)
-    #         return HttpResponse('Something went wrong.')
 
     def get_logout_plugin(request, *args, **kwargs):
         response_data = {}
@@ -6434,34 +5077,6 @@ class MultipleRegistration(generic.DetailView):
                     elif btn_page_answer['state'] == 2:
                         result = True
                         page_id = int(btn_page_answer['data']['page_id'])
-                        # elif btn_page_answer['state'] == 3:
-                        #     response_data['result'] = True
-                        #     p_counter = 0
-                        #     p_length = len(btn_page_answer['data'])
-                        #     for prerequisite in btn_page_answer['data']:
-                        #         if p_counter < p_length - 1:
-                        #             filters = json.loads(RuleSet.objects.get(id=prerequisite['filter_id']).preset)
-                        #             q = Q()
-                        #             match_condition = filters[0][0]['matchFor']
-                        #             if match_condition == '2':
-                        #                 q &= Q(id__in=UserRule.get_filtered_attendee(request, filters, match_condition))
-                        #             elif match_condition == '1':
-                        #                 q = Q(id=-11)
-                        #                 q |= Q(id__in=UserRule.get_filtered_attendee(request, filters, match_condition))
-                        #
-                        #             attendees = Attendee.objects.filter(q)
-                        #             att_existence = '1' if attendees.filter(id=user_id).count() > 0 else '0'
-                        #             if prerequisite['match'] == att_existence:
-                        #                 if prerequisite['page_id'] != '':
-                        #                     page_url = PageContent.objects.get(
-                        #                         id=int(prerequisite['page_id'])).url
-                        #                     response['page'] = Registration.get_redirect_page(request,page_url)
-                        #                 break
-                        #         else:
-                        #             if prerequisite['page_id'] != '':
-                        #                 page_url = PageContent.objects.get(id=int(prerequisite['page_id'])).url
-                        #                 response['page'] = Registration.get_redirect_page(request,page_url)
-                        #         p_counter += 1
                 elif answer.element_question.question_key == 'submit_button_finish_multiple_registration_loop':
                     if answer.answer == 'True':
                         finish_multiple_registration_loop = True
@@ -6545,24 +5160,6 @@ class PageWithLanguage(generic.DetailView):
                 except Exception as e:
                     pass
             menu_id = menu.menu.id
-            # my_rule_set = []
-            # attendee_id = 0
-            # if 'is_user_login' in request.session and request.session['is_user_login']:
-            #     attendee_id = request.session['event_user']['id']
-            #     rule_sets = RuleSet.objects.filter(group__event_id=event_id)
-            #     for rule in rule_sets:
-            #         filters = json.loads(rule.preset)
-            #         q = Q()
-            #         match_condition = filters[0][0]['matchFor']
-            #         if match_condition == '2':
-            #             q &= Q(id__in=UserRule.get_filtered_attendee(request, filters, match_condition))
-            #         elif match_condition == '1':
-            #             q = Q(id=-11)
-            #             q |= Q(id__in=UserRule.get_filtered_attendee(request, filters, match_condition))
-            #         attendees = Attendee.objects.filter(q)
-            #
-            #         if attendees.filter(id=attendee_id).count() > 0:
-            #             my_rule_set.append(rule.id)
 
             if 'is_user_login' in request.session and request.session['is_user_login']:
                 menu_items = MenuPermission.objects.filter(

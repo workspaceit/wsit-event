@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render
 from django.views import generic
 from django.http import HttpResponse
 import json
@@ -93,25 +93,6 @@ class LocationView(generic.DetailView):
                     return HttpResponse(json.dumps(response))
 
                 location_old = Locations.objects.get(id=location_id)
-                # form_data_lang = [{
-                #     "lang_key": "name_lang",
-                #     "lang_value": name_lang,
-                #     "current_lang": location_old.name_lang
-                # },{
-                #     "lang_key": "description_lang",
-                #     "lang_value": description_lang,
-                #     "current_lang": location_old.description_lang
-                # },{
-                #     "lang_key": "address_lang",
-                #     "lang_value": address_lang,
-                #     "current_lang": location_old.address_lang
-                # },{
-                #     "lang_key": "contact_name_lang",
-                #     "lang_value": contact_name_lang,
-                #     "current_lang": location_old.contact_name_lang
-                # }]
-                # form_data = LanguageH.update_lang(current_language_id, form_data, form_data_lang)
-
                 form_data = LanguageH.update_lang(current_language_id, form_data, "name_lang", name_lang,
                                                   location_old.name_lang)
                 form_data = LanguageH.update_lang(current_language_id, form_data, "description_lang",
@@ -209,7 +190,6 @@ class LocationView(generic.DetailView):
                 return HttpResponse(json.dumps(response_data), content_type='application/json')
 
             location.pk = None
-            # if '[Copy]' not in session.name:
             location.name += '[Copy]'
             location.save()
             response_data['success'] = "Create duplicate location Successfully"

@@ -17,19 +17,8 @@ var moment_date_format;
 var cookie_expire = $('#cookie_expire').val();
 var cookie_counter = cookie_expire;
 $(document).ajaxSuccess(function () {
-    // cookie_counter = cookie_expire;
-    console.log("Triggered ajaxSuccess handler.");
+    clog("Triggered ajaxSuccess handler.");
 });
-// var cookie_expire_msg = 'You have been idle for too long and have been logged out. Click Okay to reload the page.';
-// var cookie_timer = setInterval(function () {
-//     cookie_counter -= 1;
-//     if (cookie_counter <= -10) {
-//         bootbox.alert(cookie_expire_msg, function () {
-//             location.reload();
-//         });
-//         clearInterval(cookie_timer);
-//     }
-// }, 1000);
 
 init.push(function () {
     $('#add-attendee-question-attendee-tags').editable({
@@ -224,9 +213,7 @@ $(function () {
 
     var current_attendee = location.hash.split('#id');
     if (current_attendee.length > 1) {
-        console.log(current_attendee);
         var current_attendee_id = current_attendee[1];
-        console.log(current_attendee_id);
         setTimeout(function () {
             showUserInfo(current_attendee_id);
         }, 100);
@@ -499,7 +486,6 @@ $('body').on('click', '#edit-group-order', function (event) {
         url: base_url + '/admin/attendee/' + attendee_id + '/group-orders/',
         type: "GET",
         success: function (result) {
-            console.log(result)
             $('#edit-orders-group').html(result.html);
             $('#edit-orders-group').find('.order-status-edit-dropdown').select2();
             $('.loader').hide();
@@ -597,8 +583,6 @@ $('body').on('click', '#btn-add-rebate-order', function (event) {
     var rebate_id = $('#rebates').val();
     var csrf_token = $('input[name=csrfmiddlewaretoken]').val();
     var user_id = $(this).attr('data-attendee-id');
-    console.log('user_id');
-    console.log(user_id);
     $('.loader').show();
     $this.attr('disabled', true);
     $.ajax({
@@ -720,12 +704,10 @@ $('body').on('click', '.admin-request-download-pdf', function (event) {
 });
 
 $('body').on('click', '.cost-exl-td .editable-submit', function (e) {
-    console.log('clicked');
     var order_item = $(this).closest('td').find('.change-item-cost-show-id').attr('data-order-item');
     var item_cost = $(this).closest('td').find('.change-item-cost-show-id').attr('data-cost');
     var new_cost = $(this).closest('td').find('.input-mini').val();
     if(new_cost != '' && item_cost != new_cost && new_cost > 0){
-        console.log('Cost changed');
         var csrf_token = $('input[name=csrfmiddlewaretoken]').val();
         $.ajax({
             url: base_url + '/admin/attendee/change-order-item-cost/',
@@ -1697,22 +1679,9 @@ $('body').on('click', '.createAttendee', function (event) {
             }
             answers.push(answer);
         }
-        console.log(answers);
-
-        //else {
-        //
-        //    if ($(this).attr('data-req') == 'true') {
-        //        error = true;
-        //        var msgName = $(this).closest('tr').find('td:first').html();
-        //        msg += "Please fill up " + msgName + " field" + "\n";
-        //
-        //    }
-        //}
 
     });
     answers = JSON.stringify(answers);
-    clog(answers);
-    clog(msg);
     // hotels and rooms
     var bookings = [];
 
@@ -3914,7 +3883,7 @@ function removeMultipleClass(classesAlpha, $div) {
 }
 
 function clog(message) {
-    if (window.location.hostname != '192.168.1.67') {
+    if (window.location.hostname != '192.168.1.67' && window.location.hostname != '163.53.151.2') {
         console.log(message);
     }
 }

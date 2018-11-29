@@ -29,10 +29,6 @@ class DeletedAttendees(BaseDatatableView):
             Q(phonenumber__icontains=search)|Q(fullname__istartswith=search))
         return filtered_qs
 
-    # def filter_queryset(self, qs):
-    #      no need to override this method
-    #     return qs
-
     def prepare_results(self, qs):
         json_data = []
         for att in qs:

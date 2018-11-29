@@ -5,12 +5,9 @@ from app.models import Attendee, EmailContents, AttendeePasswordResetRequest, \
 from app.views.email_view import EmailReceiversView
 
 from app.views.gbhelper.error_report_helper import ErrorR
-# from django.conf import settings
 import json
 import boto.sqs
-# from boto.sqs.message import Message
 from django.conf import settings
-# import os
 from app.views.email_content_view import EmailContentDetailView
 import logging
 
@@ -48,24 +45,13 @@ class UserEmail(generic.DeleteView):
                     subject = UserEmail.get_email_subject_by_language(attendee.language_id, email_data)
                     email_receiver = attendee
                 sender_mail = email_data.sender_email
-                # data = json.dumps({
-                #     'to': to,
-                #     'sender': sender_mail,
-                #     'subject': subject,
-                #     'template': mail_template_content,
-                #     'environment': os.environ['ENVIRONMENT_TYPE'],
-                #     'local_env': settings.LOCAL_ENV
-                # })
                 data = {
                     "from_address": sender_mail.strip(),
                     "to_address": to.strip(),
                     "subject": subject.strip(),
                     "mime_message_html": mail_template_content.strip()
                 }
-                # m.set_body(data)
-                # queue.write(m)
                 email_queue.append(data)
-                # queue.write_batch(email_queue)
                 EmailReceiversView.process_mail_and_send(request, email_queue)
                 # Add Email Activities for attendee
                 ErrorR.ex_time_init()
@@ -118,11 +104,9 @@ class UserEmail(generic.DeleteView):
                                                                         email_data.template.content,
                                                                         attendee_owner.language_id)
                         mail_template_content = mail_template.replace('{content}', main_content)
-                        # to = attendee_owner.email
                         i = 1
                         email_queue = UserEmail.add_email_to_queue(email_data, attendee_owner, mail_template_content,
                                                                    email_queue, i)
-                        # queue.write_batch(email_queue)
                         # Add Email Activities for attendee
                         ErrorR.ex_time_init()
                         UserEmail.add_or_update_email_receivers(attendee_owner, email_data.id, admin_id)
@@ -153,15 +137,6 @@ class UserEmail(generic.DeleteView):
                             UserEmail.add_or_update_email_receivers(attendee, email_data.id, admin_id)
                             email_activities = UserEmail.add_email_activities(email_data.subject, admin_id,attendee.id,attendee.event_id, email_activities)
                             ErrorR.ex_time()
-                        #     if i == 10:
-                        #         queue.write_batch(email_queue)
-                        #         email_queue = []
-                        #         i = 1
-                        #     else:
-                        #         i = i + 1
-                        # if i > 1:
-                        #     print('hi')
-                        #     queue.write_batch(email_queue)
                         ErrorR.ex_time_init()
                         if len(email_activities) > 0:
                             ActivityHistory.objects.bulk_create(email_activities)
@@ -199,31 +174,17 @@ class UserEmail(generic.DeleteView):
     def add_email_to_queue(email_data, attendee, main_content, email_queue, i):
         subject = UserEmail.get_email_subject_by_language(attendee.language_id, email_data)
         sender_mail = email_data.sender_email
-        # data = json.dumps({
-        #     'to': attendee.email,
-        #     'sender': sender_mail,
-        #     'subject': subject,
-        #     'template': main_content,
-        #     'environment': os.environ['ENVIRONMENT_TYPE'],
-        #     'local_env': settings.LOCAL_ENV
-        # })
         data = {
             "from_address": sender_mail.strip(),
             "to_address": attendee.email.strip(),
             "subject": subject.strip(),
             "mime_message_html": main_content.strip()
         }
-        # m.set_body(data)
-        # queue.write(m)
-        # email_queue.append((i, data, 0))
         email_queue.append(data)
         return email_queue
 
     # recovery account use only
     def send_email_reset_password(request, send_email_id, userData):
-        # import json
-        # import boto.sqs
-        # from boto.sqs.message import Message
         from django.conf import settings
         # import os
         from app.views.email_content_view import EmailContentDetailView
@@ -231,12 +192,7 @@ class UserEmail(generic.DeleteView):
             admin_id = 1
             email_data = EmailContents.objects.filter(id=int(send_email_id))
             if email_data.exists():
-                # conn = boto.sqs.connect_to_region(settings.SES_REGION, aws_access_key_id=settings.AWS_ACCESS_KEY_ID,
-                #                                   aws_secret_access_key=settings.AWS_SECRET_ACCESS_KEY)
-                # queue = conn.get_queue('test_email_queue')
-                # m = Message()
                 email_queue = []
-                # content = email_data[0].content
                 content = UserEmail.get_content_with_lang(userData[0].event_id, send_email_id, userData[0].language_id)
                 to = userData[0].email
                 subject = UserEmail.get_email_subject_by_language(userData[0].language_id, email_data[0])
@@ -273,23 +229,12 @@ class UserEmail(generic.DeleteView):
                                             :start_hash_msg] + hash_new_msg + mail_template_content[
                                                                               end_hash_msg:]
                     mail_template_content = mail_template_content.replace('[:end_hash]', '')
-
-                # data = json.dumps({
-                #     'to': to,
-                #     'sender': sender_mail,
-                #     'subject': subject,
-                #     'template': mail_template_content,
-                #     'environment': os.environ['ENVIRONMENT_TYPE'],
-                #     'local_env': settings.LOCAL_ENV
-                # })
                 data = {
                     "from_address": sender_mail.strip(),
                     "to_address": to.strip(),
                     "subject": subject.strip(),
                     "mime_message_html": mail_template_content.strip()
                 }
-                # m.set_body(data)
-                # queue.write(m)
                 email_queue.append(data)
                 EmailReceiversView.process_mail_and_send(request, email_queue)
                 UserEmail.add_or_update_email_receivers(userData[0], email_data[0].id, admin_id)
@@ -297,7 +242,6 @@ class UserEmail(generic.DeleteView):
                                                                   userData[0].event_id, [])
                 if len(email_activities) > 0:
                     ActivityHistory.objects.bulk_create(email_activities)
-                # queue.write_batch(email_queue)
             return
         except Exception as e:
             ErrorR.efail(e)
@@ -322,14 +266,6 @@ class UserEmail(generic.DeleteView):
                 to = attendee.email
                 subject = UserEmail.get_email_subject_by_language(attendee.language_id, email_data)
                 sender_mail = email_data.sender_email
-                # data = json.dumps({
-                #     'to': to,
-                #     'sender': sender_mail,
-                #     'subject': subject,
-                #     'template': mail_template_content,
-                #     'environment': os.environ['ENVIRONMENT_TYPE'],
-                #     'local_env': settings.LOCAL_ENV
-                # })
                 data = {
                     "from_address": sender_mail.strip(),
                     "to_address": to.strip(),
@@ -343,7 +279,6 @@ class UserEmail(generic.DeleteView):
                                                                   attendee.event_id, [])
                 if len(email_activities) > 0:
                     ActivityHistory.objects.bulk_create(email_activities)
-                # queue.write_batch(email_queue)
         except Exception as e:
             ErrorR.efail(e)
         return

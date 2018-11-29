@@ -10,14 +10,12 @@ from boto3.session import Session as boto_session
 
 from app.views.common_views import EventView
 from app.views.gbhelper.editor_helper import EditorHelper
-from app.views.gbhelper.error_report_helper import ErrorR
 from bs4 import BeautifulSoup
 
 
 class EmailTemplateView(generic.DetailView):
     def get(self, request):
         if EventView.check_read_permissions(request, 'template_permission'):
-            # styles = EmailTemplateView.get_style(request.session['event_auth_user']['event_id'])
             email_templates = EmailTemplates.objects.filter(event_id=request.session['event_auth_user']['event_id'], is_show=1, category='email_templates')
             web_pages_templates = EmailTemplates.objects.filter(event_id=request.session['event_auth_user']['event_id'], is_show=1, category='web_pages')
             invoice_templates = EmailTemplates.objects.filter(event_id=request.session['event_auth_user']['event_id'], is_show=1, category='invoices')
@@ -42,7 +40,6 @@ class EmailTemplateView(generic.DetailView):
                     template_id = request.POST.get('id')
                     if 'content' in request.POST:
                         data = json.loads(request.POST.get('content'))
-                        # content = data['content'].replace(settings.STATIC_URL_ALT, '[[static]]')
                         EmailTemplates.objects.filter(id=template_id).update(content=data, last_updated_by_id=admin_id)
                         response_data = {
                             'success': True,
@@ -54,10 +51,6 @@ class EmailTemplateView(generic.DetailView):
                         default_templates = ["default-web-template","default-email-template","default-invoice-template","default-credit-invoice-template","default-receipt-template"]
                         if old_template.name in default_templates:
                             template_name = old_template.name
-                        # if old_template.name == 'default-web-template':
-                        #     template_name = 'default-web-template'
-                        # elif old_template.name == 'default-email-template':
-                        #     template_name = 'default-email-template'
                         name = EmailTemplates.objects.filter(name=template_name, event_id=event_id, is_show=1).exclude(id=template_id)
                         if not name.exists():
                             EmailTemplates.objects.filter(id=template_id).update(name=template_name, category=template_category, last_updated_by_id=admin_id)
@@ -79,10 +72,6 @@ class EmailTemplateView(generic.DetailView):
                     script_files = ""
                     if template_category == "web_pages" or template_category == "pdf":
                         style_files = """<link rel="stylesheet" type="text/css" href="[[css]]" />"""
-                        # styles = EmailTemplateView.get_style(event_id)
-                        # for style in styles['css']:
-                        #     style_files+= """<link rel="stylesheet" type="text/css" href='"""+style+"""' />"""
-                        # script_files = """<script type="text/javascript" src='public/js/jquery.min.js'></script>"""
                     if not name.exists():
                         content = """<!DOCTYPE html>
                         <html lang=sv-se>
@@ -140,7 +129,6 @@ class EmailTemplateView(generic.DetailView):
             template_id = request.POST.get('id')
             template = EmailTemplates.objects.get(id=template_id)
             default_templates = ["default-web-template","default-email-template","default-invoice-template","default-credit-invoice-template","default-receipt-template"]
-            # if template.name == 'default-web-template' or template.name == 'default-email-template':
             if template.name in default_templates:
                 response_data['warning'] = "You can't delete the Default template"
             else:
@@ -171,7 +159,6 @@ class EmailTemplateView(generic.DetailView):
                 url = url.replace(settings.STATIC_URL_ALT, '[[static]]')
                 url = '[[static]]public/[[event_url]]/compiled_css/main_style.css'
                 css_files.append(url)
-                print(url)
         return {'css':css_files}
 
 
@@ -205,7 +192,6 @@ class EmailTemplateDetailView(generic.DetailView):
             }
             context.update(editor_common_context)
             return render(request, 'email_template/template_editor.html',context)
-            # return render(request, 'email_template/edit_template.html',context)
         else:
             raise Http404
 

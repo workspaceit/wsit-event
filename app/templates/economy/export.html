@@ -2,12 +2,10 @@
 {% block content %}
     {% load staticfiles %}
     <div id="content-wrapper">
-        {#        {% csrf_token %}#}
         <h4>Download all invoices, credit invoices and receipts.</h4>
         <ul style="list-style-type: none; margin-top: 1em;">
             {% for item in item_list %}
                 <li><button class="btn btn-primary download-all-event-pdf" data-type="{{ item.type }}">{{ item.name }}</button></li>
-{#                <li><a class="btn btn-primary" target="_blank" href="/admin/economy/export/download-all/?type={{ item.type }}">{{ item.name }}</a></li>#}
                 <li>&nbsp;</li>
             {% endfor %}
         </ul>

@@ -161,7 +161,6 @@ $(function () {
         traverse(fi, c);
         if (group_id != undefined && group_id != '') {
             if (preset_name != '') {
-                console.log(c);
                 $.map(c, function (elementOfArray, indexInArray) {
                     if (elementOfArray.length == 0) {
                         c.splice(indexInArray, 1);

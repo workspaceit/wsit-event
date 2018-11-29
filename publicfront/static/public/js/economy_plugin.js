@@ -7,7 +7,7 @@ function economy_add_to_order($element, item_type, item_id) {
         if (item_type == 'session') {
             economy_data.sessions.push(item_id);
             if(rebates.prerequisite){
-                console.log(rebates.prerequisite);
+                clog(rebates.prerequisite);
             } else {
                 var rebate_index = $.inArray(item_id, rebates.session_ids);
                 if (rebate_index != -1) {
@@ -83,8 +83,6 @@ function add_order_table_row($element, item_type, item_detail, info_for_rebate) 
             $table.closest('.order-table-event-question').find('.data-economy-attendee-id').val(order_attendee_checker);
         }
     }
-    console.log('$table');
-    console.log($table==undefined);
     var row, rebate_value, rebate_amount, economy_currency = $table.closest('.economy-order-table').find('.economy-text-lang-currency').val();
     var ot_visible_columns = JSON.parse($table.closest('.economy-order-table').find('.order-table-visible-columns').val());
     if (item_type == 'rebate') {

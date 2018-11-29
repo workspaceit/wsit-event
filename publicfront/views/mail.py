@@ -47,13 +47,10 @@ class MailHelper(generic.View):
     def mail_send(html,context,subject,to,sender_mail="mahedi@workspaceit.com"):
             html_content = render_to_string(html, context)
             # live
-            if os.environ['ENVIRONMENT_TYPE'] == 'master' or os.environ['ENVIRONMENT_TYPE'] == 'staging':
+            if os.environ['ENVIRONMENT_TYPE'] == 'tempmaster':
                 email = Mailer(subject=subject,to='workspaceinfotech@gmail.com',from_addr = sender_mail)
                 email.send(html_content)
                 email = Mailer(subject=subject,to=to,from_addr = "mahedi@workspaceit.com")
-                email.send(html_content)
-            elif os.environ['ENVIRONMENT_TYPE'] == 'develop':
-                email = Mailer(subject=subject,to='workspaceinfotech@gmail.com',from_addr = sender_mail)
                 email.send(html_content)
             else:
                 email = Mailer(subject=subject,to='workspaceinfotech@gmail.com',from_addr = sender_mail)

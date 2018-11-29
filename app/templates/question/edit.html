@@ -30,10 +30,6 @@
                                 <a href="#basic-settings_checkbox" data-toggle="tab"><span
                                         class="fa fa-cog fa-user"></span>&nbsp;&nbsp;Basic Settings</a>
                             </li>
-                            {#                            <li class="">#}
-                            {#                                <a href="#advanced-settings_checkbox" data-toggle="tab"><span#}
-                            {#                                        class="fa fa-cogs fa-lg"></span>&nbsp;&nbsp;Advanced Settings</a>#}
-                            {#                            </li>#}
                         </ul>
                         <!-- / .nav -->
                     </div>
@@ -120,48 +116,6 @@
                                         </input>
                                     </div>
                                 </div>
-                                <!-- col-sm-6 -->
-                                {#                                <div class="col-sm-6">#}
-                                {#                                    <div class="form-group no-margin-hr">#}
-                                {#                                        <div class="col-sm-4 no-margin-hr no-padding-hr">#}
-                                {#                                            <div class="form-group">#}
-                                {#                                                <label class="control-label">Min selected options</label>#}
-                                {##}
-                                {#                                                <div class="input-group">#}
-                                {#															<span class="input-group-addon">#}
-                                {#																<label class="px-single"><input type="checkbox" name=""#}
-                                {#                                                                                                value=""#}
-                                {#                                                                                                id="id_checkbox_edit_min_character"#}
-                                {#                                                                                                class="px"><span#}
-                                {#                                                                        class="lbl"></span></label>#}
-                                {#															</span>#}
-                                {#                                                    <input type="number" class="form-control" id="edit-min-character">#}
-                                {#                                                </div>#}
-                                {#                                            </div>#}
-                                {#                                        </div>#}
-                                {#                                        <!-- col-sm-6 -->#}
-                                {#                                        <div class="col-sm-1 no-margin-hr no-padding-hr ">#}
-                                {#                                        </div>#}
-                                {#                                        <div class="col-sm-4 no-margin-hr no-padding-hr">#}
-                                {#                                            <div class="form-group">#}
-                                {#                                                <label class="control-label">Max selected options</label>#}
-                                {##}
-                                {#                                                <div class="input-group">#}
-                                {#															<span class="input-group-addon">#}
-                                {#																<label class="px-single"><input type="checkbox" name=""#}
-                                {#                                                                                                value=""#}
-                                {#                                                                                                id="id_checkbox_edit_max_character"#}
-                                {#                                                                                                class="px"><span#}
-                                {#                                                                        class="lbl"></span></label>#}
-                                {#															</span>#}
-                                {#                                                    <input type="number" class="form-control" id="edit-max-character">#}
-                                {#                                                </div>#}
-                                {#                                            </div>#}
-                                {#                                        </div>#}
-                                {#                                        <!-- col-sm-5 -->#}
-                                {#                                    </div>#}
-                                {#                                </div>#}
-                                <!-- col-sm-6 -->
                             </div>
                             <!-- row -->
                             <div class="row">
@@ -262,57 +216,6 @@
                                 </div>
                             </div>
                         </div>
-                        {#                        <div class="tab-pane fade" id="advanced-settings_checkbox">#}
-                        {#                            <div class="row">#}
-                        {#                                <div class="col-sm-6">#}
-                        {#                                    <div class="form-group no-margin-hr">#}
-                        {#                                        <label class="control-label">Add Classes to Question</label>#}
-                        {#                                        <input class="add-classes form-control" id="edit-class">#}
-                        {#                                    </div>#}
-                        {#                                </div>#}
-                        {#                                <!-- col-sm-6 -->#}
-                        {#                            </div>#}
-                        {#                            <!-- row -->#}
-                        {#                            <div class="row padding-xs-vr">#}
-                        {#                                <div class="col-sm-12 form-inline">#}
-                        {#                                    <label class="control-label">Use Filter to Decide Visibility</label>#}
-                        {#                                </div>#}
-                        {#                            </div>#}
-                        {#                            <div class="row filr-list">#}
-                        {#                                <div class="form-group filr">#}
-                        {#                                    <div class="col-sm-12 form-inline">#}
-                        {#                                        <div class="btn-group btn-group-xs">#}
-                        {#                                            <button type="button" class="btn btn-add-pre-rule"><span#}
-                        {#                                                    class="icon fa fa-plus"></span></button>#}
-                        {#                                            <button type="button" class="btn btn-delete-pre-rule"><span#}
-                        {#                                                    class="icon fa fa-minus"></span></button>#}
-                        {#                                        </div>#}
-                        {#                                        <select class="form-control question_status">#}
-                        {#                                            <option value="">Show</option>#}
-                        {#                                            <option value="">Hide</option>#}
-                        {#                                        </select>#}
-                        {#                                        this question while the filter#}
-                        {#                                        <select class="form-control question_prerequisite">#}
-                        {#                                            <option></option>#}
-                        {#                                            {% for group in questionGroup %}#}
-                        {#                                                <optgroup label="{{ group.name }}">#}
-                        {#                                                    {% for question in group.questions %}#}
-                        {#                                                        {% if question.type == "select" or question.type == "radio_button" or question.type == "checkbox" %}#}
-                        {#                                                            <option value="{{ question.id }}">{{ question.title }}</option>#}
-                        {#                                                        {% endif %}#}
-                        {#                                                    {% endfor %}#}
-                        {#                                                </optgroup>#}
-                        {#                                            {% endfor %}#}
-                        {#                                        </select>#}
-                        {#                                        is#}
-                        {#                                        <select class="form-control question_prerequisite_option">#}
-                        {#                                            <option value="">true</option>#}
-                        {#                                            <option value="">false</option>#}
-                        {#                                        </select>#}
-                        {#                                    </div>#}
-                        {#                                </div>#}
-                        {#                            </div>#}
-                        {#                        </div>#}
                     </div>
                 </div>
                 <div class="row">

@@ -1,7 +1,4 @@
-{#{% extends "layout/main.html" %}#}
-{#{% block content %}#}
-    <div id="content-wrapper">
-
+<div id="content-wrapper">
     {% for item in items.cd %}
         <h3>Attendee Id : {{ item.Attendee }}</h3>
         {% if item.data.questions %}
@@ -130,6 +127,4 @@
         </div>
 
 
-    </div>
-
-{#{% endblock %}#}
+</div>

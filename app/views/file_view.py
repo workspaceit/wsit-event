@@ -1,10 +1,9 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.views.generic import TemplateView
-from app.models import Scan, Attendee, DeviceToken
+from app.models import DeviceToken
 import json
 import re
-from datetime import datetime
 import boto
 from boto.s3.key import Key
 from django.conf import settings
@@ -57,8 +56,6 @@ class FileView(TemplateView):
                     key.delete()
             else:
                 k = bucket.delete_key(key)
-
-        # print(key)
         res = {
             'result': True,
             'message': 'Deleted successfully'
@@ -72,7 +69,6 @@ class FileView(TemplateView):
         key = request.POST.get('key').replace('//', '/')
         key_detail = bucket.get_key(key)
         key_url = key_detail.generate_url(0, query_auth=False)
-        # print(key_url)
         res = {
             'result': True,
             'key_url':key_url
@@ -98,7 +94,6 @@ class FileView(TemplateView):
             newKey += arr[num] + '/'
 
         newKey += name + '/'
-        # print (newKey)
 
         fileList = []
 
@@ -106,7 +101,6 @@ class FileView(TemplateView):
             files = bucket.list(prefix=oldKey)
             for file in files:
                 fileList.append(file.name)
-                # print(file.name)
 
             newFileList = []
 
@@ -223,10 +217,8 @@ class FileView(TemplateView):
             if checker in sourceKey or checker in destKey:
                 FileView.update_offline_status(request)
 
-            # print(sourceKey)
             arrSourceKey = sourceKey.split('/')
             destKey += '/' + arrSourceKey[len(arrSourceKey) - 1]
-            # print(destKey)
 
             fileList = []
 
@@ -240,7 +232,6 @@ class FileView(TemplateView):
                 for file in fileList:
                     newArr = file.split('/')
                     result = destKey + '/' + newArr[len(newArr) - 1]
-                    # print(result)
                     newFileList.append(result)
 
                 for num in range(0, len(newFileList)):
@@ -275,11 +266,8 @@ class FileView(TemplateView):
             checker = "public/" + event_url + "/files/offline_package"
             if checker in sourceKey or checker in destKey:
                 FileView.update_offline_status(request)
-
-            # print(sourceKey)
             arrSourceKey = sourceKey.split('/')
             destKey += '/' + arrSourceKey[len(arrSourceKey) - 1]
-            # print(destKey)
 
             fileList = []
 
@@ -293,7 +281,6 @@ class FileView(TemplateView):
                 for file in fileList:
                     newArr = file.split('/')
                     result = destKey + '/' + newArr[len(newArr) - 1]
-                    # print(result)
                     newFileList.append(result)
 
                 for num in range(0, len(newFileList)):
@@ -327,7 +314,6 @@ class FileView(TemplateView):
             event_url=request.session['event_auth_user']['event_url']
             #
             fileList = []
-            # url = "public/"+event_url
             url = "public/" + event_url + "/files"
             files = bucket.list(prefix=url)
             for file in files:
@@ -338,14 +324,6 @@ class FileView(TemplateView):
                 return HttpResponse(json.dumps(fileList), content_type="application/json")
 
             objList = []
-            # print (fileList)
-            # rootdict = {
-            #     'text': 'public',
-            #     'parent_id': 'root',
-            #     'expanded': True,
-            #     'spriteCssClass': 'rootfolder',
-            #     'path': "public/"
-            # }
             rootdict = {
                 'text': 'files',
                 'parent_id': 'root',
@@ -375,16 +353,12 @@ class FileView(TemplateView):
                                 if file[1].lower() == "png" or file[1].lower() == "jpeg" or file[1].lower() == "jpg" or file[1].lower() == "svg":
                                     dict['spriteCssClass'] = 'image'
                                 elif file[1].lower() == "css" or file[1].lower() == "html":
-                                    # dict['spriteCssClass'] = 'file'
                                     dict['spriteCssClass'] = 'html'
                                 elif file[1].lower() == "pdf":
-                                    # dict['spriteCssClass'] = 'file'
                                     dict['spriteCssClass'] = 'pdf'
                                 elif file[1].lower() == "txt":
-                                    # dict['spriteCssClass'] = 'file'
                                     dict['spriteCssClass'] = 'html'
                                 else:
-                                    # dict['spriteCssClass'] = 'file'
                                     dict['spriteCssClass'] = 'html'
 
                             found = False

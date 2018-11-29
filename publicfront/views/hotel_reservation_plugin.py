@@ -5,8 +5,7 @@ from django.shortcuts import render
 from app.views.attendee_view import AttendeeView
 from app.views.room_view import RoomView
 
-from app.models import Attendee, ElementsAnswers, Room, Booking, ActivityHistory, RequestedBuddy, RoomAllotment, \
-    MatchLine
+from app.models import Attendee, ElementsAnswers, Room, Booking, ActivityHistory, RequestedBuddy, MatchLine
 from django.db.models import Q
 
 from publicfront.views.lang_key import LanguageKey
@@ -19,42 +18,20 @@ class HotelReservationPlugin:
     def buddy_list(request, *args, **kwargs):
         search_key = request.POST.get('q')
         event_id = request.session['event_id']
-        # callback_id = request.GET.get('$callback')
-        # search_key = request.GET.get('$filter')
-        # try:
-        #     search_key = eval(search_key.split('(')[1].split(',')[0]).strip()
-        # except:
-        #     search_key = search_key.split('(')[1].split(',')[0] + "'"
-        #     search_key = eval(search_key).strip()
 
         match_line_attendee = MatchLine.objects.filter(booking__attendee__event_id=event_id).values('booking__attendee')
         match_line_attendee = [m_l_att['booking__attendee'] for m_l_att in match_line_attendee]
 
         if 'is_user_login' in request.session and request.session['is_user_login'] == True:
-            # attendees = Attendee.objects.filter(Q(event_id=event_id) & Q(status="registered") & (
-            #     Q(firstname__icontains=search_key) | Q(lastname__icontains=search_key) | Q(
-            #         email__istartswith=search_key))).exclude(id__in=match_line_attendee).exclude(id=request.session['event_user']['id'])
             attendees = Attendee.objects.annotate(text=Concat('firstname', Value(' '), 'lastname')).filter(Q(event_id=event_id) & Q(
                 status="registered") & (Q(firstname__icontains=search_key) | Q(lastname__icontains=search_key) | Q(text__icontains=search_key)))\
                 .exclude(id__in=match_line_attendee).exclude(id=request.session['event_user']['id']).values('id', 'text')
         else:
-            # attendees = Attendee.objects.filter(Q(event_id=event_id) & Q(status="registered") & (
-            #     Q(firstname__icontains=search_key) | Q(lastname__icontains=search_key) | Q(
-            #         email__istartswith=search_key))).exclude(id__in=match_line_attendee)
             attendees = Attendee.objects.annotate(text=Concat('firstname', Value(' '), 'lastname')).filter(Q(event_id=event_id) & Q(status="registered") & (
                 Q(firstname__icontains=search_key) | Q(lastname__icontains=search_key) | Q(text__icontains=search_key)))\
                 .exclude(id__in=match_line_attendee).values('id', 'text')
 
-        # main_data = [{'id': att['id'], 'name': att['text']} for att in attendees]
-        # data = {
-        #     'd': {
-        #         'results': main_data,
-        #         '__count': len(main_data)
-        #     }
-        # }
-
         data = json.dumps({ "results": list(attendees)})
-        # data = callback_id + '(' + json.dumps(data) + ')'
         return HttpResponse(data, content_type='application/json')
 
     def get_partial_allow_element(request, *args, **kwargs):
@@ -108,8 +85,6 @@ class HotelReservationPlugin:
                     h_room_item = LanguageKey.get_room_data_by_language(request, h_room_item)
                     result = RoomView.find_booking(str(h_room_item.id))
                     result_oc = True if result['total_occupancy'] > 99 else False
-                    # room_allotments = RoomAllotment.objects.filter(room_id=h_room_item.id)
-                    # room_allotmentsDates = [ra.available_date.strftime("%Y-%m-%d") for ra in room_allotments]
                     room_allotmentsDates = []
                     for ra in result['details']:
                         if ra['occupancy'] < 100:
@@ -141,8 +116,6 @@ class HotelReservationPlugin:
                 hotel_room = LanguageKey.get_room_data_by_language(request, hotel_room)
                 result = RoomView.find_booking(str(hotel_room.id))
                 result_oc = True if result['total_occupancy'] == 100 else False
-                # room_allotments = RoomAllotment.objects.filter(room_id=hotel_room.id)
-                # room_allotmentsDates = [ra.available_date.strftime("%Y-%m-%d") for ra in room_allotments]
                 room_allotmentsDates = []
                 for ra in result['details']:
                     if ra['occupancy'] < 100:
@@ -189,7 +162,6 @@ class HotelReservationPlugin:
             for booking_room_id in booking_ids:
                 if booking_room_id not in room_id_list:
                     delete_booking = existig_bookings2[booking_ids.index(booking_room_id)]
-                    print('delete booking {}'.format(str(delete_booking.id)))
                     delete_booking_id = delete_booking.id
                     delete_booking_room_id = delete_booking.room_id
                     del_book_allotments_dates = [delete_booking.check_in + timedelta(n) for n in
@@ -213,8 +185,6 @@ class HotelReservationPlugin:
             if room_id > 0:
                 booking_info = {'check_in': check_in, 'check_out': check_out, 'room_id': room_id}
                 available = AttendeeView.check_available_room(user_id, booking_info)
-                print('available: {}'.format(available))
-                print('******************')
                 try:
                     if user_status == 'new':
                         if available:
@@ -223,7 +193,6 @@ class HotelReservationPlugin:
                                 response['result'] = True
                                 response['order_number'] = order_place_result
                         else:
-                            print('Room is not available for stay ' + str(index + 1))
                             response['result'] = False
                             return response
                     elif user_status == 'exist':
@@ -288,7 +257,6 @@ class HotelReservationPlugin:
                                     response['result'] = True
                                     response['order_number'] = order_place_result
                             else:
-                                print('Room is not available for stay ' + str(index + 1))
                                 response['result'] = False
                                 return response
                 except Exception as e:
@@ -297,7 +265,6 @@ class HotelReservationPlugin:
                     response['result'] = False
                     return response
             else:
-                print('Room not selected for stay ' + str(index + 1))
                 response['result'] = False
                 return response
 
@@ -332,10 +299,8 @@ class HotelReservationPlugin:
             else:
                 requested_buddy = RequestedBuddy(booking_id=booking.id, exists=False, email=buddy)
                 requested_buddy.save()
-        print('Success for allow ' + str(index + 1))
 
         booking_day_count = (datetime.strptime(booking.check_out, '%Y-%m-%d') - datetime.strptime(booking.check_in, '%Y-%m-%d')).days
-        print('Got order_number {}'.format(order_number))
         result = EconomyLibrary.place_order(event_id=event_id, user_id=user_id, item_type='hotel', item_id=room_id, order_number=order_number, booking_day_count=booking_day_count, booking_id=booking.id)
         if result == None:
             raise Exception('error in economy for hotel')

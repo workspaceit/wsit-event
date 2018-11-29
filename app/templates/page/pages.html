@@ -64,14 +64,6 @@
                                                         data-original-title="Duplicate"><i
                                                         class="dropdown-icon fa fa-files-o"></i>
                                                 </button>
-                                                {#                                                {% if development %}#}
-                                                {#                                                    <a href="{{ base_url }}/{{ page.url }}" target="_blank"#}
-                                                {#                                                       class="btn btn-xs btn-edit-content"#}
-                                                {#                                                       data-toggle="tooltip"#}
-                                                {#                                                       data-placement="top" title=""#}
-                                                {#                                                       data-original-title="Visit Page"><i#}
-                                                {#                                                            class="dropdown-icon fa fa-eye"></i></a>#}
-                                                {#                                                {% endif %}#}
                                                 {% if request.session.event_auth_user.is_attendee %}
                                                     <button class="btn btn-xs btn-success btn-view-logged-in-page"
                                                             data-url="{{ request.session.event_auth_user.event_url }}/{{ page.url }}/"
@@ -162,9 +154,6 @@
                                     </label>
 
                                     <select multiple id="page-rule" name="rule" class="form-control menu-rule-selector">
-                                        {#                                <optgroup label="Quickfilter">#}
-                                        {#                                    <option class="quick-filter" value="0"> quick filter</option>#}
-                                        {#                                </optgroup>#}
 
                                         {% for group in filterGroup %}
 

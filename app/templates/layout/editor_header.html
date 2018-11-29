@@ -1,27 +1,21 @@
 {% load staticfiles %}
-{#    <script type="text/javascript" src="//code.jquery.com/ui/1.11.3/jquery-ui.min.js"></script>#}
+<link rel="stylesheet" href="{% static 'assets/stylesheets/codemirror/codemirror.css' %}">
+<link rel="stylesheet" href="{% static 'assets/stylesheets/codemirror/dialog.css' %}">
+<link rel="stylesheet" href="{% static 'assets/stylesheets/codemirror/matchesonscrollbar.css' %}">
 
-    <link rel="stylesheet" href="{% static 'assets/stylesheets/codemirror/codemirror.css' %}">
-    <link rel="stylesheet" href="{% static 'assets/stylesheets/codemirror/dialog.css' %}">
-    <link rel="stylesheet" href="{% static 'assets/stylesheets/codemirror/matchesonscrollbar.css' %}">
+<script src="{% static 'assets/javascripts/codemirror/codemirror.js' %}"></script>
+<script src="{% static 'assets/javascripts/codemirror/active-line.js' %}"></script>
+<script src="{% static 'assets/javascripts/codemirror/dialog.js' %}"></script>
+<script src="{% static 'assets/javascripts/codemirror/searchcursor.js' %}"></script>
+<script src="{% static 'assets/javascripts/codemirror/search.js' %}"></script>
+<script src="{% static 'assets/javascripts/codemirror/annotatescrollbar.js' %}"></script>
+<script src="{% static 'assets/javascripts/codemirror/matchesonscrollbar.js' %}"></script>
+<script src="{% static 'assets/javascripts/codemirror/jump-to-line.js' %}"></script>
+<script src="{% static 'assets/javascripts/codemirror/matchbrackets.js' %}"></script>
 
-    <script src="{% static 'assets/javascripts/codemirror/codemirror.js' %}"></script>
-{#    <script src="{% static 'assets/javascripts/codemirror/sass.js' %}"></script>#}
-    <script src="{% static 'assets/javascripts/codemirror/active-line.js' %}"></script>
-    <script src="{% static 'assets/javascripts/codemirror/dialog.js' %}"></script>
-    <script src="{% static 'assets/javascripts/codemirror/searchcursor.js' %}"></script>
-    <script src="{% static 'assets/javascripts/codemirror/search.js' %}"></script>
-    <script src="{% static 'assets/javascripts/codemirror/annotatescrollbar.js' %}"></script>
-    <script src="{% static 'assets/javascripts/codemirror/matchesonscrollbar.js' %}"></script>
-    <script src="{% static 'assets/javascripts/codemirror/jump-to-line.js' %}"></script>
-    <script src="{% static 'assets/javascripts/codemirror/matchbrackets.js' %}"></script>
-{#    <script src="{% static 'assets/javascripts/codemirror/colorize.js' %}"></script>#}
-
-    {#    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css" rel="stylesheet" type="text/css" />#}
-{#    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.25.0/codemirror.min.css">#}
-    <link href="{% static 'assets/stylesheets/froala_editor_2.8.1/froala_editor.pkgd.min.css' %}" rel="stylesheet"
-          type="text/css"/>
-    <link href="{% static 'assets/stylesheets/froala_editor_2.8.1/froala_style.min.css' %}" rel="stylesheet" type="text/css"/>
+<link href="{% static 'assets/stylesheets/froala_editor_2.8.1/froala_editor.pkgd.min.css' %}" rel="stylesheet"
+      type="text/css"/>
+<link href="{% static 'assets/stylesheets/froala_editor_2.8.1/froala_style.min.css' %}" rel="stylesheet" type="text/css"/>
 {#<style>#}
 {#    iframe.fr-iframe{#}
 {#        height: 100% !important;#}

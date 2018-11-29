@@ -174,12 +174,6 @@
                         </div>
 
                         <div class="panel-body">
-                            {#                            <div class="">#}
-                            {#                                <div class="group">#}
-                            {#                                    <h3 class="uid-link-markdown custom-accordion"> UID Link</h3>#}
-                            {#                                </div>#}
-                            {#                            </div>#}
-
 
                             <div class="ui-accordion">
                                 <div class="group">
@@ -229,12 +223,6 @@
 
                             </div>
 
-                            {#                            <div class="">#}
-                            {#                                <div class="group">#}
-                            {#                                    <h3 class="calendar-markdown custom-accordion"> My Calendar</h3>#}
-                            {#                                </div>#}
-                            {#                            </div>#}
-
                             <div class="panel-heading">
                                 <a class="accordion-toggle note note-info template-images" data-toggle="collapse"
                                    data-parent="#accordion-example"
@@ -268,152 +256,6 @@
                                     </div>
                                 </div>
                             </div>
-
-                            {#                            <div class="panel-heading">#}
-                            {#                                <a class="accordion-toggle note note-info" data-toggle="collapse"#}
-                            {#                                   data-parent="#accordion-example"#}
-                            {#                                   href="#collapseTwo">#}
-                            {#                                    Sessions#}
-                            {#                                </a>#}
-                            {#                            </div>#}
-                            {#                            <div id="collapseTwo" class="panel-collapse">#}
-                            {#                                <div class="panel-body">#}
-                            {#                                    <div class="ui-accordion">#}
-                            {#                                        {% for group in sessionGroup %}#}
-                            {#                                            <div class="group">#}
-                            {#                                                <h3>{{ group.name }}</h3>#}
-                            {##}
-                            {#                                                <div>#}
-                            {#                                                    <ul>#}
-                            {#                                                        {% for session in group.sessions %}#}
-                            {#                                                            <li data-id="{{ session.id }}"#}
-                            {#                                                                class="question-markdown">{{ session.name }}</li>#}
-                            {#                                                            <div class="panel-heading">#}
-                            {#                                                                <a class="accordion-toggle" data-toggle="collapse"#}
-                            {#                                                                   data-parent="#accordion-example"#}
-                            {#                                                                   href="#{{ session.id }}">#}
-                            {#                                                                    {{ session.name }}#}
-                            {#                                                                </a>#}
-                            {#                                                            </div>#}
-                            {#                                                            <div id="{{ session.id }}" class="panel-collapse in">#}
-                            {#                                                                <div class="panel-body">#}
-                            {#                                                                    <div id="ui-accordion">#}
-                            {##}
-                            {#                                                                        <div>#}
-                            {#                                                                            <ul>#}
-                            {#                                                                                <li data-id="{{ session.id }}"#}
-                            {#                                                                                    data-param="name"#}
-                            {#                                                                                    class="session-markdown">Name#}
-                            {#                                                                                </li>#}
-                            {#                                                                                <li data-id="{{ session.id }}"#}
-                            {#                                                                                    data-param="start_time"#}
-                            {#                                                                                    class="session-markdown">Start Time#}
-                            {#                                                                                </li>#}
-                            {#                                                                                <li data-id="{{ session.id }}"#}
-                            {#                                                                                    data-param="end_time"#}
-                            {#                                                                                    class="session-markdown">End Time#}
-                            {#                                                                                </li>#}
-                            {#                                                                            </ul>#}
-                            {#                                                                        </div>#}
-                            {##}
-                            {##}
-                            {#                                                                    </div>#}
-                            {#                                                                </div>#}
-                            {#                                                            </div>#}
-                            {#                                                        {% endfor %}#}
-                            {#                                                    </ul>#}
-                            {#                                                </div>#}
-                            {#                                            </div>#}
-                            {#                                        {% endfor %}#}
-                            {##}
-                            {#                                    </div>#}
-                            {#                                </div>#}
-                            {#                            </div>#}
-
-
-                            {#                            <div class="panel-heading">#}
-                            {#                                <a class="accordion-toggle note note-info" data-toggle="collapse"#}
-                            {#                                   data-parent="#accordion-example"#}
-                            {#                                   href="#collapseThree">#}
-                            {#                                    Travels#}
-                            {#                                </a>#}
-                            {#                            </div>#}
-                            {#                            <div id="collapseThree" class="panel-collapse">#}
-                            {#                                <div class="panel-body">#}
-                            {#                                    <div class="ui-accordion">#}
-                            {#                                        <div class="group">#}
-                            {#                                            <h3> Homebound Travel</h3>#}
-                            {##}
-                            {#                                            <div>#}
-                            {#                                                <ul>#}
-                            {#                                                    <li data-param="homebound_travel_name"#}
-                            {#                                                        class="travel-markdown">Name#}
-                            {#                                                    </li>#}
-                            {#                                                    <li data-param="homebound_travel_departure_time"#}
-                            {#                                                        class="travel-markdown">Departure Time#}
-                            {#                                                    </li>#}
-                            {#                                                    <li data-param="homebound_travel_arrival_time"#}
-                            {#                                                        class="travel-markdown">Arrival Time#}
-                            {#                                                    </li>#}
-                            {#                                                </ul>#}
-                            {#                                            </div>#}
-                            {#                                        </div>#}
-                            {#                                        <div class="group">#}
-                            {#                                            <h3> Outbound Travel</h3>#}
-                            {##}
-                            {#                                            <div>#}
-                            {#                                                <ul>#}
-                            {#                                                    <li data-param="outbound_travel_name"#}
-                            {#                                                        class="travel-markdown">Name#}
-                            {#                                                    </li>#}
-                            {#                                                    <li data-param="outbound_travel_departure_time"#}
-                            {#                                                        class="travel-markdown">Departure Time#}
-                            {#                                                    </li>#}
-                            {#                                                    <li data-param="outbound_travel_arrival_time"#}
-                            {#                                                        class="travel-markdown">Arrival Time#}
-                            {#                                                    </li>#}
-                            {#                                                </ul>#}
-                            {#                                            </div>#}
-                            {#                                        </div>#}
-                            {#                                    </div>#}
-                            {#                                </div>#}
-                            {#                            </div>#}
-
-                            {#                            <div class="panel-heading">#}
-                            {#                                <a class="accordion-toggle note note-info" data-toggle="collapse"#}
-                            {#                                   data-parent="#accordion-example"#}
-                            {#                                   href="#collapseFour">#}
-                            {#                                    Booking#}
-                            {#                                </a>#}
-                            {#                            </div>#}
-                            {#                            <div id="collapseFour" class="panel-collapse">#}
-                            {#                                <div class="panel-body">#}
-                            {#                                    <div class="ui-accordion">#}
-                            {#                                        <div class="group">#}
-                            {#                                            <h3 data-param="booking_hotel_name" class="booking-markdown"> Hotel Name</h3>#}
-                            {##}
-                            {#                                            <div>#}
-                            {#                                                <ul>#}
-                            {#                                                    <li data-param="booking_hotel_name" class="booking-markdown">Hotel#}
-                            {#                                                        Name#}
-                            {#                                                    </li>#}
-                            {#                                                    <li data-param="booking_check_in" class="booking-markdown">Check#}
-                            {#                                                        in#}
-                            {#                                                    </li>#}
-                            {#                                                    <li data-param="booking_check_out" class="booking-markdown">Check#}
-                            {#                                                        out#}
-                            {#                                                    </li>#}
-                            {#                                                    <li data-param="booking_room_buddy" class="booking-markdown">Room#}
-                            {#                                                        Buddy#}
-                            {#                                                    </li>#}
-                            {#                                                </ul>#}
-                            {#                                            </div>#}
-                            {#                                        </div>#}
-                            {##}
-                            {##}
-                            {#                                    </div>#}
-                            {#                                </div>#}
-                            {#                            </div>#}
 
                         </div>
                     </div>
@@ -519,9 +361,6 @@
                 extraKeys: {"Enter": "newlineAndIndentContinueMarkdownList"},
             });
             editor.on('change', update);
-            {#            $(".accordion-toggle").accordion({#}
-            {#                active: false#}
-            {#            });#}
             var code_content = $.trim($('#code').val());
 
             if (code_content != '') {
@@ -529,8 +368,6 @@
             }
 
             $('body').on('click', '#btn-email-preview', function () {
-                {#                clog(editor.getValue());#}
-                {#                clog($('#out').html());#}
                 if ($('#email-template-id').val() != '' && $('#email-template-id').val() != null) {
                     var input = $("<textarea>")
                             .css('display', 'none')
@@ -549,10 +386,6 @@
                 bootbox.confirm("Are you sure you want to reset all content?", function (result) {
                     if (result) {
                         editor.setValue("");
-                        {#                        $('#email-filter-id').select2('val','');#}
-                        {#                        $('#email-subject').val('');#}
-                        {#                        $('#email-name').val('');#}
-                        {#                        $('#email-template-id').select2('val','');#}
                     }
                 });
 

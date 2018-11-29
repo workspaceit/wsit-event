@@ -1,11 +1,11 @@
 import json
 import os
 import sys
-from django.db.models import Sum, Count
+from django.db.models import Count
 from django.http import HttpResponse
 from django.views import generic
-from datetime import datetime, date, timedelta
-from app.models import CookiePage, Attendee, EmailReceivers, MessageReceivers, Notification, AttendeeGroups, Session, \
+from datetime import datetime, timedelta
+from app.models import AttendeeGroups, Session, \
     RuleSet, DashboardPlugin, SeminarsUsers
 from app.views.gbhelper.error_report_helper import ErrorR
 from app.views.filter import FilterView

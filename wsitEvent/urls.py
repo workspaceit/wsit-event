@@ -26,7 +26,6 @@ urlpatterns = [
     url(r'^send-retrive-passwrod-mail-by-eventid/', event.RetrivePasswrod.sendRetrivePasswrodMailByID, name='send-retrive-passwrod-mail-by-eventid'),
     url(r'^health/', event.RootEvent.health, name='health'),
     url(r'^admin/', include('app.urls')),
-    # url(r'^$', RedirectView.as_view(url='http://springconf.com/', permanent=False), name='home'),
     url(r'^$', event.RootEvent.as_view(), name='home'),
     # url(r'^django-admin/', include(admin.site.urls)),
     # For mobile device services

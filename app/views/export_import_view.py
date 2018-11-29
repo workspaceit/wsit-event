@@ -26,29 +26,27 @@ from django.http import HttpResponse, JsonResponse
 from django.views import generic
 from django.contrib.auth.hashers import make_password
 from app.models import Attendee, MatchLine, RoomAllotment, Match, Group, Scan, ExportRule, SessionRating, RuleSet, \
-    Session, Room, AttendeeTag, \
+    Session, AttendeeTag, \
     SeminarSpeakers, SessionTags, Events, SeminarsUsers, Questions, ExportState, Booking, Answers, RequestedBuddy, \
     TravelAttendee, Travel, \
-    ImportChangeRequest, Option, ActivityHistory, Setting, Tag, AttendeeGroups, ImportChangeStatus, EmailContents,MessageContents, \
+    ImportChangeRequest, Option, ActivityHistory, Setting, Tag, AttendeeGroups, ImportChangeStatus, EmailContents, \
     SessionClasses, MessageHistory
 
 import json
-from .room_view import RoomView
 import logging
 import string
 import random
-from django.db.models import Q, Max
+from django.db.models import Q
 from django.db import transaction, connection
 from .filter import FilterView
 from .common_views import GroupView, EventView, CommonContext, TimeDetailView
 from .hotel_view import HotelView
 from .session_views import SessionView
 from django.views.decorators.http import require_http_methods
-import boto3
 from django.conf import settings
 from boto3.session import Session as boto_session
-from datetime import date, datetime, timedelta
-from django.db.models import Avg, Max, Min
+from datetime import datetime, timedelta
+from django.db.models import Max
 import re
 import io
 from .export_lambda import ExcelView as ev
@@ -91,9 +89,6 @@ class ExcelView(generic.DetailView):
         )
         newlist = []
         if 'Contents' in response:
-            # file_list=[]
-            # for name in response['Contents']:
-            #     file_list.append(name['Key'])
             from operator import itemgetter
             newlist = sorted(response['Contents'], key=itemgetter('LastModified'), reverse=True)
             for export_file in newlist:
@@ -131,8 +126,6 @@ class ExcelView(generic.DetailView):
                             filename_key = filename_arr[2]
                         else:
                             filename_key = filename_arr[1]
-                        # msg = [{'filename': key, 'message': " Your exported list " + filename_key + " is ready, check in Download Exported list Menu. <a href='" + reverse(
-                        #     'downloadExportedFile') + "?export=" + key + "'>Click </a> to download."}]
                         key = key.replace('&', 'and_char_checker')
                         msg = [{'filename': key, 'message': "Your file is ready!<a class='notification-link' href='" + reverse('downloadExportedFile') + "?export=" + key + "'>Click here to download</a>"}]
                         response_data['msg'].extend(msg)
@@ -141,8 +134,6 @@ class ExcelView(generic.DetailView):
                     else:
                         response_data['next_ajax_req'] = True
                 except:
-                    # msg = [{'filename' : key, 'message': " Your exported list "+key.split('/')[2]+" is ready, check in Download Exported list Menu. "}]
-                    # response_data['msg'].extend(msg)
                     response_data['next_ajax_req'] = True
         else:
             response_data['next_ajax_req'] = False
@@ -160,7 +151,6 @@ class ExcelView(generic.DetailView):
                 filename = filename_arr[2]
             else:
                 filename = filename_arr[1]
-            # f = io.BytesIO()
             filename = filename.replace('and_char_checker', '&')
             key = key.replace('and_char_checker', '&')
             response = client.get_object(Bucket=settings.AWS_STORAGE_BUCKET_NAME, Key=key)
@@ -182,7 +172,6 @@ class ExcelView(generic.DetailView):
             Bucket=settings.AWS_STORAGE_BUCKET_NAME,
             Key=request.POST.get('key')
         )
-        # print(response)
         response_data = {'success': 'success'}
         return HttpResponse(json.dumps(response_data), content_type="application/json")
 
@@ -202,12 +191,6 @@ class ExcelView(generic.DetailView):
             sessions = []
             global seminarUsers
             sessilonList = seminarUsers.filter(attendee_id=attendee_id, status='attending')
-            # for session in sessilonList:
-            # if session.session.group.type=='travel':
-            #     sessions.append({'question_id': "session", 'answer': session.session.name})
-            #     sessions.append({'question_id': "session", 'answer': session.session.start})
-            #     sessions.append({'question_id': "session", 'answer': session.session.end})
-
             for x in range(0, 6):
                 if len(sessions) < 6:
                     sessions.append({'question_id': "session", 'answer': ""})
@@ -230,11 +213,8 @@ class ExcelView(generic.DetailView):
             ws.append(header)
             allBookings = Booking.objects.all()
             for booking in allBookings:
-                # print(booking.attendee_id)
                 body_row = []
                 body_row.append(booking.attendee_id)
-
-                # body_row.append(booking.room.hotel.name)
 
                 answered_questions = Answers.objects.filter(user_id=booking.attendee_id)
 
@@ -335,12 +315,10 @@ class ExcelView(generic.DetailView):
         else:
             global allAnswers
             allAnswers = Answers.objects.all()
-            # print(allAnswers)
             global seminarUsers
             seminarUsers = SeminarsUsers.objects.all()
             allData = []
             qArr = ['UID', 'Registration Date', 'Update Date']
-            # question_groups = Group.objects.filter(type='question', is_show=1)
             question_groups = GroupView.get_questionGroup(request)
             questions = []
             for group in question_groups:
@@ -368,7 +346,6 @@ class ExcelView(generic.DetailView):
             for attendee in attendees:
                 question_list = ExcelView.get_answer_new(attendee.id, questions, True)
 
-                # attendee_list.append({'attendee': attendee.id, 'questions': question_list})
                 attRow = [attendee.id, attendee.created, attendee.updated]
                 i = 1
                 actualBuddyName = ''
@@ -533,8 +510,6 @@ class ExcelView(generic.DetailView):
         excelSheet.append(wb.active)
         user_id = request.session['event_auth_user']['id']
         event_id = request.session['event_auth_user']['event_id']
-        # allSession= SeminarSpeakers.objects.filter(speaker_id=user_id)
-        # allSession = Session.objects.all()
         firstname = ''
         lastname = ''
         email = ''
@@ -559,7 +534,6 @@ class ExcelView(generic.DetailView):
                 sessionId = session.id
                 session = SeminarsUsers.objects.filter(session_id=sessionId, session__group__event_id=event_id,
                                                        status='attending')
-                # questions=[63,64,65,66,56]
                 SessionView.get_all_attendee_visible_info(session, visible_questions)
                 questions = Questions.objects.filter(group__event_id=event_id, actual_definition__isnull=False)
 
@@ -568,24 +542,6 @@ class ExcelView(generic.DetailView):
                     visible_answers = []
                     for answer in ssn.question_answers:
                         visible_answers.append(answer['answer'])
-                        #     for ans in att_answer:
-                        #         if ans.question.actual_definition=="firstname":
-                        #             firstname = ans.value
-                        #         if ans.question.actual_definition=="lastname":
-                        #             lastname = ans.value
-                        #         if ans.question.actual_definition=="email":
-                        #             email = ans.value
-                        #         if ans.question.actual_definition=="phone":
-                        #             phone = ans.value
-                        #
-                        #         if firstname == '':
-                        #             firstname = ssn.attendee.firstname
-                        #         if lastname == '':
-                        #             lastname = ssn.attendee.lastname
-                        #         if email == '':
-                        #             email = ssn.attendee.email
-                        #         if phone == '':
-                        #             phone = ssn.attendee.phonenumber
                     excelSheet[i].append(
                         [sessionId, ssn.session.name, ssn.attendee.id] + visible_answers)
 
@@ -597,32 +553,6 @@ class ExcelView(generic.DetailView):
 
         except Exception as e:
             return HttpResponse(json.dumps(['Exception ' + str(e)]), content_type="application/json")
-
-    # def export_session_settings(request):
-    #     header = ['Session Id', 'Session Name', 'Description', 'Seminar Group', 'All Day', 'Start Date-time',
-    #               'End Date-time', 'Registration Opening Day', 'Registration Ending Day',
-    #               'Max Attendees', 'Allow Attendees to Queue', 'Location', 'Speaker', 'Tags', 'Show on Evaluation',
-    #               'Attendee Can Choose Not to Participate', 'Allow Overlapping Sessions', 'Custom Classes', 'Cost', 'Vat', 'Default Status',
-    #               'Default Reset Action']
-    #     sessions = Session.objects.filter(group__event_id=request.session['event_auth_user']['event_id']).order_by(
-    #         'group__group_order', 'session_order')
-    #     all_rows = [header]
-    #     for session in sessions:
-    #         each_row = []
-    #         each_row.extend([session.id, session.name, session.description, session.group.name,
-    #                          ExcelView.convertBooleanToYesNo(session.all_day), session.start, session.end,
-    #                          session.reg_between_start, session.reg_between_end])
-    #         each_row.extend([session.max_attendees, ExcelView.convertBooleanToYesNo(session.allow_attendees_queue),
-    #                          session.location.name, ExcelView.get_session_speakers(session.id),
-    #                          ExcelView.get_session_tags(session.id)])
-    #         each_row.extend([ExcelView.convertBooleanToYesNo(session.show_on_evaluation),
-    #                          ExcelView.convertBooleanToYesNo(session.receive_answer),
-    #                          ExcelView.convertBooleanToYesNo(session.allow_overlapping)])
-    #         each_row.extend([ExcelView.get_session_classes(session.id), session.cost, ExcelView.get_session_vat(session)])
-    #         each_row.extend([session.default_answer, session.default_answer_status])
-    #         all_rows.append(each_row)
-    #     # print(all_rows)
-    #     return ev.write_excel(all_rows, "Session Settings.xlsx")
 
     def convertBooleanToYesNo(value):
         if value:
@@ -735,7 +665,6 @@ class ExcelView(generic.DetailView):
 
             logger.debug('Total Scan Object ' + str(len(scan_list)))
 
-            # logger.debug('Total Question Object '+ str(len(questions)))
             indx = 0
             for scan in scan_list:
                 loop_start_time = datetime.now()
@@ -760,27 +689,6 @@ class ExcelView(generic.DetailView):
                                                     question__group__event_id=event_id)
                 if office_ans:
                     ofc = office_ans[0].value
-
-                    # questions=Questions.objects.filter(group__event_id=event_id,actual_definition__isnull=False)
-                    # myAnswers = Answers.objects.filter(user_id=scan.attendee_id,question_id__in=questions)
-                    #
-                    # for ans in myAnswers:
-                    #     actual_definition = ans.question.actual_definition
-                    # if actual_definition=="firstname":
-                    #     fName = ans.value
-                    # if actual_definition=="lastname":
-                    #     lName = ans.value
-                    # if actual_definition=="email":
-                    #     email = ans.value
-                    # if actual_definition=="office":
-                    #     ofc = ans.value
-                    #
-                    # if fName == '':
-                    #     fName = scan.attendee.firstname
-                    # if lName == '':
-                    #     lName = scan.attendee.lastname
-                    # if email == '':
-                    #     email = scan.attendee.email
 
                 rows.append([scan.attendee_id, scan.attendee.secret_key, fName, lName, scan.scan_time, ofc, email])
 
@@ -889,7 +797,6 @@ class ExcelView(generic.DetailView):
     def get_modal_html(request):
         updateFlag = False
         export_types = [{'value': 'attendee_edit', 'checked': 'checked', 'label': 'Export file for Attendee editing'},
-                        # {'value': 'hotel_edit', 'checked': '', 'label': 'Export file for Hotel editing'},
                         {'value': 'hotel_view', 'checked': '', 'label': 'Export file for Hotel viewing'},
                         {'value': 'economy_view', 'checked': '', 'label': 'Export file for Economy viewing'}]
 
@@ -925,7 +832,6 @@ class ExcelView(generic.DetailView):
                     if export_type['value'] == current_type:
                         export_types[0]['checked'] = ''
                         export_type['checked'] = 'checked'
-        # groups=Group.objects.filter(type='export_filter')
         groups = GroupView.get_exportfilterGroup(request)
         if updateFlag:
             for group in groups:
@@ -1124,7 +1030,6 @@ class ExcelView(generic.DetailView):
                                         export_order=export_order)
                         er.save()
                         return HttpResponse(json.dumps({'id': er.id, 'name': filter_name, 'group_id': group_id}))
-                        # return ExcelView.all_export_filter(request,q_list,slist,rule_id,uid,rDate,uDate,secret,attGroup,attTag,hotel,flight)
                 else:
                     return HttpResponse(json.dumps({'error': 'You do not have Permission to do this'}))
 
@@ -1156,7 +1061,6 @@ class ExcelView(generic.DetailView):
         return render(request, 'export-import/export_filter_result.html', data)
 
     def get_filterGroup(request):
-        # filterGroup = Group.objects.filter(type="filter",is_show=1).order_by('group_order')
         filterGroup = GroupView.get_filterGroup(request)
         for group in filterGroup:
             group.filters = RuleSet.objects.all().filter(group_id=group.id).exclude(name='quick-filter')
@@ -1225,53 +1129,25 @@ class ExcelView(generic.DetailView):
                          hotel_columns, economy_columns, include_import_header)
 
     def all_export_filter(request, qlist, slist, rule_id, uid, rdate, udate, secret, attGroup, attTag, hotel, travel):
-        # qlist =request.POST.getlist('questions')
-        # slist =request.POST.getlist('sessions')
-        # rule_id = request.POST.get('rule_id')
-        #
-        # rule = RuleSet.objects.get(id=rule_id)
-        # filters = json.loads(rule.preset)
-        # q = Q()
-        # match_condition = filters[0][0]['matchFor']
-        # if match_condition == '2':
-        #     q &= FilterView.recur_filter(request, filters, match_condition)
-        # elif match_condition == '1':
-        #     q = Q(id=-11)
-        #     q |= FilterView.recur_filter(request, filters, match_condition)
-        # attendees = Attendee.objects.filter(q)
-
         attendees = FilterView.get_filtered_attendees(request, rule_id)
         global allAnswers
         allAnswers = Answers.objects.filter(question_id__in=qlist, user__in=attendees)
         global seminarUsers
         seminarUsers = SeminarsUsers.objects.filter(attendee__in=attendees)
         qArr = []
-        # if request.POST.get('uid'):
         if uid:
             qArr.append("UID")
-
-        # if request.POST.get('registrattionDate'):
         if rdate:
             qArr.append("Registration Date")
-
-        # if request.POST.get('updateDate'):
         if udate:
             qArr.append("Update Date")
-
-        # if request.POST.get('secret'):
         if secret:
             qArr.append("UID (External)")
-
-        # if request.POST.get('attGroup'):
         if attGroup:
             qArr.append("Attendee Group")
-
-        # if request.POST.get('attTag'):
         if attTag:
             qArr.append("Attendee Tag")
             allAttendeeTags = AttendeeTag.objects.filter(attendee__in=attendees)
-
-        # question_groups = Group.objects.filter(type='question', is_show=1)
         question_groups = GroupView.get_questionGroup(request)
         questions = []
         for group in question_groups:
@@ -1297,18 +1173,12 @@ class ExcelView(generic.DetailView):
             matchLines = MatchLine.objects.all()
             allBookings = Booking.objects.all()
 
-        # attendee_list=[]
-        # attendees = Attendee.objects.all()
         wb = Workbook()
         ws = wb.active
-        # allData.append(qArr)
         ws.append(qArr)
 
         for attendee in attendees:
             question_list = ExcelView.get_answer_new(attendee.id, questions, travel)
-
-            # attendee_list.append({'attendee': attendee.id, 'questions': question_list})
-            # attRow=[attendee.id,attendee.created,attendee.updated]
             attRow = []
             if uid:
                 attRow.append(attendee.id)
@@ -1323,7 +1193,6 @@ class ExcelView(generic.DetailView):
                 attRow.append(attendee.secret_key)
 
             if attGroup:
-                # attRow.append(attendee.group.name)
                 attRow.append('Attending')
 
             if attTag:
@@ -1360,10 +1229,7 @@ class ExcelView(generic.DetailView):
 
                 if actualBuddyName == '':
                     for booking in attendeeBookings:
-                        # print(booking.attendee_id)
-
                         buddyList = reqBuddy.filter(booking_id=booking.id)
-
                         for buddy in buddyList:
                             if buddy.name:
                                 buddies = buddies + buddy.name
@@ -1390,7 +1256,6 @@ class ExcelView(generic.DetailView):
                 attRow.append(actualBuddyName)
                 attRow.append(hotelBeds)
                 attRow.append(hotelCost)
-            # allData.append(attRow)
 
             ws.append(attRow)
 
@@ -1425,7 +1290,6 @@ class ExcelView(generic.DetailView):
         question_answer_info = {}
         x_answer = Answers.objects.filter(question_id=new_question_answer['question_id'], user_id=userId)
         if x_answer:
-            # attendeeAnswer = x_answer.update(value=new_question_answer['answer'])
             question_answer_info['old_data'] = str(x_answer[0].value).strip()
             if type(new_question_answer['answer']) is datetime.time:
                 question_answer_info['new_data'] = str(new_question_answer['answer'])
@@ -1519,7 +1383,6 @@ class ExcelView(generic.DetailView):
             return HttpResponse(json.dumps({'success': "Active import"}))
 
     def save_import(request):
-        # tt = time.time()
         attendee_data_elements = []
         current_import = ImportChangeRequest.objects.get(pk=request.POST.get('id'))
         if current_import and current_import.status == 1:
@@ -1542,8 +1405,6 @@ class ExcelView(generic.DetailView):
 
             current_import.status = 0
             current_import.save()
-
-        # print('*** Main -> {}'.format(time.time() - tt))
         response = dict(result=True, message="Saving import in progress...")
         return JsonResponse(response)
 
@@ -1601,69 +1462,8 @@ class ExcelView(generic.DetailView):
         if ExcelView.total_import_attendee == ExcelView.saved_attendee_counter:
             response['complete'] = True
         else:
-            print("Total: {}".format(ExcelView.total_import_attendee))
-            print(ExcelView.saved_attendee_counter)
             response['percentage'] = round((ExcelView.saved_attendee_counter * 100) / ExcelView.total_import_attendee)
         return JsonResponse(response)
-
-    # def save_import_old(request):
-    #     admin_id = request.session['event_auth_user']['id']
-    #     event_id = request.session['event_auth_user']['event_id']
-    #     current_import = ImportChangeRequest.objects.get(pk=request.POST.get('id'))
-    #     data_name = request.POST.get('data_name').strip()
-    #     update_atts_for_mail = []
-    #
-    #     if current_import and current_import.status == 1:
-    #         new_attendees = []
-    #         new_attendees.append({"att": 0, "data": {}})
-    #         with transaction.atomic():
-    #             changing_elements = json.loads(request.POST.get('data'))
-    #             for element in changing_elements:
-    #                 att_id = int(element['attendee_id'])
-    #                 new_att_flag = False
-    #                 if att_id < 0:
-    #                     for new_att in new_attendees:
-    #                         if att_id == new_att["att"]:
-    #                             ExcelView.new_att_info_insert(new_att, element)
-    #                             # here new_att used as call by reference where new_attendees update
-    #                             new_att_flag = True
-    #                             break
-    #                     if not new_att_flag:
-    #                         temp_att = {
-    #                             "att": att_id,
-    #                             "data": {"g": [], "q": [], "s": [], "t": [], "h": []}
-    #                         }
-    #                         temp_att = ExcelView.new_att_info_insert(temp_att, element)
-    #                         new_attendees.append(temp_att)
-    #
-    #                 elif att_id > 0:
-    #                     if att_id not in update_atts_for_mail:
-    #                         update_atts_for_mail.append(att_id)
-    #
-    #                     if element['attribute_name'] == 'g':
-    #                         ExcelView.save_general_from_import(request, element['attribute_id'], int(element['attendee_id']),
-    #                                                            str(element['new_value'].strip()))
-    #                     elif element['attribute_name'] == 'q':
-    #                         ExcelView.save_answer_by_question_attendee_id(request, element['attribute_id'],
-    #                                                                       element['attendee_id'], element['new_value'])
-    #                     elif element['attribute_name'] == 's':
-    #                         ExcelView.save_session_status(request, element['attribute_id'], element['attendee_id'], element['new_value'])
-    #                     elif element['attribute_name'] == 't':
-    #                         ExcelView.save_travel_status(request, element['attribute_id'], element['attendee_id'], element['new_value'])
-    #                     elif element['attribute_name'] == 'h':
-    #                         if int(element['attendee_id']) > 0:
-    #                             ExcelView.save_hotel_update(request, element['attendee_id'], element['new_value'], admin_id, event_id)
-    #
-    #             new_attendees.pop(0)
-    #
-    #             add_atts_for_mail = ExcelView.save_new_attendees(request, new_attendees)
-    #             current_import.status = 0
-    #             current_import.save()
-    #             # update_atts_for_mail new_atts_for_mail will be go for seperated func bcoz diff. mail content
-    #             if data_name == "send_mail":
-    #                 ExcelView.import_send_mail(request, add_atts_for_mail, update_atts_for_mail)  # mail part
-    #
-    #     return HttpResponse("ok")
 
     def import_send_mail(request, add_att_ids, edit_att_ids):
         email_activities = []
@@ -1770,11 +1570,9 @@ class ExcelView(generic.DetailView):
                                    event_id=event_id, secret_key=secret_key, bid=badge_key, password=make_password(password), language_id=current_language.preset_id)
                     att.save()
                     new_activity_history = ActivityHistory(attendee_id=att.id, admin_id=admin_id, activity_type='register', category='event', event_id=event_id)
-                    # all_activities.append(new_activity_history)
                     new_activity_history.save()
 
                     for g in new_att["data"]["g"]:
-                        # all_activities = ExcelView.save_general_from_import(request, g['id'], att.id, g['value'], all_activities)
                         ExcelView.save_general_from_import(request, g['id'], att.id, g['value'])
                     for q in new_att["data"]["q"]:
                         ExcelView.save_answer_by_question_attendee_id(request, int(q['id']), att.id, q['value'])
@@ -1790,7 +1588,6 @@ class ExcelView(generic.DetailView):
                         open_order = EconomyLibrary.get_open_order_by_attendee(att.id)
                         if open_order:
                             EconomyLibrary.change_order_status(open_order.get('order_number'), 'pending', event_id, att.id, admin_id)
-                    # print('T needed -> {}'.format(time.time() - tt))
             except :
                 pass
             ExcelView.saved_attendee_counter += 1
@@ -2143,7 +1940,6 @@ class ExcelView(generic.DetailView):
     def economy_place_for_import(request, item_type, item_id, attendee_id, booking_id=None, booking_day_count=None):
         admin_id = request.session['event_auth_user']['id']
         event_id = request.session['event_auth_user']['event_id']
-        # (event_id, user_id, item_type, item_id, admin_id=None, order_number=None, preselected=False, booking_day_count=1, booking_id=None)
         EconomyLibrary.place_order(event_id, attendee_id, item_type, item_id, admin_id, booking_id=booking_id, booking_day_count=booking_day_count)
         return
 
@@ -2275,8 +2071,6 @@ class ExcelView(generic.DetailView):
                     if len(changed_data) > 0:
                         response_data.append({"Attendee": attendee_id, 'data': changed_data})
 
-                    print(response_data)
-
             except Exception as e:
                 response_data.append({"Attendee": "Error!!! =" + str(e)})
 
@@ -2389,7 +2183,6 @@ class Uploader():
         ws = wb.worksheets[0]  # ws is now an IterableWorksheet
 
         response_data2 = []
-        # questionHeaders = []
         header_row = []
 
         # i=1
@@ -2405,7 +2198,6 @@ class Uploader():
             att_only_answers = []
 
             if item_row < 2:
-                # print(row[5].value)
                 if row[0].value == "booking":
                     return HotelImport.dynamic_hotel_import(request, ws.rows)
                 if item_row == 0:
@@ -2430,13 +2222,10 @@ class Uploader():
                     att = Attendee.objects.filter(id=attendee_id)
                 else:
                     email_index = Uploader.get_email_index(header_row)
-                    print(email_index)
                     if email_index > 0:
                         att = Uploader.get_attendee_by_email(row[email_index].value)
                         attendee_id = att.id
                     exception_identifier = " row " + str(item_row)
-                print ("att")
-                print (att)
                 if not att:
                     continue
 
@@ -2476,8 +2265,6 @@ class Uploader():
                     if len(header_row) <= content_serial:
                         content_serial += 1
                         continue
-
-                    # print(content_serial)
                     if header_row[content_serial][0] == "att":
                         if header_row[content_serial][1] == 'rdate':
                             registration_date = item.value
@@ -2487,7 +2274,6 @@ class Uploader():
                             [{"question_id": header_row[content_serial][1], "answer": item.value, "a_type": 'text'}])
                         if item.value:
                             only_answers.append(str(item.value))
-                            # print (item.value)
 
                             att_only_answer = Answers.objects.filter(user_id=attendee_id,
                                                                      question_id=header_row[content_serial][1]).first()
@@ -2497,8 +2283,6 @@ class Uploader():
                             else:
                                 att_only_answers.append('')
 
-                                # print("asdasd")
-
                     elif header_row[content_serial][0] == "travel":
                         if str.lower(str(item.value)) == "attending" or str.lower(
                                 str(item.value)) == "not-attending" or str.lower(
@@ -2507,7 +2291,6 @@ class Uploader():
                                 [{"travel_id": header_row[content_serial][1], "status": str.lower(item.value)}])
 
                     elif header_row[content_serial][0].lower() == "session":
-                        print("session found")
                         if str.lower(str(item.value)) == "attending" or str.lower(
                                 str(item.value)) == "not-attending" or str.lower(
                             str(item.value)) == "in-queue" or str.lower(str(item.value)) == "deciding":
@@ -2515,7 +2298,6 @@ class Uploader():
                                 [{"session_id": header_row[content_serial][1], "status": str.lower(item.value)}])
                     content_serial = content_serial + 1
 
-                    # print(header_row[content_serial][0])
                 att_change_flag = False
                 if att:
                     for answer in answers:
@@ -2555,14 +2337,11 @@ class Uploader():
                         changed_data['travels'] = travel_history
                     if len(changed_data) > 0:
                         response_data2.append({"Attendee": attendee_id, 'data': changed_data})
-                    print(response_data2)
-
             except Exception as e:
                 import sys
                 exc_type, exc_obj, exc_tb = sys.exc_info()
                 fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
                 print(exc_type, fname, exc_tb.tb_lineno)
-                # import sys
                 response_data2.append({"Attendee": "Error!!! =" + str(e)})
                 message.append([{'question': '', 'attendee': exception_identifier, 'reason': "Error!!! =" + str(e)}])
                 error_flag = True
@@ -2589,11 +2368,6 @@ class Uploader():
 
         else:
             context['success'] = "Not found any importing changes"
-
-        # return render(request, 'export-import/import_changes.html', context)
-
-        # print(context)
-
 
         return render(request, 'export-import/import-result.html', context)
 
@@ -2627,26 +2401,12 @@ class Uploader():
             k.make_public()
             # END S3
 
-
-
-            #
-            # import os
-            #
-            # if not os.path.exists("attendeeList/"):
-            #     os.makedirs("attendeeList/")
-            # filepath = 'attendeeList/'
-            # with open(filepath + filename, 'wb') as destination:
-            #     for chunk in f.chunks():
-            #         destination.write(chunk)
-
     def get_email_index(rows):
-        # print(rows)
         index = -1
         for row in rows:
             index += 1
             if row:
                 if row[0] == "q":
-                    print(row[1])
                     question = Questions.objects.filter(id=row[1]).first()
                     if question.actual_definition == "email":
                         return index
@@ -2685,8 +2445,6 @@ class HotelImport:
                                 update_msg.append("Booking removed")
                                 messages.append({'booking': booking, 'errors': erro_msg, 'msgs': update_msg})
                                 continue
-                            # checkin_date = datetime.strptime(str(rows[9].value),"%Y-%m-%d %H:%M:%S").date()
-                            # checkout_date = datetime.strptime(str(rows[10].value),"%Y-%m-%d %H:%M:%S").date()
                             checkin_date = str(rows[9].value)
                             checkout_date = str(rows[10].value)
                             room_allotments = RoomAllotment.objects.filter(room_id=room_id, available_date__range=(
@@ -2783,7 +2541,6 @@ class HotelImport:
                                 else:
                                     update_flag = True
                                     erro_msg.append("Room not available")
-                                    print("Room not available")
 
                         if room.description != rows[8].value:
                             room.description = rows[8].value
@@ -2811,7 +2568,6 @@ class HotelImport:
                             messages.append({'booking': booking, 'errors': erro_msg, 'msgs': update_msg})
 
                     else:
-                        # print(booking_id)
                         erro_msg.append("Booking not found")
                         messages.append({'booking': {'id': booking_id}, 'errors': erro_msg, 'msgs': ''})
 
@@ -2820,7 +2576,6 @@ class HotelImport:
                     messages.append(
                         {'booking': {'id': booking_id}, 'errors': ['Exception occurs: ' + str(e)], 'msgs': ''})
         return messages
-        # return render(request, 'export-import/import_hotel_result.html', {'messages': messages})
 
     def get_available_allotment(allotment, room_id):
         from django.db.models.aggregates import Count
@@ -2863,7 +2618,6 @@ class HotelImport:
         result = {'success': False, 'message': 'Actual Buddy not updated'}
 
         actual_buddy_list = [x.strip() for x in actual_buddy_list.split(',')]
-        # print(actual_buddy_list)
         all_pairable_bookings = [attendee_booking.id]
         for attendee_email in actual_buddy_list:
             attendee = Attendee.objects.filter(email=attendee_email).first()

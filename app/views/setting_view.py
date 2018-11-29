@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.views import generic
-from app.models import Group, Setting, Questions, Session, Travel, Room, Tag, Events, Presets, PresetEvent, \
+from app.models import Group, Setting, Room, Tag, Events, Presets, PresetEvent, \
     EmailContents, ContentPermission, GroupPermission
 from .common_views import GroupView, EventView
 from django.http import HttpResponse, JsonResponse
@@ -43,7 +43,6 @@ class SettingView(generic.DetailView):
             setting = Setting.objects.filter(name='notification_timeout', event_id=event_id)
             if setting:
                 timeout = setting[0].value
-                # print(timeout)
             else:
                 timeout = 0
             appear_next_up = 0
@@ -58,10 +57,6 @@ class SettingView(generic.DetailView):
             appear_evaluation_setting = Setting.objects.filter(name='appear_evaluation_setting', event_id=event_id)
             if appear_evaluation_setting.exists():
                 appear_evaluation = appear_evaluation_setting[0].value
-            # disappear_evaluation = 0
-            # disappear_evaluation_setting = Setting.objects.filter(name='disappear_evaluation_setting', event_id=event_id)
-            # if disappear_evaluation_setting.exists():
-            #     disappear_evaluation = disappear_evaluation_setting[0].value
 
             setting_timezone = Setting.objects.filter(name='timezone', event_id=event_id)
             if setting_timezone:
@@ -217,7 +212,6 @@ class SettingView(generic.DetailView):
                 'appear_next_up': appear_next_up,
                 'disappear_next_up': disappear_next_up,
                 'appear_evaluation': appear_evaluation,
-                # 'disappear_evaluation': disappear_evaluation,
                 'cookie_expire': cookie_expire,
                 'cookie_expire_year': cookie_expire_year,
                 'global_session_settings': global_session_settings,
@@ -251,7 +245,6 @@ class SettingView(generic.DetailView):
             new_time = time.time()
             sql_name_case = ""
             sql_name_lang_case = ""
-            # sql_search_case = ""
             for searchable_group in searchable_list:
                 if not (Group.objects.filter(name=searchable_group['group_name'], type=searchable_group['group_type'], event_id=request.session['event_auth_user']['event_id'], is_show=1).exclude(id=searchable_group['id']).exists()):
                     if searchable_group['group_type'] == 'email' or searchable_group['group_type'] == 'payment':
@@ -261,7 +254,6 @@ class SettingView(generic.DetailView):
                             sql_name_case += "WHEN id = " + searchable_group['id'] + " THEN '" + searchable_group['group_name'] + "' "
                         else:
                             sql_name_case += "WHEN id = " + searchable_group['id'] + " THEN '" + searchable_group['group_prev_name'] + "' "
-                    # sql_search_case +="WHEN id = "+searchable_group['id']+" THEN '"+str(searchable_group['visible'])+"' "
                     if "group_name_lang" in searchable_group:
                         if searchable_group['group_name_lang'] != '' and searchable_group['group_name_lang'] != None:
                             name_lang = json.loads(searchable_group['group_name_lang'], strict=False)
@@ -275,13 +267,10 @@ class SettingView(generic.DetailView):
                 sql_case_array.append('name = CASE '+sql_name_case+'END')
             if sql_name_lang_case != '':
                 sql_case_array.append('name_lang = CASE ' + sql_name_lang_case + 'END')
-            # if sql_search_case != '':
-            #     sql_case_array.append('is_searchable = CASE '+sql_search_case+'END')
             sql_group_query = ','.join(sql_case_array)
             if sql_group_query != '':
                 group_update_sql = 'update groups set '+sql_group_query+' WHERE id IN ('+str(group_ids).replace("[","").replace("]","")+')'
                 cursor.execute(group_update_sql)
-            print("--- %s Group Update seconds ---" % (time.time() - new_time))
             color_list = json.loads(request.POST.get('session_color_List'))
             for color_group in color_list:
                 Group.objects.filter(id=color_group['id']).update(color=color_group['color'])
@@ -304,9 +293,6 @@ class SettingView(generic.DetailView):
 
             appear_evaluation_setting = request.POST.get('appear_evaluation_setting')
             setting = SettingView.save_or_update_settings(request,'appear_evaluation_setting',appear_evaluation_setting,setting['new_settings'],setting['updated_settings'],setting['updated_setting_ids'])
-
-            # disappear_evaluation_setting = request.POST.get('disappear_evaluation_setting')
-            # setting = SettingView.save_or_update_settings(request,'disappear_evaluation_setting',disappear_evaluation_setting,setting['new_settings'],setting['updated_settings'],setting['updated_setting_ids'])
 
             timezone = request.POST.get('timezone')
             setting = SettingView.save_or_update_settings(request,'timezone',timezone,setting['new_settings'],setting['updated_settings'],setting['updated_setting_ids'])
@@ -339,8 +325,6 @@ class SettingView(generic.DetailView):
                 if order_number_availabile:
                     setting = SettingView.save_or_update_settings(request, 'start_order_number', start_order_number, setting['new_settings'],
                                                                   setting['updated_settings'], setting['updated_setting_ids'])
-                # else:
-                #     response_data['warnings'].append('Order number should be more than 1000 regarding previuos order numbers.')
 
             due_date = request.POST.get('due_date')
             setting = SettingView.save_or_update_settings(request, 'due_date', due_date, setting['new_settings'],
@@ -460,7 +444,6 @@ class SettingView(generic.DetailView):
             response_data['group_response'] = group_response
         else:
             response_data['error'] = 'You do not have Permission to do this'
-        print("--- %s seconds ---" % (time.time() - start_time))
         return HttpResponse(json.dumps(response_data), content_type="application/json")
 
     def save_or_update_settings(request,name,value,new_settings, updated_settings,updated_setting_ids):
@@ -520,7 +503,6 @@ class SettingView(generic.DetailView):
                             new_group.save()
                         else:
                             new_group = Group(**form_data)
-                            # new_groups.append(new_group)
                             new_group.save()
                         response_data['group_id'] = new_group.id
                         response_data['group_name_lang'] = new_group.name_lang
@@ -548,14 +530,6 @@ class SettingView(generic.DetailView):
                     addGroupPermission = GroupPermission(**insert_group)
                     group_permissions.append(addGroupPermission)
             GroupPermission.objects.bulk_create(group_permissions)
-        # print(new_groups)
-        # Group.objects.bulk_create(new_groups)
-        # sql_case = ','.join(sql_case_array)
-        # if sql_case != '':
-        #     sql = 'update groups set '+sql_case+' WHERE id IN ('+str(group_ids).replace("[","").replace("]","")+')'
-        #     print("------------------")
-        #     print(sql)
-        #     print("######################")
         return group_response
 
     def set_default_answers(defaults_answers,table):
@@ -564,16 +538,12 @@ class SettingView(generic.DetailView):
         sql_answer_case = ''
         sql_answer_status_case = ''
         for defaults_answer in defaults_answers:
-            # question = Questions.objects.filter(pk=defaults_answer['id'])
-            # question.update(default_answer_status=defaults_answer['status'])
             if defaults_answer['status'] == "set" and defaults_answer['value'] != "Empty":
                 sql_answer_status_case +='WHEN id = '+str(defaults_answer['id'])+' THEN "'+defaults_answer['status']+'" '
                 sql_answer_case +='WHEN id = '+str(defaults_answer['id'])+' THEN "'+defaults_answer['value']+'" '
                 answer_ids.append(str(defaults_answer['id']))
-                # question.update(default_answer=defaults_answer['value'])
             elif defaults_answer['status'] == 'empty' or defaults_answer['status'] == 'leave':
                 sql_answer_status_case += 'WHEN id = ' + str(defaults_answer['id']) + ' THEN "' + defaults_answer['status'] + '" '
-                # sql_answer_case += 'WHEN id = ' + str(defaults_answer['id']) + ' THEN "' + defaults_answer['value'] + '" '
                 answer_ids.append(str(defaults_answer['id']))
         if sql_answer_status_case != '':
             sql_answer_case_array.append('default_answer_status = CASE '+sql_answer_status_case+'END')
@@ -596,8 +566,6 @@ class SettingView(generic.DetailView):
                 if old_group.name != 'temporary-filter':
                     Group.objects.filter(id=id).update(is_show=0)
                     Group.objects.filter(id=id, type='session').delete()
-                    # Group.objects.filter(id=id, type='email').delete()
-                    # deletegroup.delete()
             response_data['success'] = 'Group Deleted Successfully'
         else:
             response_data['error'] = 'You do not have Permission to do this'
@@ -629,16 +597,6 @@ class SettingView(generic.DetailView):
 
         return HttpResponse(json.dumps(response_data), content_type="application/json")
 
-    # def get_settings_attendee_global_details(request):
-    #     context = {}
-    #     event_id = request.session['event_auth_user']['event_id']
-    #     context['question_groups'] = PageDetailView.get_treeView_question_group(request)
-    #     try:
-    #         context['attendee_global_settings'] = Setting.objects.filter(name='attendee_global_settings', event_id=event_id).first().value
-    #     except:
-    #         context['attendee_global_settings'] = ""
-    #     return JsonResponse(context)
-
     def get_settings_attendee_global_details(request):
         context = {}
         event_id = request.session['event_auth_user']['event_id']
@@ -654,6 +612,5 @@ class SettingView(generic.DetailView):
             max_order_number = max(order_numbers)
             order_number = int(order_number)
             if (order_number - max_order_number) < 1000:
-                print(order_number - max_order_number)
                 return False
         return True

@@ -324,47 +324,6 @@
 
             });
         });
-        {#        $('body').on('click', '.add-receivers-clipboard', function (e) {#}
-        {#            import_clipboard = $(".import-clipboard").html()#}
-        {#            if (booking_id != '' && booking_id != undefined) {#}
-        {#                var csrf_token = $('input[name=csrfmiddlewaretoken]').val();#}
-        {#                $.ajax({#}
-        {#                    url: base_url + '/admin/hotels/check-match/',#}
-        {#                    type: "POST",#}
-        {#                    data: {#}
-        {#                        import_clipboard: booking_id,#}
-        {#                        csrfmiddlewaretoken: csrf_token#}
-        {#                    },#}
-        {#                    success: function (result) {#}
-        {##}
-        {#                        if (result.error) {#}
-        {#                            $.growl.error({message: result.error});#}
-        {#                            // } else if (checkConflicts) {#}
-        {#                            //     $.growl.error({message: "Input start date conficts Inner"});#}
-        {#                            //     $html.val("");#}
-        {#                            //     checkConflicts = false;#}
-        {#                        } else {#}
-        {#                            console.log(result);#}
-        {#                            var status = 3;#}
-        {#                            if (result.status == 1 || result.status == 2) {#}
-        {#                                bootbox.confirm(result.date_message, function (confirm) {#}
-        {#                                    if (confirm) {#}
-        {#                                        status = 1;#}
-        {#                                        $html.closest('tr').attr('data-status', '1');#}
-        {#                                    } else {#}
-        {#                                        status = 0;#}
-        {#                                        $html.val(prev_date);#}
-        {#                                    }#}
-        {#                                });#}
-        {#                            }#}
-        {#                        }#}
-        {#                        pre_val = new_val;#}
-        {#                    }#}
-        {#                });#}
-        {#            }#}
-        {##}
-        {##}
-        {#        });#}
     </script>
 
 {% endblock %}

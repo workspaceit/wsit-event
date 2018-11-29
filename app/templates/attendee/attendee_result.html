@@ -45,9 +45,6 @@
                         </ul>
                         <!-- / .dropdown-menu -->
                     </li>
-                    <!--<li class="">
-                        <a href="#filter-visible-columns" data-toggle="tab"><span class="fa fa-eye fa-lg"></span> Visible Columns</a>
-                    </li>-->
                 </ul>
                 <!-- / .nav -->
             </div>
@@ -134,9 +131,7 @@
                                             <td>{{ user.created|date:"m/d/Y" }}</td>
                                             <td>{{ user.firstname }}</td>
                                             <td>{{ user.lastname }}</td>
-{#                                            <td>{{ user.company }}</td>#}
                                             <td>{{ user.email }}</td>
-{#                                            <td>{{ user.phone }}</td>#}
                                         </tr>
                                     {% endfor %}
                                 </ul>
@@ -200,13 +195,9 @@
       $(document).ready(
                 function()
                 {
-
                     $('#filter-search-table').dataTable({
                         "sDom": '<"dt_top" <"dt_left"f><"dt_right"l><"clear">>rt<"dt_bottom" <"dt_left"i><"dt_right"p><"clear">>',
                     });
-{#                    $('.navigation li:nth-child(2)').addClass("active");#}
-{#                    console.log($('.navigation li:nth-child(2)'))#}
-
                 }
         );
     </script>

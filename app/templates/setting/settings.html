@@ -1,8 +1,6 @@
 {% extends "layout/main.html" %}
 {% block content %}
     {% load staticfiles %}
-    {#    <link rel=stylesheet href="{% static 'assets/stylesheets/kendo.common-office365.min.css' %}">#}
-    {#    <link rel="stylesheet" href="{% static 'assets/stylesheets/kendo.office365.min.css' %}">#}
     <link rel="stylesheet" href="{% static 'assets/javascripts/fancytree/skin-lion/ui.fancytree.min.css' %}">
     <input type="hidden" id="settings_defualt_language_id" value="{{ presetsEvent.preset_id }}"/>
     <style>
@@ -42,9 +40,6 @@
                     <li class="active">
                         <a href="#settings-attendees" data-toggle="tab"><span class="fa fa-search fa-user"></span>&nbsp;&nbsp;Attendees</a>
                     </li>
-                    {#                    <li class="">#}
-                    {#                        <a href="#settings-menus" data-toggle="tab"><span class="fa fa-bars fa-lg"></span>&nbsp;&nbsp;Menus</a>#}
-                    {#                    </li>#}
                     <li class="">
                         <a href="#settings-sessions" data-toggle="tab"><span class="fa fa-calendar fa-lg"></span>&nbsp;&nbsp;Sessions</a>
                     </li>
@@ -89,10 +84,6 @@
                     <li class="">
                         <a href="#settings-language" data-toggle="tab"><span class="fa fa-language fa-lg"></span>&nbsp;&nbsp;Language</a>
                     </li>
-                    {#                    <li class="">#}
-                    {#                        <a href="#settings-email-confirmation" data-toggle="tab"><span#}
-                    {#                                class="fa fa-envelope fa-lg"></span>&nbsp;&nbsp;Email Confirmation</a>#}
-                    {#                    </li>#}
                     <li class="">
                         <a href="#settings-cookie" data-toggle="tab"><span
                                 class="fa fa-clock-o fa-lg"></span>&nbsp;&nbsp;Session Cookie</a>
@@ -135,7 +126,6 @@
                                 <th>#</th>
                                 <th>Id</th>
                                 <th>Name</th>
-                                {#                                <th>Is Searchable</th>#}
                             </tr>
                             </thead>
                             <tbody>
@@ -154,8 +144,6 @@
                                                                                             data-lang="{{ group.name_lang }}"
                                                                                             data-prev-name="{{ group.name|safe }}">{{ group.name|safe }}</a>
                                     </td>
-                                    {#                                    <td><input type="checkbox" class="searchableGroup" {% if group.is_searchable == 1 %}#}
-                                    {#                                               checked {% endif %}data-id="{{ group.id }}"></td>#}
                                 </tr>
                             {% endfor %}
                             </tbody>
@@ -174,51 +162,6 @@
                         </div>
                     </div>
                 </div>
-                {#                <div class="tab-pane fade" id="settings-menus">#}
-                {#                    <div class="table-light">#}
-                {#                        <div class="table-header">#}
-                {#                            <div class="table-caption">#}
-                {#                                Menu Groups#}
-                {#                            </div>#}
-                {#                        </div>#}
-                {#                        <table class="table table-bordered settings-groups-table sortable" id="settings-menu-group">#}
-                {#                            <thead>#}
-                {#                            <tr>#}
-                {#                                <th><input type="checkbox" class="checkAllGroup"></th>#}
-                {#                                <th>#</th>#}
-                {#                                <th>Id</th>#}
-                {#                                <th>Name</th>#}
-                {#                                <th>Is Searchable</th>#}
-                {#                            </tr>#}
-                {#                            </thead>#}
-                {#                            <tbody>#}
-                {#                            {% for group in menuGroup %}#}
-                {#                                <tr>#}
-                {#                                    <td><input type="checkbox" class="checkGroup" data-id="{{ group.id }}"></td>#}
-                {#                                    <td>{{ forloop.counter }}</td>#}
-                {#                                    <td>{{ group.id }}</td>#}
-                {#                                    <td class="searchableGroup" data-id="{{ group.id }}"><a href="#" class="settings-menu-group" id="{{ group.id }}" data-type="text"#}
-                {#                                           data-pk="1" data-title="Name" data-lang="{{ group.name_lang }}" data-prev-name="{{ group.name|safe }}">{{ group.name|safe }}</a></td>#}
-                {#                                    <td><input type="checkbox" class="searchableGroup" {% if group.is_searchable == 1 %}#}
-                {#                                               checked {% endif %}data-id="{{ group.id }}"></td>#}
-                {#                                </tr>#}
-                {#                            {% endfor %}#}
-                {#                            </tbody>#}
-                {#                        </table>#}
-                {#                        <div class="table-footer">#}
-                {#                            <div class="btn-group">#}
-                {#                                <button type="button" class="btn add-group"><span class="icon fa fa-plus"></span>&nbsp;&nbsp;Add#}
-                {#                                    New#}
-                {#                                    Group#}
-                {#                                </button>#}
-                {#                                <button type="button" class="btn delete-group"><span class="icon fa fa-minus"></span>&nbsp;&nbsp;Delete#}
-                {#                                    Selected#}
-                {#                                    Group(s)#}
-                {#                                </button>#}
-                {#                            </div>#}
-                {#                        </div>#}
-                {#                    </div>#}
-                {#                </div>#}
                 <div class="tab-pane fade" id="settings-sessions">
                     <div class="table-light">
                         <div class="table-header">
@@ -276,16 +219,6 @@
                                 <span class="input-group-addon"><i class="fa fa-clock-o"></i></span>
                             </div>
                         </div>
-                        {#                        <br>#}
-                        {#                        <div class="table-caption form-inline row">#}
-                        {#                            <label class="col-sm-4">Disappear after:</label>#}
-                        {#                            <div class="input-group date col-sm-4">#}
-                        {#                                <input type="text" value="{{ disappear_evaluation }}"#}
-                        {#                                       class="timepicker-timeout timepicker-start form-control"#}
-                        {#                                       id="disappear_evaluation_setting"/>#}
-                        {#                                <span class="input-group-addon"><i class="fa fa-clock-o"></i></span>#}
-                        {#                            </div>#}
-                        {#                        </div>#}
 
                     </div>
                     <div class="table-light">
@@ -301,8 +234,6 @@
                                 <th>#</th>
                                 <th>Id</th>
                                 <th>Name</th>
-                                {#                                <th>Is Searchable</th>#}
-                                {#                                <th>Color</th>#}
                             </tr>
                             </thead>
                             <tbody>
@@ -320,32 +251,6 @@
                                                                                             data-lang="{{ group.name_lang }}"
                                                                                             data-prev-name="{{ group.name|safe }}">{{ group.name|safe }}</a>
                                     </td>
-                                    {#                                    <td><input type="checkbox" class="searchableGroup" {% if group.is_searchable == 1 %}#}
-                                    {#                                               checked {% endif %}data-id="{{ group.id }}"></td>#}
-                                    {#                                    <td>#}
-                                    {#                                        <div class="minicolors minicolors-theme-bootstrap minicolors-position-bottom minicolors-position-left minicolors-focus">#}
-                                    {#                                            <input type="text" id="hue-demo" class="form-control demo group_color minicolors-input"#}
-                                    {#                                                   data-control="hue" value="{{ group.color }}" size="7" data-id="{{ group.id }}"><span#}
-                                    {#                                                class="minicolors-swatch minicolors-sprite minicolors-input-swatch"><span#}
-                                    {#                                                class="minicolors-swatch-color"#}
-                                    {#                                                style="opacity: 1; background-color: {% if group.color %} {{ group.color }} {% else %}transparent {% endif %};"></span></span>#}
-                                    {#                                            <div class="minicolors-panel minicolors-slider-hue" style="display: block;">#}
-                                    {#                                                <div class="minicolors-slider minicolors-sprite">#}
-                                    {#                                                    <div class="minicolors-picker" style="top: 150px;"></div>#}
-                                    {#                                                </div>#}
-                                    {#                                                <div class="minicolors-opacity-slider minicolors-sprite">#}
-                                    {#                                                    <div class="minicolors-picker"></div>#}
-                                    {#                                                </div>#}
-                                    {#                                                <div class="minicolors-grid minicolors-sprite"#}
-                                    {#                                                     style="background-color: rgb(255, 0, 0);">#}
-                                    {#                                                    <div class="minicolors-grid-inner"></div>#}
-                                    {#                                                    <div class="minicolors-picker" style="top: 0px; left: 93px;">#}
-                                    {#                                                        <div></div>#}
-                                    {#                                                    </div>#}
-                                    {#                                                </div>#}
-                                    {#                                            </div>#}
-                                    {#                                        </div>#}
-                                    {#                                    </td>#}
                                 </tr>
                             {% endfor %}
                             </tbody>
@@ -379,7 +284,6 @@
                                 <th>#</th>
                                 <th>Id</th>
                                 <th>Name</th>
-                                {#                                <th>Is Searchable</th>#}
                             </tr>
                             </thead>
                             <tbody>
@@ -397,8 +301,6 @@
                                                                                             data-lang="{{ group.name_lang }}"
                                                                                             data-prev-name="{{ group.name|safe }}">{{ group.name|safe }}</a>
                                     </td>
-                                    {#                                    <td><input type="checkbox" class="searchableGroup" {% if group.is_searchable == 1 %}#}
-                                    {#                                               checked {% endif %}data-id="{{ group.id }}"></td>#}
                                 </tr>
                             {% endfor %}
                             </tbody>
@@ -450,8 +352,6 @@
                                                                                             data-lang="{{ group.name_lang }}"
                                                                                             data-prev-name="{{ group.name|safe }}">{{ group.name|safe }}</a>
                                     </td>
-                                    {#                                    <td><input type="checkbox" class="searchableGroup" {% if group.is_searchable == 1 %}#}
-                                    {#                                               checked {% endif %}data-id="{{ group.id }}"></td>#}
                                 </tr>
                             {% endfor %}
                             </tbody>
@@ -486,7 +386,6 @@
                                 <th>#</th>
                                 <th>Id</th>
                                 <th>Name</th>
-                                {#                                <th>Is Searchable</th>#}
                             </tr>
                             </thead>
                             <tbody>
@@ -504,8 +403,6 @@
                                                                                             data-lang="{{ group.name_lang }}"
                                                                                             data-prev-name="{{ group.name|safe }}">{{ group.name|safe }}</a>
                                     </td>
-                                    {#                                    <td><input type="checkbox" class="searchableGroup" {% if group.is_searchable == 1 %}#}
-                                    {#                                               checked {% endif %}data-id="{{ group.id }}"></td>#}
                                 </tr>
                             {% endfor %}
                             </tbody>
@@ -540,7 +437,6 @@
                                 <th>#</th>
                                 <th>Id</th>
                                 <th>Name</th>
-                                {#                                <th>Is Searchable</th>#}
                             </tr>
                             </thead>
                             <tbody>
@@ -558,8 +454,6 @@
                                                                                             data-lang="{{ group.name_lang }}"
                                                                                             data-prev-name="{{ group.name|safe }}">{{ group.name|safe }}</a>
                                     </td>
-                                    {#                                    <td><input type="checkbox" class="searchableGroup" {% if group.is_searchable == 1 %}#}
-                                    {#                                               checked {% endif %}data-id="{{ group.id }}"></td>#}
                                 </tr>
                             {% endfor %}
                             </tbody>
@@ -592,7 +486,6 @@
                                 <th>#</th>
                                 <th>Id</th>
                                 <th>Name</th>
-                                {#                                <th>Is Searchable</th>#}
                             </tr>
                             </thead>
                             <tbody>
@@ -610,8 +503,6 @@
                                                                                             data-lang="{{ group.name_lang }}"
                                                                                             data-prev-name="{{ group.name|safe }}">{{ group.name|safe }}</a>
                                     </td>
-                                    {#                                    <td><input type="checkbox" class="searchableGroup" {% if group.is_searchable == 1 %}#}
-                                    {#                                               checked {% endif %}data-id="{{ group.id }}"></td>#}
                                 </tr>
                             {% endfor %}
                             </tbody>
@@ -661,7 +552,6 @@
                                 <th>#</th>
                                 <th>Id</th>
                                 <th>Name</th>
-                                {#                                <th>Is Searchable</th>#}
                             </tr>
                             </thead>
                             <tbody>
@@ -679,8 +569,6 @@
                                                                                             data-lang="{{ group.name_lang }}"
                                                                                             data-prev-name="{{ group.name|safe }}">{{ group.name|safe }}</a>
                                     </td>
-                                    {#                                    <td><input type="checkbox" class="searchableGroup" {% if group.is_searchable == 1 %}#}
-                                    {#                                               checked {% endif %}data-id="{{ group.id }}"></td>#}
                                 </tr>
                             {% endfor %}
                             </tbody>
@@ -1032,7 +920,6 @@
                                 <th>#</th>
                                 <th>Id</th>
                                 <th>Name</th>
-                                {#                                <th>Is Searchable</th>#}
                             </tr>
                             </thead>
                             <tbody>
@@ -1048,8 +935,6 @@
                                                                                             data-pk="1"
                                                                                             data-title="Name">{{ group.name }}</a>
                                     </td>
-                                    {#                                    <td><input type="checkbox" class="searchableGroup" {% if group.is_searchable == 1 %}#}
-                                    {#                                               checked {% endif %}data-id="{{ group.id }}"></td>#}
                                 </tr>
                             {% endfor %}
                             </tbody>
@@ -1126,41 +1011,6 @@
 
                     </div>
                 </div>
-
-                {#                <div class="tab-pane fade" id="settings-email-confirmation">#}
-                {#                    <div class="table-light">#}
-                {#                        <div class="table-header">#}
-                {#                            <div class="table-caption">#}
-                {#                                Email confimation for Attendee Add/Edit#}
-                {#                            </div>#}
-                {#                        </div>#}
-                {#                        <br>#}
-                {##}
-                {#                        <div class="table-caption form-inline row">#}
-                {#                            <label class="col-sm-3" for="attendee-add-confirmation">Attendee Add confirmation:</label>#}
-                {#                            <select class="form-control col-sm-9" style="width: 30%" name="attendee_add_confirmation"#}
-                {#                                    id="attendee-add-confirmation">#}
-                {#                                {% for email_confirmation in email_confirmations %}#}
-                {#                                    <option value="{{ email_confirmation.id }}">{{ email_confirmation.name }}#}
-                {#                                    </option>#}
-                {#                                {% endfor %}#}
-                {#                            </select>#}
-                {#                        </div>#}
-                {#                        <br/>#}
-                {#                        <div class="table-caption form-inline row">#}
-                {#                            <label class="col-sm-3" for="attendee-add-confirmation">Attendee Edit confirmation:</label>#}
-                {#                            <select class="form-control col-sm-9" style="width: 30%" name="attendee_edit_confirmation"#}
-                {#                                    id="attendee-edit-confirmation">#}
-                {#                                {% for email_confirmation in email_confirmations %}#}
-                {#                                    <option value="{{ email_confirmation.id }}">{{ email_confirmation.name }}#}
-                {#                                    </option>#}
-                {#                                {% endfor %}#}
-                {#                            </select>#}
-                {#                        </div>#}
-                {#                        <br>#}
-                {##}
-                {#                    </div>#}
-                {#                </div>#}
 
                 <div class="tab-pane fade" id="settings-cookie">
                     <div class="table-light">
@@ -1329,137 +1179,6 @@
                                         </li>
                                     </ul>
                                 </li>
-
-                                {#                                <li>#}
-                                {#                                    <input type="checkbox"#}
-                                {#                                           {% if global_session_settings.description %}checked="checked"{% endif %}#}
-                                {#                                           id="global-setting-session-description"#}
-                                {#                                           class="settings-global-answer"#}
-                                {#                                           data-setting-key="description">#}
-                                {#                                    <label#}
-                                {#                                            for="global-setting-session-description">Description</label>#}
-                                {#                                </li>#}
-                                {#                                <li>#}
-                                {#                                    <input type="checkbox"#}
-                                {#                                           {% if global_session_settings.start_time %}checked="checked"{% endif %}#}
-                                {#                                           id="global-setting-session-start-time"#}
-                                {#                                           class="settings-global-answer"#}
-                                {#                                           data-setting-key="start_time"> <label#}
-                                {#                                        for="global-setting-session-start-time">Start time</label>#}
-                                {#                                </li>#}
-                                {#                                <li>#}
-                                {#                                    <input type="checkbox"#}
-                                {#                                           {% if global_session_settings.star_date %}checked="checked"{% endif %}#}
-                                {#                                           id="global-setting-session-start-date"#}
-                                {#                                           class="settings-global-answer"#}
-                                {#                                           data-setting-key="star_date">#}
-                                {#                                    <label#}
-                                {#                                            for="global-setting-session-start-date">Start date</label>#}
-                                {#                                </li>#}
-                                {#                                <li>#}
-                                {#                                    <input type="checkbox"#}
-                                {#                                           {% if global_session_settings.end_time %}checked="checked"{% endif %}#}
-                                {#                                           id="global-setting-session-end-time"#}
-                                {#                                           class="settings-global-answer"#}
-                                {#                                           data-setting-key="end_time">#}
-                                {#                                    <label#}
-                                {#                                            for="global-setting-session-end-time">End time</label>#}
-                                {#                                </li>#}
-                                {#                                <li>#}
-                                {#                                    <input type="checkbox"#}
-                                {#                                           {% if global_session_settings.end_date %}checked="checked"{% endif %}#}
-                                {#                                           id="global-setting-session-end-date"#}
-                                {#                                           class="settings-global-answer"#}
-                                {#                                           data-setting-key="end_date">#}
-                                {#                                    <label#}
-                                {#                                            for="global-setting-session-end-date">End date</label>#}
-                                {#                                </li>#}
-                                {#                                <li>#}
-                                {#                                    <input type="checkbox"#}
-                                {#                                           {% if global_session_settings.rvsp_date %}checked="checked"{% endif %}#}
-                                {#                                           id="global-setting-session-rvsp-date"#}
-                                {#                                           class="settings-global-answer"#}
-                                {#                                           data-setting-key="rvsp_date">#}
-                                {#                                    <label#}
-                                {#                                            for="global-setting-session-rvsp-date">RVSP date</label>#}
-                                {#                                </li>#}
-                                {#                                <li>#}
-                                {#                                    <input type="checkbox"#}
-                                {#                                           {% if global_session_settings.cost %}checked="checked"{% endif %}#}
-                                {#                                           id="global-setting-session-cost"#}
-                                {#                                           class="settings-global-answer"#}
-                                {#                                           data-setting-key="cost">#}
-                                {#                                    <label#}
-                                {#                                            for="global-setting-session-cost">Cost</label>#}
-                                {#                                    <ul>#}
-                                {#                                        <li>#}
-                                {#                                            <input type="checkbox"#}
-                                {#                                                   {% if global_session_settings.cost_incl_vat %}checked="checked"{% endif %}#}
-                                {#                                                   id="global-setting-session-cost-incl-vat"#}
-                                {#                                                   class="settings-global-answer"#}
-                                {#                                                   data-setting-key="cost_incl_vat">#}
-                                {#                                            <label for="global-setting-session-cost-incl-vat">Include vat</label>#}
-                                {#                                        </li>#}
-                                {#                                    </ul>#}
-                                {#                                </li>#}
-                                {#                                <li>#}
-                                {#                                    <input type="checkbox"#}
-                                {#                                           {% if global_session_settings.speaker %}checked="checked"{% endif %}#}
-                                {#                                           id="global-setting-session-speaker"#}
-                                {#                                           class="settings-global-answer"#}
-                                {#                                           data-setting-key="speaker">#}
-                                {#                                    <label#}
-                                {#                                            for="global-setting-session-speaker">Speaker</label>#}
-                                {#                                    <ul>#}
-                                {#                                        <li>#}
-                                {#                                            <input type="checkbox"#}
-                                {#                                                   {% if global_session_settings.link_to_speaker %}checked="checked"{% endif %}#}
-                                {#                                                   id="global-setting-session-speaker-as-link"#}
-                                {#                                                   class="settings-global-answer"#}
-                                {#                                                   data-setting-key="link_to_speaker">#}
-                                {#                                            <label for="global-setting-session-speaker-as-link">Link to speaker#}
-                                {#                                                details</label>#}
-                                {#                                        </li>#}
-                                {#                                    </ul>#}
-                                {#                                </li>#}
-                                {#                                <li>#}
-                                {#                                    <input type="checkbox"#}
-                                {#                                           {% if global_session_settings.tags %}checked="checked"{% endif %}#}
-                                {#                                           id="global-setting-session-tags"#}
-                                {#                                           class="settings-global-answer"#}
-                                {#                                           data-setting-key="tags">#}
-                                {#                                    <label#}
-                                {#                                            for="global-setting-session-tags">Tags</label>#}
-                                {#                                </li>#}
-                                {#                                <li>#}
-                                {#                                    <input type="checkbox"#}
-                                {#                                           {% if global_session_settings.session_group %}checked="checked"{% endif %}#}
-                                {#                                           id="global-setting-session-session-group"#}
-                                {#                                           class="settings-global-answer"#}
-                                {#                                           data-setting-key="session_group">#}
-                                {#                                    <label#}
-                                {#                                            for="global-setting-session-session-group">Session group</label>#}
-                                {#                                </li>#}
-                                {#                                <li>#}
-                                {#                                    <input type="checkbox"#}
-                                {#                                           {% if global_session_settings.location %}checked="checked"{% endif %}#}
-                                {#                                           id="global-setting-session-location"#}
-                                {#                                           class="settings-global-answer"#}
-                                {#                                           data-setting-key="location">#}
-                                {#                                    <label#}
-                                {#                                            for="global-setting-session-location">Location</label>#}
-                                {#                                    <ul>#}
-                                {#                                        <li>#}
-                                {#                                            <input type="checkbox"#}
-                                {#                                                   {% if global_session_settings.link_to_location %}checked="checked"{% endif %}#}
-                                {#                                                   id="global-setting-session-location-as-link"#}
-                                {#                                                   class="settings-global-answer"#}
-                                {#                                                   data-setting-key="link_to_location">#}
-                                {#                                            <label for="global-setting-session-location-as-link">Link to location#}
-                                {#                                                details</label>#}
-                                {#                                        </li>#}
-                                {#                                    </ul>#}
-                                {#                                </li>#}
                             </ul>
                         </div>
                     </div>
@@ -1510,65 +1229,6 @@
                                         class="settings-global-answer"
                                         data-setting-key="contact_details">Contact details
                                 </li>
-
-
-                                {#                                <li>#}
-                                {#                                    <input type="checkbox"#}
-                                {#                                           {% if global_location_settings.title %}checked="checked"{% endif %}#}
-                                {#                                           id="global-setting-location-title"#}
-                                {#                                           class="settings-global-answer"#}
-                                {#                                           data-setting-key="title">#}
-                                {#                                    <label#}
-                                {#                                            for="global-setting-location-title">Title</label>#}
-                                {#                                    <ul>#}
-                                {#                                        <li>#}
-                                {#                                            <input type="checkbox"#}
-                                {#                                                   {% if global_location_settings.title_as_link %}checked="checked"{% endif %}#}
-                                {#                                                   id="global-setting-location-title-as-link"#}
-                                {#                                                   class="settings-global-answer"#}
-                                {#                                                   data-setting-key="title_as_link">#}
-                                {#                                            <label#}
-                                {#                                                    for="global-setting-location-title-as-link">Link to location#}
-                                {#                                                details</label>#}
-                                {#                                        </li>#}
-                                {#                                    </ul>#}
-                                {#                                </li>#}
-                                {#                                <li>#}
-                                {#                                    <input type="checkbox"#}
-                                {#                                           {% if global_location_settings.description %}checked="checked"{% endif %}#}
-                                {#                                           id="global-setting-location-description"#}
-                                {#                                           class="settings-global-answer"#}
-                                {#                                           data-setting-key="description">#}
-                                {#                                    <label#}
-                                {#                                            for="global-setting-location-description">Description</label>#}
-                                {#                                </li>#}
-                                {#                                <li>#}
-                                {#                                    <input type="checkbox"#}
-                                {#                                           {% if global_location_settings.link_to_map %}checked="checked"{% endif %}#}
-                                {#                                           id="global-setting-location-link-to-map"#}
-                                {#                                           class="settings-global-answer"#}
-                                {#                                           data-setting-key="link_to_map">#}
-                                {#                                    <label#}
-                                {#                                            for="global-setting-location-link-to-map">Link to map</label>#}
-                                {#                                </li>#}
-                                {#                                <li>#}
-                                {#                                    <input type="checkbox"#}
-                                {#                                           {% if global_location_settings.address_details %}checked="checked"{% endif %}#}
-                                {#                                           id="global-setting-location-address"#}
-                                {#                                           class="settings-global-answer"#}
-                                {#                                           data-setting-key="address_details">#}
-                                {#                                    <label#}
-                                {#                                            for="global-setting-location-address">Address details</label>#}
-                                {#                                </li>#}
-                                {#                                <li>#}
-                                {#                                    <input type="checkbox"#}
-                                {#                                           {% if global_location_settings.contact_details %}checked="checked"{% endif %}#}
-                                {#                                           id="global-setting-location-contact"#}
-                                {#                                           class="settings-global-answer"#}
-                                {#                                           data-setting-key="contact_details">#}
-                                {#                                    <label#}
-                                {#                                            for="global-setting-location-contact">Contact details</label>#}
-                                {#                                </li>#}
                             </ul>
                         </div>
                     </div>
@@ -1675,62 +1335,6 @@
                                         class="settings-global-answer"
                                         data-setting-key="cost_incl_vat">Cost incl. VAT
                                 </li>
-
-
-                                {#                                <li>#}
-                                {#                                    <input type="checkbox"#}
-                                {#                                           {% if global_order_table_settings.item_name %}checked="checked"{% endif %}#}
-                                {#                                           id="global-setting-order-table-item-name"#}
-                                {#                                           class="settings-global-answer"#}
-                                {#                                           data-setting-key="item_name">#}
-                                {#                                    <label#}
-                                {#                                            for="global-setting-order-table-item-name">Item name</label>#}
-                                {#                                </li>#}
-                                {#                                <li>#}
-                                {#                                    <input type="checkbox"#}
-                                {#                                           {% if global_order_table_settings.cost_excl_vat %}checked="checked"{% endif %}#}
-                                {#                                           id="global-setting-order-table-cost-excl-vat"#}
-                                {#                                           class="settings-global-answer"#}
-                                {#                                           data-setting-key="cost_excl_vat">#}
-                                {#                                    <label#}
-                                {#                                            for="global-setting-order-table-cost-excl-vat">Cost excl. VAT</label>#}
-                                {#                                </li>#}
-                                {#                                <li>#}
-                                {#                                    <input type="checkbox"#}
-                                {#                                           {% if global_order_table_settings.rebate_amount %}checked="checked"{% endif %}#}
-                                {#                                           id="global-setting-order-table-rebate-amount"#}
-                                {#                                           class="settings-global-answer"#}
-                                {#                                           data-setting-key="rebate_amount">#}
-                                {#                                    <label#}
-                                {#                                            for="global-setting-order-table-rebate-amount">Rebate amount</label>#}
-                                {#                                </li>#}
-                                {#                                <li>#}
-                                {#                                    <input type="checkbox"#}
-                                {#                                           {% if global_order_table_settings.vat_amount %}checked="checked"{% endif %}#}
-                                {#                                           id="global-setting-order-table-vat-amount"#}
-                                {#                                           class="settings-global-answer"#}
-                                {#                                           data-setting-key="vat_amount">#}
-                                {#                                    <label#}
-                                {#                                            for="global-setting-order-table-vat-amount">VAT amount</label>#}
-                                {#                                </li>#}
-                                {#                                <li>#}
-                                {#                                    <input type="checkbox"#}
-                                {#                                           {% if global_order_table_settings.vat_rate %}checked="checked"{% endif %}#}
-                                {#                                           id="global-setting-order-table-vat-rate"#}
-                                {#                                           class="settings-global-answer"#}
-                                {#                                           data-setting-key="vat_rate">#}
-                                {#                                    <label#}
-                                {#                                            for="global-setting-order-table-vat-rate">VAT rate</label>#}
-                                {#                                </li>#}
-                                {#                                <li>#}
-                                {#                                    <input type="checkbox"#}
-                                {#                                           {% if global_order_table_settings.cost_incl_vat %}checked="checked"{% endif %}#}
-                                {#                                           id="global-setting-order-table-cost-incl-vat"#}
-                                {#                                           class="settings-global-answer"#}
-                                {#                                           data-setting-key="cost_incl_vat">#}
-                                {#                                    <label#}
-                                {#                                            for="global-setting-order-table-cost-incl-vat">Cost incl. VAT</label>#}
-                                {#                                </li>#}
                             </ul>
                         </div>
                     </div>
@@ -1748,7 +1352,6 @@
                                 <th>#</th>
                                 <th>Id</th>
                                 <th>VAT %</th>
-                                {#                                <th>Is Searchable</th>#}
                             </tr>
                             </thead>
                             <tbody>
@@ -1764,9 +1367,6 @@
                                                                                             data-pk="1"
                                                                                             data-title="Name">{{ group.name }}</a>
                                     </td>
-                                    {#                                    <td><input type="checkbox" class="searchableGroup"#}
-                                    {#                                            {% if group.is_searchable == 1 %}#}
-                                    {#                                               checked {% endif %}data-id="{{ group.id }}"></td>#}
                                 </tr>
                             {% endfor %}
                             </tbody>
@@ -1818,18 +1418,6 @@
         .minicolors-theme-default .minicolors-input {
             height: 35px;
         }
-
-        {#                .minicolors-theme-default .minicolors-swatch {#}
-        {#                    top: 5px;#}
-        {#                    left: 5px;#}
-        {#                    width: 18px;#}
-        {#                    height: 35px;#}
-        {#                }#}
-        {##}
-        {#                .minicolors-theme-default.minicolors-position-right .minicolors-swatch {#}
-        {#                    left: auto;#}
-        {#                    right: 5px;#}
-        {#                }#}
     </style>
     <script>
         $(document).ready(function () {
@@ -1883,7 +1471,6 @@
         });
     </script>
     <script src="{% static 'assets/plugin/jquery/jquery-ui-1.11.min.js' %}"></script>
-    {#    <script src="{% static 'assets/javascripts/kendo/kendo.all.min.js' %}"></script>#}
     <script src="{% static 'assets/javascripts/setting.js' %}"></script>
     <script src="{% static 'assets/javascripts/fancytree/jquery.fancytree-all.min.js' %}"></script>
 

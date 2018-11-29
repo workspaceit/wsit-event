@@ -212,9 +212,9 @@
             },
             success: function (response) {
                 if (response.result) {
-                    console.log(response.message);
+                    clog(response.message);
                 } else {
-                    console.log(response.message);
+                    clog(response.message);
                 }
             }
         });

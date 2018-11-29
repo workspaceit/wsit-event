@@ -774,10 +774,8 @@ $(function () {
         var data;
         var $this = $(this);
         if (!$this.hasClass('disabled')) {
-            console.log("e.currentTarget.checked");
             var data_checked = $(this).attr('data-checked');
             var target_checked = true;
-            console.log(data_checked);
             if (data_checked == 'true') {
                 target_checked = false;
             }
@@ -896,7 +894,6 @@ $(function () {
     $('body').on('click', '.session-check-availability-act-radio', function (e) {
         var data;
         var $this = $(this);
-        console.log("=================================================");
 
         var box_id = $this.closest('.event-plugin-session-checkbox').attr('id');
         var previous_check_value = [];
@@ -1080,7 +1077,6 @@ $(function () {
             }
         }
         else {
-            console.log("=================================================false");
             return false;
         }
     });
@@ -1195,9 +1191,9 @@ $(function () {
                 },
                 success: function (response) {
                     if (response.result) {
-                        console.log(response.message);
+                        clog(response.message);
                     } else {
-                        console.log(response.message);
+                        clog(response.message);
                     }
                 }
             });
@@ -1226,7 +1222,6 @@ function attendee_timeout_worker(temp_att_id, $section) {
 
                     $section.find('.event-plugin-session-checkbox').each(function () {
                         $(this).find('input:checkbox').each(function () {
-                            console.log($(this).is(':checked'));
                             if ($(this).is(':checked')) {
                                 $(this).prop('checked', false);
                                 $(this).attr('data-checked', false);
@@ -1236,7 +1231,6 @@ function attendee_timeout_worker(temp_att_id, $section) {
 
                     $section.find('.event-plugin-session-radio-button').each(function () {
                         $(this).find('input:radio').each(function () {
-                            console.log($(this).is(':checked'));
                             if ($(this).is(':checked')) {
                                 $(this).prop('checked', false);
                                 $(this).attr('data-checked', false);
@@ -1247,7 +1241,7 @@ function attendee_timeout_worker(temp_att_id, $section) {
                     $.growl.warning({message: response.message});
                     cleanEconomyData($section)
                 } else {
-                    console.log(response.message);
+                    clog(response.message);
                 }
             }
         });
@@ -1280,19 +1274,16 @@ function validateMaxSessionCheckbox($this_plugin, $target_checked) {
     if ($target_checked) {
         $this_plugin.closest('.event-plugin-session-checkbox:visible').each(function () {
             var max_attendee = $(this).find('.event-plugin-list').attr('data-session-choose-highest');
-            console.log(max_attendee);
             if (max_attendee == "up-to-max-available-sessions") {
                 max_attendee = 10;
             }
             var $this = $(this);
             var count_only_attending = true;
             var count_attending = $this.find('.event-plugin-list').attr('data-count-attending');
-            console.log(count_attending);
             if (count_attending == '0') {
                 count_only_attending = false;
             }
             var session_attend = [];
-            console.log(count_only_attending);
             $this.find('.event-plugin-item').find('td:first').find('input[type=checkbox]').each(function () {
                 var is_checked = false;
                 if (count_only_attending) {
@@ -1300,9 +1291,6 @@ function validateMaxSessionCheckbox($this_plugin, $target_checked) {
                 } else {
                     if ($(this).closest('tr').hasClass('attending') || $(this).closest('tr').hasClass('in-queue')) {
                         is_checked = true;
-                        console.log("is_checked");
-                        console.log(is_checked);
-                        console.log($(this).attr('data-session-id'));
                     }
                 }
                 if (is_checked) {
@@ -1310,14 +1298,12 @@ function validateMaxSessionCheckbox($this_plugin, $target_checked) {
                     session_attend.push(session_id);
                 }
             });
-            console.log(session_attend.length);
             if (max_attendee != 0 && session_attend.length > max_attendee) {
                 validated = false;
                 $this.addClass('validation-failed');
             }
         });
     }
-    console.log(validated);
     return validated;
 }
 
@@ -1347,7 +1333,6 @@ function get_temp_user_id($this, $type) {
 
 
 function setOrUnsetSession() {
-    console.log("it's clicked again");
     csrf_token = $('input[name=csrfmiddlewaretoken]').val();
     var unset_sessions = [];
     var set_sessions = [];
@@ -1377,13 +1362,9 @@ function setOrUnsetSession() {
             unset_sessions.push(dict_info);
         })
     });
-    console.log($body.find('.event-plugin-session-checkbox:hidden').length);
     $body.find('.event-plugin-session-checkbox:hidden').each(function () {
         var $element = $(this);
-        console.log("$element.find('input[type=checkbox]:checked').length");
-        console.log($element.find('input[type=checkbox]:checked').length);
         $element.find('input[type=checkbox]').each(function () {
-            console.log($(this).is(":checked"));
             if ($(this).is(":checked")) {
                 var input_id = $(this).attr('data-session-id').split('_');
                 var session_id = input_id[0];
@@ -1412,10 +1393,8 @@ function setOrUnsetSession() {
         })
     });
     $body.find('.event-plugin-session-radio-button:visible').each(function () {
-        console.log($(this).attr('id'));
         if ($(this).find('input[type=radio]:checked').length < 1) {
             var preselected_session = $(this).attr('preselected_session');
-            console.log(preselected_session);
             if (preselected_session != '') {
                 var box_attr = $(this).attr('id').split('-');
                 var attendee_id = $(this).attr('data-uid');
@@ -1444,7 +1423,6 @@ function setOrUnsetSession() {
         }
         temp_user_id = get_temp_user_id($(this).find('input[type=radio]:first'), 'radio');
     });
-    console.log($body.find('.event-plugin-session-checkbox:visible').length);
     $body.find('.event-plugin-session-checkbox:visible').each(function () {
         if ($(this).find('input[type=checkbox]:checked').length < 1) {
             var conflict_session_setting = '0';
@@ -1491,11 +1469,6 @@ function setOrUnsetSession() {
         }
         temp_user_id = get_temp_user_id($(this).find('input[type=checkbox]:first'), 'checkbox');
     });
-    console.log(unchecked_box_elms)
-    console.log('unset_sessions')
-    console.log(unset_sessions)
-    console.log('set_sessions')
-    console.log(set_sessions)
     if (unset_sessions.length > 0 || set_sessions.length > 0) {
         var data = {
             unset_sessions: JSON.stringify(unset_sessions),
@@ -2006,8 +1979,6 @@ function getAllSessionsId() {
 function updateSessionsInfo(sessions, attendee_id) {
     for (var i = 0; i < sessions.length; i++) {
         var session_id = sessions[i]['id'];
-        console.log(session_id);
-        console.log(attendee_id);
         $('body').find('.event-plugin-session-checkbox').find('.event-plugin-list .event-plugin-item .session-table[data-attendee-id='+attendee_id+'] tr[data-session-id=' + session_id + ']').each(function () {
             $(this).removeClass('not-attending not-answered attending in-queue time-conflict');
             $(this).find('.status').removeClass('not-attending not-answered attending in-queue time-conflict');

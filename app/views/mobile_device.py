@@ -95,26 +95,6 @@ def SendMessage(request):
 
     return JsonResponse(json_data)
 
-
-# def getRouteUser(request, secret_key):
-#     json_data = {}
-#     if request.method == 'GET' and 'email' in request.GET:
-#         email = request.GET['email']
-#         if Attendee.objects.filter(secret_key=secret_key, email=email).exists():
-#             user = Attendee.objects.get(secret_key=secret_key)
-#
-#             json_data['error'] = False
-#             json_data['routeURL'] = user.event.url
-#             json_data['push_notification_status'] = user.push_notification_status
-#         else:
-#             json_data['error'] = True
-#             json_data['Message'] = "Secret Key Doesn't Exists"
-#         return JsonResponse(json_data)
-#
-#     json_data['error'] = True
-#     json_data['Message'] = "Invalid email!"
-#     return JsonResponse(json_data)
-
 def getRouteUser(request, secret_key):
     json_data = {}
     if request.method == 'GET' and 'email' in request.GET:

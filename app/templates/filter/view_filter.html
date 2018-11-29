@@ -45,19 +45,12 @@
                                 <hr class="">
 
                                 <ul class="list-group filter-rule-list filter-list" id="filter-list">
-                                    {#            {% include 'attendee/filter_extra.html' %}#}
                                 </ul>
                             </div>
                         </form>
                         <div id="filter-nested-html" style="display: none;">
                             <li class="list-group-item filter-nested-rule filter-rule">
                                 <div class="form-group filter-nested-rule-form-group">
-                                    {#                <div class="btn-group btn-group-xs">#}
-                                    {#                    <button type="button" class="btn btn-add-rule"><span#}
-                                    {#                            class="icon fa fa-plus"></span></button>#}
-                                    {#                    <button type="button" class="btn btn-delete-nested-rule"><span#}
-                                    {#                            class="icon fa fa-minus"></span></button>#}
-                                    {#                </div>#}
                                     <select class="form-control any-or-all" disabled>
                                         <option value="1">Any</option>
                                         <option value="2">All</option>
@@ -78,13 +71,6 @@
                         <div id="filter-li-html" style="display: none;">
                             <li class="list-group-item filter-rule f-row">
                                 <div class="form-group">
-                                    {#                <div class="btn-group btn-group-xs">#}
-                                    {#                    <button type="button" class="btn btn-add-rule"><span#}
-                                    {#                            class="icon fa fa-plus"></span></button>#}
-                                    {#                    <button type="button" class="btn btn-delete-rule"><span#}
-                                    {#                            class="icon fa fa-minus"></span></button>#}
-                                    {#                </div>#}
-
                                     <!-- rules (first column) -->
                                     <select class="form-control rule" disabled>
                                         {% include 'filter/all_rules/rules.html' %}

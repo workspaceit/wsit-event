@@ -90,13 +90,6 @@
                     </div>
                 </div>
                 <div class="row">
-                    {#                <div class="col-sm-4 text-right">#}
-                    {#                    <button type="button" class="btn btn-lg  btn-primary" id="bt-send-filter-email"#}
-                    {#                            style="float: left;margin-top: 10px;"><i#}
-                    {#                            class=""></i>&nbsp;&nbsp;Send Email#}
-                    {#                    </button>#}
-                    {#                </div>#}
-
                     <div class="col-sm-4 text-right">
                         <button type="button" class="btn btn-lg btn-save" id="btn-email-preview"
                                 style="float: left;margin-top: 10px;"><i
@@ -324,32 +317,4 @@
     </style>
     <script src="{% static 'assets/javascripts/message.js' %}"></script>
     <script src="{% static 'assets/javascripts/message/email_content.js' %}"></script>
-{#    <script type="text/javascript">#}
-{##}
-{#        $(document).ready(function () {#}
-{#            {% if presetsEvent %}#}
-{#                var content_id = $('#btn-save-email-content').attr('data-id');#}
-{#                var language_id = $('#email-preset').val();#}
-{#                var csrfToken = $('input[name=csrfmiddlewaretoken]').val();#}
-{#                console.log("ok")#}
-{#                var data = {#}
-{#                    content_id: content_id,#}
-{#                    language_id: language_id,#}
-{#                    csrfmiddlewaretoken: csrfToken#}
-{#                };#}
-{#                get_email_contents(data);#}
-{#                $.ajax({#}
-{#                    url: base_url + '/admin/emails-content/get-with-lang/',#}
-{#                    type: 'POST',#}
-{#                    data: data,#}
-{#                    cache: false#}
-{#                })#}
-{#                        .done(function (response) {#}
-{#                                tinyMCE.activeEditor.setContent(response.email_content);#}
-{#                        });#}
-{#            {% else %}#}
-{##}
-{#            {% endif %}#}
-{#        });#}
-{#    </script>#}
 {% endblock %}

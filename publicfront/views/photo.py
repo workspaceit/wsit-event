@@ -48,9 +48,6 @@ class PhotoReel(TemplateView):
                 if upload_file['success']:
                     if upload_file['photo_overwrite'] == "True":
                         Photo.objects.filter(group_id=group_id, attendee_id=attendee_id).delete()
-                        # existing_photos = Photo.objects.filter(group_id=group_id, attendee_id=attendee_id)
-                        # for photo in existing_photos:
-                        #     bucket.delete_key(key)
                     photo_form = {
                         'photo': upload_file['file_name'],
                         'thumb_image': upload_file['file_thumb'],
@@ -255,12 +252,10 @@ class PhotoListJson(BaseDatatableView):
         s3_client = session.client('s3')
         json_data = []
         for q in qs:
-            print(q.photo)
             main_photo_key = q.photo
             thumb_photo_key = q.thumb_image
             main_photo = '{}/{}/{}'.format(s3_client.meta.endpoint_url, settings.AWS_STORAGE_BUCKET_NAME, main_photo_key)
             thumb_photo = '{}/{}/{}'.format(s3_client.meta.endpoint_url, settings.AWS_STORAGE_BUCKET_NAME, thumb_photo_key)
-            #url = "<a class='fancybox-thumbs' data-fancybox-group='thumb' href='"+main_photo+"'><img src='"+thumb_photo+"' /></a>"
             json_data.append([{
                 'photo': main_photo,
                 'thumb': thumb_photo

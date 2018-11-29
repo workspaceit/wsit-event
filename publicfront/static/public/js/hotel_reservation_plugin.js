@@ -276,7 +276,6 @@ function hotel_reservation_init() {
                         check_in_date_for_select = hotel_Date_List[hotel_Date_List.indexOf(check_in_date_for_select) - 1];
                     }
                 }
-                console.log(check_in_date_for_select)
                 dt_check_in = $(this).find(".hotel-check-in0").pickadate();
                 picker_check_in = dt_check_in.pickadate('picker');
                 picker_check_in.set('disable', list_of_dateList);
@@ -295,7 +294,6 @@ function hotel_reservation_init() {
                         }
                     }
                 }
-                console.log(check_out_date_for_select)
                 dt_check_out = $(this).find(".hotel-check-out0").pickadate();
                 picker_check_out = dt_check_out.pickadate('picker');
                 picker_check_out.set('disable', list_of_dateList);
@@ -341,9 +339,7 @@ function strdate_list_to_dateList(str_date_list) {
 function existing_booking(att_bookings_string, $hotel_element) {
     try {
         if(att_bookings_string != '') {
-            console.log(att_bookings_string);
             att_bookings = JSON.parse(att_bookings_string);
-            console.log(att_bookings);
 
             if (att_bookings.length > 0) {
                 existing_booking_i = 0;
@@ -415,7 +411,7 @@ function existing_booking(att_bookings_string, $hotel_element) {
                         });
                         existing_booking_i++;
                     } else {
-                        console.log("att_bookings undefined");
+                        clog("att_bookings undefined");
                     }
 
                 });
@@ -463,9 +459,7 @@ function get_hotel_resrevation_data($element) {
         var user_text = $(this).find('.uid-text-calss').val();
         var user_id = $(this).find('.uid-text-calss').val().replace('-u', '');
         var result = {user_id: user_id};
-        console.log(user_id);
-
-        // var hotel_room_id = $(this).find("input[name='hotel-selection-" + this_box_id + stay_counter + "']:checked").val();
+        
         var hotel_room_id = $(this).find("input[name='data-hotel-b" + this_box_id + "-p" + stay_counter + user_text + "']:checked").val();
         if (hotel_room_id == 'no-hotel'){
             stay_counter++;
@@ -492,8 +486,6 @@ function get_hotel_resrevation_data($element) {
         result['hotelroomid'] = hotel_room_id != undefined ? hotel_room_id : '0';
 
         try {
-            // var check_in_date = $(".hotel-check-in" + stay_counter).find('input')[0].value;
-            console.log('stay_counter ' + stay_counter);
             var check_in_date = $(this).find("input[name=hotel-check-in" + stay_counter + "_submit]").val();
             if (check_in_date == undefined && hotel_room_id != undefined){
                 $(this).find(".hotel-check-in" + stay_counter).pickadate().pickadate('picker').start();
@@ -506,8 +498,6 @@ function get_hotel_resrevation_data($element) {
         } catch (excepttion) {
             lang_hotel_validation_msg = $('.lang_date_not_set').val();
             console.log(excepttion);
-            console.log(reservation_Data);
-            // $.growl.error({message: "Date is not set for stay : " + (stay_counter + 1)});
             if (require_room_selection && reservation_Data.length < 1) {
                 // if validation_flag = false == true then validation needed
                 validation_flag = false;
@@ -549,8 +539,6 @@ function get_hotel_resrevation_data($element) {
             } else if (current_check_in > prev_check_in) {
                 if (!(current_check_out > prev_check_out)) {
                     lang_hotel_validation_msg = $('.lang_date_clash').val();
-                    console.log('came 111');
-                    // $.growl.error({message: "Date clash" + ' for allow: ' + (stay_counter + 1)});
                     validation_flag = false;
                     display_error_field($(this).find(".hotel-check-in" + stay_counter).closest('.event-plugin-hotel-reservation-check-in'));
                     display_error_field($(this).find(".hotel-check-out" + stay_counter).closest('.event-plugin-hotel-reservation-check-out'));
@@ -559,8 +547,6 @@ function get_hotel_resrevation_data($element) {
                 var day_difference = (prev_check_out - current_check_in) / 86400000;
                 if (day_difference > .9) {
                     lang_hotel_validation_msg = $('.lang_date_clash').val();
-                    console.log('came 222');
-                    // $.growl.error({message: "Date clash" + ' for allow: ' + (stay_counter + 1)});
                     validation_flag = false;
                     display_error_field($(this).find(".hotel-check-in" + stay_counter).closest('.event-plugin-hotel-reservation-check-in'));
                     display_error_field($(this).find(".hotel-check-out" + stay_counter).closest('.event-plugin-hotel-reservation-check-out'));
@@ -568,9 +554,7 @@ function get_hotel_resrevation_data($element) {
                 }
             } else if (current_check_in < prev_check_in) {
                 if ((current_check_out > prev_check_in)) {
-                    console.log('came 333');
                     lang_hotel_validation_msg = $('.lang_date_clash').val();
-                    // $.growl.error({message: "Date clash" + ' for allow: ' + (stay_counter + 1)});
                     validation_flag = false;
                     display_error_field($(this).find(".hotel-check-in" + stay_counter).closest('.event-plugin-hotel-reservation-check-in'));
                     display_error_field($(this).find(".hotel-check-out" + stay_counter).closest('.event-plugin-hotel-reservation-check-out'));
@@ -599,8 +583,6 @@ function get_hotel_resrevation_data($element) {
         reservation_Data.push(result);
         stay_counter++;
     });
-    console.log('reservation_Data');
-    console.log(reservation_Data);
     return validation_flag;
 }
 

@@ -9,7 +9,6 @@ $(function () {
         aria: false,
         selectMode: 3, // 1:single, 2:multi, 3:multi-hier
         click: function (event, data) {
-            console.log(data);
             if (data.targetType == 'title' && data.node.folder !== true) {
                 data.node.toggleSelected();
             }
@@ -241,7 +240,6 @@ $(function () {
                 value = $(this).editable('getValue');
                 if ($.isEmptyObject(value)) value = 'Empty';
                 else value = value['undefined'];
-                console.log(value);
             }
             var default_answer_status = tr.find("td").eq(0).find(".answer-status").val();
             var default_answer = {
@@ -250,7 +248,6 @@ $(function () {
                 status: default_answer_status
             };
             default_answers.push(default_answer);
-            console.log(default_answer);
         });
 
         var travels = [];

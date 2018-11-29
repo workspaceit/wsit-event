@@ -2,13 +2,13 @@ from django.shortcuts import render
 from django.template.loader import render_to_string
 from django.http import HttpResponse, JsonResponse
 from django.views import generic
-from app.models import Users, Attendee, Tag, Session, Group, Room, SeminarsUsers, Questions, Booking, Answers, \
+from app.models import Users, Attendee, Tag, Session, Room, SeminarsUsers, Questions, Booking, Answers, \
     RequestedBuddy, RoomAllotment, AttendeeTag, UsedRule, RuleSet, TravelAttendee, Travel, ActivityHistory, \
-    DefaultAnswerStatus, CurrentFilter, Setting, MatchLine, Match, AttendeeGroups, Option, EmailContents, \
+    CurrentFilter, Setting, MatchLine, Match, AttendeeGroups, EmailContents, \
     MessageHistory, Notification, \
     Elements, DeletedAttendee, DeletedHistory, MessageContents, PresetEvent, Presets, RegistrationGroupOwner, \
-    RegistrationGroups, Rebates, Orders, Payments, EmailReceivers, EmailReceiversHistory, MessageReceivers, \
-    MessageReceiversHistory, OrderItems, CreditOrders
+    RegistrationGroups, Orders, Payments, EmailReceivers, EmailReceiversHistory, MessageReceivers, \
+    OrderItems, CreditOrders
 import json
 from datetime import datetime, timedelta
 from django.http import Http404
@@ -28,16 +28,10 @@ from django.db import transaction
 import string
 import random
 from django.contrib.auth.hashers import make_password
-from django.db.models import CharField, Value as V
 from django.db.models.functions import Concat
-from django.conf import settings
-import os
 import logging
 from .mail import MailHelper
-from django.core import serializers
-import math
 from django.db.models import Value
-from django.db.models import Count
 from publicfront.views.profile import SessionDetail
 from .general_view import General
 from .email_view import EmailView
@@ -54,8 +48,6 @@ class AttendeeView(TemplateView):
             travel_groups = GroupView.get_travelGroup(request)
             for group in travel_groups:
                 group.travels = Travel.objects.all().filter(group_id=group.id)
-            attendee_groups = GroupView.get_attendeeGroup(request)
-            # questionGroup = GroupView.get_questionGroup(request)
             hotel_group = GroupView.get_hotelGroup(request)
             filter_group = GroupView.get_filterGroup(request)
             for group in hotel_group:
@@ -72,13 +64,6 @@ class AttendeeView(TemplateView):
                         date_allotments.append(new_allotments)
                     room.allotment = json.dumps(date_allotments)
             last_used_rules = UsedRule.objects.filter(user_id=request.session['event_auth_user']['id'])
-
-            # question_groups = Group.objects.filter(type="question",is_show=1).order_by('group_order')
-            # question_groups = GroupView.get_questionGroup()
-            # for group in questionGroup:
-            #     group.questions = Questions.objects.all().filter(group_id=group.id).order_by('question_order')
-            # rules = RuleSet.objects.all()
-            # filter_groups = Group.objects.filter(type="filter",is_show=1).order_by('group_order')
             filter_groups = GroupView.get_filterGroup(request)
             for group in filter_groups:
                 group.filters = RuleSet.objects.filter(group_id=group.id).exclude(name='quick-filter')
@@ -164,7 +149,6 @@ class AttendeeView(TemplateView):
                     answers = json.loads(request.POST.get('answers'))
                     attendee_session = json.loads(request.POST.get('attendee_session'))
                     attendee_travel = json.loads(request.POST.get('attendee_travel'))
-                    # attendee_bookings = json.loads(request.POST.get('attendee_bookings'))
                     attendee_tags = json.loads(request.POST.get('attendee_tags'))
                     attendee_groups = json.loads(request.POST.get('attendee_groups'))
                     event_id = request.session['event_auth_user']['event_id']
@@ -181,19 +165,6 @@ class AttendeeView(TemplateView):
                         if push_notification_status == "True":
                             form_data['push_notification_status'] = True
                         run = True
-                        # if os.environ['ENVIRONMENT_TYPE'] == 'master':
-                        #     if not (Attendee.objects.filter(email=form_data['email'],
-                        #                                     event_id=event_id).exclude(id=user_id).exists()):
-                        #         run = True
-                        #     else:
-                        #         run = False
-                        # else:
-                        #     if not (Attendee.objects.filter(email=form_data['email'],
-                        #                                     event_id=event_id).exclude(id=user_id).exists()):
-                        #         run = True
-                        #     else:
-                        #         run = False
-
                         email_multiple_exist = Attendee.objects.filter(email=form_data['email'], event_id=event_id).exclude(id=user_id).exists()
                         if email_multiple_exist:
                             allow_same_email_multiple_registration = CommonHelper.get_allow_same_email_multiple_registration(event_id)
@@ -204,11 +175,6 @@ class AttendeeView(TemplateView):
                             form_data["updated"] = datetime.now()
                             Attendee.objects.filter(id=user_id).update(**form_data)
                             deleted_groups = AttendeeGroups.objects.filter(attendee_id=user_id).exclude(group_id__in=attendee_groups).delete()
-                            # deleted_groups = AttendeeGroups.objects.filter(attendee_id=user_id).exclude(
-                            #     group_id__in=attendee_groups)
-                            # for deleted_group in deleted_groups:
-                            #     deleted_group.delete()
-
                             new_attendee_groups = []
                             for group in attendee_groups:
                                 if not (AttendeeGroups.objects.filter(attendee_id=user_id, group_id=group).exists()):
@@ -247,10 +213,6 @@ class AttendeeView(TemplateView):
                             Answers.objects.bulk_create(new_questions_answer)
                             ActivityHistory.objects.bulk_create(questions_activity)
                             Answers.objects.filter(id__in=answers_deleted).delete()
-                            # print(save_answers)
-                            # if "email already Exist" in save_answers:
-                            #     response_data['error'] = 'email already Exist'
-                            #     return HttpResponse(json.dumps(response_data), content_type="application/json")
                             for session in attendee_session:
 
                                 x_session = SeminarsUsers.objects.filter(attendee_id=user_id,
@@ -395,7 +357,6 @@ class AttendeeView(TemplateView):
                                                     'check_in': old_booking.check_in,
                                                     'check_out': old_booking.check_out
                                                 }
-                                                # get_match = MatchLine.objects.filter(booking_id=attendee_booking['id'])
                                                 sql = 'select m.* from match_line m where booking_id=' + str(attendee_booking[
                                                                                                                  "id"]) + ' and (select count(*) from `match_line` n where m.match_id=n.match_id)>1;'
                                                 get_match = MatchLine.objects.raw(
@@ -487,7 +448,6 @@ class AttendeeView(TemplateView):
 
                                                                 AttendeeView.add_booking_history(request, user_id, booking.room_id, 'register')
                                                         else:
-                                                            print('no status found')
                                                             bbb = Booking.objects.filter(id=attendee_booking['id']).first()
                                                             bbb_room_id = bbb.room_id
                                                             bbb_check_in = bbb.check_in
@@ -568,36 +528,6 @@ class AttendeeView(TemplateView):
                             response_data['success'] = 'Attendee Update Successfully'
                             send_mail = request.POST.get('send_mail')
                             updated_attendee = Attendee.objects.get(id=user_id)
-                            # if send_mail == 'true':
-                            #     logger = logging.getLogger(__name__)
-                            # if os.environ['ENVIRONMENT_TYPE'] == 'master':
-                            #     if str(request.session['event_auth_user']['event_id']) == '10':
-                            #         logger.debug("-----------------event id if 10------------------------")
-                            #         logger.debug(request.session['event_auth_user']['event_id'])
-                            #         AttendeeDetailView.send_email(request, updated_attendee,
-                            #                                       'email/confirmation_medverkan.html')
-                            #     else:
-                            #         logger.debug("-----------------event id if not 10------------------------")
-                            #         logger.debug(request.session['event_auth_user']['event_id'])
-                            #         # AttendeeDetailView.send_email(request, updated_attendee, 'email/kingfoinfo_email.html')
-                            #         # AttendeeDetailView.send_email(request, updated_attendee, 'email/king_email.html')
-                            #         # AttendeeRegistration.send_email(request, updated_attendee,'public/email_template/email.html')
-                            # else:
-                            #     if str(request.session['event_auth_user']['event_id']) == '10':
-                            #         logger.debug("-----------------event id if 10------------------------")
-                            #         logger.debug(request.session['event_auth_user']['event_id'])
-                            #         AttendeeDetailView.send_email(request, updated_attendee,'email/confirmation_medverkan.html')
-                            #     else:
-                            #         logger.debug("-----------------event id if not 10------------------------")
-                            #         logger.debug(request.session['event_auth_user']['event_id'])
-                            #         # AttendeeDetailView.send_email(request, updated_attendee, 'email/kingfoinfo_email.html')
-                            #         # AttendeeDetailView.send_email(request, updated_attendee, 'email/king_email.html')
-                            #         # AttendeeRegistration.send_email(request, updated_attendee)
-                            #         # if os.environ['ENVIRONMENT_TYPE'] == 'master':
-                            #         #     if request.session['event_auth_user']['event_id'] == '10':
-                            #         #         attRegistration.send_email(request, updated_attendee,'gt/email_template/confirmation_medverkan.html')
-                            #         #     else:
-                            #         #         AttendeeRegistration.send_email(request, updated_attendee)
                             updated_answers = []
                             all_answers = Answers.objects.filter(user_id=user_id)
                             check_for_distinct_question = []
@@ -840,9 +770,6 @@ class AttendeeView(TemplateView):
                             Answers.objects.bulk_create(new_questions_answer)
                             ActivityHistory.objects.bulk_create(questions_activity)
                             Answers.objects.filter(id__in=answers_deleted).delete()
-                            # if "email already Exist" in save_answers:
-                            #     response_data['error'] = 'email already Exist'
-                            #     return HttpResponse(json.dumps(response_data), content_type="application/json")
                             # adding sessions for attendee
                             for session in attendee_session:
                                 test_session = General.testSession(attendee.id, session['id'])
@@ -1238,13 +1165,11 @@ class AttendeeView(TemplateView):
                     order_number_other_order = Orders.objects.filter(order_number=order.order_number).exclude(attendee_id=id).aggregate(total=Sum('cost'))
                     if order_number_other_order['total'] in [None, 0]:
                         Payments.objects.filter(order_number=order.order_number).delete()
-                        print('delete payment')
                         if order_number_other_order['total'] == 0:
                             # payment is deleted and still there is 0 cost order to order owner which status='paid' which
                             # will cause an error(due to get payment date) to get balance table, that's why status turn to 'pending'
                             Orders.objects.filter(order_number=order.order_number).exclude(attendee_id=id).update(status='pending')
                 if attendee_remove:
-                    print('att_remove order delete')
                     msg = 'Delete order {0}, while attendee is removed from group.'.format(order.order_number)
                     ActivityHistory(attendee_id=id, admin_id=admin_id, activity_message=msg,
                                     activity_type='delete', category='order', event_id=event_id).save()
@@ -1297,8 +1222,6 @@ class AttendeeView(TemplateView):
                         attendee.save()
                     elif answer.question.actual_definition == 'email':
                         continue
-                        # attendee.email=answer.question.default_answer
-                        # attendee.save()
                     elif answer.question.actual_definition == 'phone':
                         attendee.phonenumber = answer.question.default_answer
                         attendee.save()
@@ -1332,8 +1255,6 @@ class AttendeeView(TemplateView):
                 for group in default_groups:
                     att_group = AttendeeGroups(group_id=int(group), attendee_id=attendee.id)
                     att_group.save()
-                    # attendee.group_id=int(default_group[0].value)
-                    # attendee.save()
 
             attendee_tags = AttendeeTag.objects.filter(attendee_id=attendee.id).delete()
             default_tags = Setting.objects.filter(name='default_tag', event_id=event_id)
@@ -1359,11 +1280,6 @@ class AttendeeView(TemplateView):
     def get_speakers(request):
         response_data = {}
         val = request.POST.get('q')
-        # attendeeis = Attendee.objects.values('firstname', 'lastname', 'id').filter(
-        #     Q(group__event_id=request.session['event_auth_user']['event_id']) & Q(
-        #         Q(firstname__icontains=val) | Q(lastname__icontains=val)))
-        # attendeeis = Attendee.objects.filter(Q(firstname__icontains=val) | Q( lastname__icontains=val))
-        # attendees = attendeeis.all()
         attendees = Attendee.objects.annotate(full_name=Concat('firstname', Value(' '), 'lastname')).filter(
             full_name__istartswith=val, event_id=request.session['event_auth_user']['event_id'], status="registered")
         my_data = []
@@ -1458,18 +1374,10 @@ class AttendeeView(TemplateView):
         order_id = request.POST.get('order_id')
         admin_id = request.session['event_auth_user']['id']
         rebate_id = request.POST.get('rebate_id')
-        # order_item = Orders.objects.get(id=order_id)
         result = EconomyLibrary.apply_rebate(user_id, order_id, rebate_id, None, None, admin_id)
         if result['result']:
             response_data['status'] = True
             response_data['download_flag'] = result['download_credit_invoice']
-            # order = EconomyLibrary.get_individual_order_table(order_item)
-            # context={}
-            # context['order']=order
-            # context['request']=request
-            # html = render_to_string("attendee/attendee_individual_order.html", context)
-            # response_data["html"] = html
-
             return HttpResponse(json.dumps(response_data), content_type="application/json")
 
     def remove_rebate_from_order(request):
@@ -1482,15 +1390,9 @@ class AttendeeView(TemplateView):
             user_id = request.POST.get('user_id')
             admin_id = request.session['event_auth_user']['id']
             event_id = request.session['event_auth_user']['event_id']
-            order_item = Orders.objects.get(id=order_id)
             result = EconomyLibrary.remove_rebate_from_order(order_id,user_id,rebate_id,rebate_for_item_type,rebate_for_item_id,event_id,admin_id)
             if result:
                 response_data['status'] = True
-                # order = EconomyLibrary.get_individual_order_table(order_item)
-                # context={}
-                # context['order']=order
-                # html = render_to_string("attendee/attendee_individual_order.html", context)
-                # response_data["html"] = html
                 response_data["message"] = "Rebate Delete successfully"
         else:
             response_data['status'] = False
@@ -1624,20 +1526,6 @@ class AttendeeView(TemplateView):
         response_data = {}
         val = request.POST.get('q')
         current_attendee_id = request.POST.get('current_attendee')
-        # try:
-        #     val.index(' ')
-        #     has_space = True
-        # except:
-        #     has_space = False
-        #     pass
-        # attendees = Attendee.objects.values('firstname', 'lastname', 'id').filter(
-        #     Q(firstname__icontains=val) | Q(lastname__icontains=val))
-        # if has_space:
-        #     attendees = Attendee.objects.annotate(
-        #                     full_name=Concat('firstname', Value(' '), 'lastname')).filter(full_name__istartswith=val)
-        # else:
-        #     attendees = Attendee.objects.annotate(
-        #                     full_name=Concat('firstname', Value(''), 'lastname')).filter(full_name__istartswith=val)
         attendees = Attendee.objects.annotate(full_name=Concat('firstname', Value(' '), 'lastname')).filter(
             full_name__istartswith=val, event_id=request.session['event_auth_user']['event_id'],
             status="registered").exclude(
@@ -1660,11 +1548,8 @@ class AttendeeView(TemplateView):
             user = Attendee.objects.get(id=attendee['id'])
             attendee_list.append(user.as_dict())
             attList = attList + "," + attendee['id']
-            # attList.append(attendee['id'])
-
         attList = attList[2:]
         question_groups = []
-        # questionGroup = Group.objects.filter(type="question", is_show=1).order_by('group_order')
         questionGroup = GroupView.get_questionGroup(request)
         for group in questionGroup:
             group.questions = Questions.objects.all().filter(group_id=group.id)
@@ -1684,37 +1569,6 @@ class AttendeeView(TemplateView):
                 'questions': question_list
             }
             question_groups.append(q_obj)
-        # similar_booking = Booking.objects.raw('select * from bookings where attendee_id in ('+attList+') group by check_in,check_out,room_id having count(*) > 1')
-        # booking_list = []
-        # booked_id_list = []
-        # print(similar_booking[0])
-        # for booked in similar_booking:
-        #     booked_dict = dict(
-        #     id=similar_booking[0].id
-        # )
-        #     booked_id_list.append(booked_dict)
-        # # for booked in similar_booking:
-        # as_dict = dict(
-        #     id=similar_booking[0].id,
-        #     attendee=similar_booking[0].attendee.as_dict(),
-        #     room=similar_booking[0].room.as_dict(),
-        #     check_in=str(similar_booking[0].check_in),
-        #     check_out=str(similar_booking[0].check_out)
-        # )
-        # requested_buddies = RequestedBuddy.objects.filter(booking_id=similar_booking[0].id)
-        # bookings_buddies = {}
-        # bookings_buddies['booking'] = as_dict
-        # buddy_list = []
-        # for requested_buddy in requested_buddies:
-        #     if requested_buddy.buddy_id:
-        #         buddy_list.append(requested_buddy.as_dict())
-        #     else:
-        #         buddy_list.append(requested_buddy.as_dict_alt())
-        #
-        # bookings_buddies['buddies'] = buddy_list
-        # booking_list.append(bookings_buddies)
-        # # booking_list.append(as_dict)
-        # data = {'attendees': attendee_list, 'question_groups' : question_groups, 'booking_list': booking_list, 'booked_id_list': booked_id_list }
         all_attendee_groups = GroupView.get_attendeeGroup(request)
         attendee_groups = []
         for group in all_attendee_groups:
@@ -1768,13 +1622,6 @@ class AttendeeView(TemplateView):
                         tag_id = new_tag.id
                     attendee_tag = AttendeeTag(attendee_id=attendee_id, tag_id=tag_id)
                     attendee_tag.save()
-
-            # for session in attendee_session:
-            #     attendeeSessions = SeminarsUsers(attendee_id=attendee_id, session_id=session['id'])
-            #     attendeeSessions.save()
-            #
-
-
             for session in attendee_session:
                 sessionAttendees = Session.objects.values('max_attendees').get(id=session['id'])
                 bookedSessions = SeminarsUsers.objects.filter(session_id=session['id'], status='attending').count()
@@ -1896,7 +1743,6 @@ class AttendeeView(TemplateView):
 
     def check_unique_secret_key(request):
         secret_key = request.POST["secret_key"]
-        # request.POST.get('secret_key')
         checkUniquity = Attendee.objects.filter(secret_key__contains=secret_key).count()
         if checkUniquity < 1:
             return HttpResponse("false")
@@ -1910,140 +1756,30 @@ class AttendeeView(TemplateView):
 
 
 class AttendeeDetailView(generic.DetailView):
-    # question_groups = []
-    # attendee_groups = []
-    # outbound_flights = []
-    # homebound_flights = []
     assign_session_write_access = False
     assign_travel_write_access = False
     assign_hotel_write_access = False
 
     def get_object(self, pk):
         try:
-            # return Users.objects.filter(id=pk).values()
             return Attendee.objects.filter(id=pk)
         except Users.DoesNotExist:
             raise Http404
 
     def get(self, request, pk, format=None):
-        import time
-        start_time = time.time()
         try:
             user = self.get_object(pk)
             allAnswers = user[0].answers_set.all()
             answer_list = []
             for answer in allAnswers:
                 answer_list.append(answer.as_dict())
-            # if not (Answers.objects.filter(question__actual_definition='firstname', user_id=user[0].id).exists()):
-            #     if user[0].group.event_id == 1:
-            #         firstname = Answers.objects.get(question_id=63, user_id=user[0].id)
-            #         question = Questions.objects.get(id=68)
-            #     else:
-            #         firstname = Answers.objects.get(question__actual_definition='firstname', user_id=user[0].id)
-            #         question = firstname.question
-            #     get_dict = dict(
-            #         id=firstname.id,
-            #         user=user[0].as_dict(),
-            #         question=question.as_dict(),
-            #         value=firstname.value
-            #
-            #     )
-            #     answer_list.append(get_dict)
-            # if not (Answers.objects.filter(question_id=69, user_id=user[0].id)):
-            #     if user[0].group.event_id == 1:
-            #         lastname = Answers.objects.get(question_id=64, user_id=user[0].id)
-            #         question = Questions.objects.get(id=69)
-            #     else:
-            #         lastname = Answers.objects.get(question__actual_definition='lastname', user_id=user[0].id)
-            #         question = lastname.question
-            #     get_dict = dict(
-            #         id=lastname.id,
-            #         user=user[0].as_dict(),
-            #         question=question.as_dict(),
-            #         value=lastname.value
-            #
-            #     )
-            #     answer_list.append(get_dict)
-
             attendee = user[0].as_dict()
-            # print(self.utc_to_local(attendee['created']))
-            # convert  utc to timezone
-            # attendee['created']=str(TimeDetailView.utc_to_local(request,str(datetime.strftime(datetime.strptime(attendee['created'],"%Y-%m-%d %H:%M:%S.%f"),"%Y-%m-%d %H:%M:%S"))))
-            # attendee['updated']=str(TimeDetailView.utc_to_local(request,str(datetime.strftime(datetime.strptime(attendee['updated'],"%Y-%m-%d %H:%M:%S.%f"),"%Y-%m-%d %H:%M:%S"))))
-
             attendee['created'] = attendee['created'].split(".")[0]
             attendee['updated'] = attendee['updated'].split(".")[0]
             attendee['created'] = TimeDetailView.utc_to_local(request, attendee['created'])
             attendee['updated'] = TimeDetailView.utc_to_local(request, attendee['updated'])
             attendee['created'] = str(CommonHelper.get_formated_date(request,attendee['created']))
             attendee['updated'] = str(CommonHelper.get_formated_date(request,attendee['updated']))
-            # question_groups = []
-            # # questionGroup = Group.objects.filter(type="question", is_show=1).order_by('group_order')
-            # questionGroup = GroupView.get_questionGroup(request)
-            # for group in questionGroup:
-            #     group.questions = Questions.objects.all().filter(group_id=group.id).order_by('question_order')
-            #     question_list = []
-            #     data = QuestionView.get_Questions(request, group.questions)
-            #     question_list.append(data)
-            #     q_obj = {
-            #         'group': group.as_dict(),
-            #         'questions': question_list
-            #     }
-            #
-            #     question_groups.append(q_obj)
-
-            # print("--- Question Group Time:  %s  ---" % (time.time() - start_time))
-            # # attendee_sessions = SeminarsUsers.objects.filter(attendee_id=pk,status='attending')
-            # start_time1 = time.time()
-            #
-            # attendee_sessions = SeminarsUsers.objects.filter(
-            #     Q(attendee_id=pk) & Q(Q(status='attending') | Q(status='in-queue') | Q(status='deciding')))
-            # attendee_travels = TravelAttendee.objects.filter(attendee_id=pk, status='attending')
-            #
-            # session_list = []
-            # for session in attendee_sessions:
-            #     session_list.append(session.as_dict())
-            #
-            # travel_list = []
-            # for travel in attendee_travels:
-            #     travel_list.append(travel.as_dict())
-            #
-            # print("--- Atttendee travel+sessions+attendee group:  %s  ---" % (time.time() - start_time1))
-            # get the bookings and requested buddy list
-
-            # start_time2 = time.time()
-            #
-            # bookings = Booking.objects.filter(attendee_id=user)
-            # booking_list = []
-            # for booking in bookings:
-            #     requested_buddies = RequestedBuddy.objects.filter(booking_id=booking.id)
-            #     bookings_buddies = {}
-            #     bookings_buddies['booking'] = booking.as_dict()
-            #     buddy_list = []
-            #
-            #     for requested_buddy in requested_buddies:
-            #         if requested_buddy.buddy_id:
-            #             buddy_list.append(requested_buddy.as_dict())
-            #         else:
-            #             buddy_list.append(requested_buddy.as_dict_alt())
-            #
-            #     bookings_buddies['buddies'] = buddy_list
-            #     # booking_list.append(bookings_buddies)
-            #
-            #     #
-            #     actual_buddies = MatchLine.objects.filter(booking_id=booking.id)
-            #     actual_buddy_list = []
-            #     if actual_buddies.exists():
-            #         for actual_buddie in actual_buddies:
-            #             match_lines = MatchLine.objects.filter(match_id=actual_buddie.match_id).exclude(
-            #                 booking__attendee_id=pk)
-            #             for match_line in match_lines:
-            #                 actual_buddy_list.append(match_line.as_dict())
-            #
-            #     bookings_buddies['actual_buddies'] = actual_buddy_list
-            #     booking_list.append(bookings_buddies)
-            #
-            # print("--- Atttendee booking info:  %s  ---" % (time.time() - start_time2))
             question_groups = []
             questionGroup = GroupView.get_questionGroup(request)
             for group in questionGroup:
@@ -2058,22 +1794,16 @@ class AttendeeDetailView(generic.DetailView):
 
                 question_groups.append(q_obj)
 
-            # AttendeeDetailView.question_groups=question_groups
-
             all_attendee_groups = GroupView.get_attendeeGroup(request)
             attendee_groups = []
             for group in all_attendee_groups:
                 attendee_groups.append(group.as_dict())
-
-            # AttendeeDetailView.attendee_groups=attendee_groups
 
             travels = Travel.objects.filter(travel_bound='outbound',
                                             group__event_id=request.session['event_auth_user']['event_id'])
             outbound_flights = []
             for flight in travels:
                 outbound_flights.append(flight.as_dict())
-
-            # AttendeeDetailView.outbound_flights=outbound_flights
 
             homebound_travels = Travel.objects.filter(travel_bound='homebound',
                                                       group__event_id=request.session['event_auth_user']['event_id'])
@@ -2091,22 +1821,6 @@ class AttendeeDetailView(generic.DetailView):
             selected_groups = AttendeeGroups.objects.filter(attendee_id=pk)
             for selected_group in selected_groups:
                 group_list.append(selected_group.group_id)
-            # start_time5 = time.time()
-            # activity_history = ActivityHistory.objects.filter(attendee_id=user[0].id,
-            #                                                   event_id=request.session['event_auth_user'][
-            #                                                       'event_id']).order_by('-created')
-            #
-            # for history in activity_history:
-            #     history.created = TimeDetailView.utc_to_local(request, str(history.created.strftime("%Y-%m-%d %H:%M:%S")))
-            # print("--- History :  %s  ---" % (time.time() - start_time5))
-            # start_time6 = time.time()
-            # context = {
-            #     'activity_history': activity_history,
-            #     'current_admin': request.session['event_auth_user']
-            # }
-            # history_list = render_to_string('attendee/history.html', context)
-            #
-            # print("--- Rest :  %s  ---" % (time.time() - start_time6))
 
             is_part_of_group = False
             if user[0].registration_group:
@@ -2120,22 +1834,15 @@ class AttendeeDetailView(generic.DetailView):
                 'user': attendee,
                 'question_groups': question_groups,
                 'answers': answer_list,
-                # 'attendee_sessions': session_list,
-                # 'attendee_travels': travel_list,
                 'attendee_groups': attendee_groups,
-                # 'bookings_buddies': booking_list,
                 'attendee_tags': tag_list,
                 'attendee_selected_groups': group_list,
-                # 'activity_history': history_list,
                 'outbound_flights': outbound_flights,
                 'homebound_flights': homebound_flights,
                 'datepicker_date_format':CommonHelper.get_datepicker_date_format(request),
                 'timezone':CommonHelper.get_timezone(request),
                 'moment_date_format':CommonHelper.get_moment_date_format(request),
                 'is_part_of_group': is_part_of_group
-                # 'assign_session_write_access': self.assign_session_write_access,
-                # 'assign_travel_write_access': self.assign_travel_write_access,
-                # 'assign_hotel_write_access': self.assign_hotel_write_access
             }
             return HttpResponse(json.dumps(data), content_type='application/json')
         except Exception as e:
@@ -2147,14 +1854,9 @@ class AttendeeDetailView(generic.DetailView):
             return HttpResponse(json.dumps(data), content_type='application/json')
 
     def default_answer(request, format=None):
-        # user = self.get_object(pk)
         event_id = request.session['event_auth_user']['event_id']
         question_groups = []
-        # questionGroup = Group.objects.filter(type="question", is_show=1).order_by('group_order')
         questionGroup = GroupView.get_questionGroup(request)
-        # all_groups = Group.objects.filter(event_id=request.session['event_auth_user']['event_id'])
-
-        # question_group = questionGroup.exclude(name='Default')
         question_group = questionGroup
         for group in question_group:
             group.questions = Questions.objects.all().filter(group_id=group.id).order_by('question_order')
@@ -2211,12 +1913,10 @@ class AttendeeDetailView(generic.DetailView):
             'attendee_tags': tag_list,
             'default_selected_group': default_group,
             'datepicker_date_format': CommonHelper.get_datepicker_date_format(request)
-            # 'default_group': serializers.serialize('json', all_groups),
         }
         return HttpResponse(json.dumps(data), content_type='application/json')
 
     def get_history(request, user_id):
-
         type = request.GET.get('type')
         activity_history = None
         if not type:
@@ -2254,9 +1954,6 @@ class AttendeeDetailView(generic.DetailView):
                     buddy_list.append(requested_buddy.as_dict_alt())
 
             bookings_buddies['buddies'] = buddy_list
-            # booking_list.append(bookings_buddies)
-
-            #
             actual_buddies = MatchLine.objects.filter(booking_id=booking.id)
             actual_buddy_list = []
             if actual_buddies.exists():
@@ -2316,193 +2013,6 @@ class AttendeeDetailView(generic.DetailView):
         }
         return HttpResponse(json.dumps(data), content_type='application/json')
 
-    def send_email(request, attendee_obj, file_path):
-        attendee = attendee_obj.id
-        att_email = attendee_obj.email
-        answerList = Answers.objects.filter(user_id=attendee)
-        sessionList = SeminarsUsers.objects.filter(attendee_id=attendee, status='attending', session__group_id=88)
-
-        actual_flights_answers = Answers.objects.filter(user_id=attendee,
-                                                        question__group__name__contains='Actual flights')
-        logger = logging.getLogger(__name__)
-        logger.debug("-----------------flight Count------------------------")
-        logger.debug(actual_flights_answers.count())
-        # if actual_flights.exists():
-        actual_flights = []
-        actual_hotels = []
-        i = 1
-        while i < 5:
-            for answer in actual_flights_answers:
-                question_to_match = 'Outbound (' + str(i) + ') departure city'
-                question_to_match_1 = 'Homebound (' + str(i) + ') departure city'
-                if question_to_match == answer.question.title:
-                    outbound_dep_date = outbound_dep_time = outbound_ar_city = outbound_ar_date = outbound_ar_time = \
-                        outbound_booking_ref = outbound_flight_number = ''
-
-                    outbound_dep_date_question = 'Outbound (' + str(i) + ') departure date'
-                    outbound_dep_time_question = 'Outbound (' + str(i) + ') departure time'
-                    outbound_ar_city_question = 'Outbound (' + str(i) + ') arrival city'
-                    outbound_ar_date_question = 'Outbound (' + str(i) + ') arrival date'
-                    outbound_ar_time_question = 'Outbound (' + str(i) + ') arrival time'
-                    outboound_booking_ref_question = 'Outbound (' + str(i) + ') booking reference'
-                    outbound_flight_number_question = 'Outbound (' + str(i) + ') flight number'
-
-                    outbound_date_answer = actual_flights_answers.filter(question__title=outbound_dep_date_question)
-                    if outbound_date_answer.exists():
-                        outbound_dep_date = outbound_date_answer[0].value
-
-                    outbound_time_answer = actual_flights_answers.filter(question__title=outbound_dep_time_question)
-                    if outbound_time_answer.exists():
-                        outbound_dep_time = outbound_time_answer[0].value
-
-                    outbound_ar_city = actual_flights_answers.filter(question__title=outbound_ar_city_question)
-                    if outbound_ar_city.exists():
-                        outbound_ar_city = outbound_ar_city[0].value
-
-                    outbound_ar_date_answer = actual_flights_answers.filter(question__title=outbound_ar_date_question)
-                    if outbound_ar_date_answer.exists():
-                        outbound_ar_date = outbound_ar_date_answer[0].value
-
-                    outbound_ar_time_answer = actual_flights_answers.filter(question__title=outbound_ar_time_question)
-                    if outbound_ar_time_answer.exists():
-                        outbound_ar_time = outbound_ar_time_answer[0].value
-
-                    outbound_booking_answer = actual_flights_answers.filter(
-                        question__title=outboound_booking_ref_question)
-                    if outbound_booking_answer.exists():
-                        outbound_booking_ref = outbound_booking_answer[0].value
-
-                    outbound_flight_number_answer = actual_flights_answers.filter(
-                        question__title=outbound_flight_number_question)
-                    if outbound_flight_number_answer.exists():
-                        outbound_flight_number = outbound_flight_number_answer[0].value
-
-                    actual_flights.append({
-                        'dep_city': answer.value,
-                        'dep_date': outbound_dep_date,
-                        'dep_time': outbound_dep_time,
-                        'ar_city': outbound_ar_city,
-                        'ar_date': outbound_ar_date,
-                        'ar_time': outbound_ar_time,
-                        'booking_ref': outbound_booking_ref,
-                        'flight_number': outbound_flight_number
-                    })
-
-                elif question_to_match_1 == answer.question.title:
-                    outbound_dep_date = outbound_dep_time = outbound_ar_city = outbound_ar_date = outbound_ar_time = \
-                        outbound_booking_ref = outbound_flight_number = ''
-
-                    outbound_dep_date_question = 'Homebound (' + str(i) + ') departure date'
-                    outbound_dep_time_question = 'Homebound (' + str(i) + ') departure time'
-                    outbound_ar_city_question = 'Homebound (' + str(i) + ') arrival city'
-                    outbound_ar_date_question = 'Homebound (' + str(i) + ') arrival date'
-                    outbound_ar_time_question = 'Homebound (' + str(i) + ') arrival time'
-                    outboound_booking_ref_question = 'Homebound (' + str(i) + ') booking reference'
-                    outbound_flight_number_question = 'Homebound (' + str(i) + ') flight number'
-
-                    outbound_date_answer = actual_flights_answers.filter(question__title=outbound_dep_date_question)
-                    if outbound_date_answer.exists():
-                        outbound_dep_date = outbound_date_answer[0].value
-
-                    outbound_time_answer = actual_flights_answers.filter(question__title=outbound_dep_time_question)
-                    if outbound_time_answer.exists():
-                        outbound_dep_time = outbound_time_answer[0].value
-
-                    outbound_ar_city = actual_flights_answers.filter(question__title=outbound_ar_city_question)
-                    if outbound_ar_city.exists():
-                        outbound_ar_city = outbound_ar_city[0].value
-
-                    outbound_ar_date_answer = actual_flights_answers.filter(question__title=outbound_ar_date_question)
-                    if outbound_ar_date_answer.exists():
-                        outbound_ar_date = outbound_ar_date_answer[0].value
-
-                    outbound_ar_time_answer = actual_flights_answers.filter(question__title=outbound_ar_time_question)
-                    if outbound_ar_time_answer.exists():
-                        outbound_ar_time = outbound_ar_time_answer[0].value
-
-                    outbound_booking_answer = actual_flights_answers.filter(
-                        question__title=outboound_booking_ref_question)
-                    if outbound_booking_answer.exists():
-                        outbound_booking_ref = outbound_booking_answer[0].value
-
-                    outbound_flight_number_answer = actual_flights_answers.filter(
-                        question__title=outbound_flight_number_question)
-                    if outbound_flight_number_answer.exists():
-                        outbound_flight_number = outbound_flight_number_answer[0].value
-
-                    actual_flights.append({
-                        'dep_city': answer.value,
-                        'dep_date': outbound_dep_date,
-                        'dep_time': outbound_dep_time,
-                        'ar_city': outbound_ar_city,
-                        'ar_date': outbound_ar_date,
-                        'ar_time': outbound_ar_time,
-                        'booking_ref': outbound_booking_ref,
-                        'flight_number': outbound_flight_number
-                    })
-            i = i + 1
-        actual_hotel_answers = Answers.objects.filter(user_id=attendee, question__group__name__contains='Actual hotel')
-        hotel_name = check_in = check_out = room_buddy = ''
-        has_hotel = False
-        for actual_hotel_answer in actual_hotel_answers:
-            if 'Hotel name' == actual_hotel_answer.question.title:
-                hotel_name = actual_hotel_answer.value
-                has_hotel = True
-            elif 'Check-in' == actual_hotel_answer.question.title:
-                check_in = actual_hotel_answer.value
-            elif 'Check-out' == actual_hotel_answer.question.title:
-                check_out = actual_hotel_answer.value
-            elif 'Room buddy' == actual_hotel_answer.question.title:
-                room_buddy = actual_hotel_answer.value
-        if has_hotel:
-            actual_hotels.append({
-                'hotel_name': hotel_name,
-                'check_in': check_in,
-                'check_out': check_out,
-                'buddy': room_buddy
-            })
-
-        bookings = Booking.objects.filter(attendee_id=attendee)
-        for booking in bookings:
-            buddy_list = []
-            # booking.buddy_list = booking.buddies.all()
-            requested_buddies = RequestedBuddy.objects.filter(booking_id=booking.id)
-            bookings_buddies = {}
-            bookings_buddies['booking'] = booking.as_dict()
-
-            for requested_buddy in requested_buddies:
-                if requested_buddy.buddy_id:
-                    buddy_list.append(requested_buddy.buddy.firstname + " " + requested_buddy.buddy.lastname)
-                else:
-                    buddy_list.append(requested_buddy.email)
-            booking.buddy_list = buddy_list
-        base_url = 'http://192.168.1.12:8080'
-        context = {
-            'answerlist': answerList,
-            'sessions': sessionList,
-            # 'buddies' : buddy_list,
-            'base_url': base_url,
-            'secret_key': attendee_obj.secret_key,
-            # 'group_id': attendee_obj.group_id,
-            'group_id': 84,
-            'bookings': bookings,
-            'actual_flights': actual_flights,
-            'actual_hotels': actual_hotels,
-            'attendee': attendee_obj
-
-        }
-        subject = "Bekräftelse - Kunskapsveckan och GetTogether"
-        sender_mail = "mahedi@workspaceit.com"
-        if attendee_obj.event_id == 11:
-            # subject = "KINGFOMARKET-REGISTRATION"
-            subject = "PORTAL CALLING! You have KingfoMarket updates"
-            sender_mail = "mahedi@workspaceit.com"
-        logger.debug("-----------------sender Email------------------------")
-        logger.debug(sender_mail)
-        to = att_email
-        MailHelper.mail_send(file_path, context, subject, to, sender_mail)
-        return "ok"
-
     def attendeeInfo(request, pk):
         questionGroup = GroupView.get_questionGroup(request)
         context = {
@@ -2545,10 +2055,6 @@ class GroupRegistrationDetail(generic.DetailView):
         excluded_attendees.append(attendee_id)
         attendee_owners = RegistrationGroupOwner.objects.filter(owner__event_id=event_id).values('owner_id')
         excluded_attendees.extend([item['owner_id'] for item in attendee_owners])
-        # if 'group_id' in request.POST:
-        #     group_id = int(request.POST.get('group_id'))
-        #     group_attendees = Attendee.objects.filter(registration_group_id=group_id).values('id')
-        #     excluded_attendees.extend([item['id'] for item in group_attendees])
         all_group_attendees = Attendee.objects.filter(registration_group__isnull=False, event_id=event_id).values('id')
         excluded_attendees.extend([item['id'] for item in all_group_attendees])
         attendee_list = []

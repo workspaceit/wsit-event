@@ -1,4 +1,4 @@
-from app.models import Attendee, Group, Questions, Answers, RuleSet, CurrentFilter
+from app.models import Attendee, Group, Questions, Answers, CurrentFilter
 from django_datatables_view.base_datatable_view import BaseDatatableView
 from django.db.models import Q
 from itertools import chain
@@ -9,7 +9,6 @@ from django.db.models import Value
 
 
 class AttendeeListView(BaseDatatableView):
-    # attendees = Attendee.objects.all().order_by('id')
     order_columns = ['0', '111111']
     questions = []
 
@@ -35,18 +34,6 @@ class AttendeeListView(BaseDatatableView):
         return attendees
 
     def get_filtered_attendees(self, rule_id):
-        # rule = RuleSet.objects.get(id=rule_id)
-        # filters = json.loads(rule.preset)
-        # q = Q()
-        # match_condition = filters[0][0]['matchFor']
-        # if match_condition == '2':
-        #     q &= FilterView.recur_filter(self.request, filters, match_condition)
-        # elif match_condition == '1':
-        #     q = Q(id=-11)
-        #     q |= FilterView.recur_filter(self.request,filters, match_condition)
-        #
-        # q = (q) & Q(group__event_id=self.get_event_id())
-        # attendees = Attendee.objects.filter(q)
         attendees = FilterView.get_filtered_attendees(self.request,rule_id)
         return attendees
 
@@ -56,23 +43,14 @@ class AttendeeListView(BaseDatatableView):
             try:
                 search.index(' ')
                 has_space = True
-                print('space')
             except:
                 has_space = False
-                print('no space')
                 pass
 
-            # col_data = self.extract_datatables_column_data()
             visible_columns = list(map(int, self.request.POST.get('visible', None).split(',')))
             activate_rule = self.request.POST.get('activate_rule', None)
             first_name_visible = last_name_visible = False
-            # if search != '':
-            #     filtered_attendees = Attendee.objects.filter(Q(group__event_id=self.get_event_id()) & Q(Q(secret_key__istartswith=search) | Q(firstname__istartswith=search) | Q(lastname__istartswith=search)))
-            # else:
-            #     filtered_attendees = Attendee.objects.filter(group__event_id=self.get_event_id())
-
             filtered_attendees = Attendee.objects.filter(event_id=self.get_event_id(),status="registered")
-            # first_name_question_id = last_name_question_id = 0
             rule_id = self.request.POST.get('rule_id', None)
             if len(visible_columns) != 0:
                 currentFilter = CurrentFilter.objects.filter(admin_id=self.get_admin_id(),event_id=self.get_event_id())
@@ -81,10 +59,7 @@ class AttendeeListView(BaseDatatableView):
                 else:
                         current = CurrentFilter(admin_id=self.get_admin_id(),event_id=self.get_event_id(),visible_columns=json.dumps(visible_columns))
                         current.save()
-
                 visible_questions = [self.order_columns[x] for x in visible_columns]
-                print(activate_rule)
-
                 if activate_rule == 'true' and rule_id is not None and rule_id != '':
 
                     filtered_attendees = self.get_filtered_attendees(rule_id)
@@ -231,7 +206,6 @@ class AttendeeListView(BaseDatatableView):
         # if pagination is disabled ("paging": false)
         if limit == -1:
             return qs
-        print(limit)
         currentFilter = CurrentFilter.objects.filter(admin_id=self.get_admin_id(),event_id=self.get_event_id())
         if currentFilter.count()>0:
             CurrentFilter.objects.filter(admin_id=self.get_admin_id(),event_id=self.get_event_id()).update(show_rows=int(limit))

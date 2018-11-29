@@ -93,7 +93,6 @@ class AttendeePluginList:
             orderby = orderby.split(' ')[0]
             column_check = Questions.objects.filter(Q(title=orderby) | Q(actual_definition=orderby))
             if len(column_check) == 0:
-                print('printed column check here')
                 orderby = orderby.replace('_', ' ')
             if orderby in ['firstname', 'lastname', 'email', 'phone']:
                 got_atts = Answers.objects.filter(user_id__in=attendee_ids,
@@ -107,7 +106,6 @@ class AttendeePluginList:
         else:
             column_check = Questions.objects.filter(Q(title=orderby) | Q(actual_definition=orderby))
             if len(column_check) == 0:
-                print('printed column check here')
                 orderby = orderby.replace('_', ' ')
             if orderby in ['firstname', 'lastname', 'email', 'phone']:
                 got_atts = Answers.objects.filter(user_id__in=attendee_ids,
@@ -237,10 +235,7 @@ class AttendeePluginList:
                         ErrorR.efail(e)
                     if answer.question.actual_definition != '' and answer.question.actual_definition != None:
                         question_definition = answer.question.actual_definition
-                    # attr.append({'answer': answer_value, 'question': question_definition})
                     dict ={'answer': answer_value, 'question': question_definition}
-                    print(index)
-                    # attr.insert(index, dict)
                     attr[index] = dict
                 else:
                     dict = {'answer': '', 'question': ''}
@@ -530,18 +525,14 @@ class AttendeePluginList:
         event = Events.objects.get(id=event_id)
         file_name = 'exported_files/' + event.name + '/attendee_' + public_checker + '.xlsx'
         response_data = {}
-        # response_data['msg'] = []
         response_data['next_ajax_req'] = False
         session = boto_session(aws_access_key_id=settings.AWS_ACCESS_KEY_ID,
                                    aws_secret_access_key=settings.AWS_SECRET_ACCESS_KEY,
                                    region_name='eu-west-1')
         client = session.client('s3')
-        # for each_file in export_state:
-        # exported_files/GT - Revision/attendee_1514288345.7731862.xlsx
         key = file_name
         try:
             response = client.get_object(Bucket=settings.AWS_STORAGE_BUCKET_NAME, Key=key)
-            # print(response)
             if response:
                 conn = boto.connect_s3(settings.AWS_ACCESS_KEY_ID, settings.AWS_SECRET_ACCESS_KEY, host=settings.AWS_STORAGE_HOST)
                 bucket = conn.get_bucket(settings.AWS_STORAGE_BUCKET_NAME)
@@ -551,22 +542,9 @@ class AttendeePluginList:
                 newKey_bucket_file.key = newKey
                 newKey_bucket_file.make_public()
                 bucket.delete_key(key)
-                # filename_arr = key.split('/')
-                # if len(filename_arr) > 2:
-                #     filename_key = filename_arr[2]
-                # else:
-                #     filename_key = filename_arr[1]
-                # msg = [{'filename': key,
-                #         'message': " Your exported list " + filename_key + " is ready, check in Download Exported list Menu. <a href='" + reverse(
-                #             'downloadExportedFile') + "?export=" + key + "'>Click </a> to download."}]
-                # response_data['msg'].extend(msg)
-                # each_file.status = 1
-                # each_file.save()
             else:
                 response_data['next_ajax_req'] = True
         except:
-            # msg = [{'filename' : key, 'message': " Your exported list "+key.split('/')[2]+" is ready, check in Download Exported list Menu. "}]
-            # response_data['msg'].extend(msg)
             response_data['next_ajax_req'] = True
 
         return HttpResponse(json.dumps(response_data), content_type="application/json")

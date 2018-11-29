@@ -22,12 +22,11 @@ $(function () {
         if ($('textarea#froala_content_editor').froalaEditor('codeView.isActive')) {
             $('textarea#froala_content_editor').froalaEditor('codeView.toggle');
         }
-        $('textarea#froala_content_editor').froalaEditor('html.set', '');
         $('.travel-language-preset-selector').select2("val", "");
         $('.language-preset-selector').hide();
-        // setTimeout(function () {
-        //     editor.setValue('');
-        // }, 400);
+        setTimeout(function () {
+            $('textarea#froala_content_editor').froalaEditor('html.set', '');
+        }, 400);
     }
 
     function prepareTravelValidationMessage(errors) {
@@ -147,7 +146,6 @@ $(function () {
                     if ($('textarea#froala_content_editor').froalaEditor('codeView.isActive')) {
                         $('textarea#froala_content_editor').froalaEditor('codeView.toggle');
                     }
-                    $('textarea#froala_content_editor').froalaEditor('html.set', getcontentByLanguage(travel.description, travel.description_lang, current_language_id));
                     $('#travel-departure-city').val(travel.departure_city),
                         $('#travel-arrival-city').val(travel.arrival_city),
                         //$('.add-travel-tags').select2('data', tags);
@@ -211,13 +209,9 @@ $(function () {
                     $('#btn-save-travel').hide();
                     $('#btn-update-travel').show();
                     $('#' + modal_class).modal();
-                    // setTimeout(function () {
-                    //     var description_content = $.trim($('#description').val());
-                    //     //if (description_content != '') {
-                    //     editor.setValue(description_content);
-                    //
-                    //     //}
-                    // }, 400);
+                    setTimeout(function () {
+                        $('textarea#froala_content_editor').froalaEditor('html.set', getcontentByLanguage(travel.description, travel.description_lang, current_language_id));
+                    }, 400);
 
                 }
                 else {

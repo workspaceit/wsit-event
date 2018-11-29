@@ -6,7 +6,6 @@ from app.models import ExportRule, Questions, Answers, AttendeeGroups, AttendeeT
     Session, SeminarsUsers, Booking, MatchLine, RequestedBuddy, OrderItems, CreditUsages, Group
 from app.views.gbhelper.common_helper import CommonHelper
 from publicfront.views.common import utc_to_local, get_formated_date_string, get_formated_date
-from publicfront.views.error_report import ErrorR
 from publicfront.views.helper import HelperData
 from .attendee_plugin import AttendeePluginList
 import json

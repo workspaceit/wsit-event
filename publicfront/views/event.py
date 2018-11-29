@@ -6,8 +6,7 @@ from django.views import generic
 from django.views.generic import TemplateView
 
 from app.models import Setting, Attendee, AttendeePasswordResetRequest, EmailContents, Events
-from django.core.urlresolvers import resolve
-from django.http import JsonResponse, HttpResponse
+from django.http import HttpResponse
 from django.conf import settings
 from app.views.gbhelper.error_report_helper import ErrorR
 from publicfront.views.lang_key import LanguageKey
@@ -28,7 +27,7 @@ class RootEvent(generic.DetailView):
         base_url = request.build_absolute_uri()
         if default_project.exists():
             return redirect(base_url + default_project[0].value+"/")
-        return redirect('http://springconf.com/')
+        return redirect('http://workspaceit.com/')
 
     def health(request, *args, **kwargs):
         return render(request, 'public/health.html')
@@ -78,7 +77,6 @@ class RetrivePasswrod(TemplateView):
                     if len(userData) > 1:
                         response_data['success'] = True
                         language = LanguageKey.get_lang_key(request, 31)
-                        print(language)
                         response_data['multiple_event_list'] = render_to_string("public/element/reset_password_all_events.html",{"userData":userData,"csrf_token": django.middleware.csrf.get_token(request), "language": language})
                     else:
                         request.session['event_url'] = userData[0].event.url

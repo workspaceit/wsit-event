@@ -1,17 +1,11 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.views import generic
-from app.models import Users, MenuItem, PageContent, MenuPermission, Events, RuleSet,Tag,Questions,Option, \
-    MessageContents, EmailContents
-import json
-from datetime import datetime, timedelta
+from app.models import Users, MenuItem, PageContent, MenuPermission, Events, RuleSet
+from datetime import timedelta
 from django.http import Http404
 from django.views.generic import TemplateView
-from django.db.models import Q
 from django.db import transaction
-from django.contrib.auth.hashers import make_password
-from django.db.models import Value as V
-from django.db.models.functions import Concat
 from .common_views import GroupView,CommonContext, EventView
 import json
 from django.db.models import Q
@@ -129,8 +123,6 @@ class MenuView(TemplateView):
                 menuitem_id = request.POST.get('id')
                 menu = MenuItem.objects.get(id=menuitem_id)
                 form_data = LanguageH.update_lang(current_language_id, form_data, "title_lang", title_lang, menu.title_lang)
-                print("URL: "+url)
-                print(form_data)
                 menuitem_already_exists = MenuItem.objects.filter(url=form_data['url'], event_id=request.session['event_auth_user']['event_id']).exclude(id=menuitem_id)
                 if not menuitem_already_exists.exists():
                     if parent_id != str(0) and parent_id != str(menu.parent_id):
@@ -151,8 +143,6 @@ class MenuView(TemplateView):
                     MenuPermission.objects.filter(menu_id=menu.id).delete()
                     if groups:
                         for group in groups:
-                            # menu_exist = MenuPermission.objects.filter(menu_id=menu.id, group_id=group)
-                            # if not menu_exist.exists():
                             permission = MenuPermission(menu_id=menu.id, rule_id=group)
                             permission.save()
                     else:
@@ -186,7 +176,6 @@ class MenuView(TemplateView):
                     form_data["rank"] = rank
                     form_data["level"] = level
                     form_data['created_by_id'] = request.session['event_auth_user']['id']
-                    # print(form_data)
                     menu= MenuItem(**form_data)
                     menu.save()
                     if groups:
@@ -202,8 +191,6 @@ class MenuView(TemplateView):
                     response_data['menu_item'] = menu.as_dict()
                 else:
                     response_data['error'] = 'Menu Item Url already Exists'
-            # else:
-            #     response_data['error'] = 'Page url does not exists'
         else:
             response_data['error'] = 'You do not have Permission to do this'
         return HttpResponse(json.dumps(response_data), content_type="application/json")
@@ -237,20 +224,7 @@ class MenuView(TemplateView):
             for menu in siblings:
                 MenuItem.objects.filter(id=menu.id, parent_id=menu_item.parent_id).update(rank=last_rank)
                 last_rank = last_rank + 1
-
             menu_item.delete()
-            # if menu_item.parent_id is None:
-            #     childs = MenuItem.objects.filter(parent_id=id)
-            #     last_rank = MenuItem.objects.filter(level=1).last();
-            #     for child in childs:
-            #         child.level = 1
-            #         child.rank = last_rank.rank+1
-            #         child.parent_id = None
-            #         child.save()
-            #     menu_item.delete()
-            #
-            # else:
-            #     menu_item.delete()
             response_data['success'] = 'Menu Item Deleted Successfully'
         else:
             response_data['error'] = 'You do not have Permission to do this'

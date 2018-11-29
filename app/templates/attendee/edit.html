@@ -80,14 +80,9 @@
                                     </tr>
                                     <tr>
                                         <td>User ID (external)
-                                            {#                     {% if request.session.event_auth_user.event_id == 11 %}#}
                                             <a target="_blank"
                                                data-href="{% url 'welcome' event_url=request.session.event_auth_user.event_url %}"
                                                href="" id="login-uid">Log in as User</a>
-                                            {#                     {% endif %}#}
-                                            {#                     {% if request.session.event_auth_user.event_id == 10 %}#}
-                                            {#                        <a target="_blank" data-href="{% url 'gt-welcome' %}" href="" id="login-uid">Log in as User</a>#}
-                                            {#                     {% endif %}#}
                                         </td>
                                         <td id="edit-external-user-id"></td>
                                     </tr>
@@ -125,44 +120,6 @@
                                 </table>
                             </div>
 
-                            {#    <div class="table-info">#}
-                            {#        <table id="question-category-contact-details" class="table table-bordered table-striped attende-edit"#}
-                            {#               style="clear: both">#}
-                            {#            <tbody>#}
-                            {#            <thead>#}
-                            {#            <tr>#}
-                            {#                <td colspan="2">Contact Details</td>#}
-                            {#            </tr>#}
-                            {#            </thead>#}
-                            {#            <tr>#}
-                            {#                <td>First Name</td>#}
-                            {#                <td><a href="#" id="edit-attendee-question-first-name" data-type="text" data-pk="1"#}
-                            {#                       data-title="First Name"></a></td>#}
-                            {#            </tr>#}
-                            {#            <tr>#}
-                            {#                <td>Last Name</td>#}
-                            {#                <td><a href="#" id="edit-attendee-question-last-name" data-type="text" data-pk="1"#}
-                            {#                       data-title="Last Name"></a></td>#}
-                            {#            </tr>#}
-                            {#            <tr>#}
-                            {#                <td>Company</td>#}
-                            {#                <td><a href="#" id="edit-attendee-question-company" data-type="text" data-pk="1"#}
-                            {#                       data-title="Compay"></a></td>#}
-                            {#            </tr>#}
-                            {#            <tr>#}
-                            {#                <td>Email</td>#}
-                            {#                <td><a href="#" id="edit-attendee-question-email" data-type="text" data-pk="1" data-title="Email"></a>#}
-                            {#                </td>#}
-                            {#            </tr>#}
-                            {#            <tr>#}
-                            {#                <td>Phone Number</td>#}
-                            {#                <td><a href="#" id="edit-attendee-question-phone-number" data-type="text" data-pk="1"#}
-                            {#                       data-title="Phone Number"></a></td>#}
-                            {#            </tr>#}
-                            {#            </tbody>#}
-                            {#        </table>#}
-                            {#    </div>#}
-
                             {% for group in questionGroup %}
                                 <div class="table-info">
                                     <table id="question-category-information"
@@ -174,42 +131,11 @@
                                         </tr>
                                         </thead>
                                         <tbody class="attendee-group-{{ group.id }}-allQuestions">
-                                        {#            <tr>#}
-                                        {#                <td>Have you ever visited this event before?</td>#}
-                                        {#                <td><a href="#" id="add-attendee-question-information1" data-type="select" data-pk="1"#}
-                                        {#                       data-value="" data-title="Have you ever visited ths event before?"></a></td>#}
-                                        {#            </tr>#}
-                                        {#            <tr>#}
-                                        {#                <td>On a scale from 1 - 5, how would you rate your colleagues?</td>#}
-                                        {#                <td><a href="#" id="add-attendee-question-information2" data-type="text"#}
-                                        {#                       data-title="On a scale from 1 - 5, how would you rate your colleagues?"></a></td>#}
-                                        {#            </tr>#}
-                                        {#            <tr>#}
-                                        {#                <td>Ask us a question</td>#}
-                                        {#                <td><a href="#" id="add-attendee-question-information3" data-type="textarea"#}
-                                        {#                       data-title="Ask us a question"></a></td>#}
-                                        {#            </tr>#}
+
                                         </tbody>
                                     </table>
                                 </div>
                             {% endfor %}
-
-                            {#    <div class="table-info">#}
-                            {#        <table id="question-category-uploads" class="table table-bordered table-striped attende-edit"#}
-                            {#               style="clear: both">#}
-                            {#            <tbody>#}
-                            {#            <thead>#}
-                            {#            <tr>#}
-                            {#                <td colspan="2">Uploads</td>#}
-                            {#            </tr>#}
-                            {#            </thead>#}
-                            {#            <tr>#}
-                            {#                <td>Profile Image</td>#}
-                            {#                <td><a href="" target="_blank">Link</a></td>#}
-                            {#            </tr>#}
-                            {#            </tbody>#}
-                            {#        </table>#}
-                            {#    </div>#}
 
                         </div>
                         <div class="tab-pane fade set-attendee-sessions" id="edit-attendee-sessions">
@@ -219,9 +145,6 @@
                                     <select class="form-control filter-question-selector edit-attendee-sessions"
                                             data-live-search="true"
                                             data-live-search-placeholder="Search">
-                                        {#        <select class="selectpicker edit-attendee-sessions" multiple data-live-search="true"#}
-                                        {#                data-live-search-placeholder="Search"#}
-                                        {#                data-actions-box="false">#}
                                         <option value="">None</option>
                                         {% for group in session_groups %}
                                             <optgroup label="{{ group.name|safe }}">
@@ -232,7 +155,6 @@
                                                             data-name="{{ session.name }}">{{ session.name }} {{ session.start|date:'Y-m-d H:i' }}</option>
                                                 {% endfor %}
                                             </optgroup>
-                                            {#                <input type="hidden" name="all_hotels[]" value="{{ group }}">#}
                                         {% endfor %}
                                     </select>
                                 </div>
@@ -248,26 +170,9 @@
                                         <td>End</td>
                                         <td>Status</td>
                                         <td>Added</td>
-                                        {#                <td>Cost</td>#}
-                                        {#                <td>Rebate</td>#}
-                                        {#                <td>Total</td>#}
-                                        {#                <td>VAT</td>#}
-                                        {#                <td>Total incl. VAT</td>#}
                                     </tr>
                                     </thead>
                                     <tbody class="attendee-sessions">
-                                    {#            <tfoot>#}
-                                    {#            <tr class="total">#}
-                                    {#                <td></td>#}
-                                    {#                <td>TOTAL</td>#}
-                                    {#                <td></td>#}
-                                    {#                <td>$310</td>#}
-                                    {#                <td>$50</td>#}
-                                    {#                <td>$260</td>#}
-                                    {#                <td>25%</td>#}
-                                    {#                <td>€325</td>#}
-                                    {#            </tr>#}
-                                    {#            </tfoot>#}
 
                                     </tbody>
                                 </table>
@@ -280,9 +185,6 @@
                                     <select class="form-control filter-question-selector edit-attendee-travels"
                                             data-live-search="true"
                                             data-live-search-placeholder="Search">
-                                        {#        <select class="selectpicker edit-attendee-sessions" multiple data-live-search="true"#}
-                                        {#                data-live-search-placeholder="Search"#}
-                                        {#                data-actions-box="false">#}
                                         <option value="">None</option>
                                         {% for group in travel_groups %}
                                             <optgroup label="{{ group.name|safe }}">
@@ -292,7 +194,6 @@
                                                             data-arrival="{{ travel.arrival|date:'Y-m-d H:i:s' }}">{{ travel.name }}</option>
                                                 {% endfor %}
                                             </optgroup>
-                                            {#                <input type="hidden" name="all_hotels[]" value="{{ group }}">#}
                                         {% endfor %}
                                     </select>
                                 </div>
@@ -308,26 +209,9 @@
                                         <td>Arrival</td>
                                         <td>Status</td>
                                         <td>Added</td>
-                                        {#                <td>Cost</td>#}
-                                        {#                <td>Rebate</td>#}
-                                        {#                <td>Total</td>#}
-                                        {#                <td>VAT</td>#}
-                                        {#                <td>Total incl. VAT</td>#}
                                     </tr>
                                     </thead>
                                     <tbody class="attendee-travels">
-                                    {#            <tfoot>#}
-                                    {#            <tr class="total">#}
-                                    {#                <td></td>#}
-                                    {#                <td>TOTAL</td>#}
-                                    {#                <td></td>#}
-                                    {#                <td>$310</td>#}
-                                    {#                <td>$50</td>#}
-                                    {#                <td>$260</td>#}
-                                    {#                <td>25%</td>#}
-                                    {#                <td>€325</td>#}
-                                    {#            </tr>#}
-                                    {#            </tfoot>#}
 
                                     </tbody>
                                 </table>
@@ -383,24 +267,9 @@
                                         <td>Check in / Check out</td>
                                         <td>Requested Room Buddy</td>
                                         <td>Actual Room Buddy</td>
-                                        {#                <td>Cost</td>#}
-                                        {#                <td>Rebate</td>#}
-                                        {#                <td>Total</td>#}
-                                        {#                <td>VAT</td>#}
-                                        {#                <td>Total incl. VAT</td>#}
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    {#            <tfoot>#}
-                                    {#            <tr class="total">#}
-                                    {#                <td colspan="4">TOTAL</td>#}
-                                    {#                <td>$0</td>#}
-                                    {#                <td>$0</td>#}
-                                    {#                <td>$0</td>#}
-                                    {#                <td>0%</td>#}
-                                    {#                <td>€0</td>#}
-                                    {#            </tr>#}
-                                    {#            </tfoot>#}
                                     </tbody>
                                 </table>
                             </div>

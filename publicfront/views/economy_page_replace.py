@@ -48,7 +48,6 @@ class EconomyPageReplace(generic.View):
                 event_id = request.session['event_id']
                 order_table_regex = r"({order_table})"
                 oder_table_matches = re.findall(order_table_regex, pageContents)
-                print(oder_table_matches)
                 if len(oder_table_matches)>0:
                     context={}
                     user_id =request.session['event_user']['id']

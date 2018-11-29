@@ -2,11 +2,11 @@ from django.conf.urls import url
 
 from publicfront.views import document_list, page_replace, attendee_plugin_datatable
 from publicfront.views import reset_password_view
-from .views import attendee, common, user_login, login, profile, export_session, search, photo, location, \
+from .views import attendee, common, login, profile, export_session, search, photo, location, \
     session_message, \
-    offline_download, page, page2, notify_view, nextup_evaluation, registration, attendee_plugin, \
+    offline_download, page2, notify_view, nextup_evaluation, registration, attendee_plugin, \
     hotel_reservation_plugin, \
-    socket, lang_key, plugin, payment
+    socket, plugin, payment
 
 urlpatterns = [
     url(r'^attendee-registration/$', registration.Registration.save_or_update_data, name='attendee-registration'),
@@ -41,29 +41,20 @@ urlpatterns = [
 
     url(r'^attendee-bio/$', attendee.AttendeeInfo.as_view(), name='attendee-bio'),
     url(r'^attendee-bio/(?P<pk>[0-9]+)/$', attendee.AttendeeInfo.as_view(), name='attendee-bio'),
-    url(r'^attendee-search/$', attendee.AttendeeSearch.as_view(), name='attendee-search'),
 
     url(r'^export-session/$', export_session.ExportSession.as_view(), name='export-session'),
     url(r'^getDesiredAttList/$', export_session.ExportSession.getDesiredAttList, name='getDesiredAttList'),
     url(r'^export-attendee-list/$', export_session.ExportSession.export_for_speaker, name='sessionExport'),
-
-    # url(r'^photo-reel/$', photo.PhotoReel.as_view(), name='photo-reel'),
-    # url(r'^photo-slide/$', photo.PhotoReel.photo_slide, name='photo-slide'),
-    # url(r'^photo-slide2/$', photo.PhotoReel.photo_slide2, name='photo-slide2'),
 
     url(r'^get-timezone/$', common.AttendeeSession.get_timezone, name='get-timezone'),
     url(r'^get-allowed-emails/$', common.AttendeeSession.getAllowedEmail, name='get-allowed-emails'),
 
     url(r'^page-locations-search/$', page2.Plugins.page_search_location, name='page-locations-search'),
 
-    # url(r'^send-session-message/$', session_message.SessionMessageView.as_view(), name='send-session-message'),
-    # url(r'^messages/$', session_message.SessionMessageView.get_archived_message, name='messages'),
     url(r'^archive-all-messages/$', session_message.SessionMessageView.archive_all_messages,
         name='archive-all-messages'),
 
     url(r'^offline/$', offline_download.OfflineExport.s3_offline_package, name='export-for-offline'),
-
-    # url(r'^phtoto/datatable/data/$', photo.PhotoListJson.as_view(), name='photo_list_json'),
 
     url(r'^notify/$', notify_view.NotifyView.as_view(), name='notifyview'),
 
@@ -105,8 +96,6 @@ urlpatterns = [
         name='check_session_availability_act_radio'),
     url(r'^session-set-unset-availability/$', page2.Plugins.session_set_unset_availability,
         name='session-set-unset-availability'),
-
-    url(r'^get-scheduler-events/$', page2.Plugins.getSchedulerEvents, name='get-scheduler-events'),
     url(r'^get-scheduler-session-details/$', page2.Plugins.get_scheduler_session_details,
         name='get-scheduler-session-details'),
 
@@ -129,19 +118,7 @@ urlpatterns = [
         name='multiple-attendee-save'),
     url(r'^multiple-attendee-save-inline/$', registration.Registration.multiple_attendee_save_or_update_inline,
         name='multiple-attendee-save-inline'),
-
-    # url(r'^flight/outbound/$', common.AttendeeSession.get_outbound_sessions, name='session_outbound'),
-    # url(r'^flight/outbound/$', registration.Registration.get_outbound_sessions, name='session_outbound'),
-    # url(r'^flight/homebound/$', common.AttendeeSession.get_homebound_sessions, name='session_homebound'),
-    # url(r'^flight/homebound/$', registration.Registration.get_homebound_sessions, name='session_homebound'),
-
-    # url(r'^insert-check/$', registration.AutoLoginView.update_tags, name='insert-check'),
-    # url(r'^insert-ques/$', registration.AutoLoginView.insert_ques, name='insert-ques'),
-    # url(r'^insert-submit/$', registration.AutoLoginView.submit_button_lang, name='insert-submit'),
-    # url(r'^update-content/$', registration.AutoLoginView.update_page_content, name='update-content'),
-    # url(r'^add-bid/$', registration.AutoLoginView.add_attendee_bid, name='add-bid'),
     url(r'^add-new-pages/$', registration.AutoLoginView.add_new_pages, name='add-new-pages'),
-    # url(r'^delete-act/$', registration.AutoLoginView.delete_act, name='delete-act'),
     url(r'^delete-temporary-attendee/$', plugin.Plugins.delete_temporary_attendee, name='delete-temporary-attendee'),
     url(r'^delete-temporary-attendee-session/$', plugin.Plugins.delete_temporary_attendee_session,
         name='delete-temporary-attendee-session'),
@@ -150,7 +127,6 @@ urlpatterns = [
         name='economy-change-order-status'),
     url(r'^economy-pdf-request/$', page2.Plugins.economy_pdf_request, name='economy-pdf-request'),
     url(r'^convert-html-to-pdf/$', page2.Plugins.convert_html_to_pdf, name='convert-html-to-pdf'),
-    # url(r'^download-page-pdf/$', page2.Plugins.download_page_pdf, name='download-page-pdf'),
 
     url(r'^get-order-info-for-payment/$', payment.Payment.get_order_info_for_payment,
         name='get-order-info-for-payment'),
@@ -178,5 +154,4 @@ urlpatterns = [
     # No url should be written after the upper url "static-pages"
     url(r'^api/(?P<staticPage>[\w-]+)/$', page2.DynamicPage.get_dynamic_page_filtered, name='dynamic-pages'),
     url(r'^(?P<staticPage>[\w-]+)/$', page2.DynamicPage.get_static_page, name='static-pages'),
-    # url(r'^(?P<staticPage>[\w-]+)/$', page.StaticPage.get_static_page, name='static-pages'),
 ]

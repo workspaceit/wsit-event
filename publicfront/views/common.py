@@ -4,17 +4,14 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.views import generic
 from app.models import SessionTags, Session, Group, SeminarsUsers, Answers, SeminarSpeakers, \
-    SessionRating, Notification, Setting, Events, Presets
+    SessionRating, Setting, Events, Presets
 import json
 from publicfront.views.lang_key import LanguageKey
 from .page2 import DynamicPage
-from .profile import AttendeeProfile
 import datetime
 from django.db.models import Q
 from django.utils.timezone import localtime
 from pytz import timezone
-from boto3.session import Session as boto_session
-from django.conf import settings
 from slugify import slugify
 import os
 from icalendar import Calendar, Event
@@ -70,11 +67,7 @@ class AttendeeSession(generic.DeleteView):
 
                     text_parts = soup.findAll(text=True)
                     text = ''.join(text_parts)
-                    # event.add('DESCRIPTION',re.compile(r'<[^<]*?/?>').sub('', session.description))
                     event.add('DESCRIPTION', text)
-                    # event.add('X-ALT-DESC', session.description)
-                    # event.x_alt_desc=session.description
-                    # event.add('dtstamp', datetime(2005,4,4,0,10,0,tzinfo=pytz.utc))
                     cal.add_component(event)
 
                 out = io.BytesIO()
@@ -227,8 +220,6 @@ class AttendeeSession(generic.DeleteView):
 
                 }
                 response_data.append(session_obj)
-
-        # print(json.dumps(response_data))
         return HttpResponse(json.dumps(response_data), content_type="application/json")
 
     # new plugin
@@ -309,8 +300,6 @@ class AttendeeSession(generic.DeleteView):
                 group = session.group_id
                 location = session.location.name
                 location_id = session.location.id
-                # start = str(localtime(session.start))
-                # end = str(localtime(session.end))
 
                 capacity = session.max_attendees
                 count = SeminarsUsers.objects.filter(session_id=id).exclude(status='not-attending').count()
@@ -418,29 +407,6 @@ class AttendeeSession(generic.DeleteView):
                 response_data.append(session_obj)
         return HttpResponse(json.dumps(response_data), content_type="application/json")
 
-    # def imc(request, *args, **kwargs):
-    #     return render(request, 'public/profile/imc.html')
-
-    def get_finished_sessions(request, *args, **kwargs):
-        user_id = request.session['event_user']['id']
-        rated_sessions = SessionRating.objects.values('session_id').filter(attendee_id=user_id)
-        today = AttendeeSession.getTimezoneNow(request)
-        # f = '%Y-%m-%d %H:%M:%S'
-        # today = datetime.datetime.strptime(str(time_now).split(".")[0], f)
-        current_time = today + datetime.timedelta(minutes=11)
-        # sessions = SeminarsUsers.objects.filter(attendee_id=user_id, status='attending',
-        #                                         session__end__lt=current_time, session__show_on_evaluation=1).exclude(
-        #     session_id__in=rated_sessions)
-
-        sql = "SELECT `seminars_has_users`.`id`, `seminars_has_users`.`attendee_id`, `seminars_has_users`.`session_id`, `seminars_has_users`.`status`, `seminars_has_users`.`created`, `seminars_has_users`.`queue_order` FROM `seminars_has_users` INNER JOIN `sessions` ON ( `seminars_has_users`.`session_id` = `sessions`.`id` ) WHERE (`sessions`.`end` < '" + str(
-            current_time) + "' AND `seminars_has_users`.`attendee_id` =" + str(
-            user_id) + " AND `sessions`.`show_on_evaluation` = True AND `seminars_has_users`.`status` = 'attending' AND NOT ((`seminars_has_users`.`session_id`) IN (SELECT U0.`session_id` FROM `session_ratings` U0 WHERE U0.`attendee_id` = " + str(
-            user_id) + ")))"
-        sessions = SeminarsUsers.objects.raw(
-            sql
-        )
-        return list(sessions)
-
     def set_session_ratings(request, *args, **kwargs):
         try:
             if 'is_user_login' in request.session and request.session['is_user_login']:
@@ -451,32 +417,6 @@ class AttendeeSession(generic.DeleteView):
                 sessions_dict = {}
                 new_ratings = []
                 user_id = request.session['event_user']['id']
-                # for session in session_ratings:
-                #     obj, created = SessionRating.objects.update_or_create(
-                #         session_id=session['session_id'],
-                #         attendee_id=user_id,
-                #         defaults={'rating': session['rating']},
-                #     )
-                # for session in session_ratings:
-                #     sessions_dict[int(session["session_id"])] = {
-                #         'session_id': session['session_id'],
-                #         'attendee_id': user_id,
-                #         'rating': session['rating']
-                #     }
-                #
-                # session_ids = [int(row['session_id']) for row in session_ratings]
-                # session_rating_list = SessionRating.objects.filter(session_id__in=session_ids, attendee_id=request.session['event_user']['id'])
-                # for session_rating in session_rating_list:
-                #     data_rating = sessions_dict[session_rating.session_id]['rating']
-                #     session_rating.rating = data_rating
-                #     session_rating.save()
-                # # Create new SessionRating
-                # for key in sessions_dict.keys():
-                #     data = sessions_dict[key]
-                #     rating = SessionRating(**data)
-                #     new_ratings.append(rating)
-                # # Code for create new SessionRating
-                # SessionRating.objects.bulk_create(new_ratings)
 
                 new_ratings = []
                 for session in session_ratings:
@@ -492,9 +432,7 @@ class AttendeeSession(generic.DeleteView):
                     else:
                         rating = SessionRating(**rating_data)
                         new_ratings.append(rating)
-                        # rating.save()
                 SessionRating.objects.bulk_create(new_ratings)
-                # print("--- %s seconds ---" % (time.time() - start_time))
                 empty_txt_language = LanguageKey.catch_lang_key(request, 'evaluations', 'evaluation_txt_empty')
                 notification_language = LanguageKey.catch_lang_key(request, 'evaluations',
                                                                    'evaluation_notify_session_success')
@@ -532,99 +470,6 @@ class AttendeeSession(generic.DeleteView):
 
         return HttpResponse(json.dumps(list), content_type="application/json")
 
-    def get_nextup_sessions(request, *args, **kwargs):
-        user_id = request.session['event_user']['id']
-        now = AttendeeSession.getTimezoneNow(request)
-        # f = '%Y-%m-%d %H:%M:%S'
-        # now = datetime.datetime.strptime(str(time_now).split(".")[0], f)
-        time_after_1hr = now + datetime.timedelta(minutes=60)
-        time_before_15min = now - datetime.timedelta(minutes=15)
-        time_after_1hr = datetime.datetime.strptime(str(time_after_1hr).split(".")[0], f)
-        time_before_15min = datetime.datetime.strptime(str(time_before_15min).split(".")[0], f)
-        sql = 'select DISTINCT sessions.*, seminars_has_users.status from seminars_has_users, sessions, groups where seminars_has_users.session_id = sessions.id and seminars_has_users.status ="attending" and seminars_has_users.attendee_id=' + str(
-            user_id) + ' and sessions.group_id = groups.id  and groups.is_searchable = 1 and (sessions.start <= "' + str(
-            time_after_1hr) + '" and sessions.start >="' + str(time_before_15min) + '")'
-        sessions = Session.objects.raw(
-            sql
-        )
-        response_data = []
-        if len(list(sessions)) > 0:
-            for session in sessions:
-                id = session.id
-                name = session.name
-                group = session.group_id
-                location = session.location.name
-                location_id = session.location.id
-                start = session.start
-                end = session.end
-                tags = SessionTags.objects.filter(session_id=session.id)
-                taglist = []
-                for tag in tags:
-                    taglist.append(tag.tag.name)
-
-                speakers = SeminarSpeakers.objects.filter(session_id=id)
-                speakersData = []
-                if speakers.count() > 0:
-                    for speaker in speakers:
-                        badge_firstname = Answers.objects.filter(question__actual_definition='firstname',
-                                                                 user_id=speaker.speaker.id)
-                        if badge_firstname.exists():
-                            firstname = badge_firstname[0].value
-                        else:
-                            firstname = speaker.speaker.firstname
-
-                        badge_lastname = Answers.objects.filter(question__actual_definition='lastname',
-                                                                user_id=speaker.speaker.id)
-                        if badge_lastname.exists():
-                            lastname = badge_lastname[0].value
-                        else:
-                            lastname = speaker.speaker.lastname
-
-                        speaker_obj = {
-                            'id': speaker.speaker.id,
-                            'firstname': firstname,
-                            'lastname': lastname
-                        }
-                        speakersData.append(speaker_obj)
-                session_start = datetime.datetime.strptime(str(session.start).split("+")[0], f)
-                session_start = datetime.datetime.strptime(str(session_start).split(".")[0], f)
-                difference = (session_start - now).total_seconds()
-                if difference > 0:
-                    difference = difference / 60
-                else:
-                    difference = 0
-
-                session_obj = {
-                    'id': id,
-                    'title': name,
-                    'resourceId': group,
-                    'start': start,
-                    'end': end,
-                    'location': location,
-                    'location_id': location_id,
-                    'speakers': speakersData,
-                    'taglist': taglist,
-                    'difference': int(difference)
-
-                }
-                response_data.append(session_obj)
-        return response_data
-
-    def session_notifications(request, *args, **kwargs):
-        user_id = request.session['event_user']['id']
-        notification = Notification.objects.filter(to_attendee_id=user_id, status=0)
-        total_seconds = AttendeeProfile.get_timout(request.session['event_user']['event_id'])
-        for nt in notification:
-            first_name = Answers.objects.filter(question_id=68, user_id=nt.sender_attendee_id)
-            last_name = Answers.objects.filter(question_id=69, user_id=nt.sender_attendee_id)
-            if first_name.exists():
-                nt.sender_attendee.firstname = first_name[0].value
-            if last_name.exists():
-                nt.sender_attendee.lastname = last_name[0].value
-            nt.expire_at = nt.created_at + datetime.timedelta(seconds=total_seconds)
-            nt.save()
-        return notification
-
     def get_timezone(request, *args, **kwargs):
         setting_timezone = Setting.objects.filter(name='timezone', event_id=request.session['event_user']['event_id'])
         timezone = "Asia/Dhaka"
@@ -645,33 +490,6 @@ class AttendeeSession(generic.DeleteView):
         return DynamicPage.get_static_page(request, 'request-login-page', True, *args, **kwargs)
 
 
-def get_style(request):
-    path = request.path.split('/')[1]
-    if path != 'admin':
-        event_id = request.session['event_id']
-        event = Events.objects.get(pk=event_id)
-        event_url = event.url
-        session = boto_session(aws_access_key_id=settings.AWS_ACCESS_KEY_ID,
-                               aws_secret_access_key=settings.AWS_SECRET_ACCESS_KEY,
-                               region_name='eu-west-1')
-        s3_client = session.client('s3')
-        s3_response = s3_client.list_objects(
-            Bucket=settings.AWS_STORAGE_BUCKET_NAME,
-            Prefix='public/' + event_url + '/compiled_css/style'
-        )
-        css_files = []
-        if 'Contents' in s3_response:
-            files = s3_response['Contents']
-            page_images = []
-            for file in files:
-                key = file['Key']
-                url = '{}/{}/{}'.format(s3_client.meta.endpoint_url, settings.AWS_STORAGE_BUCKET_NAME, key)
-                css_files.append(url)
-        return {'css': css_files}
-    else:
-        return {'css': ''}
-
-
 def utc_to_local(request, date_input):
     setting_timezone = Setting.objects.filter(name='timezone',
                                               event_id=request.session['event_id'])
@@ -687,7 +505,6 @@ def utc_to_local(request, date_input):
     convertedtz = timezone(tzname)
     convertedtime = aware_est.astimezone(convertedtz)
     return convertedtime
-
 
 def get_formated_date(request,date_obj):
     event_id = request.session['event_id']
@@ -705,7 +522,6 @@ def get_formated_date(request,date_obj):
     format = format+' %H:%M'
     date_string = date_obj.strftime(format)
     return date_string
-
 
 def get_formated_date_string(date_value, lang_id):
     try:

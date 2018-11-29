@@ -13,7 +13,7 @@ else:
     bytes = str
     basestring = basestring
 
-from django.shortcuts import render, redirect
+from django.shortcuts import redirect
 from django.core import serializers
 
 from django.shortcuts import render
@@ -21,26 +21,16 @@ from django.http import HttpResponse, Http404
 from django.views import generic
 from app.models import Attendee, Checkpoint, Scan, SeminarsUsers, RuleSet, Group, Questions,ActivityHistory, Answers, Events, \
     ExportState, \
-    AttendeeTag, Tag, AttendeeGroups, Option, EmailContents, MessageContents, CurrentFilter
-import json, math
-from django.db.models import Q
-from django.db import transaction
+    AttendeeTag, Tag, AttendeeGroups, CurrentFilter
+import json
 from .filter import FilterView
 from .common_views import GroupView, EventView, CommonContext, TimeDetailView
-from django.views.decorators.http import require_http_methods
-import boto3
 from django.conf import settings
-from boto3.session import Session as boto_session
-from datetime import datetime, timedelta
-import re
-import io
-from .export_lambda import ExcelView as ev
+from datetime import datetime
 from .export_import_view import ExcelView
-from . import aws_lambda
 import boto
 from boto.s3.key import Key
 from app.views.gbhelper.error_report_helper import ErrorR, DateTimeHelper
-from app.views.gbhelper.language_helper import LanguageH
 
 
 class CheckpointView(generic.DetailView):
@@ -59,19 +49,7 @@ class CheckpointView(generic.DetailView):
                     checkpoint.max = max
                     checkpoint.type = "session"
                 elif checkpoint.filter_id:
-                    # rule = RuleSet.objects.get(id=checkpoint.filter_id)
-                    # filters = json.loads(rule.preset)
-                    # q = Q()
-                    # match_condition = filters[0][0]['matchFor']
-                    # if match_condition == '2':
-                    #     q &= FilterView.recur_filter(request, filters, match_condition)
-                    # elif match_condition == '1':
-                    #     q = Q(id=-11)
-                    #     q |= FilterView.recur_filter(request, filters, match_condition)
-                    # attendees = Attendee.objects.filter(q)
-
                     attendees = FilterView.get_filtered_attendees(request, checkpoint.filter_id)
-
                     checkpoint.max = attendees.count()
                     checkpoint.type = "admin"
 
@@ -272,9 +250,6 @@ class CheckpointView(generic.DetailView):
             checkpoint = Checkpoint.objects.filter(id=checkpoint_id).first()
             scan_obj = Scan.objects.filter(attendee_id=attendee_id, checkpoint_id=checkpoint_id).last()
             if scan_obj and (checkpoint.allow_re_entry == 1 or (checkpoint.allow_re_entry == 0 and scan_obj.status == 0)):
-                # if scan_obj.status == 1:
-                #     scan_obj.status = 0
-                # else:
                 scan_obj.status = 1
 
                 scan_obj.scan_time = datetime.now()
@@ -357,10 +332,8 @@ class CheckpointView(generic.DetailView):
         checkpoint.checked = Scan.objects.filter(checkpoint_id=checkpoint.id, status=1).count()
         if checkpoint.session_id:
             checkpoint.max = SeminarsUsers.objects.filter(session_id=checkpoint.session_id, status='attending').count()
-            # checkpoint.max = seminar_users.count()
         elif checkpoint.filter_id:
             checkpoint.max = FilterView.get_filtered_attendees(request, checkpoint.filter_id).count()
-            # checkpoint.max = attendees.count()
 
         checkpoint.remaining = checkpoint.max - checkpoint.checked
         if checkpoint.max > 0:
@@ -439,28 +412,14 @@ class CheckpointView(generic.DetailView):
                 checkpoint.max = max
                 checkpoint.type = "session"
             elif checkpoint.filter_id:
-                # rule = RuleSet.objects.get(id=checkpoint.filter_id)
-                # filters = json.loads(rule.preset)
-                # q = Q()
-                # match_condition = filters[0][0]['matchFor']
-                # if match_condition == '2':
-                #     q &= FilterView.recur_filter(request, filters, match_condition)
-                # elif match_condition == '1':
-                #     q = Q(id=-11)
-                #     q |= FilterView.recur_filter(request, filters, match_condition)
-                # attendees = Attendee.objects.filter(q)
-
                 attendees = FilterView.get_filtered_attendees(request, checkpoint.filter_id)
-
                 checkpoint.max = attendees.count()
                 checkpoint.type = "admin"
-
             checkpoint.remaining = checkpoint.max - checkpoint.checked
             if checkpoint.max > 0:
                 checkpoint.percentage = (checkpoint.checked * 100) / checkpoint.max
             else:
                 checkpoint.percentage = 0
-
             response_data['success'] = "Create duplicate filter Successfully"
             response_data['checkpoint'] = checkpoint.as_dict()
             response_data['percentage'] = checkpoint.percentage
@@ -479,14 +438,11 @@ class CheckpointView(generic.DetailView):
                     checkpoint_questions = checkpoint.questions.split(',')
                 else:
                     checkpoint_questions = []
-
                 questions = Questions.objects.filter(id__in=checkpoint_questions)
-
                 if checkpoint.defaults:
                     general_questions = checkpoint.defaults.split(',')
                 else:
                     general_questions = []
-
                 general_question_list = []
                 for g_qus in general_questions:
                     if g_qus == 'uid':
@@ -629,16 +585,9 @@ class CheckpointView(generic.DetailView):
                     'checkpoint_type': checkpoint_type
                 }
                 if checkpoint_type == 'session':
-                    # print("sdfsdfdsf")
-                    # print(seminar_users.count())
                     var_list['seminar_users'] = serializers.serialize('json', seminar_users)
-                    # print(var_list)
-                    # msg = "sdfsdf"
-                    # return aws_lambda.export(json.dumps(var_list))
-
-                    # S3
                 message = json.dumps(var_list)
-
+                # Start S3
                 conn = boto.connect_s3(settings.AWS_ACCESS_KEY_ID, settings.AWS_SECRET_ACCESS_KEY, host=settings.AWS_STORAGE_HOST)
                 bucket = conn.get_bucket(settings.AWS_STORAGE_BUCKET_NAME)
                 filename_with_path = 'export/data.txt'
@@ -697,8 +646,6 @@ class CheckpointView(generic.DetailView):
 
         for question in questions:
             header_row.extend([question.title])
-        # if len(header_row) == 0:
-        #     header_row = ['BID', 'First Name', 'Email']
 
         header_row.extend(["Check Status", "Last Check Time", "Last Check Date"])
         return header_row

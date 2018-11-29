@@ -112,15 +112,6 @@
                                             {% if order_item.item_type == 'rebate' or order_item.item_type == 'adjustment' %}
                                                 {{ order_item.cost|floatformat:"-2"|format_thousands }}
                                             {% else %}
-{#                                                <span class="cost_view_elm" style="cursor: pointer">{{ order_item.cost|floatformat:"-2"|format_thousands }}</span>#}
-{#                                                <span class="cost_change_elm" style="display: none;">#}
-{#                                                    <input class="cost_change_input" type="number" min="0" value="{{ order_item.cost|floatformat:"-2" }}"#}
-{#                                                    style="width: 60%; padding: 2px 4px;">#}
-{#                                                    &nbsp;#}
-{#                                                    <button data-cost="{{ order_item.cost|floatformat:"-2" }}" data-order-item="{{ order_item.id }}"#}
-{#                                                            class="item_cost_change_btn btn btn-primary btn-sm editable-submit"><i class="glyphicon glyphicon-ok"></i></button>#}
-{#                                                    <button class="item_cost_change_cancel_btn btn btn-default btn-sm editable-cancel"><i class="glyphicon glyphicon-remove"></i></button>#}
-{#                                                </span>#}
                                                 <a href="#" class="change-item-cost-show-id" data-order-item="{{ order_item.id }}" data-cost="{{ order_item.cost|floatformat:"-2" }}" data-type="number" data-min="1" data-value="{{ order_item.cost|floatformat:"-2" }}"></a>
                                             {% endif %}
                                         </td>
@@ -150,9 +141,6 @@
 
                             <tr>
                                 <td>Grand Total</td>
-{#                                <td>{{ order.total_cost_exl_vat }}</td>#}
-{#                                <td>{{ order.total_rebate_amount }}</td>#}
-{#                                <td>{{ order.total_vat_amount }}</td>#}
                                 <td></td>
                                 <td></td>
                                 <td></td>
@@ -260,8 +248,6 @@
         {% endfor %}
     </div>
 {% endif %}
-
-
 
 <script>
     $(function () {

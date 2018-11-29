@@ -1,5 +1,5 @@
 from django.views import generic
-from app.models import Attendee, Answers, SeminarSpeakers, Notification, MenuPermission, MenuItem, Events, RuleSet, Setting, PresetEvent, \
+from app.models import Attendee, Answers, SeminarSpeakers, Notification, MenuPermission, MenuItem, Events, Setting, PresetEvent, \
     Presets
 import os.path
 from django.core.urlresolvers import resolve
@@ -9,13 +9,10 @@ from boto.s3.key import Key
 from django.shortcuts import redirect
 from django.conf import settings
 from django.http import Http404
-from publicfront.views.rule import UserRule
 from publicfront.views.lang_key import LanguageKey
 import json
 import time
-import logging
 from publicfront.views.helper import HelperData
-from django.contrib import messages
 from app.views.gbhelper.error_report_helper import ErrorR
 from django.db.models import Count,Avg,Max
 
@@ -24,7 +21,6 @@ class UserLoginMiddleware(generic.DetailView):
     def process_request(self, request):
         start_time = time.time()
         path = request.path.split('/')[1]
-        # browser_current_url = resolve(request.path_info).url_name
         if path != '' and path != 'device' and path != 'health':
             url_info = resolve(request.path_info)
             browser_current_url = url_info.url_name
@@ -33,8 +29,6 @@ class UserLoginMiddleware(generic.DetailView):
                 if request.is_ajax() == False:
                     settings.SESSION_EXPIRE_AT_BROWSER_CLOSE = False
                     cookie_seconds = 86400
-                    # settings.SESSION_COOKIE_AGE =100
-                    # settings.SESSION_SAVE_EVERY_REQUEST = True
                     if 'event_auth_user' in request.session and 'event_id' in request.session['event_auth_user'] and 'is_login' in request.session and request.session['is_login']:
                         admin_events = Events.objects.filter(id=request.session['event_auth_user']['event_id'])
                         if admin_events.exists():
@@ -60,7 +54,6 @@ class UserLoginMiddleware(generic.DetailView):
                 settings.USE_TZ = False
             else:
                 settings.USE_TZ = False
-                # today_date = datetime.now()
                 if request.is_ajax() == False:
                     keyword_arguments = url_info.kwargs
                     if 'event_url' in keyword_arguments:
@@ -111,7 +104,7 @@ class UserLoginMiddleware(generic.DetailView):
                             del request.session['event_user']
                         if 'is_user_login' in request.session:
                             del request.session['is_user_login']
-                    if page_accept_login == 1 or current_url == 'admin-attendee-logged-in' or current_url == 'activation' or current_url == 'session-help' or current_url == 'welcome' or current_url == 'notifications' or current_url == 'public-session-detail' or current_url == 'my-kingfomarket' or current_url == 'gt-welcome' or current_url == 'export-for-offline' or current_url == 'webcal' or current_url == 'gt-summering' or current_url == 'ff' or current_url == 'messages':
+                    if page_accept_login == 1 or current_url == 'admin-attendee-logged-in' or current_url == 'activation' or current_url == 'session-help' or current_url == 'welcome' or current_url == 'notifications' or current_url == 'public-session-detail' or current_url == 'export-for-offline' or current_url == 'webcal' or current_url == 'messages':
                         if 'is_user_login' in request.session and request.session['is_user_login']:
                             if 'uid' in request.GET:
                                 user_key = request.GET.get('uid')
@@ -269,13 +262,8 @@ class UserLoginMiddleware(generic.DetailView):
                     else:
                         cookie_seconds = 86400
                     settings.SESSION_EXPIRE_AT_BROWSER_CLOSE = False
-                    # settings.SESSION_EXPIRE_AT_BROWSER_CLOSE = True
-                    # settings.SESSION_SAVE_EVERY_REQUEST = False
-                    # settings.SESSION_COOKIE_AGE = 100
                     settings.SESSION_COOKIE_AGE = int(cookie_seconds)
-                    # menus= UserRule.get_menu_permissions(request)
                     request.session['cookie_expire'] = cookie_seconds
-                    # request.menus = UserLoginMiddleware.get_menu(request, menus['menu_permissions'], menus['my_rule_set'], event_id)
                     if 'uid' in request.GET:
                         menu_url = MenuItem.objects.filter(url=current_url, menupermission__rule__group__event_id=event_id)
                         if menu_url.exists():
@@ -315,81 +303,3 @@ class UserLoginMiddleware(generic.DetailView):
         else:
             response['Cache-Control'] = 'no-cache, max-age=0, must-revalidate, no-store'
         return response
-
-    def get_menu(request, mainMenu, rule_set, event_id):
-        # today_date = datetime.now()
-        today_date = HelperData.getTimezoneNow(request)
-        language_id = request.session['language_id']
-        my_rule_set = rule_set
-        for menu in mainMenu:
-            if menu.menu.title_lang != '' and menu.menu.title_lang != None:
-                try:
-                    menu_title_lang = json.loads(menu.menu.title_lang, strict=False)
-                    if menu_title_lang[str(language_id)]:
-                        menu.menu.title = menu_title_lang[str(language_id)]
-                except Exception as e:
-                    pass
-            menu_id = menu.menu.id
-            # my_rule_set = []
-            # attendee_id = 0
-            # if 'is_user_login' in request.session and request.session['is_user_login']:
-            #     attendee_id= request.session['event_user']['id']
-            #     rule_sets = RuleSet.objects.filter(group__event_id=event_id)
-            #     for rule in rule_sets:
-            #         filters = json.loads(rule.preset)
-            #         q = Q()
-            #         match_condition = filters[0][0]['matchFor']
-            #         if match_condition == '2':
-            #             q &= Q(id__in=UserRule.get_filtered_attendee(request, filters, match_condition))
-            #         elif match_condition == '1':
-            #             q = Q(id=-11)
-            #             q |= Q(id__in=UserRule.get_filtered_attendee(request, filters, match_condition))
-            #         attendees = Attendee.objects.filter(q)
-            #
-            #         if attendees.filter(id=attendee_id).count()>0:
-            #             my_rule_set.append(rule.id)
-            if 'is_user_login' in request.session and request.session['is_user_login']:
-                menu_items = MenuPermission.objects.filter((Q(rule_id__in=my_rule_set)|Q(menu__allow_unregistered=True)|Q(rule_id=None)),menu__parent_id=menu_id,
-                                                           menu__is_visible=1, menu__start_time__lt=today_date,
-                                                           menu__end_time__gt=today_date,
-                                                           menu__event_id=event_id).values('menu_id').annotate(id=Max('id')).order_by('menu__rank')
-            else:
-                menu_items = MenuPermission.objects.filter((Q(rule_id__in=my_rule_set)|Q(menu__allow_unregistered=True)),menu__parent_id=menu_id,
-                                                           menu__is_visible=1, menu__start_time__lt=today_date,
-                                                           menu__end_time__gt=today_date,
-                                                           menu__event_id=event_id).values('menu_id').annotate(id=Max('id')).order_by('menu__rank')
-            menu.items=[]
-            for m in menu_items:
-                menu.items.extend(MenuPermission.objects.filter(id=m['id']))
-            for item in menu.items:
-                if item.menu.title_lang != '' and item.menu.title_lang != None:
-                    try:
-                        item_title_lang = json.loads(item.menu.title_lang, strict=False)
-                        if item_title_lang[str(language_id)]:
-                            item.menu.title = item_title_lang[str(language_id)]
-                    except:
-                        pass
-                item_id = item.menu.id
-                if 'is_user_login' in request.session and request.session['is_user_login']:
-                    menu_items = MenuPermission.objects.filter((Q(rule_id__in=my_rule_set)|Q(menu__allow_unregistered=True)|Q(rule_id=None)),menu__parent_id=item_id,
-                                                               menu__is_visible=1, menu__start_time__lt=today_date,
-                                                               menu__end_time__gt=today_date,
-                                                               menu__event_id=event_id).values('menu_id').annotate(id=Max('id')).order_by('menu__rank')
-                else:
-                    menu_items = MenuPermission.objects.filter((Q(rule_id__in=my_rule_set)|Q(menu__allow_unregistered=True)),menu__parent_id=item_id,
-                                                           menu__is_visible=1, menu__start_time__lt=today_date,
-                                                           menu__end_time__gt=today_date,
-                                                           menu__event_id=event_id).values('menu_id').annotate(id=Max('id')).order_by('menu__rank')
-
-                item.items=[]
-                for m in menu_items:
-                    item.items.extend(MenuPermission.objects.filter(id=m['id']))
-
-
-                # item.items = MenuPermission.objects.all().values('id','menu_id').annotate(Count('id'))
-                # duplicates = MenuPermission.objects.values('menu_id').annotate(id=Max('id'),).order_by()
-                # item.items.exclude(duplicates)
-                if len(item.items) > 0:
-                    UserLoginMiddleware.get_menu(request, item.items, rule_set, event_id)
-
-        return mainMenu

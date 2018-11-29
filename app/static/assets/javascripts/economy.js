@@ -35,7 +35,6 @@ $(function () {
         for (i = 0; i < rooms.length; i++) {
             all_values.push("room-" + rooms[i])
         }
-        console.log(all_values)
 
         $modal.find('#rebate-name').val(name);
         $modal.find('#rebate-for').selectpicker('val', all_values);

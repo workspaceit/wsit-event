@@ -2,42 +2,6 @@
 {% block content %}
     {% load staticfiles %}
     {% include 'layout/editor_header.html' %}
-    {#    <script src="{% static 'assets/markdown/markdown-it.js' %}"></script>#}
-    {#    <script src="{% static 'assets/markdown/to-markdown.js' %}"></script>#}
-    {#    <script src="{% static 'assets/markdown/markdown-it-footnote.js' %}"></script>#}
-    {#    <script src="{% static 'assets/markdown/highlight.pack.js' %}"></script>#}
-    {#    <script src="{% static 'assets/markdown/emojify.js' %}"></script>#}
-    {#    <script src="{% static 'assets/markdown/codemirror/lib/codemirror.js' %}"></script>#}
-    {#    <script src="{% static 'assets/markdown/codemirror/overlay.js' %}"></script>#}
-    {#    <script src="{% static 'assets/markdown/codemirror/xml/xml.js' %}"></script>#}
-    {#    <script src="{% static 'assets/markdown/codemirror/markdown/markdown.js' %}"></script>#}
-    {#    <script src="{% static 'assets/markdown/codemirror/gfm/gfm.js' %}"></script>#}
-    {#    <script src="{% static 'assets/markdown/codemirror/javascript/javascript.js' %}"></script>#}
-    {#    <script src="{% static 'assets/markdown/codemirror/css/css.js' %}"></script>#}
-    {#    <script src="{% static 'assets/markdown/codemirror/htmlmixed/htmlmixed.js' %}"></script>#}
-    {#    <script src="{% static 'assets/markdown/codemirror/lib/util/continuelist.js' %}"></script>#}
-    {#    <script src="{% static 'assets/markdown/rawinflate.js' %}"></script>#}
-    {#    <script src="{% static 'assets/markdown/rawdeflate.js' %}"></script>#}
-    {##}
-    {#    <link href="{% static 'assets/markdown/base16-light.css' %}" media="all" rel="stylesheet">#}
-    {#    <link href="{% static 'assets/markdown/codemirror/lib/codemirror.css' %}" media="all" rel="stylesheet">#}
-    {#    <link href="{% static 'assets/markdown/default.css' %}" media="all" rel="stylesheet">#}
-    {##}
-    {##}
-    {#    <script src="{% static 'assets/javascripts/respond.min.js' %}"></script>#}
-    {#    <script src="//cdn.jsdelivr.net/clipboard.js/1.5.8/clipboard.min.js"></script>#}
-
-    {#    <style>#}
-    {#        .CodeMirror.cm-s-default {#}
-    {#            height: 0px !important;#}
-    {#        }#}
-    {##}
-    {#        .CodeMirror {#}
-    {#            height: 118px !important;#}
-    {#            border: 1px solid !important;#}
-    {#            border-color: #c2c2c2 !important;#}
-    {#        }#}
-    {#    </style>#}
     <div id="content-wrapper">
         {% csrf_token %}
         <div class="panel colourable">
@@ -172,28 +136,13 @@
                                         </select>
                                     </div>
                                 </div>
-                                {#                                <div class="col-sm-6">#}
-                                {#                                    <label class="control-label">Description</label>#}
-                                {#                                    <textarea id="location_description" rows="5" class="form-control"></textarea>#}
-                                {#                                    <div id="in">#}
-                                {#                                        <form id='description-preview-form' action="{% url 'description-preview' %}"#}
-                                {#                                              method="POST" target="_blank">#}
-                                {#                                            <textarea id="description" name="description"></textarea>#}
-                                {#                                        </form>#}
-                                {#                                    </div>#}
-                                {#                                    <div id="description_out" style="display: none;"></div>#}
-                                {#                                </div>#}
                             </div>
                             <!-- row -->
                             <div class="row">
                                 <div class="col-sm-12">
                                     <label class="control-label">Description</label>
                                     <div class="froala-editor-div">
-                                        {#                            <form id='description-preview-form' action="{% url 'description-preview' %}" method="POST"#}
-                                        {#                                  target="_blank">#}
-                                        {#                            <input type="hidden" name="template_id" value="{{ template_content.id }}">#}
                                         <textarea id="froala_content_editor" name="froala_content_editor"></textarea>
-                                        {#                            </form>#}
                                     </div>
                                     <div class="row">
                                         <div class="col-sm-6">
@@ -209,15 +158,6 @@
                                             </button>
                                         </div>
                                     </div>
-                                    {#                            <div id="in">#}
-                                    {#                                <form id='description-preview-form' action="{% url 'description-preview' %}"#}
-                                    {#                                      method="POST" target="_blank">#}
-                                    {#                                    {% csrf_token %}#}
-                                    {#                                    <textarea id="description" name="description"></textarea>#}
-                                    {#                                </form>#}
-                                    {#                            </div>#}
-                                    {#                            <div id="description_out" style="display: none;"></div>#}
-                                    {#                            <textarea rows="5" id="description" name="description" class="form-control"></textarea>#}
                                 </div>
                             </div>
                             <div class="row">
@@ -235,16 +175,13 @@
 										</span>
                                             <input type="text" id="location_maps_highlights" class="form-control"
                                                    placeholder="City+Hall,New+York,NY">
-                                            {#                                        {{ form.maps_highlight }}#}
                                         </div>
                                     </div>
                                     <label class="control-label">Address</label>
                                     <textarea id="location_address" rows="5" class="form-control"></textarea>
-                                    {#                                {{ form.address }}#}
                                 </div>
                                 <div class="col-sm-6" id="location-map-container" style="height: 200px;">
 
-                                    {#								<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2034.3483971926307!2d18.004623!3d59.343832!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0000000000000000%3A0x211387e1960f00e9!2sSpringconf+AB!5e0!3m2!1ssv!2sus!4v1436629257301" width="100%" height="300" frameborder="0" style="border:0" allowfullscreen></iframe><!--https://www.google.com/maps/embed/v1/place?q=Springconf+AB,+Solna,+Sverig-->#}
                                 </div>
                                 <!-- col-sm-6 -->
                             </div>
@@ -357,204 +294,5 @@
 
     </div> <!-- / #content-wrapper -->
 
-    {#    <script type="text/javascript">#}
-    {#        var editor;#}
-    {#        $(function () {#}
-    {#            // photo upload and display start#}
-    {##}
-    {##}
-    {#            // photo upload and display end#}
-    {##}
-    {#            editor = CodeMirror.fromTextArea(document.getElementById('description'), {#}
-    {#                mode: 'gfm',#}
-    {#                lineNumbers: false,#}
-    {#                matchBrackets: true,#}
-    {#                lineWrapping: true,#}
-    {#                theme: 'base16-light',#}
-    {#                extraKeys: {"Enter": "newlineAndIndentContinueMarkdownList"},#}
-    {#            });#}
-    {#            editor.on('change', update);#}
-    {##}
-    {#            $('body').on('click', '#btn-description-preview', function () {#}
-    {#                clog(editor.getValue());#}
-    {#                clog($('#description_out').html());#}
-    {#                var input = $("<textarea>")#}
-    {#                        .css('display', 'none')#}
-    {#                        .attr("name", "content").val($('#description_out').html());#}
-    {#                clog(input);#}
-    {#                var csrfToken = $('input[name=csrfmiddlewaretoken]').val();#}
-    {#                var csrf = $("<input>")#}
-    {#                        .css('display', 'none')#}
-    {#                        .attr("name", "csrfmiddlewaretoken").val(csrfToken);#}
-    {#                $('#description-preview-form').append($(input));#}
-    {#                $('#description-preview-form').append($(csrf));#}
-    {#                $('#description-preview-form').submit();#}
-    {#                clog($('#description-preview-form'));#}
-    {##}
-    {#            });#}
-    {#        });#}
-    {##}
-    {##}
-    {#        var URL = window.URL || window.webkitURL || window.mozURL || window.msURL;#}
-    {#        navigator.saveBlob = navigator.saveBlob || navigator.msSaveBlob || navigator.mozSaveBlob || navigator.webkitSaveBlob;#}
-    {#        window.saveAs = window.saveAs || window.webkitSaveAs || window.mozSaveAs || window.msSaveAs;#}
-    {##}
-    {#        // Because highlight.js is a bit awkward at times#}
-    {#        var languageOverrides = {#}
-    {#            js: 'javascript',#}
-    {#            html: 'xml'#}
-    {#        };#}
-    {##}
-    {#        emojify.setConfig({img_dir: 'emoji'});#}
-    {##}
-    {#        var md = markdownit({#}
-    {#            html: true,#}
-    {#            highlight: function (description, lang) {#}
-    {#                if (languageOverrides[lang]) lang = languageOverrides[lang];#}
-    {#                if (lang && hljs.getLanguage(lang)) {#}
-    {#                    try {#}
-    {#                        return hljs.highlight(lang, description).value;#}
-    {#                    } catch (e) {#}
-    {#                    }#}
-    {#                }#}
-    {#                return '';#}
-    {#            }#}
-    {#        })#}
-    {#                .use(markdownitFootnote);#}
-    {##}
-    {##}
-    {#        var hashto;#}
-    {##}
-    {#        function update(e) {#}
-    {#            if (e != undefined) {#}
-    {#                setOutput(e.getValue());#}
-    {#            }#}
-    {##}
-    {#            clearTimeout(hashto);#}
-    {#            hashto = setTimeout(updateHash, 1000);#}
-    {#        }#}
-    {##}
-    {#        function setOutput(val) {#}
-    {#            val = val.replace(/<equation>((.*?\n)*?.*?)<\/equation>/ig, function (a, b) {#}
-    {#                return '<img src="http://latex.codecogs.com/png.latex?' + encodeURIComponent(b) + '" />';#}
-    {#            });#}
-    {##}
-    {#            var out = document.getElementById('description_out');#}
-    {#            var old = out.cloneNode(true);#}
-    {#            out.innerHTML = md.render(val);#}
-    {#            emojify.run(out);#}
-    {##}
-    {#            var allold = old.getElementsByTagName("*");#}
-    {#            if (allold === undefined) return;#}
-    {##}
-    {#            var allnew = out.getElementsByTagName("*");#}
-    {#            if (allnew === undefined) return;#}
-    {##}
-    {#            for (var i = 0, max = Math.min(allold.length, allnew.length); i < max; i++) {#}
-    {#                if (!allold[i].isEqualNode(allnew[i])) {#}
-    {#                    out.scrollTop = allnew[i].offsetTop;#}
-    {#                    return;#}
-    {#                }#}
-    {#            }#}
-    {#        }#}
-    {##}
-    {##}
-    {#        document.addEventListener('drop', function (e) {#}
-    {#            e.preventDefault();#}
-    {#            e.stopPropagation();#}
-    {##}
-    {#            var reader = new FileReader();#}
-    {#            reader.onload = function (e) {#}
-    {#                editor.setValue(e.target.result);#}
-    {#            };#}
-    {##}
-    {#            reader.readAsText(e.dataTransfer.files[0]);#}
-    {#        }, false);#}
-    {##}
-    {##}
-    {#        function saveAsMarkdown() {#}
-    {#            save(editor.getValue(), "untitled.md");#}
-    {#        }#}
-    {##}
-    {#        function saveAsHtml() {#}
-    {#            save(document.getElementById('description_out').innerHTML, "untitled.html");#}
-    {#        }#}
-    {##}
-    {#        function save(description, name) {#}
-    {#            var blob = new Blob([description], {type: 'text/plain'});#}
-    {#            if (window.saveAs) {#}
-    {#                window.saveAs(blob, name);#}
-    {#            } else if (navigator.saveBlob) {#}
-    {#                navigator.saveBlob(blob, name);#}
-    {#            } else {#}
-    {#                url = URL.createObjectURL(blob);#}
-    {#                var link = document.createElement("a");#}
-    {#                link.setAttribute("href", url);#}
-    {#                link.setAttribute("download", name);#}
-    {#                var event = document.createEvent('MouseEvents');#}
-    {#                event.initMouseEvent('click', true, true, window, 1, 0, 0, 0, 0, false, false, false, false, 0, null);#}
-    {#                link.dispatchEvent(event);#}
-    {#            }#}
-    {#        }#}
-    {##}
-    {##}
-    {#        var menuVisible = false;#}
-    {#        var menu = document.getElementById('menu');#}
-    {##}
-    {#        function showMenu() {#}
-    {#            menuVisible = true;#}
-    {#            menu.style.display = 'block';#}
-    {#        }#}
-    {##}
-    {#        function hideMenu() {#}
-    {#            menuVisible = false;#}
-    {#            menu.style.display = 'none';#}
-    {#        }#}
-    {##}
-    {#        document.addEventListener('keydown', function (e) {#}
-    {#            if (e.keyCode == 83 && (e.ctrlKey || e.metaKey)) {#}
-    {#                e.shiftKey ? showMenu() : saveAsMarkdown();#}
-    {##}
-    {#                e.preventDefault();#}
-    {#                return false;#}
-    {#            }#}
-    {##}
-    {#            if (e.keyCode === 27 && menuVisible) {#}
-    {#                hideMenu();#}
-    {##}
-    {#                e.preventDefault();#}
-    {#                return false;#}
-    {#            }#}
-    {#        });#}
-    {##}
-    {##}
-    {#        function updateHash() {#}
-    {#        }#}
-    {##}
-    {#        if (window.location.hash) {#}
-    {#            var h = window.location.hash.replace(/^#/, '');#}
-    {#            if (h.slice(0, 5) == 'view:') {#}
-    {#                setOutput(decodeURIComponent(escape(RawDeflate.inflate(atob(h.slice(5))))));#}
-    {#                document.body.className = 'view';#}
-    {#            } else {#}
-    {#                editor.setValue(#}
-    {#                        decodeURIComponent(escape(#}
-    {#                                RawDeflate.inflate(#}
-    {#                                        atob(#}
-    {#                                                h#}
-    {#                                        )#}
-    {#                                )#}
-    {#                        ))#}
-    {#                );#}
-    {#                update(editor);#}
-    {#                editor.focus();#}
-    {#            }#}
-    {#        } else if (editor != undefined) {#}
-    {#            update(editor);#}
-    {#            editor.focus();#}
-    {#        }#}
-    {##}
-    {##}
-    {#    </script>#}
     {% include 'layout/editor_footer.html' %}
 {% endblock %}

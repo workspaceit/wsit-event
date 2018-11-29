@@ -12,12 +12,8 @@
             <div class="panel-body tab-content">
                 <div class="tab-pane fade in active">
                     <div class="froala-editor-div">
-{#                        <form id='editor-preview-form' action="{% url 'emails-preview' %}" method="POST"#}
-{#                              target="_blank">{% csrf_token %}#}
-{#                            <input type="hidden" name="template_id" value="{{ template_content.id }}">#}
                             <textarea id="froala_content_editor"
                                       name="froala_content_editor">{{ content }}</textarea>
-{#                        </form>#}
                     </div>
                     <div class="row">
                         <div class="col-sm-6">

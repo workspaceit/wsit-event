@@ -1,10 +1,9 @@
 from django.db.models.functions import Concat
 
-from app.models import Attendee, Group, Questions, Answers, RuleSet, CurrentFilter,AttendeeTag,Tag, Checkpoint, Scan, \
-    SeminarsUsers, AttendeeGroups, Presets
+from app.models import Attendee, Group, Questions, Answers, CurrentFilter, AttendeeTag, Checkpoint, Scan, \
+    SeminarsUsers, AttendeeGroups
 from django_datatables_view.base_datatable_view import BaseDatatableView
 from django.db.models import Q, Value
-from itertools import chain
 from .filter import FilterView
 from app.views.gbhelper.error_report_helper import ErrorR, DateTimeHelper
 from app.views.common_views import TimeDetailView

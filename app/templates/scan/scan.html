@@ -131,26 +131,6 @@
                 }
             });
             $("#read").val("");
-{#            var result = $.grep(attendees, function (e) {#}
-{#                return e.uid == $("#read").val()#}
-{#            });#}
-{#            if (result.length == 0) {#}
-{#                $("#list tbody").prepend("<tr class='no'><td colspan='4'>Not found</td></tr>")#}
-{#            } else if (result.length == 1) {#}
-{#                var firstname = ""#}
-{#                var lastname = ""#}
-{#                var passed = ""#}
-{#                $.each(result, function (index, val) {#}
-{#                    firstname = val.firstname#}
-{#                    lastname = val.lastname#}
-{#                    val.passed++#}
-{#                    passed = val.passed#}
-{#                });#}
-{##}
-{#                $("#list tbody").prepend("<tr class='yes'><td>" + firstname + "</td><td>" + lastname + "</td><td>" + passed + "</td><td>" + time + "</td></tr>");#}
-{#            } else {#}
-{#                alert("multiple entries")#}
-{#            }#}
 
         }
         while ($("#list tbody tr").length > 10) {

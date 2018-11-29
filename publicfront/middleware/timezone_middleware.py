@@ -11,7 +11,6 @@ class TimezoneMiddleware(object):
         setting_timezone = Setting.objects.filter(name='timezone')
         if setting_timezone:
             tzname = setting_timezone[0].value
-            print(tzname)
         else:
             tzname=""
 

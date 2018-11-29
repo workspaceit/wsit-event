@@ -298,7 +298,6 @@ $(document).ready(function () {
                 var value = this.value;
                 clearTimeout(timer);
                 timer = setTimeout(function() {
-                    console.log("Timer");
                     attendee_table.search(value).draw();
                     //$('.dataTables_filter input').unbind('keypress');
                 }, 350);

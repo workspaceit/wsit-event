@@ -59,5 +59,4 @@ class Payment(generic.TemplateView):
 
     @csrf_exempt
     def payment_callback_cancel(request, *args, **kwargs):
-        print(request.POST)
         return DynamicPage.get_static_page(request, 'payment-cancel', True, *args, **kwargs)

@@ -124,7 +124,6 @@
                                     $("#presetdata").html(html);
 
                                     var datanode = $("#tree").fancytree("getActiveNode");
-                                    console.log(datanode);
                                     if (datanode != null) {
                                         var tab = datanode.data.id;
                                         var activateTab = '#' + tab.toLowerCase();
@@ -137,7 +136,6 @@
                         $("#rename-preset").show();
                         $('#rename_preset_name').val($.trim($('#preset option[value="' + e.val + '"]').attr('data-value')));
                         $('#rename_preset_name').attr('data-id', e.val);
-                        console.log("change val=" + e.val);
                     })
 
         });
