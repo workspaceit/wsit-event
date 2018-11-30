@@ -90,7 +90,7 @@ class MyDaemon(daemon):
 
 
 if __name__ == "__main__":
-    daemon = MyDaemon('/tmp/daemon-eventmanager.pid')
+    daemon = MyDaemon('/tmp/daemon-wsitevent.pid')
     if len(sys.argv) == 2:
         if 'start' == sys.argv[1]:
             daemon.start()
