@@ -257,7 +257,7 @@ class EconomyPDFGenerator:
             position_head = html_content.index('</head>')
             head_content = "<style> input:before{content: attr(value)} </style>"
             html_content = html_content[:position_head] + head_content + html_content[position_head:]
-            html_content = EconomyPDFGenerator.replace_economy_templates(request, html_content, '', attendee, template)
+            html_content = EconomyPDFGenerator.replace_economy_templates(request, html_content, '', attendee, template.event.url)
             response = EconomyPDFGenerator.render_pdf(html_content, template.name+'.pdf')
             return response
         except Exception as exception:
