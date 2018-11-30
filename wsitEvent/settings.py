@@ -26,8 +26,8 @@ SECRET_KEY = '2wako5@=t$f8g+@%#aft4yw38%f66$&(yn(_0s5gwqo$!8p6&c'
 # SECURITY WARNING: don't run with debug turned on in master!
 
 
-os.environ['ENVIRONMENT_TYPE'] = 'development'
-DEBUG = False
+os.environ['ENVIRONMENT_TYPE'] = 'tempmaster'
+DEBUG = True
 TEMPLATE_DEBUG = False
 ALLOWED_HOSTS = ['*']
 
@@ -150,7 +150,7 @@ SES_REGION = 'eu-west-1'
 S3_BUCKET_NAME = ''
 
 # S3 Bucket name
-if os.environ['ENVIRONMENT_TYPE'] == 'master':
+if os.environ['ENVIRONMENT_TYPE'] == 'tempmaster':
     S3_BUCKET_NAME = 'wsit-event-dev'
 else:
     S3_BUCKET_NAME = 'wsit-event-dev'
