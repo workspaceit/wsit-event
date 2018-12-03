@@ -831,7 +831,7 @@ body {
     height: 100px;
 }
 
-.section input[type="text"]:not(.k-input):not(.event-plugin-search), .section textarea, .section .search {
+.section input[type="text"]:not(.k-input):not(.event-plugin-search), .section input[type="password"], .section textarea, .section .search {
     width: 100%;
     border: 2px solid #8dbeb5;
     padding: 0.625em;
@@ -841,15 +841,15 @@ body {
     margin: 0;
 }
 
-.section input[type="text"]:not(.k-input):not(.event-plugin-search):hover, .section textarea:hover, .section .search:hover {
+.section input[type="text"]:not(.k-input):not(.event-plugin-search):hover, .section input[type="password"]:hover, .section textarea:hover, .section .search:hover {
     border-color: #a2beb4;
 }
 
-.section input[type="text"]:not(.k-input):not(.event-plugin-search):focus, .section textarea:focus, .section .search:focus {
+.section input[type="text"]:not(.k-input):not(.event-plugin-search):focus, .section input[type="password"]:focus, .section textarea:focus, .section .search:focus {
     border-color: #0a8e76;
 }
 
-.section input[type="text"]:not(.k-input):not(.event-plugin-search):disabled, .section textarea:disabled, .section .search:disabled {
+.section input[type="text"]:not(.k-input):not(.event-plugin-search):disabled, .section input[type="password"]:disabled .section textarea:disabled, .section .search:disabled {
     background: #dcdcdc;
     border: 2px solid #b7b7b7;
 }
@@ -937,12 +937,12 @@ body {
     display: none;
 }
 
-.section .validation-failed:not(.event-plugin-hotel-reservation) input[type="text"], .section .validation-failed:not(.event-plugin-hotel-reservation) textarea {
+.section .validation-failed:not(.event-plugin-hotel-reservation) input[type="text"], .section .validation-failed input[type="password"], .section .validation-failed:not(.event-plugin-hotel-reservation) textarea {
     margin: 0;
     border: 2px solid #d43c3c;
 }
 
-.section .validation-failed:not(.event-plugin-hotel-reservation) input[type="text"]:focus, .section .validation-failed:not(.event-plugin-hotel-reservation) textarea:focus {
+.section .validation-failed:not(.event-plugin-hotel-reservation) input[type="text"]:focus, .section .validation-failed input[type="password"]:focus, .section .validation-failed:not(.event-plugin-hotel-reservation) textarea:focus {
     border: 2px solid #d43c3c;
 }
 
@@ -1230,7 +1230,7 @@ body {
 }
 
 .section .event-plugin .event-plugin-button.close-button:before, .section .event-plugin #dialoge .dialogue-content .dialoge-button-row button.close-button:before, #dialoge .dialogue-content .dialoge-button-row .section .event-plugin button.close-button:before, .section .dialoge-button-row .event-plugin-button.close-button:before, .section #dialoge .dialogue-content .dialoge-button-row button.close-button:before, #dialoge .dialogue-content .section .dialoge-button-row button.close-button:before {
-    content: "";
+    content: "?";
     font-family: FontAwesome;
     margin-right: 0.75em;
 }
@@ -1243,7 +1243,7 @@ body {
     position: absolute;
     top: 0;
     left: 0;
-    content: "";
+    content: "?";
     font-size: 1.3em;
     font-family: FontAwesome;
     padding: 0.75em;
@@ -1330,7 +1330,7 @@ body {
 }
 
 .section .event-plugin.event-plugin-evaluations .evaluation-send-button:before, .section .dialoge-button-row.event-plugin-evaluations .evaluation-send-button:before {
-    content: "";
+    content: "?";
     font-family: FontAwesome;
     margin-right: 0.75em;
 }
@@ -1363,12 +1363,12 @@ body {
 .section .event-plugin.event-plugin-evaluations .star-rating > input + label:before, .section .dialoge-button-row.event-plugin-evaluations .star-rating > input + label:before {
     display: inline-block;
     text-indent: -9999px;
-    content: "";
+    content: "?";
     color: #dcdcdc;
 }
 
 .section .event-plugin.event-plugin-evaluations .star-rating > input:checked ~ label:before, .section .event-plugin.event-plugin-evaluations .star-rating > input + label:hover ~ label:before, .section .event-plugin.event-plugin-evaluations .star-rating > input + label:hover:before, .section .dialoge-button-row.event-plugin-evaluations .star-rating > input:checked ~ label:before, .section .dialoge-button-row.event-plugin-evaluations .star-rating > input + label:hover ~ label:before, .section .dialoge-button-row.event-plugin-evaluations .star-rating > input + label:hover:before {
-    content: "";
+    content: "?";
     color: #0a8e76;
     text-shadow: 0 0 1px #0a8e76;
 }
@@ -1384,13 +1384,13 @@ body {
 }
 
 .section .event-plugin.event-plugin-evaluations .star-rating:hover > input + label:before, .section .dialoge-button-row.event-plugin-evaluations .star-rating:hover > input + label:before {
-    content: "";
+    content: "?";
     color: #dcdcdc;
     text-shadow: none;
 }
 
 .section .event-plugin.event-plugin-evaluations .star-rating:hover > input + label:hover ~ label:before, .section .event-plugin.event-plugin-evaluations .star-rating:hover > input + label:hover:before, .section .dialoge-button-row.event-plugin-evaluations .star-rating:hover > input + label:hover ~ label:before, .section .dialoge-button-row.event-plugin-evaluations .star-rating:hover > input + label:hover:before {
-    content: "";
+    content: "?";
     color: #0a8e76;
     text-shadow: 0 0 1px #0a8e76;
 }
@@ -1400,7 +1400,7 @@ body {
 }
 
 .section .event-plugin.event-plugin-messages .messages-clear:before, .section .dialoge-button-row.event-plugin-messages .messages-clear:before {
-    content: "";
+    content: "?";
     font-family: FontAwesome;
     margin: 0 0 0.75em 0.75em;
     float: right;
@@ -1413,49 +1413,49 @@ body {
 }
 
 .section .event-plugin.event-plugin-messages .btn-read-archive-message:before, .section .dialoge-button-row.event-plugin-messages .btn-read-archive-message:before {
-    content: "";
+    content: "?";
     font-family: FontAwesome;
     margin-right: 0.75em;
 }
 
 .section .event-plugin.event-plugin-messages .btn-mark-all-message:before, .section .dialoge-button-row.event-plugin-messages .messages-mark-all-button:before {
-    content: "";
+    content: "?";
     font-family: FontAwesome;
     margin-right: 0.75em;
 }
 
 .section .event-plugin.event-plugin-next-up .next-up-time-and-date-icon:before, .section .dialoge-button-row.event-plugin-next-up .next-up-time-and-date-icon:before {
-    content: "";
+    content: "?";
     font-family: FontAwesome;
     color: #666666;
 }
 
 .section .event-plugin.event-plugin-next-up .next-up-location-icon:before, .section .dialoge-button-row.event-plugin-next-up .next-up-location-icon:before {
-    content: "";
+    content: "?";
     font-family: FontAwesome;
     color: #666666;
 }
 
 .section .event-plugin.event-plugin-next-up .next-up-speaker-icon:before, .section .dialoge-button-row.event-plugin-next-up .next-up-speaker-icon:before {
-    content: "";
+    content: "?";
     font-family: FontAwesome;
     color: #666666;
 }
 
 .section .event-plugin.event-plugin-location-list .location-list-map-icon:before, .section .dialoge-button-row.event-plugin-location-list .location-list-map-icon:before {
-    content: "";
+    content: "?";
     font-family: FontAwesome;
     color: #666666;
 }
 
 .section .event-plugin.event-plugin-location-list .location-list-address-icon:before, .section .dialoge-button-row.event-plugin-location-list .location-list-address-icon:before {
-    content: "";
+    content: "?";
     font-family: FontAwesome;
     color: #666666;
 }
 
 .section .event-plugin.event-plugin-location-list .location-list-speaker-icon:before, .section .dialoge-button-row.event-plugin-location-list .location-list-speaker-icon:before {
-    content: "";
+    content: "?";
     font-family: FontAwesome;
     color: #666666;
 }
@@ -1467,43 +1467,43 @@ body {
 }
 
 .section .event-plugin .session-time-and-date-icon:before, .section .dialoge-button-row .session-time-and-date-icon:before {
-    content: "";
+    content: "?";
     font-family: FontAwesome;
     color: #666666;
 }
 
 .section .event-plugin .session-rsvp-deadline-icon:before, .section .dialoge-button-row .session-rsvp-deadline-icon:before {
-    content: "";
+    content: "?";
     font-family: FontAwesome;
     color: #666666;
 }
 
 .section .event-plugin .session-speaker-icon:before, .section .dialoge-button-row .session-speaker-icon:before {
-    content: "";
+    content: "?";
     font-family: FontAwesome;
     color: #666666;
 }
 
 .section .event-plugin .session-tags-icon:before, .section .dialoge-button-row .session-tags-icon:before {
-    content: "";
+    content: "?";
     font-family: FontAwesome;
     color: #666666;
 }
 
 .section .event-plugin .session-group-icon:before, .section .dialoge-button-row .session-group-icon:before {
-    content: "";
+    content: "?";
     font-family: FontAwesome;
     color: #666666;
 }
 
 .section .event-plugin .session-seats-available-icon:before, .section .dialoge-button-row .session-seats-available-icon:before {
-    content: "";
+    content: "?";
     font-family: FontAwesome;
     color: #666666;
 }
 
 .section .event-plugin .session-location-icon:before, .section .dialoge-button-row .session-location-icon:before {
-    content: "";
+    content: "?";
     font-family: FontAwesome;
     color: #666666;
 }
@@ -1589,13 +1589,13 @@ body {
 }
 
 .section .event-plugin.event-plugin-hotel-reservation .hotel-reservation-add-button:before, .section .dialoge-button-row.event-plugin-hotel-reservation .hotel-reservation-add-button:before {
-    content: "";
+    content: "?";
     font-family: FontAwesome;
     margin-right: 0.75em;
 }
 
 .section .event-plugin.event-plugin-hotel-reservation .hotel-reservation-remove-button:before, .section .dialoge-button-row.event-plugin-hotel-reservation .hotel-reservation-remove-button:before {
-    content: "";
+    content: "?";
     font-family: FontAwesome;
     margin-right: 0.75em;
 }
@@ -1610,7 +1610,7 @@ body {
 }
 
 .section .event-plugin.event-plugin-session-scheduler .session-subscribe-to-calendar-icon:before, .section .dialoge-button-row.event-plugin-session-scheduler .session-subscribe-to-calendar-icon:before {
-    content: "";
+    content: "?";
     font-family: FontAwesome;
     margin-right: 0.75em;
 }
@@ -1678,7 +1678,7 @@ body {
 }
 
 .section .event-plugin.event-plugin-session-scheduler .session .status:before, .section .dialoge-button-row.event-plugin-session-scheduler .session .status:before {
-    content: "";
+    content: "?";
     font-family: FontAwesome;
 }
 
@@ -1731,7 +1731,7 @@ body {
 }
 
 .section .event-plugin.event-plugin-session-scheduler .session.full .status:before, .section .dialoge-button-row.event-plugin-session-scheduler .session.full .status:before {
-    content: "";
+    content: "?";
 }
 
 .section .event-plugin.event-plugin-session-scheduler .session.full .session-section, .section .event-plugin.event-plugin-session-scheduler .session.full .session-title, .section .dialoge-button-row.event-plugin-session-scheduler .session.full .session-section, .section .dialoge-button-row.event-plugin-session-scheduler .session.full .session-title {
@@ -1762,7 +1762,7 @@ body {
 }
 
 .section .event-plugin.event-plugin-session-scheduler .session.full-queue-open .status:before, .section .dialoge-button-row.event-plugin-session-scheduler .session.full-queue-open .status:before {
-    content: "";
+    content: "?";
 }
 
 .section .event-plugin.event-plugin-session-scheduler .session.full-queue-open .session-section, .section .event-plugin.event-plugin-session-scheduler .session.full-queue-open .session-title, .section .dialoge-button-row.event-plugin-session-scheduler .session.full-queue-open .session-section, .section .dialoge-button-row.event-plugin-session-scheduler .session.full-queue-open .session-title {
@@ -1784,7 +1784,7 @@ body {
 }
 
 .section .event-plugin.event-plugin-session-scheduler .session.attending .status:before, .section .dialoge-button-row.event-plugin-session-scheduler .session.attending .status:before {
-    content: "";
+    content: "?";
 }
 
 .section .event-plugin.event-plugin-session-scheduler .session.attending .session-section, .section .event-plugin.event-plugin-session-scheduler .session.attending .session-title, .section .dialoge-button-row.event-plugin-session-scheduler .session.attending .session-section, .section .dialoge-button-row.event-plugin-session-scheduler .session.attending .session-title {
@@ -1806,7 +1806,7 @@ body {
 }
 
 .section .event-plugin.event-plugin-session-scheduler .session.in-queue .status:before, .section .dialoge-button-row.event-plugin-session-scheduler .session.in-queue .status:before {
-    content: "";
+    content: "?";
 }
 
 .section .event-plugin.event-plugin-session-scheduler .session.in-queue .session-section, .section .event-plugin.event-plugin-session-scheduler .session.in-queue .session-title, .section .dialoge-button-row.event-plugin-session-scheduler .session.in-queue .session-section, .section .dialoge-button-row.event-plugin-session-scheduler .session.in-queue .session-title {
@@ -1828,7 +1828,7 @@ body {
 }
 
 .section .event-plugin.event-plugin-session-scheduler .session.rsvp-ended .status:before, .section .dialoge-button-row.event-plugin-session-scheduler .session.rsvp-ended .status:before {
-    content: "";
+    content: "?";
 }
 
 .section .event-plugin.event-plugin-session-scheduler .session.rsvp-ended .session-section, .section .event-plugin.event-plugin-session-scheduler .session.rsvp-ended .session-title, .section .dialoge-button-row.event-plugin-session-scheduler .session.rsvp-ended .session-section, .section .dialoge-button-row.event-plugin-session-scheduler .session.rsvp-ended .session-title {
@@ -1850,7 +1850,7 @@ body {
 }
 
 .section .event-plugin.event-plugin-session-scheduler .session.time-conflict .status:before, .section .dialoge-button-row.event-plugin-session-scheduler .session.time-conflict .status:before {
-    content: "";
+    content: "?";
 }
 
 .section .event-plugin.event-plugin-session-scheduler .session.time-conflict .session-section, .section .event-plugin.event-plugin-session-scheduler .session.time-conflict .session-title, .section .dialoge-button-row.event-plugin-session-scheduler .session.time-conflict .session-section, .section .dialoge-button-row.event-plugin-session-scheduler .session.time-conflict .session-title {
@@ -1870,17 +1870,17 @@ body {
 }
 
 .section .event-plugin.event-plugin-session-scheduler .session-details .status.full:before, .section .dialoge-button-row.event-plugin-session-scheduler .session-details .status.full:before {
-    content: "";
+    content: "?";
     font-family: FontAwesome;
 }
 
 .section .event-plugin.event-plugin-session-scheduler .session-details .status.rsvp-deadline:before, .section .dialoge-button-row.event-plugin-session-scheduler .session-details .status.rsvp-deadline:before {
-    content: "";
+    content: "?";
     font-family: FontAwesome;
 }
 
 .section .event-plugin.event-plugin-session-scheduler .session-details .status.time-conflict:before, .section .dialoge-button-row.event-plugin-session-scheduler .session-details .status.time-conflict:before {
-    content: "";
+    content: "?";
     font-family: FontAwesome;
 }
 
@@ -4072,7 +4072,7 @@ z-index: 1;
 
 #dialoge .close-dialouge:after {
 display: inline-block;
-content: "";
+content: "?";
 font-family: FontAwesome;
 }
 
@@ -4185,7 +4185,7 @@ background-color: #3f2c3d;
 
 #dialoge .dialogue-content .dialoge-menu li .dialoge-menu-close-button:after {
 display: inline-block;
-content: "";
+content: "?";
 font-family: FontAwesome;
 }
 
