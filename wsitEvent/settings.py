@@ -119,18 +119,18 @@ AWS_STORAGE_HOST = 's3.eu-west-1.amazonaws.com'
 AWS_REGION_NAME = 'eu-west-1'
 
 DATABASES = {
-         'default': {
-             'NAME': 'wsit_event_db',
-             'ENGINE': 'django.db.backends.mysql',
-             'USER': 'root',
-             'PASSWORD': '1',
-             'HOST': 'event_db',
-             'PORT': '3306',
-             'OPTIONS': {
-               'autocommit': True,
-             },
-         }
-     }
+    'default': {
+        'NAME': 'wsit_event_db',
+        'ENGINE': 'django.db.backends.mysql',
+        'USER': 'wsit',
+        'PASSWORD': 'wsit97480',
+        'HOST': '58.84.34.65',
+        'PORT': '3306',
+        'OPTIONS': {
+            'autocommit': True,
+        },
+    }
+}
 
 
 if DEBUG:
